@@ -1,15 +1,40 @@
 import { PageHeader } from "@/components/dashboard/page-header";
 import { StatGrid } from "@/components/dashboard/stat-grid";
-import { USER_STATS } from "@/lib/dashboard/user-stats";
+import { RecentPosts } from "@/components/dashboard/recent-posts";
+import { UpcomingPosts } from "@/components/dashboard/upcoming-posts";
+import { UsageCard } from "@/components/dashboard/usage-card";
+import { QuickActions } from "@/components/dashboard/quick-actions";
+import { getPosts } from "@/lib/posts/get-posts";
+import { getBillingOverview } from "@/lib/billing/get-overview";
+import {
+  countPosts, recentPosts, upcomingPosts,
+} from "@/lib/dashboard/build-overview";
+import { buildStats } from "@/lib/dashboard/build-stats";
 
-export default function UserDashboardPage() {
+export default async function UserDashboardPage() {
+  const [posts, billing] = await Promise.all([
+    getPosts(), getBillingOverview(),
+  ]);
+  const stats = buildStats(countPosts(posts));
+  const overview = billing.ok ? billing.overview : null;
+
   return (
-    <>
+    <div className="flex flex-col gap-6">
       <PageHeader
         title="Overview"
         description="Your drafts, schedule, and AI generations at a glance."
       />
-      <StatGrid stats={USER_STATS} />
-    </>
+      <StatGrid stats={stats} />
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <RecentPosts posts={recentPosts(posts)} />
+        </div>
+        <div className="flex flex-col gap-4">
+          <UsageCard overview={overview} />
+          <UpcomingPosts posts={upcomingPosts(posts)} />
+        </div>
+      </div>
+      <QuickActions />
+    </div>
   );
 }

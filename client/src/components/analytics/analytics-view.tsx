@@ -1,0 +1,33 @@
+import { ActivityChart } from "./activity-chart";
+import { AnalyticsStatsRow } from "./analytics-stats";
+import { BreakdownCard } from "./breakdown-card";
+import { EngagementNotice } from "./engagement-notice";
+import { InsightsCard } from "./insights-card";
+import { RecentPostsTable } from "./recent-posts-table";
+import type { Analytics } from "@/lib/analytics/analytics.types";
+
+export function AnalyticsView({ data }: { data: Analytics }) {
+  return (
+    <div className="space-y-6">
+      <AnalyticsStatsRow stats={data.stats} />
+      <InsightsCard insights={data.insights} />
+      <ActivityChart daily={data.daily} />
+      <div className="grid gap-4 lg:grid-cols-2">
+        <BreakdownCard
+          title="Status mix"
+          description="Where posts in this window currently sit."
+          buckets={data.byStatus}
+          emptyMessage="No posts yet."
+        />
+        <BreakdownCard
+          title="Platforms"
+          description="Distribution across the targets you've generated for."
+          buckets={data.byPlatform}
+          emptyMessage="No platforms tracked yet."
+        />
+      </div>
+      <RecentPostsTable posts={data.recent} />
+      <EngagementNotice />
+    </div>
+  );
+}

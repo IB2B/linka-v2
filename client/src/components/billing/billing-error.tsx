@@ -1,10 +1,12 @@
+"use client";
+
 import { AlertCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-type Props = { error: string; onRetry: () => void };
-
-export function BillingError({ error, onRetry }: Props) {
+export function BillingError({ error }: { error: string }) {
+  const router = useRouter();
   return (
     <div className="flex flex-col gap-6 p-6">
       <h1 className="text-3xl font-semibold tracking-tight">Billing</h1>
@@ -14,7 +16,7 @@ export function BillingError({ error, onRetry }: Props) {
           <div className="flex-1">
             <p className="text-sm font-medium text-destructive">Could not load billing</p>
             <p className="text-xs text-muted-foreground mt-1">{error}</p>
-            <Button variant="outline" size="sm" onClick={onRetry} className="mt-3">
+            <Button variant="outline" size="sm" onClick={() => router.refresh()} className="mt-3">
               Try again
             </Button>
           </div>

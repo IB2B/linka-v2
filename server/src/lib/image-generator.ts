@@ -6,5 +6,6 @@ import { generateOpenAIImage } from "./openai-images";
 export async function generatePostImage(prompt: string): Promise<string> {
   const hasKey = process.env.OPENAI_IMAGE_API_KEY ?? process.env.OPENAI_API_KEY;
   if (!hasKey) throw new Error("OPENAI_API_KEY not set");
-  return generateOpenAIImage({ prompt });
+  const model = process.env.IMAGE_MODEL ?? "dall-e-3";
+  return generateOpenAIImage({ prompt, model });
 }

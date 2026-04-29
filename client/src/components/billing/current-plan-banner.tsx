@@ -6,6 +6,8 @@ import { CreditCard, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { BILLING_PLANS } from "@/lib/billing/plans";
+import { billingService } from "@/lib/api/services";
+import { getErrorMessage } from "@/lib/api/http";
 import type { PlanTier } from "@/types/billing-plan";
 
 type Subscription = {
@@ -21,10 +23,13 @@ export function CurrentPlanBanner({ sub }: { sub: Subscription }) {
 
   async function openPortal() {
     setPending(true);
-    const res = await fetch("/api/billing/portal", { method: "POST" });
-    const { url, error } = await res.json();
-    if (error) { toast.error(error); setPending(false); return; }
-    window.location.href = url;
+    try {
+      const { url } = await billingService.portal();
+      window.location.href = url;
+    } catch (e) {
+      toast.error(getErrorMessage(e));
+      setPending(false);
+    }
   }
 
   return (

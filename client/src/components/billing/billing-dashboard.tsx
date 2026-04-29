@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { BillingLoading } from "./billing-loading";
-import { BillingError } from "./billing-error";
 import { BillingStatusBanners } from "./billing-status-banners";
 import { BillingPlanCard } from "./billing-plan-card";
 import { BillingNextCharge } from "./billing-next-charge";
@@ -13,44 +11,22 @@ import { BillingWallet } from "./billing-wallet";
 import { BillingPaymentMethods } from "./billing-payment-methods";
 import { BillingInvoices } from "./billing-invoices";
 import type { BillingOverview } from "@/types/billing-overview";
+import { billingService } from "@/lib/api/services";
+import { getErrorMessage } from "@/lib/api/http";
 
-export function BillingDashboard() {
-  const [overview, setOverview] = useState<BillingOverview | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export function BillingDashboard({ overview }: { overview: BillingOverview }) {
   const [portalPending, setPortalPending] = useState(false);
-
-  const load = useCallback(async () => {
-    try {
-      setLoading(true); setError(null);
-      const res = await fetch("/api/billing/overview", { credentials: "include" });
-      const json = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(json.error || `HTTP ${res.status}`);
-      setOverview(json);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load billing");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { load(); }, [load]);
 
   async function openPortal() {
     setPortalPending(true);
     try {
-      const res = await fetch("/api/billing/portal", { method: "POST", credentials: "include" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to open portal");
-      window.location.href = data.url;
+      const { url } = await billingService.portal();
+      window.location.href = url;
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Failed to open portal");
+      toast.error(getErrorMessage(e, "Failed to open portal"));
       setPortalPending(false);
     }
   }
-
-  if (loading) return <BillingLoading />;
-  if (error || !overview) return <BillingError error={error ?? "Unknown error"} onRetry={load} />;
 
   const { tier, status, balance, currency, paymentMethods, invoices, upcoming, currentPeriodEnd, cancelAtPeriodEnd, postsThisMonth, postsLimit } = overview;
 

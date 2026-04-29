@@ -9,15 +9,15 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { ScheduleMonthPicker } from "./schedule/schedule-month-picker";
+import { ScheduleTimeList } from "./schedule/schedule-time-list";
 import { schedulePostAction } from "@/app/dashboard/posts/actions";
-import { defaultScheduleDateTime } from "@/lib/posts/default-datetime";
+import { combineDateTime, type TimeSlot } from "@/lib/posts/schedule-times";
+import type { TimeFormat } from "@/lib/posts/schedule-format";
 
 type Props = {
   postId: string;
@@ -25,17 +25,22 @@ type Props = {
   onOpenChange: (open: boolean) => void;
 };
 
+function startOfToday(): Date {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 export function ScheduleDialog({ postId, open, onOpenChange }: Props) {
-  const [value, setValue] = useState(defaultScheduleDateTime);
+  const [date, setDate] = useState<Date>(startOfToday);
+  const [slot, setSlot] = useState<TimeSlot | null>(null);
+  const [format, setFormat] = useState<TimeFormat>("12h");
   const [pending, start] = useTransition();
 
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const when = new Date(value);
-    if (Number.isNaN(when.getTime()) || when.getTime() <= Date.now()) {
-      toast.error("Pick a date in the future.");
-      return;
-    }
+  function onSubmit() {
+    if (!slot) return toast.error("Pick a time slot.");
+    const when = combineDateTime(date, slot);
+    if (when.getTime() <= Date.now()) return toast.error("Pick a future time.");
     start(async () => {
       const res = await schedulePostAction(postId, when.toISOString());
       if (res.error) toast.error(res.error);
@@ -48,32 +53,31 @@ export function ScheduleDialog({ postId, open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Schedule post</DialogTitle>
-          <DialogDescription>Pick when this should go out.</DialogDescription>
+      <DialogContent className="flex flex-col gap-0 p-0 sm:max-w-2xl">
+        <DialogHeader className="border-b px-4 py-3">
+          <DialogTitle className="text-base">Schedule post</DialogTitle>
         </DialogHeader>
-        <form onSubmit={onSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="scheduled-for">Date & time</Label>
-            <Input
-              id="scheduled-for"
-              type="datetime-local"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              required
+        <div className="grid min-h-0 items-start gap-4 p-4 md:grid-cols-[1fr_220px]">
+          <ScheduleMonthPicker selected={date} onSelect={setDate} />
+          <div className="flex h-[360px] min-h-0 flex-col">
+            <ScheduleTimeList
+              date={date}
+              selected={slot}
+              format={format}
+              onFormatChange={setFormat}
+              onSelect={setSlot}
             />
           </div>
-          <div className="flex justify-end gap-2">
-            <DialogClose render={<Button type="button" variant="outline" />}>
-              Cancel
-            </DialogClose>
-            <Button type="submit" disabled={pending}>
-              {pending ? <Spinner aria-hidden /> : <Calendar className="size-4" />}
-              Schedule
-            </Button>
-          </div>
-        </form>
+        </div>
+        <div className="flex justify-end gap-2 border-t p-3">
+          <DialogClose render={<Button type="button" variant="outline" />}>
+            Cancel
+          </DialogClose>
+          <Button type="button" disabled={pending || !slot} onClick={onSubmit}>
+            {pending ? <Spinner aria-hidden /> : <Calendar className="size-4" />}
+            Schedule
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

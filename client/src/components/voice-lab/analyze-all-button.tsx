@@ -22,15 +22,25 @@ export function AnalyzeAllButton({ disabled, sampleCount }: Props) {
     });
   }
 
+  const isDisabled = disabled || pending;
   return (
-    <Button
-      size="sm"
-      variant="outline"
-      onClick={onClick}
-      disabled={disabled || pending}
-    >
-      {pending ? <Spinner aria-hidden /> : <Sparkles className="size-4" />}
-      Analyze {sampleCount > 0 ? `${sampleCount} samples` : "all"}
-    </Button>
+    <div className="relative inline-flex isolate overflow-hidden rounded-md p-[1.5px]">
+      {!isDisabled ? (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[300%] -translate-x-1/2 -translate-y-1/2 animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,#ff0080,#ff8c00,#ffd500,#00d26a,#00b4ff,#7b5cff,#ff0080)]"
+        />
+      ) : null}
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={onClick}
+        disabled={isDisabled}
+        className="relative rounded-[5px] bg-background hover:bg-background"
+      >
+        {pending ? <Spinner aria-hidden /> : <Sparkles className="size-4" />}
+        Analyze {sampleCount > 0 ? `${sampleCount} samples` : "all"}
+      </Button>
+    </div>
   );
 }

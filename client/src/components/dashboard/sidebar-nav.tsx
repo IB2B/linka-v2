@@ -14,8 +14,10 @@ import {
 import { getNavigationForRole } from "@/lib/dashboard/navigation";
 import type { SidebarNavProps } from "@/types/sidebar-nav-props";
 
+const EXACT_MATCH = ["/dashboard", "/admin", "/super-admin"];
+
 function isActive(pathname: string, href: string) {
-  if (href === "/admin") return pathname === "/admin";
+  if (EXACT_MATCH.includes(href)) return pathname === href;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
