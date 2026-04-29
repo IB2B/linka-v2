@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# server uploads (local-disk avatar storage)
+server/uploads/
+
 # local tooling
 .claude/
 skills-lock.json

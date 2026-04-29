@@ -4,8 +4,10 @@ import { z } from "zod";
 import { db } from "../lib/db";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 import { changePassword } from "./users-password";
+import avatarRouter from "./users-avatar";
 
 const router = Router();
+router.use("/me/avatar", avatarRouter);
 router.use(authenticate);
 
 router.get("/me", async (req: AuthRequest, res, next) => {
