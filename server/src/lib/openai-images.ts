@@ -23,8 +23,8 @@ export async function generateOpenAIImage(
   if (!key) throw Object.assign(new Error("OPENAI_API_KEY not set"), { status: 503 });
 
   const model = opts.model ?? "dall-e-3";
-  const size: Size = opts.size ?? "1792x1024";
   const isGptImage = model.startsWith("gpt-image");
+  const size: Size = opts.size ?? (isGptImage ? "1536x1024" : "1792x1024");
 
   const body: Record<string, unknown> = { model, prompt: opts.prompt, n: 1, size };
   if (!isGptImage) {

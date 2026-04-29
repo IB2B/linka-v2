@@ -1,10 +1,11 @@
+import type { RowDataPacket } from "mysql2";
 import type { GeneratedPost, ImageStatus, PostStatus } from "../types/post";
 
 export const POST_COLS =
   `id, user_id, prompt, content, image_url, image_status, image_prompt,
    image_error, platform, status, scheduled_for, posted_at, created_at`;
 
-export type PostRow = {
+export interface PostRow extends RowDataPacket {
   id: string;
   user_id: string;
   prompt: string | null;
@@ -18,7 +19,7 @@ export type PostRow = {
   scheduled_for: Date | null;
   posted_at: Date | null;
   created_at: Date;
-};
+}
 
 export function rowToPost(r: PostRow): GeneratedPost {
   return {

@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import { PostImagePlaceholder } from "./post-image-placeholder";
 import type { ImageStatus } from "@/types/post";
 
@@ -15,9 +15,15 @@ export function PostImage({ url, status }: Props) {
   }
   if (status === "pending" || status === "generating") {
     return (
-      <div className="flex size-full items-center justify-center gap-2 bg-muted text-xs text-muted-foreground">
-        <Loader2 className="size-4 animate-spin" />
-        Generating image…
+      <div className="relative size-full overflow-hidden bg-muted">
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        <div className="flex size-full flex-col items-center justify-center gap-2">
+          <ImageIcon className="size-5 text-muted-foreground/50" />
+          <span className="text-xs font-medium text-muted-foreground">
+            {status === "pending" ? "Image queued…" : "Generating image…"}
+          </span>
+          <span className="text-[11px] text-muted-foreground/60">This usually takes 10–30 s</span>
+        </div>
       </div>
     );
   }

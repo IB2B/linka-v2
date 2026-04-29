@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/page-header";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PostsList } from "@/components/posts/posts-list";
+import { PostsExplorer } from "@/components/posts/posts-explorer";
 import { PostsEmpty } from "@/components/posts/posts-empty";
 import { getPosts } from "@/lib/posts/get-posts";
 
@@ -27,7 +27,7 @@ export default async function PostsPage() {
         </Button>
       </div>
       <Separator className="my-2" />
-      {posts.length === 0 ? <PostsEmpty /> : <PostsList posts={posts} />}
+      {posts.length === 0 ? <PostsEmpty /> : <PostsExplorer posts={posts} />}
     </>
   );
 }

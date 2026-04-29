@@ -7,6 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { PlanFeature } from "@/components/billing/plan-feature";
 import { cn } from "@/lib/utils";
+import { stripeService } from "@/lib/api/services";
+import { getErrorMessage } from "@/lib/api/http";
 import type { BillingPlan, PlanTier } from "@/types/billing-plan";
 
 type Props = { plan: BillingPlan; currentTier?: PlanTier };
@@ -17,14 +19,13 @@ export function PlanCard({ plan, currentTier }: Props) {
 
   async function handleChoose() {
     setPending(true);
-    const res = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tier: plan.id }),
-    });
-    const { url, error } = await res.json();
-    if (error) { toast.error(error); setPending(false); return; }
-    window.location.href = url;
+    try {
+      const { url } = await stripeService.checkout({ tier: plan.id });
+      window.location.href = url;
+    } catch (e) {
+      toast.error(getErrorMessage(e));
+      setPending(false);
+    }
   }
 
   return (

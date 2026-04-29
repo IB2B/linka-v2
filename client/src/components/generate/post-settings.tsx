@@ -42,15 +42,18 @@ export function PostSettingsPanel({ value, onChange, disabled }: Props) {
               disabled={disabled}
             />
           </div>
-          <Label className="flex cursor-pointer items-center gap-2 self-end rounded-md border bg-muted/30 px-3 py-2 text-sm">
-            <Checkbox
-              checked={value.withImage}
-              onCheckedChange={(c) => onChange({ ...value, withImage: !!c })}
-              disabled={disabled}
-            />
-            <ImageIcon className="size-4 text-muted-foreground" />
-            Generate AI image
-          </Label>
+          <div className="space-y-2">
+            <Label className="text-xs text-muted-foreground">Image</Label>
+            <Label className="flex h-9 cursor-pointer items-center gap-2 rounded-md border bg-muted/30 px-3 text-sm">
+              <Checkbox
+                checked={value.withImage}
+                onCheckedChange={(c) => onChange({ ...value, withImage: !!c })}
+                disabled={disabled}
+              />
+              <ImageIcon className="size-4 text-muted-foreground" />
+              Generate AI image
+            </Label>
+          </div>
         </div>
       </CardContent>
     </Card>

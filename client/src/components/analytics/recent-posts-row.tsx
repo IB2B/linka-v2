@@ -1,0 +1,30 @@
+import { Badge } from "@/components/ui/badge";
+import { PostStatusBadge } from "@/components/posts/post-status-badge";
+import { formatPostDate } from "@/lib/posts/format-date";
+import type { GeneratedPost } from "@/types/post";
+
+export function RecentPostsRow({ post }: { post: GeneratedPost }) {
+  const preview =
+    post.content.slice(0, 120) + (post.content.length > 120 ? "…" : "");
+  const date = post.postedAt ?? post.scheduledFor ?? post.createdAt;
+  return (
+    <tr className="border-t hover:bg-muted/40">
+      <td className="px-4 py-3">
+        <p className="line-clamp-2 max-w-md text-sm">{preview}</p>
+      </td>
+      <td className="px-4 py-3">
+        {post.platform ? (
+          <Badge variant="outline" className="capitalize">{post.platform}</Badge>
+        ) : (
+          <span className="text-xs text-muted-foreground">—</span>
+        )}
+      </td>
+      <td className="px-4 py-3">
+        <PostStatusBadge status={post.status} />
+      </td>
+      <td className="px-4 py-3 text-xs whitespace-nowrap text-muted-foreground">
+        {formatPostDate(date)}
+      </td>
+    </tr>
+  );
+}
