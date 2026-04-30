@@ -10,6 +10,9 @@ import usersRouter from "./routes/users";
 import voiceLabRouter from "./routes/voice-lab";
 import contentRouter from "./routes/content";
 import postsRouter from "./routes/posts";
+import socialRouter from "./routes/social";
+import supportRouter from "./routes/support";
+import inboxRouter from "./routes/inbox";
 import { errorHandler } from "./middleware/error";
 import { reapStuckImageJobs } from "./lib/image-reaper";
 
@@ -33,6 +36,9 @@ app.use("/api/users", usersRouter);
 app.use("/api/voice-lab", voiceLabRouter);
 app.use("/api/content", contentRouter);
 app.use("/api/posts", postsRouter);
+app.use("/api/social", socialRouter);
+app.use("/api/support", supportRouter);
+app.use("/api/inbox", inboxRouter);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

@@ -31,18 +31,22 @@ export async function deletePostAction(id: string): Promise<Result> {
 }
 
 export async function schedulePostAction(
-  id: string, scheduledFor: string,
+  id: string, scheduledFor: string, platforms: string[] = [],
 ): Promise<Result> {
   const res = await api(`/api/posts/${id}/schedule`, {
-    method: "POST", body: JSON.stringify({ scheduledFor }),
+    method: "POST", body: JSON.stringify({ scheduledFor, platforms }),
   });
   if (!res.ok) return { error: await readError(res, "Failed to schedule.") };
   revalidatePath("/dashboard/posts");
   return { success: true };
 }
 
-export async function publishPostAction(id: string): Promise<Result> {
-  const res = await api(`/api/posts/${id}/publish`, { method: "POST" });
+export async function publishPostAction(
+  id: string, platforms: string[] = [],
+): Promise<Result> {
+  const res = await api(`/api/posts/${id}/publish`, {
+    method: "POST", body: JSON.stringify({ platforms }),
+  });
   if (!res.ok) return { error: await readError(res, "Failed to publish.") };
   revalidatePath("/dashboard/posts");
   return { success: true };

@@ -5,6 +5,8 @@ import { AccountGrid } from "@/components/accounts/account-grid";
 import { AccountsToast } from "@/components/accounts/accounts-toast";
 import { getAccounts } from "@/lib/zernio/get-accounts";
 
+export const dynamic = "force-dynamic";
+
 export default async function AccountsPage() {
   const accounts = await getAccounts();
 

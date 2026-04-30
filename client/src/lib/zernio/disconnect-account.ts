@@ -1,5 +1,5 @@
-import { zernioFetch } from "./client";
+import { socialFetch } from "./server-fetch";
 
 export async function disconnectAccount(accountId: string): Promise<void> {
-  await zernioFetch(`/accounts/${accountId}`, { method: "DELETE" });
+  await socialFetch(`/api/social/accounts/${accountId}`, { method: "DELETE" });
 }
