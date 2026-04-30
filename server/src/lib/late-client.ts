@@ -1,18 +1,39 @@
-// Stub for the Late posting API. Replace with real fetch to https://getlate.dev/api/v1
-// when LATE_API_KEY is provisioned.
+import { lateFetch } from "./late-api";
+import { resolvePublicImageUrl } from "./late-media";
 import type { GeneratedPost } from "../types/post";
+import type { PlatformEntry } from "./late-accounts";
 
 export type LateScheduleResult = { latePostId: string };
 export type LatePublishResult = { latePostId: string };
+type CreateResult = { post: { _id: string } };
 
-export async function schedulePostOnLate(
-  _post: GeneratedPost, _scheduledFor: Date,
-): Promise<LateScheduleResult> {
-  return { latePostId: `stub-${Date.now()}` };
+async function buildBody(post: GeneratedPost, platforms: PlatformEntry[]) {
+  const body: Record<string, unknown> = { content: post.content, platforms };
+  const url = await resolvePublicImageUrl(post.imageUrl);
+  if (url) body.mediaItems = [{ type: "image", url }];
+  return body;
 }
 
 export async function publishPostOnLate(
-  _post: GeneratedPost,
+  post: GeneratedPost, platforms: PlatformEntry[],
 ): Promise<LatePublishResult> {
-  return { latePostId: `stub-now-${Date.now()}` };
+  const base = await buildBody(post, platforms);
+  const r = await lateFetch<CreateResult>("/posts", {
+    method: "POST",
+    body: JSON.stringify({ ...base, publishNow: true }),
+  });
+  return { latePostId: r.post._id };
+}
+
+export async function schedulePostOnLate(
+  post: GeneratedPost, when: Date, platforms: PlatformEntry[],
+): Promise<LateScheduleResult> {
+  const base = await buildBody(post, platforms);
+  const r = await lateFetch<CreateResult>("/posts", {
+    method: "POST",
+    body: JSON.stringify({
+      ...base, scheduledFor: when.toISOString(), timezone: "UTC",
+    }),
+  });
+  return { latePostId: r.post._id };
 }

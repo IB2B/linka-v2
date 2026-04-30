@@ -8,11 +8,13 @@ import {
   deletePostAction,
   publishPostAction,
 } from "@/app/dashboard/posts/actions";
+import { usePostPlatforms } from "@/components/posts/platforms-context";
 
 export function useDetailMutations(postId: string) {
   const router = useRouter();
   const [delPending, delStart] = useTransition();
   const [pubPending, pubStart] = useTransition();
+  const ctx = usePostPlatforms();
 
   function onConfirmDelete() {
     delStart(async () => {
@@ -26,11 +28,16 @@ export function useDetailMutations(postId: string) {
   }
 
   function onPublishNow() {
+    if (ctx && ctx.selected.length === 0) {
+      toast.error("Pick at least one platform to post to.");
+      return;
+    }
+    const platforms = ctx?.selected ?? [];
     pubStart(async () => {
-      const res = await publishPostAction(postId);
+      const res = await publishPostAction(postId, platforms);
       if (res.error) toast.error(res.error);
       else {
-        toast.success("Posted to LinkedIn.");
+        toast.success(`Posted${platforms.length ? ` to ${platforms.join(", ")}` : ""}.`);
         router.refresh();
       }
     });

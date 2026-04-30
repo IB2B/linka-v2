@@ -3,7 +3,9 @@ import {
   Calendar,
   CreditCard,
   FileText,
+  Inbox,
   LayoutDashboard,
+  LifeBuoy,
   Mic,
   Settings,
   Sparkles,
@@ -22,6 +24,7 @@ function workspace(prefix: string): NavGroup {
       { label: "Generate", href: `${prefix}/generate`, icon: Sparkles },
       { label: "Voice Lab", href: `${prefix}/voice-lab`, icon: Mic },
       { label: "Calendar", href: `${prefix}/calendar`, icon: Calendar },
+      { label: "Inbox", href: `${prefix}/inbox`, icon: Inbox },
       { label: "Analytics", href: `${prefix}/analytics`, icon: BarChart3 },
     ],
   };
@@ -32,6 +35,7 @@ function account(prefix: string): NavGroup {
     label: "Account",
     items: [
       { label: "Billing", href: `${prefix}/billing`, icon: CreditCard },
+      { label: "Support", href: `${prefix}/support`, icon: LifeBuoy },
       { label: "Settings", href: `${prefix}/settings`, icon: Settings },
     ],
   };

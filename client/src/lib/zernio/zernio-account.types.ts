@@ -4,7 +4,10 @@ export type Platform =
   | "instagram"
   | "twitter"
   | "threads"
-  | "tiktok";
+  | "tiktok"
+  | "pinterest"
+  | "bluesky"
+  | "reddit";
 
 export type ZernioAccount = {
   id: string;

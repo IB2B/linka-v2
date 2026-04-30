@@ -13,5 +13,5 @@ export async function connectAction(platform: Platform) {
 
 export async function disconnectAction(accountId: string) {
   await disconnectAccount(accountId);
-  redirect("/dashboard/settings");
+  redirect("/dashboard/accounts");
 }

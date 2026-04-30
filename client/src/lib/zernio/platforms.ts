@@ -13,4 +13,7 @@ export const PLATFORMS: PlatformMeta[] = [
   { slug: "twitter", label: "X", color: "#000000" },
   { slug: "threads", label: "Threads", color: "#000000" },
   { slug: "tiktok", label: "TikTok", color: "#010101" },
+  { slug: "pinterest", label: "Pinterest", color: "#E60023" },
+  { slug: "bluesky", label: "Bluesky", color: "#1185FE" },
+  { slug: "reddit", label: "Reddit", color: "#FF4500" },
 ];

@@ -1,5 +1,5 @@
 import { PLATFORMS } from "./platforms";
-import { zernioFetch } from "./client";
+import { socialFetch } from "./server-fetch";
 import type { ZernioAccount, Platform } from "./zernio-account.types";
 
 type RawAccount = {
@@ -11,12 +11,11 @@ type RawAccount = {
 
 export async function getAccounts(): Promise<ZernioAccount[]> {
   let connected: RawAccount[] = [];
-
   try {
-    const data = await zernioFetch<{ accounts: RawAccount[] }>("/accounts");
+    const data = await socialFetch<{ accounts: RawAccount[] }>("/api/social/accounts");
     connected = data.accounts ?? [];
   } catch {
-    // Return all platforms as disconnected if API fails
+    // fall through — show all as disconnected
   }
 
   return PLATFORMS.map((p) => {

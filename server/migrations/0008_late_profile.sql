@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN late_profile_id VARCHAR(64) NULL;
