@@ -1,33 +1,34 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { Calendar, Eye, Send, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { PostViewDialog } from "./post-view-dialog";
 import { ScheduleDialog } from "./schedule-dialog";
-import {
-  deletePostAction,
-  publishPostAction,
-} from "@/app/dashboard/posts/actions";
+import { DeletePostConfirm } from "./delete-post-confirm";
+import { deletePostAction, publishPostAction } from "@/app/dashboard/posts/actions";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostActions({ post }: { post: GeneratedPost }) {
-  const [viewOpen, setViewOpen] = useState(false);
   const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [delPending, delStart] = useTransition();
   const [pubPending, pubStart] = useTransition();
 
   const isPosted = post.status === "posted";
   const isScheduled = post.status === "scheduled";
 
-  function onDelete() {
+  function onConfirmDelete() {
     delStart(async () => {
       const res = await deletePostAction(post.id);
       if (res.error) toast.error(res.error);
-      else toast.success("Post deleted.");
+      else {
+        toast.success("Post deleted.");
+        setConfirmOpen(false);
+      }
     });
   }
 
@@ -42,10 +43,11 @@ export function PostActions({ post }: { post: GeneratedPost }) {
   return (
     <>
       <div className="flex w-full items-center gap-1">
-        <Button size="icon-sm" variant="ghost" onClick={() => setViewOpen(true)} aria-label="View">
+        <Button render={<Link href={`/dashboard/posts/${post.id}`} />}
+          nativeButton={false} size="icon-sm" variant="ghost" aria-label="View">
           <Eye className="size-4" />
         </Button>
-        <Button size="icon-sm" variant="ghost" onClick={onDelete}
+        <Button size="icon-sm" variant="ghost" onClick={() => setConfirmOpen(true)}
           disabled={delPending} aria-label="Delete">
           {delPending ? <Spinner /> : <Trash2 className="size-4" />}
         </Button>
@@ -65,8 +67,9 @@ export function PostActions({ post }: { post: GeneratedPost }) {
           ) : null}
         </div>
       </div>
-      <PostViewDialog post={post} open={viewOpen} onOpenChange={setViewOpen} />
       <ScheduleDialog postId={post.id} open={scheduleOpen} onOpenChange={setScheduleOpen} />
+      <DeletePostConfirm open={confirmOpen} onOpenChange={setConfirmOpen}
+        onConfirm={onConfirmDelete} pending={delPending} />
     </>
   );
 }

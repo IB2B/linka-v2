@@ -1,6 +1,7 @@
 import { buildImagePrompt } from "../lib/image-prompt";
 import { generatePostImage } from "../lib/image-generator";
 import { incrementImageCount } from "../lib/image-rate-limiter";
+import { persistGeneratedImage } from "../lib/image-storage";
 import { setImageGenerating, setImageCompleted, setImageFailed }
   from "../models/generated-content-image.model";
 
@@ -20,8 +21,10 @@ export async function generateImageForPostInBackground(
       prompt = postContent.slice(0, 200);
     }
 
-    const url = await generatePostImage(prompt);
-    console.log(`[image-gen] image ok ${contentId}: ${url.slice(0, 80)}`);
+    const source = await generatePostImage(prompt);
+    console.log(`[image-gen] image ok ${contentId}: ${source.slice(0, 80)}`);
+    const url = await persistGeneratedImage(contentId, source);
+    console.log(`[image-gen] saved ${contentId}: ${url}`);
 
     await setImageCompleted(contentId, userId, url, prompt);
     incrementImageCount(userId);

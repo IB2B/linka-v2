@@ -1,7 +1,10 @@
 import {
   apiErrorSchema,
+  forgotPasswordSuccessSchema,
   loginSuccessSchema,
   registerSuccessSchema,
+  type ForgotPasswordRequest,
+  type ForgotPasswordSuccess,
   type LoginRequest,
   type LoginSuccess,
   type RegisterRequest,
@@ -54,6 +57,14 @@ export function registerRequest(payload: RegisterRequest) {
     "/api/auth/register",
     payload,
     registerSuccessSchema,
+  );
+}
+
+export function forgotPasswordRequest(payload: ForgotPasswordRequest) {
+  return postJson<ForgotPasswordSuccess>(
+    "/api/auth/forgot-password",
+    payload,
+    forgotPasswordSuccessSchema,
   );
 }
 

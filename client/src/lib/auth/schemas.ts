@@ -37,7 +37,18 @@ export const registerSuccessSchema = z.object({
 
 export const apiErrorSchema = z.object({ error: z.string() });
 
+export const forgotPasswordRequestSchema = z.object({
+  email: z
+    .string()
+    .email("Enter a valid email address.")
+    .transform((v) => v.toLowerCase()),
+});
+
+export const forgotPasswordSuccessSchema = z.object({ ok: z.literal(true) });
+
 export type LoginRequest = z.infer<typeof loginRequestSchema>;
 export type LoginSuccess = z.infer<typeof loginSuccessSchema>;
 export type RegisterRequest = z.infer<typeof registerRequestSchema>;
 export type RegisterSuccess = z.infer<typeof registerSuccessSchema>;
+export type ForgotPasswordRequest = z.infer<typeof forgotPasswordRequestSchema>;
+export type ForgotPasswordSuccess = z.infer<typeof forgotPasswordSuccessSchema>;

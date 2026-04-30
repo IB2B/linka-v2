@@ -47,3 +47,17 @@ export async function publishPostAction(id: string): Promise<Result> {
   revalidatePath("/dashboard/posts");
   return { success: true };
 }
+
+export async function regenerateTextAction(id: string): Promise<Result> {
+  const res = await api(`/api/posts/${id}/regenerate-text`, { method: "POST" });
+  if (!res.ok) return { error: await readError(res, "Failed to regenerate.") };
+  revalidatePath(`/dashboard/posts/${id}`);
+  return { success: true };
+}
+
+export async function regenerateImageAction(id: string): Promise<Result> {
+  const res = await api(`/api/posts/${id}/regenerate-image`, { method: "POST" });
+  if (!res.ok) return { error: await readError(res, "Failed to regenerate image.") };
+  revalidatePath(`/dashboard/posts/${id}`);
+  return { success: true };
+}
