@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { AuthRequest } from "../middleware/auth";
 import * as posts from "../models/generated-content.model";
 import { schedulePostOnLate, publishPostOnLate } from "../lib/late-client";
+import { deleteGeneratedImage } from "../lib/image-storage";
 
 export async function list(
   req: AuthRequest, res: Response, next: NextFunction,
@@ -15,7 +16,8 @@ export async function getOne(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
-    const post = await posts.findById(req.params.id, req.user!.id);
+    const id = req.params.id as string;
+    const post = await posts.findById(id, req.user!.id);
     if (!post) { res.status(404).json({ error: "Not found" }); return; }
     res.json({ post });
   } catch (e) { next(e); }
@@ -25,8 +27,11 @@ export async function remove(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
-    const ok = await posts.deleteById(req.params.id, req.user!.id);
+    const id = req.params.id as string;
+    const existing = await posts.findById(id, req.user!.id);
+    const ok = await posts.deleteById(id, req.user!.id);
     if (!ok) { res.status(404).json({ error: "Not found" }); return; }
+    if (existing?.imageUrl) await deleteGeneratedImage(existing.imageUrl);
     res.json({ ok: true });
   } catch (e) { next(e); }
 }
@@ -43,7 +48,8 @@ export async function schedule(
     if (!parsed.success) {
       res.status(400).json({ error: parsed.error.issues[0].message }); return;
     }
-    const post = await posts.findById(req.params.id, req.user!.id);
+    const id = req.params.id as string;
+    const post = await posts.findById(id, req.user!.id);
     if (!post) { res.status(404).json({ error: "Not found" }); return; }
     const when = new Date(parsed.data.scheduledFor);
     if (when.getTime() <= Date.now()) {
@@ -59,7 +65,8 @@ export async function publish(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
-    const post = await posts.findById(req.params.id, req.user!.id);
+    const id = req.params.id as string;
+    const post = await posts.findById(id, req.user!.id);
     if (!post) { res.status(404).json({ error: "Not found" }); return; }
     const result = await publishPostOnLate(post);
     await posts.markPosted(post.id, req.user!.id, result.latePostId);

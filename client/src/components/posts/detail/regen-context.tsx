@@ -1,0 +1,58 @@
+"use client";
+
+import { createContext, useContext, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import {
+  regenerateTextAction,
+  regenerateImageAction,
+} from "@/app/dashboard/posts/actions";
+
+type RegenCtx = {
+  textPending: boolean;
+  imagePending: boolean;
+  runText: () => void;
+  runImage: () => void;
+};
+
+const Ctx = createContext<RegenCtx | null>(null);
+
+export function useRegen(): RegenCtx {
+  const v = useContext(Ctx);
+  if (!v) throw new Error("RegenProvider missing");
+  return v;
+}
+
+export function RegenProvider({
+  postId, children,
+}: { postId: string; children: React.ReactNode }) {
+  const router = useRouter();
+  const [textPending, textStart] = useTransition();
+  const [imageOptimistic, setImageOptimistic] = useState(false);
+
+  function runText() {
+    textStart(async () => {
+      const res = await regenerateTextAction(postId);
+      if (res.error) toast.error(res.error);
+      else { toast.success("Content regenerated."); router.refresh(); }
+    });
+  }
+
+  function runImage() {
+    setImageOptimistic(true);
+    (async () => {
+      const res = await regenerateImageAction(postId);
+      if (res.error) { toast.error(res.error); setImageOptimistic(false); return; }
+      toast.success("Image queued.");
+      router.refresh();
+      setTimeout(() => setImageOptimistic(false), 1500);
+    })();
+  }
+
+  return (
+    <Ctx.Provider value={{
+      textPending, imagePending: imageOptimistic, runText, runImage,
+    }}>{children}</Ctx.Provider>
+  );
+}

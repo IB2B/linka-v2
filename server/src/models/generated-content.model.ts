@@ -44,35 +44,35 @@ export async function findById(
   return row ? rowToPost(row) : null;
 }
 
-export async function setSchedule(
-  id: string, userId: string, scheduledFor: Date,
-): Promise<boolean> {
-  const [r] = await db.query<any>(
-    `UPDATE generated_content SET status = 'scheduled', scheduled_for = ?
-     WHERE id = ? AND user_id = ?`,
-    [scheduledFor, id, userId],
-  );
+async function run(sql: string, params: unknown[]): Promise<boolean> {
+  const [r] = await db.query<any>(sql, params);
   return (r as any).affectedRows > 0;
 }
 
-export async function markPosted(
-  id: string, userId: string, latePostId: string | null,
-): Promise<boolean> {
-  const [r] = await db.query<any>(
+export function setSchedule(id: string, userId: string, scheduledFor: Date) {
+  return run(
+    `UPDATE generated_content SET status='scheduled', scheduled_for=?
+     WHERE id=? AND user_id=?`, [scheduledFor, id, userId],
+  );
+}
+
+export function markPosted(id: string, userId: string, latePostId: string | null) {
+  return run(
     `UPDATE generated_content
-     SET status = 'posted', posted_at = NOW(3), late_post_id = ?
-     WHERE id = ? AND user_id = ?`,
-    [latePostId, id, userId],
+     SET status='posted', posted_at=NOW(3), late_post_id=?
+     WHERE id=? AND user_id=?`, [latePostId, id, userId],
   );
-  return (r as any).affectedRows > 0;
 }
 
-export async function deleteById(
-  id: string, userId: string,
-): Promise<boolean> {
-  const [r] = await db.query<any>(
-    "DELETE FROM generated_content WHERE id = ? AND user_id = ?",
-    [id, userId],
+export function setContent(id: string, userId: string, content: string) {
+  return run(
+    `UPDATE generated_content SET content=? WHERE id=? AND user_id=?`,
+    [content, id, userId],
   );
-  return (r as any).affectedRows > 0;
+}
+
+export function deleteById(id: string, userId: string) {
+  return run(
+    "DELETE FROM generated_content WHERE id=? AND user_id=?", [id, userId],
+  );
 }

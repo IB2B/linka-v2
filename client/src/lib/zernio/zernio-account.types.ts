@@ -2,7 +2,8 @@ export type Platform =
   | "linkedin"
   | "facebook"
   | "instagram"
-  | "youtube"
+  | "twitter"
+  | "threads"
   | "tiktok";
 
 export type ZernioAccount = {
