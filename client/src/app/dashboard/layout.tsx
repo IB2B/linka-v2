@@ -24,17 +24,17 @@ export default async function DashboardLayout({
   };
 
   return (
-    <SidebarProvider>
+    <SidebarProvider className="h-svh overflow-hidden">
       <AppSidebar user={dashboardUser} />
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <SidebarInset className="min-h-0 overflow-hidden">
+        <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <SidebarTrigger />
           <div className="h-4 w-px bg-border" aria-hidden />
           <span className="text-sm font-medium text-muted-foreground">
             Dashboard
           </span>
         </header>
-        <div className="flex flex-1 flex-col gap-6 p-6">{children}</div>
+        <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

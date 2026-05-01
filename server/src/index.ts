@@ -13,6 +13,7 @@ import postsRouter from "./routes/posts";
 import socialRouter from "./routes/social";
 import supportRouter from "./routes/support";
 import inboxRouter from "./routes/inbox";
+import pipelinesRouter from "./routes/pipelines";
 import { errorHandler } from "./middleware/error";
 import { reapStuckImageJobs } from "./lib/image-reaper";
 
@@ -39,6 +40,7 @@ app.use("/api/posts", postsRouter);
 app.use("/api/social", socialRouter);
 app.use("/api/support", supportRouter);
 app.use("/api/inbox", inboxRouter);
+app.use("/api/pipelines", pipelinesRouter);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

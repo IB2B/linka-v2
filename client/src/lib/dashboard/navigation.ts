@@ -4,6 +4,7 @@ import {
   CreditCard,
   FileText,
   Inbox,
+  KanbanSquare,
   LayoutDashboard,
   LifeBuoy,
   Mic,
@@ -20,11 +21,12 @@ function workspace(prefix: string): NavGroup {
     label: "Workspace",
     items: [
       { label: "Overview", href: prefix, icon: LayoutDashboard },
+      { label: "Inbox", href: `${prefix}/inbox`, icon: Inbox },
+      { label: "Pipeline", href: `${prefix}/pipeline`, icon: KanbanSquare },
       { label: "Posts", href: `${prefix}/posts`, icon: FileText },
       { label: "Generate", href: `${prefix}/generate`, icon: Sparkles },
       { label: "Voice Lab", href: `${prefix}/voice-lab`, icon: Mic },
       { label: "Calendar", href: `${prefix}/calendar`, icon: Calendar },
-      { label: "Inbox", href: `${prefix}/inbox`, icon: Inbox },
       { label: "Analytics", href: `${prefix}/analytics`, icon: BarChart3 },
     ],
   };
