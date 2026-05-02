@@ -5,7 +5,7 @@ export function PreferencesSection() {
   return (
     <SettingsSection
       title="Preferences"
-      description="Customize your theme, language, and timezone."
+      description="Customize your language and timezone."
     >
       <PreferencesForm />
     </SettingsSection>

@@ -33,7 +33,7 @@ export function BillingStatusBanners({ status, cancelAtPeriodEnd, currentPeriodE
           <CardContent className="p-4 flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-yellow-700 dark:text-yellow-400">Subscription ending</p>
+              <p className="text-sm font-medium text-yellow-700">Subscription ending</p>
               <p className="text-xs text-muted-foreground mt-0.5">Your plan will end on {formatDate(currentPeriodEnd)}. Reactivate anytime before then.</p>
             </div>
             <Button size="sm" variant="outline" onClick={onPortal} disabled={portalPending} className="border-yellow-500/40 text-yellow-600 hover:bg-yellow-500/10">

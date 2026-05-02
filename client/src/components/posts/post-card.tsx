@@ -1,10 +1,8 @@
-import { Calendar } from "lucide-react";
+import { CalendarClock } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { PostActions } from "./post-actions";
-import { PostStatusBadge } from "./post-status-badge";
-import { PostImage } from "./post-image";
+import { PostCardMedia } from "./post-card-media";
 import { formatPostDate } from "@/lib/posts/format-date";
 import type { GeneratedPost } from "@/types/post";
 
@@ -17,38 +15,28 @@ function formatScheduled(iso: string): string {
 
 export function PostCard({ post }: { post: GeneratedPost }) {
   const preview =
-    post.content.slice(0, 220) + (post.content.length > 220 ? "…" : "");
+    post.content.slice(0, 160) + (post.content.length > 160 ? "…" : "");
   return (
-    <Card className="group flex flex-col overflow-hidden p-0 transition-shadow hover:shadow-md">
-      {post.imageStatus !== "skipped" ? (
-        <div className="h-40 w-full">
-          <PostImage url={post.imageUrl} status={post.imageStatus} />
-        </div>
-      ) : null}
-      <div className="flex flex-1 flex-col gap-3 p-5">
-        <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <PostStatusBadge status={post.status} />
-          {post.platform ? (
-            <Badge variant="outline" className="capitalize">
-              {post.platform}
-            </Badge>
-          ) : null}
-          <span className="ml-auto text-muted-foreground">
-            {formatPostDate(post.createdAt)}
-          </span>
-        </div>
-        {post.scheduledFor ? (
-          <p className="flex items-center gap-1.5 text-xs text-amber-700 dark:text-amber-400">
-            <Calendar className="size-3.5" />
-            Goes out {formatScheduled(post.scheduledFor)}
-          </p>
-        ) : null}
-        <p className="line-clamp-4 flex-1 text-sm leading-relaxed whitespace-pre-wrap text-foreground/85">
+    <Card className="group/post flex flex-col overflow-hidden p-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:ring-foreground/20">
+      <PostCardMedia post={post} />
+      <div className="flex flex-1 flex-col gap-2 px-4 pt-3 pb-2.5">
+        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
+          {formatPostDate(post.createdAt)}
+        </span>
+        <p className="line-clamp-3 flex-1 text-[13px] leading-snug whitespace-pre-wrap text-foreground/90">
           {preview}
         </p>
-        <div className="-mx-1 mt-auto border-t pt-3">
-          <PostActions post={post} />
-        </div>
+        {post.scheduledFor ? (
+          <div className="flex items-center gap-1.5 rounded border border-amber-500/25 bg-amber-500/5 px-2 py-1 text-[11px] text-amber-700">
+            <CalendarClock className="size-3 shrink-0" />
+            <span className="font-medium">
+              {formatScheduled(post.scheduledFor)}
+            </span>
+          </div>
+        ) : null}
+      </div>
+      <div className="border-t bg-muted/40 px-2.5 py-2">
+        <PostActions post={post} />
       </div>
     </Card>
   );

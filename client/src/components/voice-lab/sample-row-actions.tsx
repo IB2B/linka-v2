@@ -36,10 +36,10 @@ export function SampleRowActions({ sample, onView }: Props) {
   }
 
   const btn = "size-4";
-  const view = "hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400";
-  const dl = "hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400";
-  const ana = "hover:bg-violet-500/10 hover:text-violet-600 dark:hover:text-violet-400";
-  const del = "hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400";
+  const view = "hover:bg-sky-500/10 hover:text-sky-600";
+  const dl = "hover:bg-indigo-500/10 hover:text-indigo-600";
+  const ana = "hover:bg-violet-500/10 hover:text-violet-600";
+  const del = "hover:bg-red-500/10 hover:text-red-600";
   return (
     <div className="flex shrink-0 gap-1">
       <Button size="icon-sm" variant="ghost" onClick={onView} aria-label="View" className={view}>

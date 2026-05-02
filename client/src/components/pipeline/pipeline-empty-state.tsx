@@ -8,7 +8,7 @@ export function PipelineEmptyState() {
       </div>
       <h3 className="text-base font-semibold">No pipeline yet</h3>
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-        Run the database migration to seed your default pipeline, then refresh this page.
+        Create your first pipeline above to start tracking deals across stages.
       </p>
     </div>
   );

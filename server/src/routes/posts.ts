@@ -10,6 +10,7 @@ import {
 import {
   regenerateText, regenerateImage,
 } from "../controllers/posts-regenerate.controller";
+import { scoreById } from "../controllers/posts-score.controller";
 
 const router = Router();
 router.use(authenticate);
@@ -20,6 +21,7 @@ router.post("/:id/schedule", schedule);
 router.post("/:id/publish", publish);
 router.post("/:id/regenerate-text", regenerateText);
 router.post("/:id/regenerate-image", regenerateImage);
+router.post("/:id/score", scoreById);
 router.delete("/:id", remove);
 
 export default router;

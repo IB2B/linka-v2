@@ -25,7 +25,7 @@ export function PipelineColumn({
 
   return (
     <div className="flex h-full w-72 shrink-0 flex-col">
-      <PipelineColumnHeader name={stage.name} count={opps.length} outcome={stage.outcome} />
+      <PipelineColumnHeader stage={stage} count={opps.length} />
       <div
         onDragOver={(e) => { e.preventDefault(); setOver(true); }}
         onDragLeave={() => setOver(false)}

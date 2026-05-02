@@ -31,9 +31,15 @@ export type Opportunity = {
 };
 
 export type Board = {
+  pipelines: Pipeline[];
   pipeline: Pipeline | null;
   stages: Stage[];
   opportunities: Opportunity[];
+};
+
+export type CreatePipelineInput = {
+  name: string;
+  stages?: { name: string; outcome?: StageOutcome }[];
 };
 
 export type CreateOppInput = {
@@ -52,3 +58,6 @@ export type UpdateOppInput = Partial<{
   sourcePlatform: OpportunityPlatform | null;
   notes: string | null;
 }>;
+
+export type CreateStageInput = { name: string; outcome?: StageOutcome };
+export type UpdateStageInput = Partial<{ name: string; outcome: StageOutcome }>;
