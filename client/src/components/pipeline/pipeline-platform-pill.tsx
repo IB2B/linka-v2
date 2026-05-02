@@ -10,12 +10,12 @@ const LABELS: Record<OpportunityPlatform, string> = {
 };
 
 const TONES: Record<OpportunityPlatform, string> = {
-  linkedin: "bg-sky-500/10 text-sky-600 dark:text-sky-300",
-  x: "bg-zinc-500/10 text-zinc-700 dark:text-zinc-200",
-  instagram: "bg-fuchsia-500/10 text-fuchsia-600 dark:text-fuchsia-300",
-  threads: "bg-zinc-700/10 text-zinc-700 dark:text-zinc-200",
-  facebook: "bg-blue-500/10 text-blue-600 dark:text-blue-300",
-  tiktok: "bg-rose-500/10 text-rose-600 dark:text-rose-300",
+  linkedin: "bg-sky-500/10 text-sky-600",
+  x: "bg-zinc-500/10 text-zinc-700",
+  instagram: "bg-fuchsia-500/10 text-fuchsia-600",
+  threads: "bg-zinc-700/10 text-zinc-700",
+  facebook: "bg-blue-500/10 text-blue-600",
+  tiktok: "bg-rose-500/10 text-rose-600",
 };
 
 export function PipelinePlatformPill({ platform }: { platform: OpportunityPlatform }) {

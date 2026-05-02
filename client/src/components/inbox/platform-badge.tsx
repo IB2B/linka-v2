@@ -8,11 +8,21 @@ const KNOWN: Platform[] = [
   "threads", "tiktok", "pinterest", "bluesky", "reddit",
 ];
 
-type Props = { platform: string; className?: string };
+type Props = {
+  platform: string;
+  className?: string;
+  style?: React.CSSProperties;
+};
 
-export function PlatformBadge({ platform, className }: Props) {
+export function PlatformBadge({ platform, className, style }: Props) {
   if ((KNOWN as string[]).includes(platform)) {
-    return <PlatformIcon platform={platform as Platform} className={className} />;
+    return (
+      <PlatformIcon
+        platform={platform as Platform}
+        className={className}
+        style={style}
+      />
+    );
   }
-  return <MessageCircle className={className} aria-hidden />;
+  return <MessageCircle className={className} style={style} aria-hidden />;
 }

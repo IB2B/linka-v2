@@ -1,17 +1,23 @@
-import { PageHeader } from "@/components/dashboard/page-header";
 import { Separator } from "@/components/ui/separator";
 import { PipelineBoard } from "@/components/pipeline/pipeline-board";
-import { AddOpportunityDialog } from "@/components/pipeline/add-opportunity-dialog";
+import { PipelineToolbar } from "@/components/pipeline/pipeline-toolbar";
 import { PipelineEmptyState } from "@/components/pipeline/pipeline-empty-state";
+import { NewPipelineDialog } from "@/components/pipeline/new-pipeline-dialog";
 import { getBoard } from "@/lib/pipelines/get-board";
 
-export default async function PipelinePage() {
-  const board = await getBoard();
+type SP = Promise<{ pipelineId?: string }>;
 
-  if (!board.pipeline || !board.stages.length) {
+export default async function PipelinePage({ searchParams }: { searchParams: SP }) {
+  const { pipelineId } = await searchParams;
+  const board = await getBoard(pipelineId);
+
+  if (!board.pipeline) {
     return (
       <>
-        <PageHeader title="Pipeline" description="Track inbound deals through stages." />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-semibold tracking-tight">Pipeline</h1>
+          <NewPipelineDialog />
+        </div>
         <Separator className="my-2" />
         <PipelineEmptyState />
       </>
@@ -20,15 +26,22 @@ export default async function PipelinePage() {
 
   return (
     <>
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <PageHeader
-          title="Pipeline"
-          description={`${board.pipeline.name} — drag cards between stages to update them.`}
+      <div className="flex flex-col gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight">{board.pipeline.name}</h1>
+        <PipelineToolbar
+          pipelines={board.pipelines}
+          activeId={board.pipeline.id}
+          stages={board.stages}
         />
-        <AddOpportunityDialog stages={board.stages} />
       </div>
-      <Separator className="my-2" />
-      <PipelineBoard stages={board.stages} opportunities={board.opportunities} />
+      <Separator />
+      {board.stages.length === 0 ? (
+        <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed bg-card/40 p-10 text-center text-sm text-muted-foreground">
+          No stages yet. Click <span className="px-1 font-medium text-foreground">Add stage</span> above to start moving deals.
+        </div>
+      ) : (
+        <PipelineBoard stages={board.stages} opportunities={board.opportunities} />
+      )}
     </>
   );
 }

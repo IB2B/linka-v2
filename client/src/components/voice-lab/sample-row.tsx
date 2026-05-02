@@ -25,10 +25,10 @@ export function SampleRow({ sample, selected, onToggle }: Props) {
   const wc = sample.wordCount;
   const wcClass =
     wc < 100
-      ? "text-red-600 dark:text-red-400"
+      ? "text-red-600"
       : wc < 300
-        ? "text-amber-600 dark:text-amber-400"
-        : "text-emerald-600 dark:text-emerald-400";
+        ? "text-amber-600"
+        : "text-emerald-600";
 
   return (
     <>
@@ -48,11 +48,11 @@ export function SampleRow({ sample, selected, onToggle }: Props) {
             <div className="mt-1 flex flex-wrap items-center gap-2">
               <Badge variant="outline">{sourceLabel}</Badge>
               {sample.processedAt ? (
-                <Badge className="bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">
+                <Badge className="bg-emerald-500/15 text-emerald-700">
                   Analyzed
                 </Badge>
               ) : (
-                <Badge className="bg-amber-500/15 text-amber-700 dark:text-amber-400">
+                <Badge className="bg-amber-500/15 text-amber-700">
                   Pending
                 </Badge>
               )}

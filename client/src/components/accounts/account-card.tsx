@@ -29,7 +29,7 @@ export function AccountCard({ account }: Props) {
         <div className="flex items-center gap-2">
           <p className="text-sm font-semibold">{meta.label}</p>
           {account.connected && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[11px] font-medium text-green-600 dark:text-green-400">
+            <span className="inline-flex items-center gap-1 rounded-full bg-green-500/10 px-2 py-0.5 text-[11px] font-medium text-green-600">
               <span className="size-1.5 rounded-full bg-green-500" />
               Connected
             </span>

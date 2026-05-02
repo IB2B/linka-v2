@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -30,13 +29,10 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${plusJakartaSans.variable} ${geistMono.variable} h-full antialiased tracking-tight`}
-      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange enableColorScheme={false}>
-          <TooltipProvider>{children}</TooltipProvider>
-          <Toaster position="top-right" richColors closeButton />
-        </ThemeProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+        <Toaster position="top-right" richColors closeButton />
       </body>
     </html>
   );

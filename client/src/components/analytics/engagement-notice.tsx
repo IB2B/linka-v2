@@ -6,7 +6,7 @@ export function EngagementNotice() {
   return (
     <Card className="border-amber-500/30 bg-amber-500/5">
       <CardContent className="flex items-start gap-3 py-4">
-        <Info className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+        <Info className="mt-0.5 size-4 shrink-0 text-amber-600" />
         <div className="space-y-1 text-sm">
           <p className="font-medium">Engagement metrics coming soon</p>
           <p className="text-muted-foreground">

@@ -1,12 +1,9 @@
-import { ThemeToggle } from "./theme-toggle";
-
 const SELECT_CLS =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
 
 export function PreferencesForm() {
   return (
     <div className="space-y-6">
-      <ThemeToggle />
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="language">

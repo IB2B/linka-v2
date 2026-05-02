@@ -2,9 +2,14 @@ import { Router } from "express";
 
 import { authenticate, type AuthRequest } from "../middleware/auth";
 import * as c from "../controllers/inbox.controller";
+import { assist } from "../controllers/inbox-assist.controller";
 
 const router = Router();
 router.use(authenticate);
+
+router.post("/conversations/:id/assist", (req: AuthRequest, res, next) => {
+  assist(req, res).catch(next);
+});
 
 router.get("/conversations", (req: AuthRequest, res, next) => {
   c.getConversations(req, res).catch(next);

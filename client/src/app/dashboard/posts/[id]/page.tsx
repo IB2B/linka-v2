@@ -10,6 +10,7 @@ import { PostDetailImage } from "@/components/posts/detail/post-detail-image";
 import { PostDetailContent } from "@/components/posts/detail/post-detail-content";
 import { PostDetailMeta } from "@/components/posts/detail/post-detail-meta";
 import { PostDetailImagePoll } from "@/components/posts/detail/post-detail-image-poll";
+import { PostViralityScore } from "@/components/posts/detail/post-virality-score";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -30,7 +31,10 @@ export default async function PostDetailPage({ params }: Props) {
               <PostDetailImage post={post} />
               <PostDetailContent post={post} />
             </div>
-            <PostDetailMeta post={post} />
+            <div className="flex flex-col gap-4">
+              <PostViralityScore postId={post.id} />
+              <PostDetailMeta post={post} />
+            </div>
           </div>
           <PostDetailImagePoll status={post.imageStatus} />
         </div>

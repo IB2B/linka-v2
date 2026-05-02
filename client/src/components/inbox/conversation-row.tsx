@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { InboxAvatar } from "./inbox-avatar";
 import { PlatformBadge } from "./platform-badge";
+import { platformColor } from "./platform-color";
 import type { Conversation } from "@/lib/inbox/inbox.types";
 
 function formatRelative(iso: string | null) {
@@ -18,6 +19,10 @@ function formatRelative(iso: string | null) {
 type Props = { conversation: Conversation; active: boolean; hrefSuffix: string };
 
 export function ConversationRow({ conversation: c, active, hrefSuffix }: Props) {
+  const color = platformColor(c.platform);
+  const badgeStyle = color
+    ? { backgroundColor: color, borderColor: color, color: "#fff" }
+    : undefined;
   return (
     <Link
       href={`/dashboard/inbox/${encodeURIComponent(c.id)}${hrefSuffix}`}
@@ -28,7 +33,10 @@ export function ConversationRow({ conversation: c, active, hrefSuffix }: Props) 
     >
       <div className="relative">
         <InboxAvatar name={c.participantName} src={c.participantAvatar} />
-        <span className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full border bg-background text-muted-foreground">
+        <span
+          style={badgeStyle}
+          className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full border-2 border-background bg-muted text-muted-foreground shadow-sm"
+        >
           <PlatformBadge platform={c.platform} className="size-2.5" />
         </span>
       </div>
@@ -41,7 +49,12 @@ export function ConversationRow({ conversation: c, active, hrefSuffix }: Props) 
           {c.lastMessage || "—"}
         </p>
       </div>
-      {c.unread ? <span className="mt-1.5 size-2 shrink-0 rounded-full bg-primary" aria-label="Unread" /> : null}
+      {c.unread ? (
+        <span
+          className="mt-1.5 size-2 shrink-0 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"
+          aria-label="Unread"
+        />
+      ) : null}
     </Link>
   );
 }
