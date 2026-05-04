@@ -4,8 +4,9 @@ import type { GeneratedPost } from "../types/post";
 import type { PlatformEntry } from "./late-accounts";
 
 export type LateScheduleResult = { latePostId: string };
-export type LatePublishResult = { latePostId: string };
-type CreateResult = { post: { _id: string } };
+export type PlatformResult = { platform: string; status: string; error: string | null };
+export type LatePublishResult = { latePostId: string; results: PlatformResult[] };
+type CreateResult = { post: { _id: string }; platformResults?: PlatformResult[] };
 
 async function buildBody(post: GeneratedPost, platforms: PlatformEntry[]) {
   const body: Record<string, unknown> = { content: post.content, platforms };
@@ -22,7 +23,7 @@ export async function publishPostOnLate(
     method: "POST",
     body: JSON.stringify({ ...base, publishNow: true }),
   });
-  return { latePostId: r.post._id };
+  return { latePostId: r.post._id, results: r.platformResults ?? [] };
 }
 
 export async function schedulePostOnLate(

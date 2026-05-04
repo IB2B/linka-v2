@@ -13,6 +13,16 @@ function ownerProfileId(a: RawAccount): string | undefined {
   return typeof a.profileId === "string" ? a.profileId : a.profileId?._id;
 }
 
+const ALIASES: Record<string, string[]> = {
+  twitter: ["twitter", "x"],
+  x: ["x", "twitter"],
+};
+
+function matches(accountPlatform: string, wanted: string): boolean {
+  const variants = ALIASES[wanted] ?? [wanted];
+  return variants.includes(accountPlatform);
+}
+
 export async function resolvePlatformAccounts(
   userId: string, platforms: string[],
 ): Promise<PlatformEntry[]> {
@@ -24,11 +34,13 @@ export async function resolvePlatformAccounts(
     const pid = ownerProfileId(a);
     return !pid || pid === profileId;
   });
+  console.log("[late.resolve] owned platforms:", owned.map((a) => a.platform));
+  console.log("[late.resolve] wanted:", platforms);
   const wanted = platforms.length ? platforms : owned.map((a) => a.platform);
   return wanted
     .map((p) => {
-      const acc = owned.find((a) => a.platform === p);
-      return acc ? { platform: p, accountId: acc._id } : null;
+      const acc = owned.find((a) => matches(a.platform, p));
+      return acc ? { platform: acc.platform, accountId: acc._id } : null;
     })
     .filter((x): x is PlatformEntry => x !== null);
 }

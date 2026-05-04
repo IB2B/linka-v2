@@ -62,7 +62,15 @@ export async function publish(
     const entries = await resolveOrFail(req.user!.id, parsed.data.platforms ?? [], res);
     if (!entries) return;
     const result = await publishPostOnLate(post, entries);
-    await posts.markPosted(post.id, req.user!.id, result.latePostId);
-    res.json({ post: await posts.findById(post.id, req.user!.id) });
+    const succeeded = result.results.filter((r) => r.status === "published");
+    const failed = result.results.filter((r) => r.status !== "published");
+    if (succeeded.length > 0) {
+      await posts.markPosted(post.id, req.user!.id, result.latePostId);
+    }
+    res.json({
+      post: await posts.findById(post.id, req.user!.id),
+      publishedTo: succeeded.map((r) => r.platform),
+      failed: failed.map((r) => ({ platform: r.platform, error: r.error })),
+    });
   } catch (e) { next(e); }
 }

@@ -8,8 +8,11 @@ export function SidebarUserPreview({ user }: SidebarUserPreviewProps) {
         {getInitials(user)}
       </span>
       <span className="grid flex-1 text-left leading-tight">
-        <span className="truncate text-sm font-medium">
-          {getDisplayName(user)}
+        <span className="flex items-center gap-1.5 truncate">
+          <span className="truncate text-sm font-medium">{getDisplayName(user)}</span>
+          <span className="shrink-0 rounded px-1 py-px text-[9px] font-semibold uppercase tracking-wider bg-muted text-muted-foreground">
+            {user.role.replace("_", " ")}
+          </span>
         </span>
         <span className="truncate text-xs text-muted-foreground">
           {user.email}
