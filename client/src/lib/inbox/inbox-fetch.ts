@@ -10,9 +10,10 @@ export async function inboxFetch<T>(
   const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
   const host = hdrs.get("host");
   const proto = hdrs.get("x-forwarded-proto") ?? "http";
+  const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
   const res = await fetch(`${proto}://${host}${path}`, {
     ...init,
-    headers: { cookie: cookieStore.toString(), "Content-Type": "application/json", ...init.headers },
+    headers: { cookie, "Content-Type": "application/json", ...init.headers },
     cache: "no-store",
   });
   if (!res.ok) {

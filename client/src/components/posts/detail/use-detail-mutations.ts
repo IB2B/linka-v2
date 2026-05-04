@@ -9,6 +9,7 @@ import {
   publishPostAction,
 } from "@/app/dashboard/posts/actions";
 import { usePostPlatforms } from "@/components/posts/platforms-context";
+import { showPublishToast } from "@/lib/posts/publish-toast";
 
 export function useDetailMutations(postId: string) {
   const router = useRouter();
@@ -37,7 +38,7 @@ export function useDetailMutations(postId: string) {
       const res = await publishPostAction(postId, platforms);
       if (res.error) toast.error(res.error);
       else {
-        toast.success(`Posted${platforms.length ? ` to ${platforms.join(", ")}` : ""}.`);
+        showPublishToast({ publishedTo: res.publishedTo ?? platforms, failed: res.failed ?? [] });
         router.refresh();
       }
     });

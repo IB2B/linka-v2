@@ -10,6 +10,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { ScheduleDialog } from "./schedule-dialog";
 import { DeletePostConfirm } from "./delete-post-confirm";
 import { deletePostAction, publishPostAction } from "@/app/dashboard/posts/actions";
+import { showPublishToast } from "@/lib/posts/publish-toast";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostActions({ post }: { post: GeneratedPost }) {
@@ -36,7 +37,7 @@ export function PostActions({ post }: { post: GeneratedPost }) {
     pubStart(async () => {
       const res = await publishPostAction(post.id);
       if (res.error) toast.error(res.error);
-      else toast.success("Posted to LinkedIn.");
+      else showPublishToast({ publishedTo: res.publishedTo ?? [], failed: res.failed ?? [] });
     });
   }
 
