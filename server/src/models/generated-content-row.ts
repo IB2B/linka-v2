@@ -3,7 +3,8 @@ import type { GeneratedPost, ImageStatus, PostStatus } from "../types/post";
 
 export const POST_COLS =
   `id, user_id, prompt, content, image_url, image_status, image_prompt,
-   image_error, platform, status, scheduled_for, posted_at, created_at`;
+   image_error, platform, status, scheduled_for, posted_at, created_at,
+   late_post_id`;
 
 export interface PostRow extends RowDataPacket {
   id: string;
@@ -19,6 +20,7 @@ export interface PostRow extends RowDataPacket {
   scheduled_for: Date | null;
   posted_at: Date | null;
   created_at: Date;
+  late_post_id: string | null;
 }
 
 export function rowToPost(r: PostRow): GeneratedPost {
@@ -36,5 +38,6 @@ export function rowToPost(r: PostRow): GeneratedPost {
     scheduledFor: r.scheduled_for ? r.scheduled_for.toISOString() : null,
     postedAt: r.posted_at ? r.posted_at.toISOString() : null,
     createdAt: r.created_at.toISOString(),
+    latePostId: r.late_post_id,
   };
 }

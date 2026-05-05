@@ -12,3 +12,5 @@ Bulk select & delete on Posts page,"Selection mode with checkbox overlay on card
 Hydration fix for SelectableCard,"Replaced outer button wrapper with div role=button to avoid nested-button HTML error inside post cards.",bugfix;frontend,2026-05-04
 Strip shadow/ring from default button,"Removed shadow-md, ring-1 ring-primary/40 ring-offset-2 and hover-shadow from default Button variant for a clean filled look.",ui;polish,2026-05-04
 Inbox 500 root cause,"Identified that /api/inbox/conversations 500s come from real Late API when INBOX_USE_MOCK is unset. Fallback only catches 402/403/404; documented fix.",investigation;inbox,2026-05-04
+
+

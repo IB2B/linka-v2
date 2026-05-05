@@ -6,6 +6,7 @@ import { DateRangeSelector } from "@/components/analytics/date-range-selector";
 import { computeAnalytics } from "@/lib/analytics/compute";
 import { parseRange, rangeLabel } from "@/lib/analytics/range";
 import { getPosts } from "@/lib/posts/get-posts";
+import { getAnalyticsSummary } from "@/lib/analytics/get-analytics-summary";
 
 type Search = { range?: string };
 
@@ -16,7 +17,10 @@ export default async function AnalyticsPage({
 }) {
   const { range: raw } = await searchParams;
   const range = parseRange(raw);
-  const posts = await getPosts();
+  const [posts, metrics] = await Promise.all([
+    getPosts(),
+    getAnalyticsSummary(),
+  ]);
   const data = computeAnalytics(posts, range);
   return (
     <>
@@ -28,7 +32,11 @@ export default async function AnalyticsPage({
         <DateRangeSelector />
       </div>
       <Separator className="my-2" />
-      {posts.length === 0 ? <AnalyticsEmpty /> : <AnalyticsView data={data} />}
+      {posts.length === 0 ? (
+        <AnalyticsEmpty />
+      ) : (
+        <AnalyticsView data={data} metrics={metrics} />
+      )}
     </>
   );
 }

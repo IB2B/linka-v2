@@ -11,6 +11,7 @@ import { PostDetailContent } from "@/components/posts/detail/post-detail-content
 import { PostDetailMeta } from "@/components/posts/detail/post-detail-meta";
 import { PostDetailImagePoll } from "@/components/posts/detail/post-detail-image-poll";
 import { PostViralityScore } from "@/components/posts/detail/post-virality-score";
+import { PostDetailMetrics } from "@/components/posts/detail/post-detail-metrics";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -33,6 +34,7 @@ export default async function PostDetailPage({ params }: Props) {
             </div>
             <div className="flex flex-col gap-4">
               <PostViralityScore postId={post.id} />
+              <PostDetailMetrics postId={post.id} />
               <PostDetailMeta post={post} />
             </div>
           </div>

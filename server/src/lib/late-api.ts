@@ -19,7 +19,7 @@ export async function lateFetch<T>(
     },
   });
 
-  if (!res.ok) {
+  if (!res.ok && res.status !== 202) {
     const text = await res.text().catch(() => "");
     throw new LateApiError(res.status, `Late API ${res.status}: ${text}`);
   }
