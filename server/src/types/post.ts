@@ -16,4 +16,5 @@ export type GeneratedPost = {
   scheduledFor: string | null;
   postedAt: string | null;
   createdAt: string;
+  latePostId: string | null;
 };

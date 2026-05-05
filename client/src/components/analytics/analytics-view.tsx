@@ -1,12 +1,17 @@
 import { ActivityChart } from "./activity-chart";
 import { AnalyticsStatsRow } from "./analytics-stats";
 import { BreakdownCard } from "./breakdown-card";
-import { EngagementNotice } from "./engagement-notice";
 import { InsightsCard } from "./insights-card";
 import { RecentPostsTable } from "./recent-posts-table";
 import type { Analytics } from "@/lib/analytics/analytics.types";
+import type { PostMetrics } from "@/types/analytics";
 
-export function AnalyticsView({ data }: { data: Analytics }) {
+export function AnalyticsView({
+  data, metrics,
+}: {
+  data: Analytics;
+  metrics: Map<string, PostMetrics>;
+}) {
   return (
     <div className="space-y-6">
       <AnalyticsStatsRow stats={data.stats} />
@@ -26,8 +31,7 @@ export function AnalyticsView({ data }: { data: Analytics }) {
           emptyMessage="No platforms tracked yet."
         />
       </div>
-      <RecentPostsTable posts={data.recent} />
-      <EngagementNotice />
+      <RecentPostsTable posts={data.recent} metrics={metrics} />
     </div>
   );
 }

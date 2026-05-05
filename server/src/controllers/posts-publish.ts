@@ -4,6 +4,7 @@ import type { AuthRequest } from "../middleware/auth";
 import * as posts from "../models/generated-content.model";
 import { publishPostOnLate, schedulePostOnLate } from "../lib/late-client";
 import { resolvePlatformAccounts } from "../lib/late-accounts";
+import { partitionPublishResult } from "../lib/late-publish-result";
 
 const platformsSchema = z.array(z.string()).optional();
 const scheduleSchema = z.object({
@@ -62,15 +63,13 @@ export async function publish(
     const entries = await resolveOrFail(req.user!.id, parsed.data.platforms ?? [], res);
     if (!entries) return;
     const result = await publishPostOnLate(post, entries);
-    const succeeded = result.results.filter((r) => r.status === "published");
-    const failed = result.results.filter((r) => r.status !== "published");
-    if (succeeded.length > 0) {
+    const { publishedTo, failed } = partitionPublishResult(result, entries);
+    if (publishedTo.length > 0) {
       await posts.markPosted(post.id, req.user!.id, result.latePostId);
     }
     res.json({
       post: await posts.findById(post.id, req.user!.id),
-      publishedTo: succeeded.map((r) => r.platform),
-      failed: failed.map((r) => ({ platform: r.platform, error: r.error })),
+      publishedTo, failed,
     });
   } catch (e) { next(e); }
 }

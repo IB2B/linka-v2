@@ -1,34 +1,22 @@
-import { Eye, Heart, MessageCircle, Share2 } from "lucide-react";
+import { MetricTile } from "./metric-tile";
+import { TILES } from "./post-metric-tiles";
+import { computeDeltaPct } from "@/lib/analytics/delta-pct";
+import type { PostMetrics } from "@/types/analytics";
 
-import {
-  Card, CardContent, CardDescription, CardTitle,
-} from "@/components/ui/card";
-
-const TILES = [
-  { label: "Impressions", icon: Eye },
-  { label: "Likes", icon: Heart },
-  { label: "Comments", icon: MessageCircle },
-  { label: "Shares", icon: Share2 },
-] as const;
-
-export function PostAnalyticsMetrics() {
+export function PostAnalyticsMetrics({
+  totals, baseline,
+}: { totals: PostMetrics; baseline?: PostMetrics }) {
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {TILES.map(({ label, icon: Icon }) => (
-        <Card key={label}>
-          <CardContent className="flex flex-col gap-2 py-4">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Icon className="size-4" />
-              <CardDescription className="text-xs">{label}</CardDescription>
-            </div>
-            <CardTitle className="text-2xl font-semibold tracking-tight">
-              —
-            </CardTitle>
-            <p className="text-xs text-muted-foreground">
-              Available once Late analytics is wired up.
-            </p>
-          </CardContent>
-        </Card>
+      {TILES.map((tile) => (
+        <MetricTile
+          key={tile.key} tile={tile} value={totals[tile.key]}
+          deltaPct={
+            baseline
+              ? computeDeltaPct(totals[tile.key], baseline[tile.key])
+              : undefined
+          }
+        />
       ))}
     </div>
   );

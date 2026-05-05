@@ -3,8 +3,11 @@ import {
 } from "@/components/ui/card";
 import { RecentPostsRow } from "./recent-posts-row";
 import type { GeneratedPost } from "@/types/post";
+import type { PostMetrics } from "@/types/analytics";
 
-export function RecentPostsTable({ posts }: { posts: GeneratedPost[] }) {
+export function RecentPostsTable({
+  posts, metrics,
+}: { posts: GeneratedPost[]; metrics: Map<string, PostMetrics> }) {
   return (
     <Card className="overflow-hidden">
       <CardHeader>
@@ -33,7 +36,9 @@ export function RecentPostsTable({ posts }: { posts: GeneratedPost[] }) {
               </tr>
             </thead>
             <tbody>
-              {posts.map((p) => <RecentPostsRow key={p.id} post={p} />)}
+              {posts.map((p) => (
+                <RecentPostsRow key={p.id} post={p} metrics={metrics.get(p.id)} />
+              ))}
             </tbody>
           </table>
         </div>
