@@ -2,14 +2,17 @@ import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import * as posts from "../models/generated-content.model";
 import { deleteGeneratedImage } from "../lib/image-storage";
+import { syncScheduledPosts } from "../lib/sync-scheduled";
 
 export { schedule, publish } from "./posts-publish";
 
 export async function list(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
-  try { res.json({ posts: await posts.listForUser(req.user!.id) }); }
-  catch (e) { next(e); }
+  try {
+    await syncScheduledPosts(req.user!.id);
+    res.json({ posts: await posts.listForUser(req.user!.id) });
+  } catch (e) { next(e); }
 }
 
 export async function getOne(

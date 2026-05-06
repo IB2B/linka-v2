@@ -10,14 +10,20 @@ import { generatePostAction } from "@/app/dashboard/generate/actions";
 import type { TrendIdea } from "@/types/trend";
 import { ScoreBar } from "./score-bar";
 
-const ALLOWED = ["linkedin", "x", "threads", "instagram"] as const;
+const ALLOWED = ["linkedin", "twitter", "threads", "instagram", "facebook"] as const;
 type Platform = (typeof ALLOWED)[number];
-const isPlatform = (v: string | null): v is Platform =>
-  !!v && (ALLOWED as readonly string[]).includes(v);
+function normalize(v: string | null): Platform {
+  if (!v) return "linkedin";
+  const lower = v.toLowerCase();
+  if (lower === "x") return "twitter";
+  return (ALLOWED as readonly string[]).includes(lower)
+    ? (lower as Platform)
+    : "linkedin";
+}
 
 export function IdeaRow({ idea }: { idea: TrendIdea }) {
   const [pending, start] = useTransition();
-  const platform: Platform = isPlatform(idea.platform) ? idea.platform : "linkedin";
+  const platform = normalize(idea.platform);
 
   function onGenerate() {
     start(async () => {

@@ -7,6 +7,7 @@ import { computeAnalytics } from "@/lib/analytics/compute";
 import { parseRange, rangeLabel } from "@/lib/analytics/range";
 import { getPosts } from "@/lib/posts/get-posts";
 import { getAnalyticsSummary } from "@/lib/analytics/get-analytics-summary";
+import { getPublishedPlatforms } from "@/lib/posts/get-published-platforms";
 
 type Search = { range?: string };
 
@@ -22,6 +23,7 @@ export default async function AnalyticsPage({
     getAnalyticsSummary(),
   ]);
   const data = computeAnalytics(posts, range);
+  const published = await getPublishedPlatforms(data.recent.map((p) => p.id));
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -35,7 +37,7 @@ export default async function AnalyticsPage({
       {posts.length === 0 ? (
         <AnalyticsEmpty />
       ) : (
-        <AnalyticsView data={data} metrics={metrics} />
+        <AnalyticsView data={data} metrics={metrics} published={published} />
       )}
     </>
   );

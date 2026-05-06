@@ -1,6 +1,7 @@
 import { ConversationList } from "./conversation-list";
 import { InboxError } from "./inbox-error";
 import { getConversations } from "@/lib/inbox/get-conversations";
+import { getAccounts } from "@/lib/zernio/get-accounts";
 
 type Props = {
   activeId: string | null;
@@ -9,7 +10,10 @@ type Props = {
 };
 
 export async function InboxShell({ activeId, platform, children }: Props) {
-  const result = await getConversations(platform || undefined);
+  const [result, accounts] = await Promise.all([
+    getConversations(platform || undefined),
+    getAccounts(),
+  ]);
 
   return (
     <div className="grid h-[calc(100vh-7rem)] grid-cols-1 overflow-hidden rounded-xl border bg-card lg:grid-cols-[340px_minmax(0,1fr)]">
@@ -19,6 +23,7 @@ export async function InboxShell({ activeId, platform, children }: Props) {
             conversations={result.data.conversations}
             activeId={activeId}
             platform={platform}
+            accounts={accounts}
           />
         ) : (
           <InboxError

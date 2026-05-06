@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import { Badge } from "@/components/ui/badge";
 import { PostStatusBadge } from "@/components/posts/post-status-badge";
+import { PlatformBadges } from "./platform-badges";
 import { formatPostDate } from "@/lib/posts/format-date";
 import type { GeneratedPost } from "@/types/post";
 import type { PostMetrics } from "@/types/analytics";
@@ -12,8 +12,12 @@ const COLS: Array<keyof PostMetrics> =
   ["views", "likes", "comments", "shares"];
 
 export function RecentPostsRow({
-  post, metrics,
-}: { post: GeneratedPost; metrics?: PostMetrics }) {
+  post, metrics, publishedPlatforms,
+}: {
+  post: GeneratedPost;
+  metrics?: PostMetrics;
+  publishedPlatforms?: string[];
+}) {
   const router = useRouter();
   const preview =
     post.content.slice(0, 120) + (post.content.length > 120 ? "…" : "");
@@ -31,11 +35,11 @@ export function RecentPostsRow({
         <p className="line-clamp-2 max-w-md text-sm">{preview}</p>
       </td>
       <td className="px-4 py-3">
-        {post.platform ? (
-          <Badge variant="outline" className="capitalize">{post.platform}</Badge>
-        ) : (
-          <span className="text-xs text-muted-foreground">—</span>
-        )}
+        <PlatformBadges
+          published={publishedPlatforms}
+          scheduled={post.scheduledPlatforms}
+          intended={post.platform}
+        />
       </td>
       <td className="px-4 py-3">
         <PostStatusBadge status={post.status} />

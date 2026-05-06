@@ -9,6 +9,7 @@ import {
   LifeBuoy,
   Mic,
   Radar,
+  RefreshCw,
   Settings,
   Sparkles,
   Users,
@@ -29,6 +30,7 @@ function workspace(prefix: string): NavGroup {
       { label: "Trend Radar", href: `${prefix}/trends`, icon: Radar },
       { label: "Voice Lab", href: `${prefix}/voice-lab`, icon: Mic },
       { label: "Calendar", href: `${prefix}/calendar`, icon: Calendar },
+      { label: "Recycler", href: `${prefix}/recycler`, icon: RefreshCw },
       { label: "Analytics", href: `${prefix}/analytics`, icon: BarChart3 },
     ],
   };

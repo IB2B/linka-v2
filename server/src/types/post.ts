@@ -12,6 +12,7 @@ export type GeneratedPost = {
   imagePrompt: string | null;
   imageError: string | null;
   platform: string | null;
+  scheduledPlatforms: string[] | null;
   status: PostStatus;
   scheduledFor: string | null;
   postedAt: string | null;

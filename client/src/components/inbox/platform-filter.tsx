@@ -7,10 +7,16 @@ import { PlatformIcon } from "@/components/accounts/platform-icon";
 import { INBOX_PLATFORMS } from "./platform-options";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
 
-export function PlatformFilter({ active }: { active: string }) {
+type Props = { active: string; connected: Platform[] };
+
+export function PlatformFilter({ active, connected }: Props) {
+  const options = INBOX_PLATFORMS.filter(
+    (p) => p.value === "" || connected.includes(p.value as Platform),
+  );
+  if (options.length <= 1) return null;
   return (
     <div className="flex flex-wrap gap-1.5 px-3 pb-2">
-      {INBOX_PLATFORMS.map((p) => {
+      {options.map((p) => {
         const href = p.value
           ? `/dashboard/inbox?platform=${p.value}`
           : "/dashboard/inbox";

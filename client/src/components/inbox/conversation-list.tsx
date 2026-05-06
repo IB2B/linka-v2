@@ -1,23 +1,27 @@
 import { ConversationRow } from "./conversation-row";
 import { PlatformFilter } from "./platform-filter";
+import { ConnectedAccountsStack } from "./connected-accounts-stack";
 import type { Conversation } from "@/lib/inbox/inbox.types";
+import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
 
 type Props = {
   conversations: Conversation[];
   activeId: string | null;
   platform: string;
+  accounts: ZernioAccount[];
 };
 
-export function ConversationList({ conversations, activeId, platform }: Props) {
+export function ConversationList({ conversations, activeId, platform, accounts }: Props) {
   const hrefSuffix = platform ? `?platform=${platform}` : "";
+  const connected = accounts.filter((a) => a.connected).map((a) => a.platform);
   return (
     <div className="flex h-full flex-col">
       <div className="border-b">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between gap-2 px-4 py-3">
           <h2 className="text-sm font-semibold">Conversations</h2>
-          <span className="text-xs text-muted-foreground">{conversations.length}</span>
+          <ConnectedAccountsStack accounts={accounts} />
         </div>
-        <PlatformFilter active={platform} />
+        <PlatformFilter active={platform} connected={connected} />
       </div>
       <div className="flex-1 overflow-y-auto p-2">
         {conversations.length === 0 ? (
