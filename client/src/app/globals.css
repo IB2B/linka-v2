@@ -117,6 +117,12 @@
   --weekend-tint: oklch(0.97 0.012 250);
 }
 
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+a[href] {
+  cursor: pointer;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

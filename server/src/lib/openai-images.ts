@@ -36,7 +36,7 @@ export async function generateOpenAIImage(
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${key}` },
     body: JSON.stringify(body),
-    signal: opts.signal ?? AbortSignal.timeout(60_000),
+    signal: opts.signal ?? AbortSignal.timeout(120_000),
   });
   const json = (await res.json()) as ImagesResponse;
   if (!res.ok) throw new Error(json.error?.message ?? `OpenAI ${res.status}`);

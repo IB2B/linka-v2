@@ -3,23 +3,22 @@ import { db } from "../lib/db";
 import type { GeneratedPost } from "../types/post";
 import { POST_COLS, type PostRow, rowToPost } from "./generated-content-row";
 
-export async function insertOne(input: {
-  userId: string;
-  prompt: string | null;
-  content: string;
-  platform: string | null;
-  imageUrl?: string | null;
+type InsertInput = {
+  userId: string; prompt: string | null; content: string;
+  platform: string | null; imageUrl?: string | null;
   imageStatus?: "pending" | "skipped";
-}): Promise<GeneratedPost> {
+};
+
+export async function insertOne(i: InsertInput): Promise<GeneratedPost> {
   const id = randomUUID();
   await db.query(
     `INSERT INTO generated_content
        (id, user_id, prompt, content, platform, image_url, image_status)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [id, input.userId, input.prompt, input.content, input.platform,
-     input.imageUrl ?? null, input.imageStatus ?? "skipped"],
+    [id, i.userId, i.prompt, i.content, i.platform,
+     i.imageUrl ?? null, i.imageStatus ?? "skipped"],
   );
-  const post = await findById(id, input.userId);
+  const post = await findById(id, i.userId);
   if (!post) throw new Error("Insert failed");
   return post;
 }
@@ -49,30 +48,32 @@ async function run(sql: string, params: unknown[]): Promise<boolean> {
   return (r as any).affectedRows > 0;
 }
 
-export function setSchedule(id: string, userId: string, scheduledFor: Date) {
+export function setSchedule(
+  id: string, userId: string, scheduledFor: Date,
+  platforms: string[], latePostId: string | null,
+) {
   return run(
-    `UPDATE generated_content SET status='scheduled', scheduled_for=?
-     WHERE id=? AND user_id=?`, [scheduledFor, id, userId],
+    `UPDATE generated_content
+     SET status='scheduled', scheduled_for=?, scheduled_platforms=?,
+         late_post_id=COALESCE(?, late_post_id)
+     WHERE id=? AND user_id=?`,
+    [scheduledFor, JSON.stringify(platforms), latePostId, id, userId],
   );
 }
 
 export function markPosted(id: string, userId: string, latePostId: string | null) {
   return run(
-    `UPDATE generated_content
-     SET status='posted', posted_at=NOW(3), late_post_id=?
-     WHERE id=? AND user_id=?`, [latePostId, id, userId],
+    `UPDATE generated_content SET status='posted', posted_at=NOW(3),
+     late_post_id=? WHERE id=? AND user_id=?`, [latePostId, id, userId],
   );
 }
 
 export function setContent(id: string, userId: string, content: string) {
-  return run(
-    `UPDATE generated_content SET content=? WHERE id=? AND user_id=?`,
-    [content, id, userId],
-  );
+  return run(`UPDATE generated_content SET content=? WHERE id=? AND user_id=?`,
+    [content, id, userId]);
 }
 
 export function deleteById(id: string, userId: string) {
-  return run(
-    "DELETE FROM generated_content WHERE id=? AND user_id=?", [id, userId],
-  );
+  return run("DELETE FROM generated_content WHERE id=? AND user_id=?",
+    [id, userId]);
 }

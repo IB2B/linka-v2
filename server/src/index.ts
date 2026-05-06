@@ -16,6 +16,8 @@ import inboxRouter from "./routes/inbox";
 import pipelinesRouter from "./routes/pipelines";
 import trendsRouter from "./routes/trends";
 import analyticsRouter from "./routes/analytics";
+import recyclerRouter from "./routes/recycler";
+import { proxyImage } from "./controllers/image-proxy.controller";
 import { errorHandler } from "./middleware/error";
 import { reapStuckImageJobs } from "./lib/image-reaper";
 
@@ -32,6 +34,7 @@ app.use("/uploads", express.static(join(process.cwd(), "uploads"), {
   maxAge: "1d", fallthrough: false,
 }));
 app.get("/api/health", (_req, res) => { res.json({ ok: true }); });
+app.get("/api/image-proxy", proxyImage);
 app.use("/api/auth", authRouter);
 app.use("/api/billing", billingRouter);
 app.use("/api/stripe", stripeRouter);
@@ -45,6 +48,7 @@ app.use("/api/inbox", inboxRouter);
 app.use("/api/pipelines", pipelinesRouter);
 app.use("/api/trends", trendsRouter);
 app.use("/api/analytics", analyticsRouter);
+app.use("/api/recycler", recyclerRouter);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

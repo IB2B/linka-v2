@@ -27,9 +27,9 @@ export function SettingsShell({ accounts, ...profile }: Props) {
   const [active, setActive] = useState("profile");
 
   return (
-    <div className="grid grid-cols-[180px_1fr] gap-12">
+    <div className="grid gap-8 lg:grid-cols-[220px_1fr] lg:gap-12">
       <SettingsNav active={active} onSelect={setActive} />
-      <div className="pb-24">
+      <div className="min-w-0 pb-24">
         {active === "profile" && <ProfileSection {...profile} />}
         {active === "security" && <PasswordSection />}
         {active === "preferences" && <PreferencesSection />}

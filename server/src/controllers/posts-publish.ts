@@ -2,9 +2,11 @@ import type { Response, NextFunction } from "express";
 import { z } from "zod";
 import type { AuthRequest } from "../middleware/auth";
 import * as posts from "../models/generated-content.model";
+import { recordOutcomes } from "../models/posting-history.model";
 import { publishPostOnLate, schedulePostOnLate } from "../lib/late-client";
 import { resolvePlatformAccounts } from "../lib/late-accounts";
 import { partitionPublishResult } from "../lib/late-publish-result";
+import { publishOutcomeToRows } from "../lib/publish-outcome-to-rows";
 
 const platformsSchema = z.array(z.string()).optional();
 const scheduleSchema = z.object({
@@ -18,9 +20,7 @@ async function resolveOrFail(
 ) {
   const entries = await resolvePlatformAccounts(userId, platforms);
   if (entries.length === 0) {
-    res.status(400).json({
-      error: "No connected accounts for the selected platforms.",
-    });
+    res.status(400).json({ error: "No connected accounts for the selected platforms." });
     return null;
   }
   return entries;
@@ -43,8 +43,11 @@ export async function schedule(
     }
     const entries = await resolveOrFail(req.user!.id, parsed.data.platforms ?? [], res);
     if (!entries) return;
-    await schedulePostOnLate(post, when, entries);
-    await posts.setSchedule(post.id, req.user!.id, when);
+    const r = await schedulePostOnLate(post, when, entries);
+    await posts.setSchedule(
+      post.id, req.user!.id, when,
+      entries.map((e) => e.platform), r.latePostId,
+    );
     res.json({ post: await posts.findById(post.id, req.user!.id) });
   } catch (e) { next(e); }
 }
@@ -63,13 +66,14 @@ export async function publish(
     const entries = await resolveOrFail(req.user!.id, parsed.data.platforms ?? [], res);
     if (!entries) return;
     const result = await publishPostOnLate(post, entries);
-    const { publishedTo, failed } = partitionPublishResult(result, entries);
-    if (publishedTo.length > 0) {
+    const outcome = partitionPublishResult(result, entries);
+    if (outcome.publishedTo.length > 0) {
       await posts.markPosted(post.id, req.user!.id, result.latePostId);
     }
+    await recordOutcomes(req.user!.id, post.id, publishOutcomeToRows(outcome));
     res.json({
       post: await posts.findById(post.id, req.user!.id),
-      publishedTo, failed,
+      ...outcome,
     });
   } catch (e) { next(e); }
 }

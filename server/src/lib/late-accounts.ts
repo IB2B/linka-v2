@@ -5,12 +5,34 @@ type RawAccount = {
   _id: string;
   platform: string;
   profileId?: string | { _id: string };
+  username?: string;
+  displayName?: string;
+  name?: string;
+  platformUserId?: string;
+  platformId?: string;
+  externalId?: string;
 };
 
-export type PlatformEntry = { platform: string; accountId: string };
+export type PlatformEntry = {
+  platform: string;
+  accountId: string;
+  ownerId: string | null;
+  ownerUsername: string | null;
+  ownerName: string | null;
+};
 
 function ownerProfileId(a: RawAccount): string | undefined {
   return typeof a.profileId === "string" ? a.profileId : a.profileId?._id;
+}
+
+function toEntry(a: RawAccount): PlatformEntry {
+  return {
+    platform: a.platform,
+    accountId: a._id,
+    ownerId: a.platformUserId ?? a.platformId ?? a.externalId ?? null,
+    ownerUsername: a.username ?? null,
+    ownerName: a.displayName ?? a.name ?? null,
+  };
 }
 
 const ALIASES: Record<string, string[]> = {
@@ -34,13 +56,13 @@ export async function resolvePlatformAccounts(
     const pid = ownerProfileId(a);
     return !pid || pid === profileId;
   });
-  console.log("[late.resolve] owned platforms:", owned.map((a) => a.platform));
-  console.log("[late.resolve] wanted:", platforms);
+  console.log(
+    "\n=== [late.accounts] raw ===\n",
+    JSON.stringify(owned, null, 2), "\n=========================",
+  );
   const wanted = platforms.length ? platforms : owned.map((a) => a.platform);
   return wanted
-    .map((p) => {
-      const acc = owned.find((a) => matches(a.platform, p));
-      return acc ? { platform: acc.platform, accountId: acc._id } : null;
-    })
-    .filter((x): x is PlatformEntry => x !== null);
+    .map((p) => owned.find((a) => matches(a.platform, p)))
+    .filter((a): a is RawAccount => !!a)
+    .map(toEntry);
 }

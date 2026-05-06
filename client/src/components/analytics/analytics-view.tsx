@@ -7,10 +7,11 @@ import type { Analytics } from "@/lib/analytics/analytics.types";
 import type { PostMetrics } from "@/types/analytics";
 
 export function AnalyticsView({
-  data, metrics,
+  data, metrics, published,
 }: {
   data: Analytics;
   metrics: Map<string, PostMetrics>;
+  published: Map<string, string[]>;
 }) {
   return (
     <div className="space-y-6">
@@ -31,7 +32,9 @@ export function AnalyticsView({
           emptyMessage="No platforms tracked yet."
         />
       </div>
-      <RecentPostsTable posts={data.recent} metrics={metrics} />
+      <RecentPostsTable
+        posts={data.recent} metrics={metrics} published={published}
+      />
     </div>
   );
 }

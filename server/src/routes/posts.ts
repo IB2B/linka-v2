@@ -12,12 +12,25 @@ import {
 } from "../controllers/posts-regenerate.controller";
 import { scoreById } from "../controllers/posts-score.controller";
 import { bulkDelete } from "../controllers/posts-bulk.controller";
+import { listPublishedPlatforms }
+  from "../controllers/posts-published-platforms.controller";
+import { listComments } from "../controllers/post-comments.controller";
+import { replyComment } from "../controllers/post-comments-reply.controller";
+import {
+  likeAction, hideAction, deleteAction,
+} from "../controllers/post-comments-actions.controller";
 
 const router = Router();
 router.use(authenticate);
 
 router.get("/", list);
+router.get("/published-platforms", listPublishedPlatforms);
 router.get("/:id", getOne);
+router.get("/:id/comments", listComments);
+router.post("/:id/comments/reply", replyComment);
+router.post("/:id/comments/like", likeAction);
+router.post("/:id/comments/hide", hideAction);
+router.post("/:id/comments/delete", deleteAction);
 router.post("/:id/schedule", schedule);
 router.post("/:id/publish", publish);
 router.post("/:id/regenerate-text", regenerateText);
