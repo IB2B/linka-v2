@@ -22,26 +22,43 @@ export type RawMessage = {
   createdAt?: string;
 };
 
+type LatePage<T> = {
+  data?: T[];
+  conversations?: T[];
+  messages?: T[];
+  pagination?: { nextCursor?: string | null };
+  nextCursor?: string | null;
+};
+
 export async function listInboxConversations(userId: string, platform?: string) {
   const profileId = await getOrCreateLateProfile(userId);
-  const qs = new URLSearchParams({ profile: profileId, limit: "50" });
+  const qs = new URLSearchParams({ profileId, limit: "50" });
   if (platform) qs.set("platform", platform);
-  return lateFetch<{ conversations: RawConversation[] }>(
+  const r = await lateFetch<LatePage<RawConversation>>(
     `/inbox/conversations?${qs.toString()}`,
   );
+  return { conversations: r.data ?? r.conversations ?? [] };
 }
 
-export async function listInboxMessages(conversationId: string, cursor?: string) {
-  const qs = new URLSearchParams({ limit: "50" });
+export async function listInboxMessages(
+  conversationId: string, accountId: string, cursor?: string,
+) {
+  const qs = new URLSearchParams({ accountId, limit: "50" });
   if (cursor) qs.set("cursor", cursor);
-  return lateFetch<{ messages: RawMessage[]; nextCursor?: string }>(
+  const r = await lateFetch<LatePage<RawMessage>>(
     `/inbox/conversations/${encodeURIComponent(conversationId)}/messages?${qs.toString()}`,
   );
+  return {
+    messages: r.data ?? r.messages ?? [],
+    nextCursor: r.pagination?.nextCursor ?? r.nextCursor ?? null,
+  };
 }
 
-export async function sendInboxMessage(conversationId: string, text: string) {
+export async function sendInboxMessage(
+  conversationId: string, accountId: string, text: string,
+) {
   return lateFetch<{ id?: string }>(
     `/inbox/conversations/${encodeURIComponent(conversationId)}/messages`,
-    { method: "POST", body: JSON.stringify({ text }) },
+    { method: "POST", body: JSON.stringify({ accountId, text }) },
   );
 }

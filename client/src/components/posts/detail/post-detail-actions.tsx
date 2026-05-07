@@ -10,6 +10,7 @@ import { DeletePostConfirm } from "../delete-post-confirm";
 import { PostDetailRegenerate } from "./post-detail-regenerate";
 import { PostDetailDownload } from "./post-detail-download";
 import { useDetailMutations } from "./use-detail-mutations";
+import { usePostPlatforms } from "../platforms-context";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostDetailActions({ post }: { post: GeneratedPost }) {
@@ -17,6 +18,8 @@ export function PostDetailActions({ post }: { post: GeneratedPost }) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const { delPending, pubPending, onConfirmDelete, onPublishNow } =
     useDetailMutations(post.id);
+  const ctx = usePostPlatforms();
+  const noPlatforms = !!ctx && ctx.selected.length === 0;
 
   const isPosted = post.status === "posted";
   const isScheduled = post.status === "scheduled";
@@ -36,13 +39,17 @@ export function PostDetailActions({ post }: { post: GeneratedPost }) {
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {!isPosted ? (
             <Button size="sm" variant="outline"
-              onClick={() => setScheduleOpen(true)} disabled={pubPending}>
+              onClick={() => setScheduleOpen(true)}
+              disabled={pubPending || noPlatforms}
+              title={noPlatforms ? "Pick at least one platform" : undefined}>
               <Calendar className="size-4" />
               {isScheduled ? "Reschedule" : "Schedule"}
             </Button>
           ) : null}
           {!isPosted ? (
-            <Button size="sm" onClick={onPublishNow} disabled={pubPending}>
+            <Button size="sm" onClick={onPublishNow}
+              disabled={pubPending || noPlatforms}
+              title={noPlatforms ? "Pick at least one platform" : undefined}>
               {pubPending ? <Spinner aria-hidden /> : <Send className="size-4" />}
               Post now
             </Button>

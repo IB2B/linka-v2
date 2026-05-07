@@ -27,8 +27,9 @@ export function CommentsView({ postId, groups, me }: Props) {
   ], [groups, total]);
   const visible = active === "all" ? groups : groups.filter((g) => g.platform === active);
 
+  const empty = groups.length === 0;
   return (
-    <Card className="flex h-full flex-col">
+    <Card className={empty ? "flex flex-col" : "flex h-full flex-col"}>
       <CardHeader>
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -49,8 +50,8 @@ export function CommentsView({ postId, groups, me }: Props) {
         </div>
         <CardDescription>Reply directly from here.</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-1 flex-col gap-3">
-        {groups.length === 0 ? (
+      <CardContent className={empty ? "flex flex-col gap-3" : "flex flex-1 flex-col gap-3"}>
+        {empty ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
             No comments yet on this post.
           </p>

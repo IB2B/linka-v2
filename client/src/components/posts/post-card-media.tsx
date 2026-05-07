@@ -1,7 +1,6 @@
 import { ImageIcon } from "lucide-react";
 
 import { PlatformIcon } from "@/components/accounts/platform-icon";
-import { PostStatusBadge } from "./post-status-badge";
 import { PostImagePlaceholder } from "./post-image-placeholder";
 import { getPlatformGradient } from "./platform-gradient";
 import type { GeneratedPost } from "@/types/post";
@@ -23,7 +22,7 @@ export function PostCardMedia({ post }: { post: GeneratedPost }) {
   const hasImage = !!post.imageUrl;
 
   return (
-    <div className="relative aspect-[16/7] w-full overflow-hidden bg-muted">
+    <div className="relative size-full overflow-hidden bg-muted">
       {hasImage ? (
         <img
           src={post.imageUrl ?? ""}
@@ -52,17 +51,6 @@ export function PostCardMedia({ post }: { post: GeneratedPost }) {
         </div>
       )}
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
-
-      <div className="absolute left-2 top-2">
-        <PostStatusBadge status={post.status} />
-      </div>
-      {platform ? (
-        <div className="absolute right-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/55 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm ring-1 ring-white/10">
-          <PlatformIcon platform={platform} className="size-2.5" />
-          <span className="capitalize">{platform}</span>
-        </div>
-      ) : null}
     </div>
   );
 }

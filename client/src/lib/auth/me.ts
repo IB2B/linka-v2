@@ -1,6 +1,10 @@
 import { cookies, headers } from "next/headers";
 import type { UserRole } from "@/types/user-role";
 
+export type UserFeatures = {
+  recycler: boolean;
+};
+
 export type Me = {
   id: string;
   email: string;
@@ -10,6 +14,7 @@ export type Me = {
   avatarUrl: string | null;
   industry: string | null;
   bio: string | null;
+  features: UserFeatures;
 };
 
 export async function fetchMe(): Promise<Me | null> {

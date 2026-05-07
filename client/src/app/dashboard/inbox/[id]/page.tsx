@@ -17,15 +17,13 @@ export default async function ConversationPage({
 }: { params: Params; searchParams: SP }) {
   const [{ id }, { platform = "" }] = await Promise.all([params, searchParams]);
 
-  const [convosRes, messagesRes] = await Promise.all([
-    getConversations(platform || undefined),
-    getMessages(id),
-  ]);
-
+  const convosRes = await getConversations(platform || undefined);
   const conversation = convosRes.ok
     ? convosRes.data.conversations.find((c) => c.id === id)
     : null;
   if (convosRes.ok && !conversation) notFound();
+
+  const messagesRes = await getMessages(id, conversation?.accountId ?? null);
 
   return (
     <>
@@ -43,7 +41,7 @@ export default async function ConversationPage({
           <>
             <ThreadHeader conversation={conversation} />
             <MessageThread messages={messagesRes.data.messages} />
-            <ReplyComposer conversationId={id} />
+            <ReplyComposer conversationId={id} accountId={conversation.accountId} />
           </>
         ) : null}
       </InboxShell>

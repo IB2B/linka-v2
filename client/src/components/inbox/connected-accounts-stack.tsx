@@ -9,12 +9,18 @@ import {
 import { ConnectedAccountBubble } from "./connected-account-bubble";
 import { ConnectedAccountsRow } from "./connected-accounts-row";
 import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
+import { PLATFORMS } from "@/lib/zernio/platforms";
 
 const MAX_VISIBLE = 3;
 
+const dmCapable = new Set(
+  PLATFORMS.filter((p) => p.inboxCapability === "dms").map((p) => p.slug),
+);
+
 export function ConnectedAccountsStack({ accounts }: { accounts: ZernioAccount[] }) {
-  const connected = accounts.filter((a) => a.connected);
-  const disconnected = accounts.filter((a) => !a.connected);
+  const inboxAccounts = accounts.filter((a) => dmCapable.has(a.platform));
+  const connected = inboxAccounts.filter((a) => a.connected);
+  const disconnected = inboxAccounts.filter((a) => !a.connected);
   const visible = connected.slice(0, MAX_VISIBLE);
   const hidden = connected.length - visible.length;
 

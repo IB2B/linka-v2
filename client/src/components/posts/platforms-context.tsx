@@ -6,8 +6,8 @@ import type { Platform } from "@/lib/zernio/zernio-account.types";
 
 type Ctx = {
   connected: Platform[];
-  selected: Platform | null;
-  select: (p: Platform) => void;
+  selected: Platform[];
+  toggle: (p: Platform) => void;
   loading: boolean;
 };
 
@@ -15,7 +15,7 @@ const PostPlatformsContext = createContext<Ctx | null>(null);
 
 export function PostPlatformsProvider({ children }: { children: ReactNode }) {
   const [connected, setConnected] = useState<Platform[]>([]);
-  const [selected, setSelected] = useState<Platform | null>(null);
+  const [selected, setSelected] = useState<Platform[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,13 +24,19 @@ export function PostPlatformsProvider({ children }: { children: ReactNode }) {
       .then((d: { accounts: { platform: Platform }[] }) => {
         const list = (d.accounts ?? []).map((a) => a.platform);
         setConnected(list);
-        setSelected(list[0] ?? null);
+        setSelected(list[0] ? [list[0]] : []);
       })
       .finally(() => setLoading(false));
   }, []);
 
+  function toggle(p: Platform) {
+    setSelected((prev) =>
+      prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
+    );
+  }
+
   return (
-    <PostPlatformsContext.Provider value={{ connected, selected, select: setSelected, loading }}>
+    <PostPlatformsContext.Provider value={{ connected, selected, toggle, loading }}>
       {children}
     </PostPlatformsContext.Provider>
   );

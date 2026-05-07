@@ -1,19 +1,31 @@
 import { LandingBg } from "@/components/landing/landing-bg";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { LandingHero } from "@/components/landing/landing-hero";
-import { Showcase } from "@/components/landing/showcase";
-import { ShowcaseMobile } from "@/components/landing/showcase-mobile";
+import { SocialProofBar } from "@/components/landing/social-proof-bar";
+import { FeaturesSection } from "@/components/landing/features-section";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
+import { ComparisonSection } from "@/components/landing/comparison-section";
+import { PricingSection } from "@/components/landing/pricing-section";
+import { FaqSection } from "@/components/landing/faq-section";
+import { FinalCta } from "@/components/landing/final-cta";
+import { LandingFooter } from "@/components/landing/landing-footer";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden font-sans">
+    <div className="relative min-h-screen overflow-hidden bg-[#FAFAFA] font-sans text-[#0F1113]">
       <LandingBg />
       <LandingNav />
-      <main className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 pt-12 pb-24 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pt-24">
-        <LandingHero />
-        <Showcase />
-        <ShowcaseMobile />
-      </main>
+      <LandingHero />
+      <SocialProofBar />
+      <FeaturesSection />
+      <HowItWorks />
+      <TestimonialsSection />
+      <ComparisonSection />
+      <PricingSection />
+      <FaqSection />
+      <FinalCta />
+      <LandingFooter />
     </div>
   );
 }

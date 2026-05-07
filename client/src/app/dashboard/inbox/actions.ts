@@ -43,19 +43,13 @@ export async function assistReplyAction(conversationId: string): Promise<AssistO
   };
 }
 
-export async function sendReplyAction(conversationId: string, text: string): Promise<Result> {
+export async function sendReplyAction(
+  conversationId: string, text: string, accountId: string | null,
+): Promise<Result> {
   if (!text.trim()) return { error: "Message is empty." };
-  const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
-
-  const res = await fetch(
-    `${proto}://${host}/api/inbox/conversations/${encodeURIComponent(conversationId)}/messages`,
-    {
-      method: "POST",
-      headers: { "content-type": "application/json", cookie: cookieStore.toString() },
-      body: JSON.stringify({ text: text.trim() }),
-    },
+  const res = await api(
+    `/api/inbox/conversations/${encodeURIComponent(conversationId)}/messages`,
+    { method: "POST", body: JSON.stringify({ text: text.trim(), accountId }) },
   );
 
   if (!res.ok) {
