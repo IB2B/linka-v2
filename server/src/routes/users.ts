@@ -14,8 +14,11 @@ router.get("/me", async (req: AuthRequest, res, next) => {
   try {
     const [rows] = await db.query<any[]>(
       `SELECT u.id, u.email, u.role, u.first_name, u.last_name,
-              p.avatar_url, p.industry, p.bio
-       FROM users u LEFT JOIN user_profiles p ON p.user_id = u.id
+              p.avatar_url, p.industry, p.bio,
+              r.enabled AS recycler_enabled
+       FROM users u
+         LEFT JOIN user_profiles p ON p.user_id = u.id
+         LEFT JOIN recycle_settings r ON r.user_id = u.id
        WHERE u.id = ?`, [req.user!.id],
     );
     const u = rows[0];
@@ -26,6 +29,7 @@ router.get("/me", async (req: AuthRequest, res, next) => {
       avatarUrl: u.avatar_url ?? null,
       industry: u.industry ?? null,
       bio: u.bio ?? null,
+      features: { recycler: u.recycler_enabled === 1 },
     });
   } catch (e) { next(e); }
 });

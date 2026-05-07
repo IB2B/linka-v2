@@ -4,6 +4,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { HeaderActions } from "@/components/dashboard/header-actions";
 import { requireRole } from "@/lib/auth/require-role";
 import type { DashboardUser } from "@/types/dashboard-user";
 
@@ -21,6 +22,7 @@ export default async function DashboardLayout({
     lastName: user.lastName,
     avatarUrl: user.avatarUrl,
     role: user.role,
+    features: user.features,
   };
 
   return (
@@ -33,6 +35,7 @@ export default async function DashboardLayout({
           <span className="text-sm font-medium text-muted-foreground">
             Dashboard
           </span>
+          <HeaderActions prefix="/dashboard" />
         </header>
         <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>
       </SidebarInset>

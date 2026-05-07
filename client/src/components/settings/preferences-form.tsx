@@ -1,7 +1,22 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+import { TIMEZONES, loadTimezone, saveTimezone } from "@/lib/preferences/timezone";
+
 const SELECT_CLS =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
 
 export function PreferencesForm() {
+  const [tz, setTz] = useState<string>("UTC");
+
+  useEffect(() => { setTz(loadTimezone()); }, []);
+
+  function onTzChange(value: string) {
+    setTz(value);
+    saveTimezone(value);
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2">
@@ -21,15 +36,13 @@ export function PreferencesForm() {
           <label className="text-sm font-medium" htmlFor="timezone">
             Timezone
           </label>
-          <select id="timezone" className={SELECT_CLS}>
-            <option value="UTC">UTC</option>
-            <option value="America/New_York">Eastern Time</option>
-            <option value="America/Chicago">Central Time</option>
-            <option value="America/Los_Angeles">Pacific Time</option>
-            <option value="Europe/London">London</option>
-            <option value="Europe/Paris">Paris</option>
-            <option value="Asia/Dubai">Dubai</option>
-            <option value="Asia/Tokyo">Tokyo</option>
+          <select
+            id="timezone" className={SELECT_CLS}
+            value={tz} onChange={(e) => onTzChange(e.target.value)}
+          >
+            {TIMEZONES.map((t) => (
+              <option key={t.value} value={t.value}>{t.label}</option>
+            ))}
           </select>
         </div>
       </div>

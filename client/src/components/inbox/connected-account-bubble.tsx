@@ -1,6 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { PlatformIcon } from "@/components/accounts/platform-icon";
 import { PLATFORMS } from "@/lib/zernio/platforms";
+import { proxiedAvatar } from "@/lib/analytics/avatar";
 import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
 
 type Props = { account: ZernioAccount; ringClass?: string };
@@ -9,6 +13,8 @@ export function ConnectedAccountBubble({ account, ringClass }: Props) {
   const meta = PLATFORMS.find((p) => p.slug === account.platform);
   const dim = !account.connected;
   const initial = account.username.trim().slice(0, 1).toUpperCase() || "?";
+  const [failed, setFailed] = useState(false);
+  const showImg = account.avatar_url && !failed;
   return (
     <div className="relative">
       <div
@@ -18,9 +24,14 @@ export function ConnectedAccountBubble({ account, ringClass }: Props) {
           dim && "opacity-40 grayscale",
         )}
       >
-        {account.avatar_url ? (
+        {showImg ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={account.avatar_url} alt="" className="h-full w-full object-cover" />
+          <img
+            src={proxiedAvatar(account.avatar_url!)}
+            alt=""
+            className="h-full w-full object-cover"
+            onError={() => setFailed(true)}
+          />
         ) : (
           <span>{initial}</span>
         )}

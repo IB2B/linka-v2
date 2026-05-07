@@ -15,14 +15,14 @@ export function ConnectedAccountsRow({ account }: { account: ZernioAccount }) {
           {account.connected ? `@${account.username}` : "Not connected"}
         </p>
       </div>
-      <span
-        className={
-          account.connected
-            ? "size-1.5 rounded-full bg-emerald-500"
-            : "size-1.5 rounded-full bg-zinc-300"
-        }
-        aria-hidden
-      />
+      {account.connected ? (
+        <span className="relative flex size-1.5" aria-hidden>
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
+          <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500" />
+        </span>
+      ) : (
+        <span className="size-1.5 rounded-full bg-zinc-300" aria-hidden />
+      )}
     </div>
   );
 }

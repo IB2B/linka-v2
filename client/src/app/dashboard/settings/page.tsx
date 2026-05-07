@@ -30,6 +30,7 @@ export default async function SettingsPage() {
         industry={me?.industry ?? ""}
         headline={me?.bio ?? ""}
         accounts={accounts}
+        recyclerEnabled={me?.features.recycler ?? false}
       />
     </>
   );

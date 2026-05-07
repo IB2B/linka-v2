@@ -1,5 +1,6 @@
 import { lateFetch } from "./late-api";
 import { resolvePublicImageUrl } from "./late-media";
+import { stripMarkdown } from "./strip-markdown";
 import type { GeneratedPost } from "../types/post";
 import type { PlatformEntry } from "./late-accounts";
 
@@ -9,7 +10,9 @@ export type LatePublishResult = { latePostId: string; results: PlatformResult[] 
 type CreateResult = { post: { _id: string }; platformResults?: PlatformResult[] };
 
 async function buildBody(post: GeneratedPost, platforms: PlatformEntry[]) {
-  const body: Record<string, unknown> = { content: post.content, platforms };
+  const body: Record<string, unknown> = {
+    content: stripMarkdown(post.content), platforms,
+  };
   const url = await resolvePublicImageUrl(post.imageUrl);
   if (url) body.mediaItems = [{ type: "image", url }];
   return body;

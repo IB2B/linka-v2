@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  User, Lock, SlidersHorizontal, Bell, Link2, AlertTriangle,
+  User, Lock, SlidersHorizontal, Bell, Link2, ToggleRight, AlertTriangle,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ const SECTIONS: { id: string; label: string; icon: LucideIcon }[] = [
   { id: "profile", label: "Profile", icon: User },
   { id: "security", label: "Security", icon: Lock },
   { id: "preferences", label: "Preferences", icon: SlidersHorizontal },
+  { id: "features", label: "Features", icon: ToggleRight },
   { id: "notifications", label: "Notifications", icon: Bell },
   { id: "accounts", label: "Connected Accounts", icon: Link2 },
   { id: "danger", label: "Danger Zone", icon: AlertTriangle },

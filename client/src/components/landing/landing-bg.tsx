@@ -2,13 +2,10 @@ export function LandingBg() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#FAFAFA]"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_-10%,#fde7d3_0%,#f8d4e6_35%,#e9d8ff_65%,#fafafa_100%)]" />
-      <div className="absolute -top-24 -left-24 size-[520px] rounded-full bg-[radial-gradient(closest-side,#ffb39a_0%,transparent_70%)] opacity-60 blur-2xl" />
-      <div className="absolute top-40 -right-24 size-[560px] rounded-full bg-[radial-gradient(closest-side,#c8b2ff_0%,transparent_70%)] opacity-55 blur-2xl" />
-      <div className="absolute bottom-[-200px] left-1/3 size-[620px] rounded-full bg-[radial-gradient(closest-side,#ffd1e8_0%,transparent_70%)] opacity-60 blur-3xl" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_70%,#fafafa_100%)]" />
+      <div className="absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(109,95,249,0.10)_0%,transparent_70%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(15,17,19,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(15,17,19,0.04)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(70%_60%_at_50%_30%,#000_0%,transparent_80%)]" />
     </div>
   );
 }

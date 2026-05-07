@@ -1,5 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import type { GeneratedPost, ImageStatus, PostStatus } from "../types/post";
+import { stripMarkdown } from "../lib/strip-markdown";
 
 export const POST_COLS =
   `id, user_id, prompt, content, image_url, image_status, image_prompt,
@@ -33,7 +34,7 @@ function parsePlatforms(v: string | string[] | null): string[] | null {
 
 export function rowToPost(r: PostRow): GeneratedPost {
   return {
-    id: r.id, userId: r.user_id, prompt: r.prompt, content: r.content,
+    id: r.id, userId: r.user_id, prompt: r.prompt, content: stripMarkdown(r.content),
     imageUrl: r.image_url, imageStatus: r.image_status,
     imagePrompt: r.image_prompt, imageError: r.image_error,
     platform: r.platform,

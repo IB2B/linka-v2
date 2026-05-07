@@ -1,11 +1,13 @@
 import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { getPublishedByContentIds } from "../models/posting-history.model";
+import { syncScheduledPosts } from "../lib/sync-scheduled";
 
 export async function listPublishedPlatforms(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
+    await syncScheduledPosts(req.user!.id);
     const raw = typeof req.query.ids === "string" ? req.query.ids : "";
     const ids = raw.split(",").map((s) => s.trim()).filter(Boolean);
     const map = await getPublishedByContentIds(req.user!.id, ids);

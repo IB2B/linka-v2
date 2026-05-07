@@ -13,6 +13,9 @@ const ALLOWED_HOSTS = new Set([
   "www.redditstatic.com",
   "preview.redd.it",
   "i.pravatar.cc",
+  "unavatar.io",
+  "i.pinimg.com",
+  "s.pinimg.com",
 ]);
 
 export async function proxyImage(

@@ -7,7 +7,7 @@ function buildPrompt({ original, platform }: Input): string {
   const hint = PLATFORM_HINT[platform] ?? PLATFORM_HINT.linkedin;
   return `Rewrite this ${platform} post so the core message stays but the
 hook, structure, and examples are fresh. Do NOT copy any sentence verbatim.
-Keep the same value to the reader. ${hint} Plain text only.
+Keep the same value to the reader. ${hint} Plain text only — never use markdown syntax (no **, *, _, #, >, \`, or [text](url)).
 
 Original:
 """

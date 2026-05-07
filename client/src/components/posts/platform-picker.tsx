@@ -9,7 +9,7 @@ import { usePostPlatforms } from "./platforms-context";
 export function PlatformPicker() {
   const ctx = usePostPlatforms();
   if (!ctx) return null;
-  const { connected, selected, select, loading } = ctx;
+  const { connected, selected, toggle, loading } = ctx;
 
   if (loading) {
     return <div className="h-9 w-full animate-pulse rounded-md bg-muted/40" aria-hidden />;
@@ -31,19 +31,23 @@ export function PlatformPicker() {
 
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      {connectedPlatforms.map((p) => (
-        <Button
-          key={p.slug}
-          type="button"
-          size="sm"
-          variant={selected === p.slug ? "default" : "outline"}
-          onClick={() => select(p.slug)}
-          className="gap-1.5"
-        >
-          <PlatformIcon platform={p.slug} className="size-4" />
-          {p.label}
-        </Button>
-      ))}
+      {connectedPlatforms.map((p) => {
+        const isOn = selected.includes(p.slug);
+        return (
+          <Button
+            key={p.slug}
+            type="button"
+            size="sm"
+            variant={isOn ? "default" : "outline"}
+            onClick={() => toggle(p.slug)}
+            aria-pressed={isOn}
+            className="gap-1.5"
+          >
+            <PlatformIcon platform={p.slug} className="size-4" />
+            {p.label}
+          </Button>
+        );
+      })}
       <ConnectPlatformLink count={unconnectedCount} />
     </div>
   );

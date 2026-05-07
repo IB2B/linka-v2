@@ -4,6 +4,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
+import { HeaderActions } from "@/components/dashboard/header-actions";
 import { requireRole } from "@/lib/auth/require-role";
 import type { DashboardUser } from "@/types/dashboard-user";
 
@@ -21,6 +22,7 @@ export default async function AdminLayout({
     lastName: user.lastName,
     avatarUrl: user.avatarUrl,
     role: user.role,
+    features: user.features,
   };
 
   return (
@@ -33,6 +35,7 @@ export default async function AdminLayout({
           <span className="text-sm font-medium text-muted-foreground">
             Admin
           </span>
+          <HeaderActions prefix="/admin" />
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6">{children}</div>
       </SidebarInset>

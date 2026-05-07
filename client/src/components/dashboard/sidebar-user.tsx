@@ -1,30 +1,27 @@
 "use client";
 
+import { useState } from "react";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenu, DropdownMenuContent, DropdownMenuGroup,
+  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,
 } from "@/components/ui/sidebar";
 import { Spinner } from "@/components/ui/spinner";
+import { FeedbackDialog } from "@/components/feedback/feedback-dialog";
 import { SidebarUserPreview } from "@/components/dashboard/sidebar-user-preview";
+import { SidebarUserMenuHelp } from "./sidebar-user-menu-help";
 import { useLogout } from "@/hooks/use-logout";
 import type { SidebarUserProps } from "@/types/sidebar-user-props";
 
 export function SidebarUser({ user }: SidebarUserProps) {
   const { isMobile } = useSidebar();
   const { logout, pending } = useLogout();
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   return (
     <SidebarMenu>
@@ -32,10 +29,7 @@ export function SidebarUser({ user }: SidebarUserProps) {
         <DropdownMenu>
           <DropdownMenuTrigger
             render={
-              <SidebarMenuButton
-                size="lg"
-                className="data-[state=open]:bg-sidebar-accent"
-              />
+              <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent" />
             }
           >
             <SidebarUserPreview user={user} />
@@ -55,17 +49,16 @@ export function SidebarUser({ user }: SidebarUserProps) {
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              disabled={pending}
-              closeOnClick={false}
-              onClick={() => logout()}
-            >
+            <SidebarUserMenuHelp onSendFeedback={() => setFeedbackOpen(true)} />
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled={pending} closeOnClick={false} onClick={() => logout()}>
               {pending ? <Spinner aria-hidden /> : <LogOut />}
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
+      <FeedbackDialog open={feedbackOpen} onOpenChange={setFeedbackOpen} />
     </SidebarMenu>
   );
 }

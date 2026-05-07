@@ -7,11 +7,21 @@ export type PublishOutcomeRow = {
   error?: string | null;
 };
 
+interface ExistingRow extends RowDataPacket { platform: string }
+
 export async function recordOutcomes(
   userId: string, contentId: string, outcomes: PublishOutcomeRow[],
 ): Promise<void> {
   if (outcomes.length === 0) return;
-  const rows = outcomes.map((o) => [
+  const [existing] = await db.query<ExistingRow[]>(
+    `SELECT platform FROM posting_history
+     WHERE user_id = ? AND content_id = ? AND status = 'posted'`,
+    [userId, contentId],
+  );
+  const seen = new Set(existing.map((r) => r.platform));
+  const fresh = outcomes.filter((o) => !(o.status === "posted" && seen.has(o.platform)));
+  if (fresh.length === 0) return;
+  const rows = fresh.map((o) => [
     userId, contentId, o.platform, o.status,
     o.status === "posted" ? new Date() : null, o.error ?? null,
   ]);

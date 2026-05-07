@@ -17,7 +17,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         <SidebarBrand />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarNav role={user.role} />
+        <SidebarNav role={user.role} features={user.features} />
       </SidebarContent>
       <SidebarFooter>
         <SidebarUser user={user} />

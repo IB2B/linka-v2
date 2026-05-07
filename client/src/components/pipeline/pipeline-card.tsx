@@ -47,7 +47,7 @@ export function PipelineCard({
         {opp.sourcePlatform ? (
           <PipelinePlatformPill platform={opp.sourcePlatform} />
         ) : <span />}
-        <span className="text-[10px] text-muted-foreground">
+        <span className="text-[10px] text-muted-foreground" suppressHydrationWarning>
           {formatAge(opp.lastActivityAt ?? opp.createdAt)}
         </span>
       </div>

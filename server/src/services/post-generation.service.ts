@@ -61,7 +61,7 @@ function buildPrompt(input: GenerateInput, profile: ProfileRow): string {
 Style: ${input.postType.replace(/_/g, " ")}. ${subject}${article}
 ${voice}
 
-${lang}Format: ${platformHint} Plain text. Open with a hook line. End with a question or call to reflect.`;
+${lang}Format: ${platformHint} Plain text only — never use markdown syntax (no **, *, _, #, >, \`, or [text](url)). Open with a hook line. End with a question or call to reflect.`;
 }
 
 export async function generatePost(input: GenerateInput): Promise<string> {

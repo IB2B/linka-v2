@@ -14,6 +14,8 @@ import { scoreById } from "../controllers/posts-score.controller";
 import { bulkDelete } from "../controllers/posts-bulk.controller";
 import { listPublishedPlatforms }
   from "../controllers/posts-published-platforms.controller";
+import { listNotifications }
+  from "../controllers/posts-notifications.controller";
 import { listComments } from "../controllers/post-comments.controller";
 import { replyComment } from "../controllers/post-comments-reply.controller";
 import {
@@ -24,6 +26,7 @@ const router = Router();
 router.use(authenticate);
 
 router.get("/", list);
+router.get("/notifications", listNotifications);
 router.get("/published-platforms", listPublishedPlatforms);
 router.get("/:id", getOne);
 router.get("/:id/comments", listComments);

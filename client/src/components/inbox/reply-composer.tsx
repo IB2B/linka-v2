@@ -11,7 +11,9 @@ import { sendReplyAction, assistReplyAction } from "@/app/dashboard/inbox/action
 import { IntentBadge } from "./intent-badge";
 import type { AssistResult } from "@/lib/inbox/assist.types";
 
-export function ReplyComposer({ conversationId }: { conversationId: string }) {
+type Props = { conversationId: string; accountId: string | null };
+
+export function ReplyComposer({ conversationId, accountId }: Props) {
   const [text, setText] = useState("");
   const [assist, setAssist] = useState<AssistResult | null>(null);
   const [pending, start] = useTransition();
@@ -21,7 +23,7 @@ export function ReplyComposer({ conversationId }: { conversationId: string }) {
     const trimmed = text.trim();
     if (!trimmed) return;
     start(async () => {
-      const r = await sendReplyAction(conversationId, trimmed);
+      const r = await sendReplyAction(conversationId, trimmed, accountId);
       if ("error" in r) toast.error(r.error);
       else { setText(""); setAssist(null); toast.success("Sent"); }
     });

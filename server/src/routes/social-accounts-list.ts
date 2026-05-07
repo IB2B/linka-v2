@@ -2,6 +2,7 @@ import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { lateFetch } from "../lib/late-api";
 import { getOrCreateLateProfile } from "../lib/late-profile";
+import { fetchPinterestAvatar } from "../lib/pinterest-avatar";
 
 type RawAccount = {
   _id: string;
@@ -28,6 +29,20 @@ function pickAvatar(a: RawAccount): string | null {
     || null;
 }
 
+const UNAVATAR_DOMAIN: Record<string, string> = {
+  twitter: "twitter", x: "twitter", instagram: "instagram",
+  tiktok: "tiktok", youtube: "youtube", github: "github",
+  substack: "substack",
+};
+
+function fallbackAvatar(platform: string, username: string): string | null {
+  const slug = UNAVATAR_DOMAIN[platform];
+  if (!slug) return null;
+  const handle = username.replace(/^@/, "").trim();
+  if (!handle) return null;
+  return `https://unavatar.io/${slug}/${encodeURIComponent(handle)}?fallback=false`;
+}
+
 export async function listAccounts(req: AuthRequest, res: Response) {
   const profileId = await getOrCreateLateProfile(req.user!.id);
   const data = await lateFetch<{ accounts: RawAccount[] }>(
@@ -37,13 +52,13 @@ export async function listAccounts(req: AuthRequest, res: Response) {
     const pid = profileIdOf(a);
     return !pid || pid === profileId;
   });
-  console.log("[social/accounts] raw\n", JSON.stringify(filtered, null, 2));
-  res.json({
-    accounts: filtered.map((a) => ({
-      id: a._id,
-      platform: a.platform,
-      username: a.username ?? a.displayName ?? a.name ?? "",
-      avatar_url: pickAvatar(a),
-    })),
-  });
+  const accounts = await Promise.all(filtered.map(async (a) => {
+    const username = a.username ?? a.displayName ?? a.name ?? "";
+    let avatar = pickAvatar(a) ?? fallbackAvatar(a.platform, username);
+    if (!avatar && a.platform === "pinterest") {
+      avatar = await fetchPinterestAvatar(username);
+    }
+    return { id: a._id, platform: a.platform, username, avatar_url: avatar };
+  }));
+  res.json({ accounts });
 }

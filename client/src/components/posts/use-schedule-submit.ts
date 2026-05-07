@@ -11,11 +11,11 @@ export function useScheduleSubmit(postId: string, onDone: () => void) {
   const ctx = usePostPlatforms();
 
   function submit(when: Date) {
-    if (ctx && !ctx.selected) {
-      toast.error("Pick a platform to post to.");
+    const platforms = ctx?.selected ?? [];
+    if (platforms.length === 0) {
+      toast.error("Pick at least one platform to post to.");
       return;
     }
-    const platforms = ctx?.selected ? [ctx.selected] : [];
     start(async () => {
       const res = await schedulePostAction(postId, when.toISOString(), platforms);
       if (res.error) toast.error(res.error);

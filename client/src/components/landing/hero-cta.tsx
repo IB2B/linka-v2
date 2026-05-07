@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function HeroCta() {
@@ -8,17 +8,17 @@ export function HeroCta() {
       <Button
         render={<Link href="/register" />}
         nativeButton={false}
-        className="h-11 rounded-full bg-zinc-900 px-5 text-sm font-medium text-white shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4)] hover:bg-zinc-800"
+        className="h-12 rounded-full bg-[#6D5FF9] px-6 text-[14px] font-medium text-white hover:bg-[#5a4ce0]"
       >
-        Start free <ArrowRight className="size-4" />
+        Start free trial <ArrowUpRight className="size-4" />
       </Button>
       <Button
-        render={<Link href="/login" />}
+        render={<Link href="#pricing" />}
         nativeButton={false}
         variant="ghost"
-        className="h-11 rounded-full bg-white/70 px-5 text-sm font-medium text-zinc-800 backdrop-blur hover:bg-white"
+        className="h-12 rounded-full border border-[#E5E5E5] bg-white px-6 text-[14px] font-medium text-[#0F1113] hover:bg-[#F5F5F5]"
       >
-        I already have an account
+        See pricing
       </Button>
     </div>
   );
