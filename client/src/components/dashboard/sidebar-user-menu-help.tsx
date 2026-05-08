@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LifeBuoy, MessageSquare } from "lucide-react";
+import { LifeBuoy, MessageSquare, Sparkles } from "lucide-react";
 
 import {
   DropdownMenuGroup, DropdownMenuItem,
@@ -12,6 +12,10 @@ type Props = { onSendFeedback: () => void };
 export function SidebarUserMenuHelp({ onSendFeedback }: Props) {
   return (
     <DropdownMenuGroup>
+      <DropdownMenuItem render={<Link href="/dashboard/billing" />}>
+        <Sparkles />
+        Upgrade plan
+      </DropdownMenuItem>
       <DropdownMenuItem render={<Link href="/dashboard/support" />}>
         <LifeBuoy />
         Support

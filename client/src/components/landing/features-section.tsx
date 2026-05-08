@@ -4,24 +4,15 @@ import { FEATURES } from "./features-data";
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32">
+    <section id="features" className="relative z-10 mx-auto w-full max-w-6xl px-6 py-24">
       <SectionHeading
-        eyebrow="01 — Capabilities"
-        title={
-          <>
-            Replace six tools.{" "}
-            <span className="text-[#6D5FF9]">Keep one workspace.</span>
-          </>
-        }
+        eyebrow="Features"
+        title="Replace six tools. Keep one workspace."
         sub="Linka is the writer, the designer, the scheduler and the analyst. One subscription, one calendar, every channel."
       />
-      <div className="mt-16 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {FEATURES.map((f, i) => (
-          <FeatureCard
-            key={f.title}
-            feature={f}
-            n={String(i + 1).padStart(2, "0")}
-          />
+      <div className="mt-12 grid gap-px overflow-hidden rounded-xl bg-[#E5E5E5] ring-1 ring-[#E5E5E5] sm:grid-cols-2 lg:grid-cols-3">
+        {FEATURES.map((f) => (
+          <FeatureCard key={f.title} feature={f} />
         ))}
       </div>
     </section>

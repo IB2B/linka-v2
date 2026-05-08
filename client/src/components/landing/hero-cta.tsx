@@ -4,19 +4,21 @@ import { Button } from "@/components/ui/button";
 
 export function HeroCta() {
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-wrap items-center justify-center gap-2">
       <Button
         render={<Link href="/register" />}
         nativeButton={false}
-        className="h-12 rounded-full bg-[#6D5FF9] px-6 text-[14px] font-medium text-white hover:bg-[#5a4ce0]"
+        size="lg"
+        className="tracking-tight"
       >
-        Start free trial <ArrowUpRight className="size-4" />
+        Start free trial <ArrowUpRight />
       </Button>
       <Button
         render={<Link href="#pricing" />}
         nativeButton={false}
-        variant="ghost"
-        className="h-12 rounded-full border border-[#E5E5E5] bg-white px-6 text-[14px] font-medium text-[#0F1113] hover:bg-[#F5F5F5]"
+        size="lg"
+        variant="outline"
+        className="tracking-tight"
       >
         See pricing
       </Button>

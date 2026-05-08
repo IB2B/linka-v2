@@ -4,12 +4,12 @@ import { FAQS } from "./faq-data";
 
 export function FaqSection() {
   return (
-    <section id="faq" className="relative z-10 mx-auto w-full max-w-3xl px-6 py-32">
+    <section id="faq" className="relative z-10 mx-auto w-full max-w-3xl px-6 py-24">
       <SectionHeading
-        eyebrow="06 — Questions"
-        title={<>Things people ask before signing.</>}
+        eyebrow="FAQ"
+        title="Things people ask before signing."
       />
-      <div className="mt-12 flex flex-col">
+      <div className="mt-10 flex flex-col">
         {FAQS.map((f) => (
           <FaqItem key={f.q} faq={f} />
         ))}
