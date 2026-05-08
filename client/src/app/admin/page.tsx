@@ -1,15 +1,20 @@
 import { PageHeader } from "@/components/dashboard/page-header";
-import { StatGrid } from "@/components/dashboard/stat-grid";
-import { ADMIN_STATS } from "@/lib/dashboard/admin-stats";
+import { OverviewStats } from "@/components/admin/overview/overview-stats";
+import { getAdminStats } from "@/lib/admin/get-stats";
 
-export default function AdminOverviewPage() {
+export default async function AdminOverviewPage() {
+  const stats = await getAdminStats();
   return (
     <>
       <PageHeader
         title="Overview"
-        description="What's happening across your workspace today."
+        description="What's happening across the platform right now."
       />
-      <StatGrid stats={ADMIN_STATS} />
+      {stats ? (
+        <OverviewStats stats={stats} />
+      ) : (
+        <p className="text-sm text-muted-foreground">Failed to load stats.</p>
+      )}
     </>
   );
 }

@@ -12,9 +12,9 @@ import {
   RefreshCw,
   Settings,
   Sparkles,
-  Users,
 } from "lucide-react";
 
+import { ADMIN_NAV } from "@/lib/dashboard/admin-navigation";
 import type { UserFeatures } from "@/lib/auth/me";
 import type { NavGroup, NavItem } from "@/types/nav-item";
 import type { UserRole } from "@/types/user-role";
@@ -47,16 +47,9 @@ function account(prefix: string): NavGroup {
   };
 }
 
-const ADMIN_OVERSIGHT: NavGroup = {
-  label: "Oversight",
-  items: [{ label: "Users", href: "/admin/users", icon: Users }],
-};
-
 export function getNavigationForRole(
   role: UserRole, features: UserFeatures,
 ): NavGroup[] {
-  if (role === "ADMIN" || role === "SUPER_ADMIN") {
-    return [workspace("/admin", features), ADMIN_OVERSIGHT, account("/admin")];
-  }
+  if (role === "ADMIN" || role === "SUPER_ADMIN") return ADMIN_NAV;
   return [workspace("/dashboard", features), account("/dashboard")];
 }
