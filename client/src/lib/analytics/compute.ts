@@ -27,8 +27,16 @@ function platformBuckets(posts: GeneratedPost[]): AnalyticsBucket[] {
     counts.set(key, (counts.get(key) ?? 0) + 1);
   }
   return Array.from(counts, ([key, count]) => ({
-    key, label: key === "unspecified" ? "Unspecified" : key, count,
+    key, label: platformLabel(key), count,
   })).sort((a, b) => b.count - a.count);
+}
+
+function platformLabel(key: string): string {
+  if (key === "unspecified") return "Unspecified";
+  if (key === "linkedin") return "LinkedIn";
+  if (key === "tiktok") return "TikTok";
+  if (key === "youtube") return "YouTube";
+  return key.charAt(0).toUpperCase() + key.slice(1);
 }
 
 function bucketCount(b: AnalyticsBucket[], key: PostStatus): number {

@@ -1,47 +1,31 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useRef } from "react";
 
-import { replyToComment } from "@/lib/analytics/reply-comment";
 import { CommentAvatarCore } from "./comment-avatar-core";
 import { CommentReplyToolbar } from "./comment-reply-toolbar";
+import { CommentReplyImagePreview } from "./comment-reply-image-preview";
+import { useReplyState } from "./use-reply-state";
 import type { CommenterMe } from "@/lib/analytics/post-comments.types";
 
 type Props = {
   postId: string;
   platform: string;
   commentId: string;
+  commentMessage: string;
+  commenterName?: string;
   me?: CommenterMe;
   onDone: () => void;
   onPosted: (text: string) => void;
 };
 
-export function CommentReplyComposer({ postId, platform, commentId, me, onDone, onPosted }: Props) {
-  const [text, setText] = useState("");
-  const [pending, start] = useTransition();
-  const taRef = useRef<HTMLTextAreaElement>(null);
-  const trimmed = text.trim();
-
-  function insertEmoji(e: string) {
-    const ta = taRef.current;
-    const pos = ta?.selectionStart ?? text.length;
-    const end = ta?.selectionEnd ?? text.length;
-    setText(text.slice(0, pos) + e + text.slice(end));
-    requestAnimationFrame(() => ta?.setSelectionRange(pos + e.length, pos + e.length));
-  }
-
-  function send() {
-    if (!trimmed) return;
-    start(async () => {
-      const r = await replyToComment({ postId, platform, commentId, message: trimmed });
-      if (!r.ok) { toast.error(r.error); return; }
-      toast.success("Reply sent");
-      onPosted(trimmed);
-      setText("");
-      onDone();
-    });
-  }
+export function CommentReplyComposer({
+  postId, platform, commentId, commentMessage, commenterName, me, onDone, onPosted,
+}: Props) {
+  const s = useReplyState({
+    postId, platform, commentId, commentMessage, commenterName, onDone, onPosted,
+  });
+  const fileRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="mt-2 flex items-start gap-2">
@@ -49,13 +33,26 @@ export function CommentReplyComposer({ postId, platform, commentId, me, onDone, 
       <div className="flex-1 rounded-2xl border border-zinc-200 bg-background px-3 py-2 focus-within:border-zinc-400">
         {me && <div className="text-[13px] font-semibold text-foreground">{me.name}</div>}
         <textarea
-          ref={taRef} value={text} onChange={(e) => setText(e.target.value)}
+          ref={s.taRef} value={s.text} onChange={(e) => s.setText(e.target.value)}
           rows={2} placeholder="Write a reply…"
           className="mt-1 w-full resize-none border-0 bg-transparent text-sm leading-5 placeholder:text-muted-foreground focus:outline-none"
         />
+        {s.imageUrl && (
+          <CommentReplyImagePreview url={s.imageUrl} onRemove={() => s.setImageUrl(null)} />
+        )}
+        <input
+          ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp,image/gif"
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0]; e.target.value = "";
+            if (f) s.onFile(f);
+          }}
+        />
         <CommentReplyToolbar
-          canSend={trimmed.length > 0} pending={pending}
-          onEmoji={insertEmoji} onSend={send}
+          canSend={s.trimmed.length > 0} pending={s.pending}
+          suggesting={s.suggesting} imageUploading={s.uploading}
+          onEmoji={s.insertEmoji} onImageClick={() => fileRef.current?.click()}
+          onSuggest={s.suggest} onSend={s.send}
         />
       </div>
     </div>

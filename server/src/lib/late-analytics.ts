@@ -1,5 +1,6 @@
 import { lateFetch, LateApiError } from "./late-api";
-import { toMetrics, toPlatforms } from "./late-analytics-map";
+import { toPlatforms, aggregateFromPlatforms } from "./late-analytics-map";
+import { enrichPendingFromComments } from "./late-analytics-enrich";
 import { getCached, setCached } from "./late-analytics-cache";
 import * as snapshots from "../models/post-metric-snapshot.model";
 import type { PostAnalyticsResult } from "../types/analytics";
@@ -13,10 +14,12 @@ async function fetchFresh(latePostId: string): Promise<PostAnalyticsResult> {
     const r = await lateFetch<LateAnalyticsResponse>(
       `/analytics?postId=${encodeURIComponent(latePostId)}`,
     );
+    const rawPlatforms = toPlatforms(r.platformAnalytics);
+    const platforms = await enrichPendingFromComments(latePostId, rawPlatforms);
     return {
       state: "ok",
-      totals: toMetrics(r.analytics),
-      platforms: toPlatforms(r.platformAnalytics),
+      totals: aggregateFromPlatforms(platforms),
+      platforms,
     };
   } catch (e) {
     if (e instanceof LateApiError) {

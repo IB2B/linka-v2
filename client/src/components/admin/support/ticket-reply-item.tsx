@@ -41,9 +41,13 @@ export function TicketReplyItem({ reply }: { reply: TicketReply }) {
         {reply.attachmentUrl ? (
           <a
             href={reply.attachmentUrl} target="_blank" rel="noreferrer"
-            className="block overflow-hidden rounded-lg border bg-background"
+            className="block max-w-xs overflow-hidden rounded-lg border bg-background"
           >
-            <img src={reply.attachmentUrl} alt="Attachment" className="max-h-64 w-auto" />
+            <img
+              src={reply.attachmentUrl}
+              alt="Attachment"
+              className="h-auto max-h-56 w-full object-cover"
+            />
           </a>
         ) : null}
       </div>

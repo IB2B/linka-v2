@@ -1,7 +1,6 @@
 import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { findById } from "../models/generated-content.model";
-import { fetchPostAnalytics } from "../lib/late-analytics";
 import { resolvePlatformAccounts } from "../lib/late-accounts";
 import { aggregateComments } from "../lib/post-comments-aggregate";
 
@@ -19,12 +18,9 @@ export async function listComments(
     if (!post) { res.status(404).json({ error: "Not found" }); return; }
     if (!post.latePostId) { res.json({ groups: [] }); return; }
 
-    const analytics = await fetchPostAnalytics(post.latePostId);
-    if (analytics.state !== "ok") { res.json({ groups: [] }); return; }
-
-    const platforms = analytics.platforms
-      .filter((p) => p.status === "ok" && COMMENT_SUPPORTED.has(p.platform))
-      .map((p) => p.platform);
+    const scheduled = post.scheduledPlatforms
+      ?? (post.platform ? [post.platform] : []);
+    const platforms = scheduled.filter((p) => COMMENT_SUPPORTED.has(p));
     if (platforms.length === 0) { res.json({ groups: [] }); return; }
 
     const entries = await resolvePlatformAccounts(req.user!.id, platforms);
