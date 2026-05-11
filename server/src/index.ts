@@ -27,6 +27,8 @@ import adminSubscriptionsRouter from "./routes/admin-subscriptions";
 import adminPaymentsRouter from "./routes/admin-payments";
 import adminContentRouter from "./routes/admin-content";
 import adminModerationRouter from "./routes/admin-moderation";
+import adminFeedbackRouter from "./routes/admin-feedback";
+import adminSupportRouter from "./routes/admin-support";
 import { proxyImage } from "./controllers/image-proxy.controller";
 import { errorHandler } from "./middleware/error";
 import { reapStuckImageJobs } from "./lib/image-reaper";
@@ -69,6 +71,8 @@ app.use("/api/admin/subscriptions", adminSubscriptionsRouter);
 app.use("/api/admin/payments", adminPaymentsRouter);
 app.use("/api/admin/content", adminContentRouter);
 app.use("/api/admin/moderation", adminModerationRouter);
+app.use("/api/admin/feedback", adminFeedbackRouter);
+app.use("/api/admin/support", adminSupportRouter);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

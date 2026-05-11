@@ -1,11 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup,
-  DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
+  DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -23,6 +24,7 @@ export function SidebarUser({ user }: SidebarUserProps) {
   const { isMobile } = useSidebar();
   const { logout, pending } = useLogout();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const settingsHref = user.role === "USER" ? "/dashboard/settings" : "/admin/settings";
 
   return (
     <SidebarMenu>
@@ -43,15 +45,22 @@ export function SidebarUser({ user }: SidebarUserProps) {
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="p-0 font-normal">
+              <DropdownMenuItem
+                className="p-0 font-normal"
+                render={<Link href={settingsHref} />}
+              >
                 <div className="flex items-center gap-2 px-1 py-1.5">
                   <SidebarUserPreview user={user} />
                 </div>
-              </DropdownMenuLabel>
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <SidebarUserMenuHelp onSendFeedback={() => setFeedbackOpen(true)} />
-            <DropdownMenuSeparator />
+            {user.role === "USER" ? (
+              <>
+                <SidebarUserMenuHelp onSendFeedback={() => setFeedbackOpen(true)} />
+                <DropdownMenuSeparator />
+              </>
+            ) : null}
             <SidebarUserMenuLegal />
             <DropdownMenuSeparator />
             <DropdownMenuItem disabled={pending} closeOnClick={false} onClick={() => logout()}>

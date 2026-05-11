@@ -91,8 +91,13 @@ export type ActivitySummary = {
 };
 
 export type AdminStats = {
-  users: { total: number; active: number; suspended: number; newThisWeek: number };
-  posts: { total: number; thisMonth: number };
+  users: {
+    total: number; active: number; suspended: number;
+    newThisWeek: number; newPrevWeek: number;
+  };
+  posts: { total: number; thisMonth: number; prevMonth: number };
   subscriptions: { paying: number; free: number };
-  tickets: { open: number };
+  tickets: { open: number; urgent: number };
+  moderation: { pending: number };
+  feedback: { newCount: number };
 };
