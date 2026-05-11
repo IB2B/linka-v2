@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 
 import { PaymentStatusBadge } from "@/components/admin/subscriptions/payment-status-badge";
 import { formatAmount, formatDateTime } from "@/lib/admin/format-amount";
@@ -29,17 +29,31 @@ export function InvoiceRow({ invoice }: { invoice: AdminInvoice }) {
       </td>
       <td className="px-4 py-3"><PaymentStatusBadge status={status} /></td>
       <td className="px-4 py-3 text-right">
-        {link ? (
-          <a
-            href={link}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1 text-xs font-medium tracking-tight text-foreground hover:underline"
-          >
-            <ExternalLink className="size-3" />
-            View
-          </a>
-        ) : null}
+        <div className="inline-flex items-center gap-3">
+          {link ? (
+            <a
+              href={link}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 text-xs font-medium tracking-tight text-foreground hover:underline"
+            >
+              <ExternalLink className="size-3" />
+              View
+            </a>
+          ) : null}
+          {invoice.invoicePdf ? (
+            <a
+              href={invoice.invoicePdf}
+              target="_blank"
+              rel="noreferrer"
+              download
+              className="inline-flex items-center gap-1 text-xs font-medium tracking-tight text-muted-foreground hover:text-foreground hover:underline"
+            >
+              <Download className="size-3" />
+              Download
+            </a>
+          ) : null}
+        </div>
       </td>
     </tr>
   );

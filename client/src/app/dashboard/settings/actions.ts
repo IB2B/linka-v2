@@ -2,8 +2,14 @@
 
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 type ActionResult = { error?: string; success?: boolean };
+
+function revalidateSettings() {
+  revalidatePath("/dashboard/settings");
+  revalidatePath("/admin/settings");
+}
 
 async function apiFetch(path: string, init: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
@@ -20,7 +26,7 @@ async function apiFetch(path: string, init: RequestInit = {}): Promise<Response>
 
 async function send(path: string, method: string, body: object): Promise<ActionResult> {
   const res = await apiFetch(path, { method, body: JSON.stringify(body) });
-  if (res.ok) return { success: true };
+  if (res.ok) { revalidateSettings(); return { success: true }; }
   const json = (await res.json().catch(() => ({}))) as { error?: string };
   return { error: json.error ?? "Request failed." };
 }

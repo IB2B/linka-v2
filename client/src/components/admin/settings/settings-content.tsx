@@ -32,7 +32,10 @@ export function SettingsContent({ section, settings, integrations, me }: Props) 
     case "profile":
       return (
         <SettingsSection title="My admin profile" description="Your name and password — not visible to other admins.">
-          <AdminProfileForm firstName={me.firstName} lastName={me.lastName} email={me.email} />
+          <AdminProfileForm
+            firstName={me.firstName} lastName={me.lastName} email={me.email}
+            avatarUrl={me.avatarUrl ?? null}
+          />
         </SettingsSection>
       );
     case "integrations":

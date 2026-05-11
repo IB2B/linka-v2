@@ -8,13 +8,17 @@ import { PasswordField } from "@/components/forms/password-field";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Separator } from "@/components/ui/separator";
+import { ProfileAvatar } from "@/components/settings/profile-avatar";
 import {
   changePasswordAction, updateProfileAction,
 } from "@/app/dashboard/settings/actions";
 
-type Props = { firstName: string; lastName: string; email: string };
+type Props = {
+  firstName: string; lastName: string; email: string;
+  avatarUrl: string | null;
+};
 
-export function AdminProfileForm({ firstName, lastName, email }: Props) {
+export function AdminProfileForm({ firstName, lastName, email, avatarUrl }: Props) {
   const [pending, start] = useTransition();
 
   function saveProfile(formData: FormData) {
@@ -32,6 +36,8 @@ export function AdminProfileForm({ firstName, lastName, email }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
+      <ProfileAvatar avatarUrl={avatarUrl} firstName={firstName} email={email} />
+      <Separator />
       <form action={saveProfile} className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <FormField id="firstName" name="firstName" label="First name" required defaultValue={firstName} />

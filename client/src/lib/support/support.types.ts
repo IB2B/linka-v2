@@ -8,6 +8,8 @@ export type SupportTicket = {
   status: TicketStatus;
   priority: TicketPriority;
   category: TicketCategory | null;
+  rating: number | null;
+  hasUnread: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -17,4 +19,38 @@ export type CreateTicketInput = {
   body: string;
   category: TicketCategory;
   priority: TicketPriority;
+  attachmentUrl?: string;
+};
+
+export type TicketAuthor = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatarUrl: string | null;
+};
+
+export type TicketReply = {
+  id: string;
+  body: string;
+  attachmentUrl: string | null;
+  isAdmin: boolean;
+  createdAt: string;
+  author: TicketAuthor;
+};
+
+export type TicketDetail = {
+  ticket: {
+    id: string;
+    subject: string;
+    body: string;
+    attachmentUrl: string | null;
+    status: TicketStatus;
+    priority: TicketPriority;
+    category: TicketCategory | null;
+    rating: number | null;
+    createdAt: string;
+    updatedAt: string;
+    closedAt: string | null;
+  };
+  replies: TicketReply[];
 };
