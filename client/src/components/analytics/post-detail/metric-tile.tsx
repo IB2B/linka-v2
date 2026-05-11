@@ -19,7 +19,7 @@ export function MetricTile({
           <CardTitle className="text-2xl font-semibold tracking-tight">
             {formatTile(value, tile.format)}
           </CardTitle>
-          {deltaPct !== undefined ? <DeltaChip pct={deltaPct} /> : null}
+          {deltaPct !== undefined && value > 0 ? <DeltaChip pct={deltaPct} /> : null}
         </div>
       </CardContent>
     </Card>

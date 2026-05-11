@@ -117,6 +117,58 @@
   --weekend-tint: oklch(0.97 0.012 250);
 }
 
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.185 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.185 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.704 0.143 182.503);
+  --primary-foreground: oklch(0.145 0 0);
+  --secondary: oklch(0.245 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.245 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.245 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.704 0.143 182.503);
+  --chart-2: oklch(0.835 0.135 178.535);
+  --chart-3: oklch(0.6 0.118 184.704);
+  --chart-4: oklch(0.511 0.096 186.391);
+  --chart-5: oklch(0.437 0.078 188.216);
+  --sidebar: oklch(0.185 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.704 0.143 182.503);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+  --sidebar-accent: oklch(0.245 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+  --brand: oklch(0.704 0.143 182.503);
+  --brand-foreground: oklch(0.145 0 0);
+  --brand-soft: oklch(0.28 0.04 180);
+  --scheduled: oklch(0.32 0.06 80);
+  --scheduled-foreground: oklch(0.88 0.08 80);
+  --posted: oklch(0.30 0.06 155);
+  --posted-foreground: oklch(0.88 0.08 155);
+  --draft: oklch(0.28 0.005 250);
+  --draft-foreground: oklch(0.78 0.012 250);
+  --failed: oklch(0.32 0.08 18);
+  --failed-foreground: oklch(0.88 0.10 18);
+  --platform-instagram: oklch(0.72 0.18 5);
+  --platform-facebook: oklch(0.68 0.15 260);
+  --platform-linkedin: oklch(0.70 0.13 240);
+  --platform-tiktok: oklch(0.75 0.12 200);
+  --platform-twitter: oklch(0.92 0 0);
+  --platform-threads: oklch(0.72 0.08 320);
+  --weekend-tint: oklch(0.22 0.012 250);
+}
+
 button:not(:disabled),
 [role="button"]:not([aria-disabled="true"]),
 a[href] {
@@ -136,7 +188,8 @@ a[href] {
   [data-sidebar="menu-button"] svg,
   [data-sidebar="menu-sub-button"] svg,
   [data-sidebar="group-label"] svg {
-    color: #737373;
+    color: var(--sidebar-foreground);
+    opacity: 0.7;
   }
 }
 

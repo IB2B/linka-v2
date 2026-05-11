@@ -63,7 +63,8 @@ export function CommentRow({ postId, platform, comment, me, depth = 0 }: Props) 
         />
         {replyOpen && (
           <CommentReplyComposer
-            postId={postId} platform={platform} commentId={comment.id} me={me}
+            postId={postId} platform={platform} commentId={comment.id}
+            commentMessage={comment.text} commenterName={comment.authorName} me={me}
             onDone={() => setReplyOpen(false)} onPosted={onReplyPosted}
           />
         )}

@@ -46,9 +46,12 @@ export async function listPostComments(
 
 export async function replyToPostComment(
   postId: string, accountId: string, commentId: string, message: string,
+  mediaUrl?: string,
 ) {
+  const body: Record<string, unknown> = { accountId, commentId, message };
+  if (mediaUrl) body.mediaUrl = mediaUrl;
   return lateFetch<{ success?: boolean; data?: { commentId?: string } }>(
     `/inbox/comments/${encodeURIComponent(postId)}`,
-    { method: "POST", body: JSON.stringify({ accountId, commentId, message }) },
+    { method: "POST", body: JSON.stringify(body) },
   );
 }

@@ -3,6 +3,7 @@ type ReplyInput = {
   platform: string;
   commentId: string;
   message: string;
+  imageUrl?: string;
 };
 
 export async function replyToComment(
@@ -16,6 +17,7 @@ export async function replyToComment(
         platform: input.platform,
         commentId: input.commentId,
         message: input.message,
+        imageUrl: input.imageUrl,
       }),
     });
     if (!res.ok) {

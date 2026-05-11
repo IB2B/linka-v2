@@ -32,14 +32,7 @@ async function syncOne(userId: string, row: ScheduledRow) {
     if (r.state !== "ok") return;
     const posted = publishedPlatforms(r.platforms);
     let scheduled: string[] = [];
-    try { scheduled = JSON.parse(row.scheduled_platforms ?? "[]") ?? []; } catch {}
-    if (posted.length < scheduled.length) {
-      console.log(
-        "[sync] partial publish", row.id,
-        "scheduled=", scheduled,
-        "zernioReturned=", JSON.stringify(r.raw),
-      );
-    }
+    try { scheduled = JSON.parse(row.scheduled_platforms ?? "[]") ?? []; } catch { }
     if (posted.length === 0) return;
     if (row.status === "scheduled") await markPosted(row.id, userId, row.late_post_id);
     await recordOutcomes(userId, row.id, posted.map((p) => ({

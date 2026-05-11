@@ -17,6 +17,7 @@ import { FeedbackDialog } from "@/components/feedback/feedback-dialog";
 import { SidebarUserPreview } from "@/components/dashboard/sidebar-user-preview";
 import { SidebarUserMenuHelp } from "./sidebar-user-menu-help";
 import { SidebarUserMenuLegal } from "./sidebar-user-menu-legal";
+import { SidebarUserMenuTheme } from "./sidebar-user-menu-theme";
 import { useLogout } from "@/hooks/use-logout";
 import type { SidebarUserProps } from "@/types/sidebar-user-props";
 
@@ -62,6 +63,10 @@ export function SidebarUser({ user }: SidebarUserProps) {
               </>
             ) : null}
             <SidebarUserMenuLegal />
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <SidebarUserMenuTheme />
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem disabled={pending} closeOnClick={false} onClick={() => logout()}>
               {pending ? <Spinner aria-hidden /> : <LogOut />}
