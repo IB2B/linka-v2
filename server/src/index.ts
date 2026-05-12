@@ -46,6 +46,7 @@ app.use(express.json());
 
 app.use("/uploads", express.static(join(process.cwd(), "uploads"), {
   maxAge: "1d", fallthrough: false,
+  setHeaders: (res) => res.setHeader("X-Content-Type-Options", "nosniff"),
 }));
 app.get("/api/health", (_req, res) => { res.json({ ok: true }); });
 app.get("/api/image-proxy", proxyImage);
