@@ -21,7 +21,8 @@ export function MessageBubble({ message }: { message: Message }) {
           {message.text}
         </div>
         <p className={cn("text-[10px] text-muted-foreground", isOut ? "text-right" : "text-left")}>
-          {time}
+          {isOut ? "You" : (message.senderName ?? "")}
+          {time ? ` · ${time}` : ""}
         </p>
       </div>
     </div>

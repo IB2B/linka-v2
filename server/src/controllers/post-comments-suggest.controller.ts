@@ -4,6 +4,9 @@ import { z } from "zod";
 import type { AuthRequest } from "../middleware/auth";
 import { findById } from "../models/generated-content.model";
 import { getAnthropic } from "../lib/anthropic";
+import { rateLimit } from "../lib/rate-limit";
+
+const SUGGEST_WINDOW = 60 * 60 * 1000;
 
 const schema = z.object({
   platform: z.string().min(1),
@@ -17,6 +20,11 @@ export async function suggestReply(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
+    const limit = rateLimit(`suggest:${req.user!.id}`, 30, SUGGEST_WINDOW);
+    if (!limit.allowed) {
+      res.status(429).json({ error: "Too many suggest requests.", retryAfterMs: limit.retryAfterMs });
+      return;
+    }
     const id = String(req.params.id);
     const post = await findById(id, req.user!.id);
     if (!post) { res.status(404).json({ error: "Post not found." }); return; }

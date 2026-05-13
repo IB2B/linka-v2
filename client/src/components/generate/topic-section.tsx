@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { NewsPicker } from "./news-picker";
 import { TopicChooser } from "./topic-chooser";
-import { getPostTypeMeta } from "@/lib/content/post-types";
+import { getPostTypeMeta } from "@/lib/content/post-type-utils";
 import type { NewsArticle, PostType } from "@/types/content";
 
 type GenerateOpts = {

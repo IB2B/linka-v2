@@ -29,8 +29,18 @@ export type AdminInvoice = {
   description: string | null;
 };
 
-export async function listCharges(limit = 50): Promise<AdminCharge[]> {
-  const res = await stripe.charges.list({ limit });
+type DateRange = { from?: string; to?: string };
+
+function createdParam(r: DateRange) {
+  const p: { gte?: number; lte?: number } = {};
+  if (r.from) p.gte = Math.floor(new Date(r.from).getTime() / 1000);
+  if (r.to) p.lte = Math.floor(new Date(`${r.to}T23:59:59Z`).getTime() / 1000);
+  return Object.keys(p).length ? p : undefined;
+}
+
+export async function listCharges(limit = 50, range: DateRange = {}): Promise<AdminCharge[]> {
+  const created = createdParam(range);
+  const res = await stripe.charges.list({ limit, ...(created ? { created } : {}) });
   return res.data.map((c) => ({
     id: c.id,
     created: c.created * 1000,
@@ -47,8 +57,9 @@ export async function listCharges(limit = 50): Promise<AdminCharge[]> {
   }));
 }
 
-export async function listInvoices(limit = 50): Promise<AdminInvoice[]> {
-  const res = await stripe.invoices.list({ limit });
+export async function listInvoices(limit = 50, range: DateRange = {}): Promise<AdminInvoice[]> {
+  const created = createdParam(range);
+  const res = await stripe.invoices.list({ limit, ...(created ? { created } : {}) });
   return res.data.map((i) => ({
     id: i.id ?? "",
     number: i.number ?? null,

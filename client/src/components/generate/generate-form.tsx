@@ -9,7 +9,7 @@ import { TopicSection } from "./topic-section";
 import { GenerationOverlay } from "./generation-overlay";
 import { PostSettingsPanel } from "./post-settings";
 import { generatePostAction } from "@/app/dashboard/generate/actions";
-import { RANDOM_TYPES } from "@/lib/content/post-types";
+import { RANDOM_TYPES } from "@/lib/content/post-type-utils";
 import type { NewsArticle, PostSettings, PostType } from "@/types/content";
 
 type Props = { initialNews: NewsArticle[] };

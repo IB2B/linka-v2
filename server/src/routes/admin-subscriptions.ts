@@ -11,10 +11,12 @@ router.get("/", async (req, res, next) => {
     const q = String(req.query.q ?? "").trim() || undefined;
     const tier = typeof req.query.tier === "string" ? req.query.tier : undefined;
     const status = typeof req.query.status === "string" ? req.query.status : undefined;
+    const from = typeof req.query.from === "string" ? req.query.from : undefined;
+    const to = typeof req.query.to === "string" ? req.query.to : undefined;
     const limit = Math.min(Number(req.query.limit ?? 50), 200);
     const offset = Math.max(Number(req.query.offset ?? 0), 0);
     const [list, summary] = await Promise.all([
-      listSubscriptions({ q, tier, status, limit, offset }),
+      listSubscriptions({ q, tier, status, from, to, limit, offset }),
       getSubscriptionsSummary(),
     ]);
     res.json({ ...list, summary });

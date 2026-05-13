@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "../lib/db";
 import { adminOnly, type AuthRequest } from "../middleware/admin";
 import { listSupportTickets } from "../lib/admin-support-list";
 import { getSupportSummary } from "../lib/admin-support-summary";
 import { getTicketDetail } from "../lib/admin-support-detail";
+import { addAdminReply } from "../lib/admin-support-reply";
 
 const router = Router();
 router.use(adminOnly);
@@ -48,17 +48,14 @@ router.patch("/:id", async (req, res, next) => {
     const sets: string[] = []; const params: any[] = [];
     if (parsed.data.status) {
       sets.push("status = ?"); params.push(parsed.data.status);
-      if (parsed.data.status === "closed") sets.push("closed_at = NOW()");
-      else sets.push("closed_at = NULL");
+      sets.push(parsed.data.status === "closed" ? "closed_at = NOW()" : "closed_at = NULL");
     }
     if (parsed.data.priority) { sets.push("priority = ?"); params.push(parsed.data.priority); }
     params.push(req.params.id);
     const [r] = await db.query<any>(
       `UPDATE support_tickets SET ${sets.join(", ")} WHERE id = ?`, params,
     );
-    if (!r || (r as any).affectedRows === 0) {
-      res.status(404).json({ error: "Not found" }); return;
-    }
+    if (!r || (r as any).affectedRows === 0) { res.status(404).json({ error: "Not found" }); return; }
     res.json({ ok: true });
   } catch (e) { next(e); }
 });
@@ -72,25 +69,12 @@ router.post("/:id/reply", async (req: AuthRequest, res, next) => {
   try {
     const parsed = replySchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: "Message required" }); return; }
-    const [[t]] = await db.query<any[]>(
-      `SELECT id FROM support_tickets WHERE id = ? LIMIT 1`, [req.params.id],
-    );
-    if (!t) { res.status(404).json({ error: "Not found" }); return; }
-    const id = randomUUID();
-    await db.query(
-      `INSERT INTO support_ticket_replies
-        (id, ticket_id, author_id, body, attachment_url, is_admin)
-       VALUES (?, ?, ?, ?, ?, TRUE)`,
-      [id, req.params.id, req.user!.id, parsed.data.body, parsed.data.attachmentUrl ?? null],
-    );
-    await db.query(
-      `UPDATE support_tickets
-       SET status = IF(status IN ('resolved','closed'),'pending',status),
-           closed_at = IF(status='closed', NULL, closed_at)
-       WHERE id = ?`, [req.params.id],
-    );
+    const id = await addAdminReply(req.params.id, req.user!.id, parsed.data.body, parsed.data.attachmentUrl);
     res.status(201).json({ id });
-  } catch (e) { next(e); }
+  } catch (e: any) {
+    if (e.status === 404) { res.status(404).json({ error: "Not found" }); return; }
+    next(e);
+  }
 });
 
 export default router;

@@ -6,7 +6,9 @@ import { formatPostDate } from "@/lib/posts/format-date";
 import type { GeneratedPost } from "@/types/post";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
 
-export function PostHeroCard({ post }: { post: GeneratedPost }) {
+export function PostHeroCard({
+  post, platforms = post.platform ? [post.platform] : [],
+}: { post: GeneratedPost; platforms?: string[] }) {
   const date = post.postedAt ?? post.scheduledFor ?? post.createdAt;
   const dateLabel = post.postedAt
     ? `Posted ${formatPostDate(post.postedAt)}`
@@ -28,14 +30,12 @@ export function PostHeroCard({ post }: { post: GeneratedPost }) {
             {post.content}
           </p>
           <div className="flex flex-wrap items-center gap-2">
-            {post.platform ? (
-              <Badge variant="outline" className="gap-1.5 capitalize">
-                <PlatformIcon
-                  platform={post.platform as Platform} className="size-3.5"
-                />
-                {post.platform}
+            {platforms.map((p) => (
+              <Badge key={p} variant="outline" className="gap-1.5 capitalize">
+                <PlatformIcon platform={p as Platform} className="size-3.5" />
+                {p}
               </Badge>
-            ) : null}
+            ))}
             <PostStatusBadge status={post.status} />
             <span className="text-xs text-muted-foreground">{dateLabel}</span>
           </div>

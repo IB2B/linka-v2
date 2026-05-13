@@ -4,7 +4,7 @@ export const PLAN_PRICE: Record<string, number> = {
   free: 0, starter: 29, pro: 49, scale: 99,
 };
 
-export type SubsFilters = { q?: string; tier?: string; status?: string; limit: number; offset: number };
+export type SubsFilters = { q?: string; tier?: string; status?: string; from?: string; to?: string; limit: number; offset: number };
 
 export type SubsRow = {
   id: string; userId: string; email: string; firstName: string; lastName: string;
@@ -26,6 +26,8 @@ export async function listSubscriptions(f: SubsFilters) {
   }
   if (f.tier) { conds.push("s.plan_tier = ?"); params.push(f.tier); }
   if (f.status) { conds.push("s.status = ?"); params.push(f.status); }
+  if (f.from) { conds.push("s.created_at >= ?"); params.push(f.from); }
+  if (f.to) { conds.push("s.created_at <= ?"); params.push(`${f.to} 23:59:59`); }
   const where = conds.length ? `WHERE ${conds.join(" AND ")}` : "";
 
   const [rows] = await db.query<any[]>(

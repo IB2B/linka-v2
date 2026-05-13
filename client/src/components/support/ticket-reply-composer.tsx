@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { AttachmentInput } from "@/components/support/attachment-input";
+import { DropZone } from "@/components/support/drop-zone";
 import { replyToMyTicketAction } from "@/app/dashboard/support/actions";
 import { uploadSupportAttachment } from "@/lib/support/upload-attachment";
-import { cn } from "@/lib/utils";
 
 export function TicketReplyComposer({ id }: { id: string }) {
   const [text, setText] = useState("");
@@ -22,9 +22,7 @@ export function TicketReplyComposer({ id }: { id: string }) {
   const canSend = (trimmed.length > 0 || !!attachmentUrl) && !pending;
 
   async function ingestFile(file: File) {
-    if (!file.type.startsWith("image/")) {
-      toast.error("Only images are supported."); return;
-    }
+    if (!file.type.startsWith("image/")) { toast.error("Only images are supported."); return; }
     setAutoUploading(true);
     const r = await uploadSupportAttachment(file);
     setAutoUploading(false);
@@ -37,12 +35,6 @@ export function TicketReplyComposer({ id }: { id: string }) {
     if (file) { e.preventDefault(); ingestFile(file); }
   }
 
-  function onDrop(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault(); setDragging(false);
-    const file = Array.from(e.dataTransfer.files).find((f) => f.type.startsWith("image/"));
-    if (file) ingestFile(file);
-  }
-
   function send() {
     if (!canSend) return;
     start(async () => {
@@ -53,9 +45,7 @@ export function TicketReplyComposer({ id }: { id: string }) {
   }
 
   function onKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-      e.preventDefault(); send();
-    }
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); send(); }
   }
 
   return (
@@ -64,36 +54,22 @@ export function TicketReplyComposer({ id }: { id: string }) {
         Reply to our support team · Ctrl/⌘ + Enter to send · drop or paste images
       </div>
       <div className="px-4 pb-4">
-        <div
-          onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
-          onDragLeave={() => setDragging(false)}
-          onDrop={onDrop}
-          className={cn(
-            "rounded-xl border bg-background ring-1 ring-transparent transition focus-within:ring-ring",
-            dragging && "ring-primary",
-          )}
-        >
+        <DropZone onDrop={ingestFile} dragging={dragging} onDraggingChange={setDragging}>
           <Textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            onKeyDown={onKey}
-            onPaste={onPaste}
+            value={text} onChange={(e) => setText(e.target.value)}
+            onKeyDown={onKey} onPaste={onPaste}
             placeholder={dragging ? "Drop image to attach…" : "Write a message…"}
             rows={3}
             className="min-h-24 resize-none border-0 bg-transparent shadow-none focus-visible:ring-0"
           />
           <div className="flex items-center justify-between gap-2 border-t px-2.5 py-2">
-            <AttachmentInput
-              value={attachmentUrl}
-              onChange={setAttachmentUrl}
-              disabled={pending || autoUploading}
-            />
+            <AttachmentInput value={attachmentUrl} onChange={setAttachmentUrl} disabled={pending || autoUploading} />
             <Button onClick={send} disabled={!canSend} size="sm">
               {pending ? <Spinner aria-hidden /> : <Send className="size-3.5" />}
               Send
             </Button>
           </div>
-        </div>
+        </DropZone>
       </div>
     </div>
   );

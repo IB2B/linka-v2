@@ -4,24 +4,20 @@ import { z } from "zod";
 import { db } from "../lib/db";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 import { supportUpload } from "../lib/support-upload";
+import threadRouter from "./support-thread";
 
 const router = Router();
 router.use(authenticate);
+
+const ATTACH_RE = /^\/uploads\/support\/[\w.-]+$/;
 
 const createSchema = z.object({
   subject: z.string().trim().min(3).max(255),
   body: z.string().trim().min(10).max(5000),
   category: z.enum(["bug", "billing", "feature", "account", "other"]),
   priority: z.enum(["low", "normal", "high", "urgent"]).default("normal"),
-  attachmentUrl: z.string().trim().max(500).optional(),
+  attachmentUrl: z.string().regex(ATTACH_RE).optional(),
 });
-
-const replySchema = z.object({
-  body: z.string().trim().min(1).max(5000),
-  attachmentUrl: z.string().trim().max(500).optional(),
-});
-
-const rateSchema = z.object({ rating: z.coerce.number().int().min(1).max(5) });
 
 const uploadHandler: RequestHandler = (req, res) => {
   supportUpload.single("file")(req, res, (err) => {
@@ -75,113 +71,6 @@ router.post("/tickets", async (req: AuthRequest, res, next) => {
   } catch (e) { next(e); }
 });
 
-router.get("/tickets/:id", async (req: AuthRequest, res, next) => {
-  try {
-    const [[t]] = await db.query<any[]>(
-      `SELECT id, subject, body, attachment_url, status, priority, category, rating,
-              created_at, updated_at, closed_at
-       FROM support_tickets WHERE id = ? AND user_id = ? LIMIT 1`,
-      [req.params.id, req.user!.id],
-    );
-    if (!t) { res.status(404).json({ error: "Not found" }); return; }
-    const [replies] = await db.query<any[]>(
-      `SELECT r.id, r.body, r.attachment_url, r.is_admin, r.created_at,
-              u.first_name, u.last_name, u.email, p.avatar_url
-       FROM support_ticket_replies r
-       INNER JOIN users u ON u.id = r.author_id
-       LEFT JOIN user_profiles p ON p.user_id = u.id
-       WHERE r.ticket_id = ? ORDER BY r.created_at ASC`,
-      [req.params.id],
-    );
-    res.json({
-      ticket: {
-        id: t.id, subject: t.subject, body: t.body,
-        attachmentUrl: t.attachment_url ?? null,
-        status: t.status, priority: t.priority, category: t.category ?? null,
-        rating: t.rating ?? null,
-        createdAt: new Date(t.created_at).toISOString(),
-        updatedAt: new Date(t.updated_at).toISOString(),
-        closedAt: t.closed_at ? new Date(t.closed_at).toISOString() : null,
-      },
-      replies: replies.map((r) => ({
-        id: r.id, body: r.body,
-        attachmentUrl: r.attachment_url ?? null,
-        isAdmin: Boolean(r.is_admin),
-        createdAt: new Date(r.created_at).toISOString(),
-        author: {
-          firstName: r.first_name, lastName: r.last_name,
-          email: r.email, avatarUrl: r.avatar_url ?? null,
-        },
-      })),
-    });
-  } catch (e) { next(e); }
-});
-
-router.post("/tickets/:id/reply", async (req: AuthRequest, res, next) => {
-  try {
-    const parsed = replySchema.safeParse(req.body);
-    if (!parsed.success) { res.status(400).json({ error: "Message required" }); return; }
-    const [[t]] = await db.query<any[]>(
-      `SELECT id FROM support_tickets WHERE id = ? AND user_id = ? LIMIT 1`,
-      [req.params.id, req.user!.id],
-    );
-    if (!t) { res.status(404).json({ error: "Not found" }); return; }
-    const id = randomUUID();
-    await db.query(
-      `INSERT INTO support_ticket_replies
-        (id, ticket_id, author_id, body, attachment_url, is_admin)
-       VALUES (?, ?, ?, ?, ?, FALSE)`,
-      [id, req.params.id, req.user!.id, parsed.data.body, parsed.data.attachmentUrl ?? null],
-    );
-    await db.query(
-      `UPDATE support_tickets
-       SET status = IF(status IN ('resolved','closed'),'open',status),
-           closed_at = IF(status='closed', NULL, closed_at)
-       WHERE id = ?`, [req.params.id],
-    );
-    res.status(201).json({ id });
-  } catch (e) { next(e); }
-});
-
-router.post("/tickets/:id/view", async (req: AuthRequest, res, next) => {
-  try {
-    await db.query(
-      `UPDATE support_tickets SET last_viewed_at = NOW(3)
-       WHERE id = ? AND user_id = ?`,
-      [req.params.id, req.user!.id],
-    );
-    res.json({ ok: true });
-  } catch (e) { next(e); }
-});
-
-router.post("/tickets/:id/resolve", async (req: AuthRequest, res, next) => {
-  try {
-    const [r] = await db.query<any>(
-      `UPDATE support_tickets SET status = 'resolved'
-       WHERE id = ? AND user_id = ? AND status IN ('open','pending')`,
-      [req.params.id, req.user!.id],
-    );
-    if (!r || (r as any).affectedRows === 0) {
-      res.status(400).json({ error: "Cannot resolve this ticket" }); return;
-    }
-    res.json({ ok: true });
-  } catch (e) { next(e); }
-});
-
-router.post("/tickets/:id/rate", async (req: AuthRequest, res, next) => {
-  try {
-    const parsed = rateSchema.safeParse(req.body);
-    if (!parsed.success) { res.status(400).json({ error: "Invalid rating" }); return; }
-    const [r] = await db.query<any>(
-      `UPDATE support_tickets SET rating = ?
-       WHERE id = ? AND user_id = ? AND status IN ('resolved','closed')`,
-      [parsed.data.rating, req.params.id, req.user!.id],
-    );
-    if (!r || (r as any).affectedRows === 0) {
-      res.status(400).json({ error: "Cannot rate this ticket yet" }); return;
-    }
-    res.json({ ok: true });
-  } catch (e) { next(e); }
-});
+router.use("/tickets/:id", threadRouter);
 
 export default router;

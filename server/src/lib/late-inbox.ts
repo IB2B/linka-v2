@@ -6,18 +6,26 @@ export type RawConversation = {
   id?: string;
   platform: string;
   accountId?: string;
-  participant?: { name?: string; username?: string; avatar?: string | null };
-  lastMessage?: { text?: string; createdAt?: string; direction?: string };
+  // flat shape (current API)
+  participantName?: string;
+  participantUsername?: string;
+  participantPicture?: string | null;
+  lastMessage?: string | { text?: string; createdAt?: string; direction?: string };
+  updatedTime?: string;
   unreadCount?: number;
   updatedAt?: string;
+  // nested shape (legacy / fallback)
+  participant?: { name?: string; username?: string; avatar?: string | null };
 };
 
 export type RawMessage = {
   _id?: string;
   id?: string;
+  message?: string;  // current API
   text?: string;
   body?: string;
   direction?: "incoming" | "outgoing" | string;
+  senderName?: string;  // current API (flat)
   sender?: { name?: string };
   createdAt?: string;
 };
@@ -32,7 +40,7 @@ type LatePage<T> = {
 
 export async function listInboxConversations(userId: string, platform?: string) {
   const profileId = await getOrCreateLateProfile(userId);
-  const qs = new URLSearchParams({ profileId, limit: "50" });
+  const qs = new URLSearchParams({ profileId, limit: "10" });
   if (platform) qs.set("platform", platform);
   const r = await lateFetch<LatePage<RawConversation>>(
     `/inbox/conversations?${qs.toString()}`,
@@ -48,17 +56,18 @@ export async function listInboxMessages(
   const r = await lateFetch<LatePage<RawMessage>>(
     `/inbox/conversations/${encodeURIComponent(conversationId)}/messages?${qs.toString()}`,
   );
+  const msgs = r.data ?? r.messages ?? [];
   return {
-    messages: r.data ?? r.messages ?? [],
+    messages: msgs,
     nextCursor: r.pagination?.nextCursor ?? r.nextCursor ?? null,
   };
 }
 
 export async function sendInboxMessage(
-  conversationId: string, accountId: string, text: string,
+  conversationId: string, accountId: string, text: string, mediaUrl?: string,
 ) {
   return lateFetch<{ id?: string }>(
     `/inbox/conversations/${encodeURIComponent(conversationId)}/messages`,
-    { method: "POST", body: JSON.stringify({ accountId, text }) },
+    { method: "POST", body: JSON.stringify({ accountId, message: text, ...(mediaUrl ? { mediaUrl } : {}) }) },
   );
 }

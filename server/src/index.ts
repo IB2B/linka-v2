@@ -18,20 +18,9 @@ import trendsRouter from "./routes/trends";
 import analyticsRouter from "./routes/analytics";
 import recyclerRouter from "./routes/recycler";
 import feedbackRouter from "./routes/feedback";
-import adminStatsRouter from "./routes/admin-stats";
-import adminUsersRouter from "./routes/admin-users";
-import adminActivityRouter from "./routes/admin-activity";
-import adminUserDetailRouter from "./routes/admin-user-detail";
-import adminSettingsRouter from "./routes/admin-settings";
-import adminSubscriptionsRouter from "./routes/admin-subscriptions";
-import adminPaymentsRouter from "./routes/admin-payments";
-import adminContentRouter from "./routes/admin-content";
-import adminModerationRouter from "./routes/admin-moderation";
-import adminFeedbackRouter from "./routes/admin-feedback";
-import adminSupportRouter from "./routes/admin-support";
-import adminAnalyticsRouter from "./routes/admin-analytics";
-import adminAiUsageRouter from "./routes/admin-ai-usage";
+import { mountAdminRoutes } from "./routes/admin-index";
 import { proxyImage } from "./controllers/image-proxy.controller";
+import { authenticate } from "./middleware/auth";
 import { errorHandler } from "./middleware/error";
 import { reapStuckImageJobs } from "./lib/image-reaper";
 
@@ -40,16 +29,15 @@ const PORT = Number(process.env.PORT ?? 4000);
 
 app.use(cors({ origin: process.env.NEXT_PUBLIC_APP_URL, credentials: true }));
 app.use(cookieParser());
-
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
-
 app.use("/uploads", express.static(join(process.cwd(), "uploads"), {
   maxAge: "1d", fallthrough: false,
   setHeaders: (res) => res.setHeader("X-Content-Type-Options", "nosniff"),
 }));
+
 app.get("/api/health", (_req, res) => { res.json({ ok: true }); });
-app.get("/api/image-proxy", proxyImage);
+app.get("/api/image-proxy", authenticate, proxyImage);
 app.use("/api/auth", authRouter);
 app.use("/api/billing", billingRouter);
 app.use("/api/stripe", stripeRouter);
@@ -65,19 +53,7 @@ app.use("/api/trends", trendsRouter);
 app.use("/api/analytics", analyticsRouter);
 app.use("/api/recycler", recyclerRouter);
 app.use("/api/feedback", feedbackRouter);
-app.use("/api/admin/stats", adminStatsRouter);
-app.use("/api/admin/users", adminUsersRouter);
-app.use("/api/admin/activity", adminActivityRouter);
-app.use("/api/admin/users", adminUserDetailRouter);
-app.use("/api/admin/settings", adminSettingsRouter);
-app.use("/api/admin/subscriptions", adminSubscriptionsRouter);
-app.use("/api/admin/payments", adminPaymentsRouter);
-app.use("/api/admin/content", adminContentRouter);
-app.use("/api/admin/moderation", adminModerationRouter);
-app.use("/api/admin/feedback", adminFeedbackRouter);
-app.use("/api/admin/support", adminSupportRouter);
-app.use("/api/admin/analytics", adminAnalyticsRouter);
-app.use("/api/admin/ai-usage", adminAiUsageRouter);
+mountAdminRoutes(app);
 
 app.use(errorHandler);
 app.listen(PORT, () => {

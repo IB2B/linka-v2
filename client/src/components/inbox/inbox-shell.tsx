@@ -16,7 +16,7 @@ export async function InboxShell({ activeId, platform, children }: Props) {
   ]);
 
   return (
-    <div className="grid h-[calc(100vh-7rem)] grid-cols-1 overflow-hidden rounded-xl border bg-card lg:grid-cols-[340px_minmax(0,1fr)]">
+    <div className="grid h-[calc(100vh-5.5rem)] grid-cols-1 overflow-hidden rounded-xl border bg-card lg:grid-cols-[340px_minmax(0,1fr)]">
       <aside className="hidden border-r lg:block">
         {result.ok ? (
           <ConversationList
@@ -34,7 +34,7 @@ export async function InboxShell({ activeId, platform, children }: Props) {
           />
         )}
       </aside>
-      <section className="flex flex-col">{children}</section>
+      <section className="flex h-full min-h-0 flex-col">{children}</section>
     </div>
   );
 }

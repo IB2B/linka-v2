@@ -7,10 +7,13 @@ export type Conversation = {
   platform: InboxPlatform | string;
   accountId: string | null;
   participantName: string;
+  participantUsername: string | null;
   participantAvatar: string | null;
   lastMessage: string;
+  lastMessageDirection: "outgoing" | "incoming" | null;
   lastMessageAt: string | null;
   unread: boolean;
+  url: string | null;
 };
 
 export type Message = {

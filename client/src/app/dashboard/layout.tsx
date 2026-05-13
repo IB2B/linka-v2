@@ -5,6 +5,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { HeaderActions } from "@/components/dashboard/header-actions";
+import { NavBreadcrumb } from "@/components/dashboard/nav-breadcrumb";
 import { requireRole } from "@/lib/auth/require-role";
 import type { DashboardUser } from "@/types/dashboard-user";
 
@@ -32,9 +33,7 @@ export default async function DashboardLayout({
         <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <SidebarTrigger />
           <div className="h-4 w-px bg-border" aria-hidden />
-          <span className="text-sm font-medium text-muted-foreground">
-            Dashboard
-          </span>
+          <NavBreadcrumb />
           <HeaderActions prefix="/dashboard" />
         </header>
         <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>

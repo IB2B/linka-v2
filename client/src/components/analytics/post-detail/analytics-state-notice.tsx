@@ -11,7 +11,7 @@ const COPY: Record<
   },
   syncing: {
     title: "Analytics syncing",
-    body: "Late is still pulling metrics from the platforms. Refresh in a minute.",
+    body: "The platform hasn't reported metrics yet. This page will refresh automatically every 30 seconds.",
   },
   "addon-required": {
     title: "Analytics add-on required",
