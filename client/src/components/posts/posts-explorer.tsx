@@ -25,17 +25,16 @@ export function PostsExplorer({ posts }: { posts: GeneratedPost[] }) {
 
   return (
     <SelectionProvider>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <PostsRefresh posts={posts} />
-        <div className="flex flex-wrap items-center gap-2">
-          <PostsToolbar
-            query={query} onQueryChange={setQuery}
-            status={status} onStatusChange={setStatus}
-            view={view} onViewChange={setView}
-            count={filtered.length} total={posts.length}
-          />
+        <PostsToolbar
+          query={query} onQueryChange={setQuery}
+          status={status} onStatusChange={setStatus}
+          view={view} onViewChange={setView}
+          count={filtered.length} total={posts.length}
+        >
           <SelectToggle />
-        </div>
+        </PostsToolbar>
         <SelectionBar posts={filtered} />
         {filtered.length === 0 ? (
           <PostsEmptyFiltered />

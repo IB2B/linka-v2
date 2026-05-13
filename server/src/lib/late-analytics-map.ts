@@ -28,18 +28,24 @@ export function aggregateFromPlatforms(
 
 const num = (v: unknown): number => (typeof v === "number" ? v : 0);
 
+// LinkedIn returns count-suffixed keys; we prefer the normalised form if present.
+const pick = (r: Record<string, unknown>, ...keys: string[]): number => {
+  for (const k of keys) if (typeof r[k] === "number") return r[k] as number;
+  return 0;
+};
+
 export function toMetrics(raw: unknown): PostMetrics {
   if (!raw || typeof raw !== "object") return ZERO;
   const r = raw as Record<string, unknown>;
   return {
-    impressions: num(r.impressions),
-    reach: num(r.reach),
-    likes: num(r.likes),
-    comments: num(r.comments),
-    shares: num(r.shares),
-    saves: num(r.saves),
-    clicks: num(r.clicks),
-    views: num(r.views),
+    impressions: pick(r, "impressions", "impressionCount"),
+    reach: pick(r, "reach", "uniqueImpressionsCount", "memberReached", "reachCount"),
+    likes: pick(r, "likes", "likeCount", "reactionCount"),
+    comments: pick(r, "comments", "commentCount"),
+    shares: pick(r, "shares", "shareCount", "repostCount"),
+    saves: pick(r, "saves", "saveCount", "bookmarkCount"),
+    clicks: pick(r, "clicks", "clickCount"),
+    views: pick(r, "views", "viewCount", "videoViewCount"),
     engagementRate: num(r.engagementRate),
   };
 }

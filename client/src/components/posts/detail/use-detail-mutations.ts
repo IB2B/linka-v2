@@ -11,7 +11,7 @@ import {
 import { usePostPlatforms } from "@/components/posts/platforms-context";
 import { showPublishToast } from "@/lib/posts/publish-toast";
 
-export function useDetailMutations(postId: string) {
+export function useDetailMutations(postId: string, onPublished?: () => void) {
   const router = useRouter();
   const [delPending, delStart] = useTransition();
   const [pubPending, pubStart] = useTransition();
@@ -39,6 +39,7 @@ export function useDetailMutations(postId: string) {
       if (res.error) toast.error(res.error);
       else {
         showPublishToast({ publishedTo: res.publishedTo ?? platforms, failed: res.failed ?? [] });
+        onPublished?.();
         router.refresh();
       }
     });

@@ -10,7 +10,7 @@ const TABS = [
   { id: "payments", label: "Payments" },
 ];
 
-type Sp = { tab?: string; view?: string; q?: string; tier?: string; status?: string };
+type Sp = { tab?: string; view?: string; q?: string; tier?: string; status?: string; from?: string; to?: string };
 
 export default async function AdminSubscriptionsPage({
   searchParams,
@@ -31,7 +31,7 @@ export default async function AdminSubscriptionsPage({
       />
       {active === "subscriptions"
         ? <SubscriptionsTab sp={sp} />
-        : <PaymentsTab view={sp.view ?? "charges"} />}
+        : <PaymentsTab view={sp.view ?? "charges"} from={sp.from} to={sp.to} />}
     </>
   );
 }

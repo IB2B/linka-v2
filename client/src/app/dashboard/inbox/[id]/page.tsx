@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 
-import { PageHeader } from "@/components/dashboard/page-header";
 import { InboxShell } from "@/components/inbox/inbox-shell";
 import { ThreadHeader } from "@/components/inbox/thread-header";
 import { MessageThread } from "@/components/inbox/message-thread";
@@ -26,25 +25,19 @@ export default async function ConversationPage({
   const messagesRes = await getMessages(id, conversation?.accountId ?? null);
 
   return (
-    <>
-      <PageHeader
-        title="Inbox"
-        description="Read and reply to DMs across your connected social accounts."
-      />
-      <InboxShell activeId={id} platform={platform}>
-        {!messagesRes.ok ? (
-          <InboxError
-            message={messagesRes.status === 402 ? "Inbox add-on required" : "Couldn't load messages"}
-            hint={messagesRes.error}
-          />
-        ) : conversation ? (
-          <>
-            <ThreadHeader conversation={conversation} />
-            <MessageThread messages={messagesRes.data.messages} />
-            <ReplyComposer conversationId={id} accountId={conversation.accountId} />
-          </>
-        ) : null}
-      </InboxShell>
-    </>
+    <InboxShell activeId={id} platform={platform}>
+      {!messagesRes.ok ? (
+        <InboxError
+          message={messagesRes.status === 402 ? "Inbox add-on required" : "Couldn't load messages"}
+          hint={messagesRes.error}
+        />
+      ) : conversation ? (
+        <>
+          <ThreadHeader conversation={conversation} />
+          <MessageThread messages={messagesRes.data.messages} />
+          <ReplyComposer conversationId={id} accountId={conversation.accountId} />
+        </>
+      ) : null}
+    </InboxShell>
   );
 }

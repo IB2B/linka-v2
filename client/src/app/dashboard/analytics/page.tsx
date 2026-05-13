@@ -8,6 +8,9 @@ import { parseRange, rangeLabel } from "@/lib/analytics/range";
 import { getPosts } from "@/lib/posts/get-posts";
 import { getAnalyticsSummary } from "@/lib/analytics/get-analytics-summary";
 import { getPublishedPlatforms } from "@/lib/posts/get-published-platforms";
+import { getPlatformMetrics } from "@/lib/analytics/get-platform-metrics";
+import { getImageRoi } from "@/lib/analytics/get-image-roi";
+import { getDailyEngagement } from "@/lib/analytics/get-daily-engagement";
 
 type Search = { range?: string };
 
@@ -18,9 +21,12 @@ export default async function AnalyticsPage({
 }) {
   const { range: raw } = await searchParams;
   const range = parseRange(raw);
-  const [posts, metrics] = await Promise.all([
+  const [posts, metrics, platformMetrics, imageRoi, engagement] = await Promise.all([
     getPosts(),
     getAnalyticsSummary(),
+    getPlatformMetrics(),
+    getImageRoi(),
+    getDailyEngagement(30),
   ]);
   const data = computeAnalytics(posts, range);
   const published = await getPublishedPlatforms(data.recent.map((p) => p.id));
@@ -37,7 +43,11 @@ export default async function AnalyticsPage({
       {posts.length === 0 ? (
         <AnalyticsEmpty />
       ) : (
-        <AnalyticsView data={data} metrics={metrics} published={published} />
+        <AnalyticsView
+          data={data} metrics={metrics} published={published}
+          platformMetrics={platformMetrics} imageRoi={imageRoi}
+          engagement={engagement}
+        />
       )}
     </>
   );

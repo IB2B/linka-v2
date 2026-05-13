@@ -29,7 +29,7 @@ export function RecentPostsRow({
       tabIndex={0}
       onClick={() => router.push(href)}
       onKeyDown={(e) => { if (e.key === "Enter") router.push(href); }}
-      className="cursor-pointer border-t transition-colors hover:bg-blue-50 hover:text-blue-700 focus:bg-blue-50 focus:text-blue-700 focus:outline-none"
+      className="cursor-pointer border-t transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
     >
       <td className="px-4 py-3">
         <p className="line-clamp-2 max-w-md text-sm">{preview}</p>

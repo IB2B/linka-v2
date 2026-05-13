@@ -16,12 +16,13 @@ import type { GeneratedPost } from "@/types/post";
 export function PostDetailActions({ post }: { post: GeneratedPost }) {
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [publishedNow, setPublishedNow] = useState(false);
   const { delPending, pubPending, onConfirmDelete, onPublishNow } =
-    useDetailMutations(post.id);
+    useDetailMutations(post.id, () => setPublishedNow(true));
   const ctx = usePostPlatforms();
   const noPlatforms = !!ctx && ctx.selected.length === 0;
 
-  const isPosted = post.status === "posted";
+  const isPosted = post.status === "posted" || publishedNow;
   const isScheduled = post.status === "scheduled";
 
   return (

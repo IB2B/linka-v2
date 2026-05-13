@@ -1,5 +1,6 @@
 import { PageHeader } from "@/components/dashboard/page-header";
 import { AddUserDialog } from "@/components/admin/users/add-user-dialog";
+import { ExportUsersButton } from "@/components/admin/users/export-users-button";
 import { UsersFilter } from "@/components/admin/users/users-filter";
 import { UsersSearch } from "@/components/admin/users/users-search";
 import { UsersTable } from "@/components/admin/users/users-table";
@@ -24,7 +25,10 @@ export default async function AdminUsersPage({ searchParams }: Props) {
           <UsersSearch />
           <UsersFilter active={filterFromParams(sp)} q={sp.q} />
         </div>
-        <AddUserDialog />
+        <div className="flex items-center gap-2">
+          <ExportUsersButton q={sp.q} role={sp.role} status={sp.status} />
+          <AddUserDialog />
+        </div>
       </div>
       <UsersTable users={users} />
     </>

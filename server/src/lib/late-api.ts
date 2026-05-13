@@ -1,4 +1,5 @@
-const BASE = process.env.LATE_API_URL ?? "https://zernio.com/api/v1";
+const BASE = process.env.LATE_API_URL;
+if (!BASE) throw new Error("LATE_API_URL env var is required");
 
 export class LateApiError extends Error {
   constructor(public status: number, message: string) { super(message); }

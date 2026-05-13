@@ -11,6 +11,8 @@ export async function getAdminSubscriptions(filters: SubsQuery = {}): Promise<Ad
   if (filters.q) qs.set("q", filters.q);
   if (filters.tier) qs.set("tier", filters.tier);
   if (filters.status) qs.set("status", filters.status);
+  if (filters.from) qs.set("from", filters.from);
+  if (filters.to) qs.set("to", filters.to);
   const res = await adminApi(`/api/admin/subscriptions${qs.size ? `?${qs}` : ""}`);
   if (!res.ok) return EMPTY;
   return (await res.json()) as AdminSubsResult;

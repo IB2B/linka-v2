@@ -6,6 +6,7 @@ import { PostHeroCard } from "@/components/analytics/post-detail/post-hero-card"
 import { PostAnalyticsBody } from "@/components/analytics/post-detail/post-analytics-body";
 import { CommentsCard } from "@/components/analytics/post-detail/comments-card";
 import { CommentsLoading } from "@/components/analytics/post-detail/comments-loading";
+import { AnalyticsSyncPoller } from "@/components/analytics/post-detail/analytics-sync-poller";
 import { loadPostDetail } from "@/lib/analytics/load-post-detail";
 
 type Params = { id: string };
@@ -26,8 +27,16 @@ export default async function PostAnalyticsPage({
         Back to analytics
       </Link>
 
-      <PostHeroCard post={data.post} />
+      <PostHeroCard
+        post={data.post}
+        platforms={
+          data.analytics?.state === "ok"
+            ? data.analytics.platforms.map((p) => p.platform)
+            : data.post.platform ? [data.post.platform] : []
+        }
+      />
 
+      {data.analytics?.state === "syncing" && <AnalyticsSyncPoller />}
       <PostAnalyticsBody data={data} />
 
       <Suspense fallback={<CommentsLoading />}>

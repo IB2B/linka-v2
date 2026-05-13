@@ -1,75 +1,73 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Send, Sparkles } from "lucide-react";
+import { Send } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
-import { sendReplyAction, assistReplyAction } from "@/app/dashboard/inbox/actions";
-import { IntentBadge } from "./intent-badge";
+import { EmojiPickerButton } from "./emoji-picker-button";
+import { AttachmentButton } from "./attachment-button";
+import { AttachmentPreview } from "./attachment-preview";
+import { AiSuggestBar } from "./ai-suggest-bar";
+import { SuggestionPills } from "./suggestion-pills";
+import { sendReplyAction, assistReplyAction, uploadAttachmentAction } from "@/app/dashboard/inbox/actions";
 import type { AssistResult } from "@/lib/inbox/assist.types";
 
 type Props = { conversationId: string; accountId: string | null };
 
 export function ReplyComposer({ conversationId, accountId }: Props) {
   const [text, setText] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [assist, setAssist] = useState<AssistResult | null>(null);
   const [pending, start] = useTransition();
   const [aiPending, startAi] = useTransition();
 
   function send() {
-    const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!text.trim() && !file) return;
     start(async () => {
-      const r = await sendReplyAction(conversationId, trimmed, accountId);
+      let mediaUrl: string | undefined;
+      if (file) {
+        const fd = new FormData();
+        fd.append("file", file);
+        const up = await uploadAttachmentAction(fd);
+        if ("error" in up) { toast.error(up.error); return; }
+        mediaUrl = up.url;
+      }
+      const r = await sendReplyAction(conversationId, text, accountId, mediaUrl);
       if ("error" in r) toast.error(r.error);
-      else { setText(""); setAssist(null); toast.success("Sent"); }
+      else { setText(""); setFile(null); setAssist(null); toast.success("Sent"); }
     });
   }
 
   function suggest() {
     startAi(async () => {
-      const r = await assistReplyAction(conversationId);
+      const r = await assistReplyAction(conversationId, accountId);
       if ("error" in r) { toast.error(r.error); return; }
       setAssist(r.data);
-      if (r.data.intent === "spam") {
-        toast.info("Looks like spam — flagged, no draft.");
-        return;
-      }
-      setText(r.data.reply);
+      if (r.data.intent === "spam") { toast.info("Looks like spam — flagged."); return; }
+      if (r.data.replies[0]) setText(r.data.replies[0].text);
     });
   }
 
-  function onKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); }
-  }
+  const canSend = (!!text.trim() || !!file) && !pending;
 
   return (
-    <div className="border-t bg-background p-3">
-      <div className="mb-2 flex items-center gap-2">
-        <Button
-          type="button" size="sm" variant="outline"
-          onClick={suggest} disabled={aiPending || pending}
-        >
-          {aiPending ? <Spinner aria-hidden /> : <Sparkles className="size-3.5" />}
-          AI suggest
-        </Button>
-        {assist ? (
-          <IntentBadge intent={assist.intent} confidence={assist.confidence} />
-        ) : null}
-      </div>
-      <div className="flex items-end gap-2">
+    <div className="border-t bg-background p-3 space-y-2">
+      <AiSuggestBar onSuggest={suggest} pending={aiPending} disabled={pending} assist={assist} />
+      {assist && <SuggestionPills replies={assist.replies} onSelect={setText} />}
+      {file && <AttachmentPreview file={file} onRemove={() => setFile(null)} />}
+      <div className="flex items-end gap-1.5">
+        <EmojiPickerButton onSelect={(e) => setText((t) => t + e)} />
+        <AttachmentButton onFile={setFile} />
         <Textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={onKey}
+          value={text} onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
           placeholder="Type a reply… (Enter to send, Shift+Enter for newline)"
-          rows={1}
-          className="max-h-32 min-h-9 resize-none"
+          rows={1} className="max-h-32 min-h-9 resize-none"
         />
-        <Button type="button" onClick={send} disabled={pending || !text.trim()} size="lg" className="self-stretch">
+        <Button type="button" onClick={send} disabled={!canSend} size="lg" className="self-stretch">
           {pending ? <Spinner aria-hidden /> : <Send aria-hidden className="size-4" />}
           Send
         </Button>

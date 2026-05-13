@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "../lib/db";
 import { authenticate, type AuthRequest } from "../middleware/auth";
+import { getUserMe } from "../lib/user-me-query";
 import { changePassword } from "./users-password";
 import avatarRouter from "./users-avatar";
 
@@ -12,25 +13,9 @@ router.use(authenticate);
 
 router.get("/me", async (req: AuthRequest, res, next) => {
   try {
-    const [rows] = await db.query<any[]>(
-      `SELECT u.id, u.email, u.role, u.first_name, u.last_name,
-              p.avatar_url, p.industry, p.bio,
-              r.enabled AS recycler_enabled
-       FROM users u
-         LEFT JOIN user_profiles p ON p.user_id = u.id
-         LEFT JOIN recycle_settings r ON r.user_id = u.id
-       WHERE u.id = ?`, [req.user!.id],
-    );
-    const u = rows[0];
-    if (!u) { res.status(404).json({ error: "Not found" }); return; }
-    res.json({
-      id: u.id, email: u.email, role: u.role,
-      firstName: u.first_name, lastName: u.last_name,
-      avatarUrl: u.avatar_url ?? null,
-      industry: u.industry ?? null,
-      bio: u.bio ?? null,
-      features: { recycler: u.recycler_enabled === 1 },
-    });
+    const user = await getUserMe(req.user!.id);
+    if (!user) { res.status(404).json({ error: "Not found" }); return; }
+    res.json(user);
   } catch (e) { next(e); }
 });
 

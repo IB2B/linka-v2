@@ -32,4 +32,4 @@ export type AdminSubsResult = {
   summary: AdminSubsSummary;
 };
 
-export type SubsQuery = { q?: string; tier?: string; status?: string };
+export type SubsQuery = { q?: string; tier?: string; status?: string; from?: string; to?: string };

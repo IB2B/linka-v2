@@ -23,9 +23,10 @@ async function api(path: string, init: RequestInit = {}): Promise<Response> {
   });
 }
 
-export async function assistReplyAction(conversationId: string): Promise<AssistOk> {
+export async function assistReplyAction(conversationId: string, accountId: string | null): Promise<AssistOk> {
+  const qs = accountId ? `?accountId=${encodeURIComponent(accountId)}` : "";
   const res = await api(
-    `/api/inbox/conversations/${encodeURIComponent(conversationId)}/assist`,
+    `/api/inbox/conversations/${encodeURIComponent(conversationId)}/assist${qs}`,
     { method: "POST" },
   );
   const body = (await res.json().catch(() => ({}))) as Partial<AssistResult> & { error?: string };
@@ -37,21 +38,35 @@ export async function assistReplyAction(conversationId: string): Promise<AssistO
     data: {
       intent: body.intent as AssistResult["intent"],
       confidence: body.confidence ?? 0,
-      reply: body.reply ?? "",
+      summary: (body as any).summary ?? "",
+      replies: (body as any).replies ?? [],
       shouldAutoReply: Boolean(body.shouldAutoReply),
     },
   };
 }
 
+export async function uploadAttachmentAction(formData: FormData): Promise<{ url: string } | { error: string }> {
+  const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
+  const host = hdrs.get("host");
+  const proto = hdrs.get("x-forwarded-proto") ?? "http";
+  const res = await fetch(`${proto}://${host}/api/inbox/upload`, {
+    method: "POST",
+    headers: { cookie: cookieStore.toString() },
+    body: formData,
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) return { error: body.error ?? "Upload failed." };
+  return { url: body.url };
+}
+
 export async function sendReplyAction(
-  conversationId: string, text: string, accountId: string | null,
+  conversationId: string, text: string, accountId: string | null, mediaUrl?: string,
 ): Promise<Result> {
-  if (!text.trim()) return { error: "Message is empty." };
+  if (!text.trim() && !mediaUrl) return { error: "Message is empty." };
   const res = await api(
     `/api/inbox/conversations/${encodeURIComponent(conversationId)}/messages`,
-    { method: "POST", body: JSON.stringify({ text: text.trim(), accountId }) },
+    { method: "POST", body: JSON.stringify({ text: text.trim(), accountId, ...(mediaUrl ? { mediaUrl } : {}) }) },
   );
-
   if (!res.ok) {
     const data = await res.json().catch(() => ({ error: "Failed to send." }));
     return { error: data.error ?? "Failed to send." };

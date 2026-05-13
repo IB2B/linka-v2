@@ -16,11 +16,15 @@ async function fetchFresh(latePostId: string): Promise<PostAnalyticsResult> {
     );
     const rawPlatforms = toPlatforms(r.platformAnalytics);
     const platforms = await enrichPendingFromComments(latePostId, rawPlatforms);
-    return {
-      state: "ok",
-      totals: aggregateFromPlatforms(platforms),
-      platforms,
-    };
+    const totals = aggregateFromPlatforms(platforms);
+    // Only show "syncing" when zero platforms have synced successfully yet —
+    // i.e. every published platform is still pending. If at least one synced
+    // (even with zeros), we show whatever data we have.
+    const noSyncedPlatforms = rawPlatforms
+      .filter((p) => p.status !== "failed")
+      .every((p) => p.status === "pending");
+    if (noSyncedPlatforms) return { state: "syncing" };
+    return { state: "ok", totals, platforms };
   } catch (e) {
     if (e instanceof LateApiError) {
       if (e.status === 402) return { state: "addon-required" };

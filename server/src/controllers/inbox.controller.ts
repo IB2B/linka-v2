@@ -30,14 +30,18 @@ export async function getMessages(req: AuthRequest, res: Response) {
 }
 
 const replySchema = z.object({
-  text: z.string().trim().min(1).max(5000),
+  text: z.string().trim().max(5000).default(""),
   accountId: z.string().min(1),
+  mediaUrl: z.string().url().optional(),
 });
 
 export async function postReply(req: AuthRequest, res: Response) {
   const parsed = replySchema.safeParse(req.body);
-  if (!parsed.success) { res.status(400).json({ error: "Message is required." }); return; }
+  if (!parsed.success) { res.status(400).json({ error: "Invalid request." }); return; }
+  if (!parsed.data.text && !parsed.data.mediaUrl) {
+    res.status(400).json({ error: "Message or attachment is required." }); return;
+  }
   const id = String(req.params.id);
-  const sent = await sendInboxMessage(id, parsed.data.accountId, parsed.data.text);
+  const sent = await sendInboxMessage(id, parsed.data.accountId, parsed.data.text, parsed.data.mediaUrl);
   res.status(201).json({ id: sent.id ?? null });
 }
