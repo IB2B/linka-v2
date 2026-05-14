@@ -25,7 +25,7 @@ export function TierLegend({ tiers, totalMrr }: { tiers: SubsByTier[]; totalMrr:
             </div>
             <div className="text-right">
               <span className="text-sm font-medium tabular-nums tracking-tight">
-                {formatMoney(t.mrr)}
+                {formatMoney(t.mrr, t.currency)}
               </span>
               {totalMrr > 0 ? (
                 <span className="ml-2 text-[11px] tabular-nums tracking-tight text-muted-foreground">

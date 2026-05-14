@@ -6,9 +6,12 @@ export type ImageStatus =
 export type TopGenerator = {
   id: string; email: string; firstName: string; lastName: string;
   avatarUrl: string | null; drafts: number; images: number;
+  tokensInput: number; tokensOutput: number;
 };
 
 export type CountRow = { key: string; count: number };
+
+export { getModelBreakdown } from "./ai-usage-models";
 
 export async function getImageBreakdown(days: number) {
   const [rows] = await db.query<any[]>(
@@ -30,7 +33,9 @@ export async function getTopGenerators(days: number): Promise<TopGenerator[]> {
   const [rows] = await db.query<any[]>(
     `SELECT u.id, u.email, u.first_name, u.last_name, p.avatar_url,
             COUNT(g.id) drafts,
-            SUM(g.image_status='completed') images
+            SUM(g.image_status='completed') images,
+            COALESCE(SUM(g.tokens_input),0) tok_in,
+            COALESCE(SUM(g.tokens_output),0) tok_out
      FROM generated_content g
      INNER JOIN users u ON u.id = g.user_id
      LEFT JOIN user_profiles p ON p.user_id = u.id
@@ -44,6 +49,8 @@ export async function getTopGenerators(days: number): Promise<TopGenerator[]> {
     avatarUrl: r.avatar_url ?? null,
     drafts: Number(r.drafts ?? 0),
     images: Number(r.images ?? 0),
+    tokensInput: Number(r.tok_in ?? 0),
+    tokensOutput: Number(r.tok_out ?? 0),
   }));
 }
 

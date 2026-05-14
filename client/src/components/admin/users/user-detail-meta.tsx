@@ -1,18 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import type { AdminUserDetail } from "@/types/admin";
 
-function fmtDate(s: string | null): string {
-  if (!s) return "—";
-  return new Date(s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-}
-
 export function UserDetailMeta({ detail }: { detail: AdminUserDetail }) {
-  const { profile, subscription, platforms } = detail;
+  const { profile, platforms } = detail;
   const rows: { label: string; value: React.ReactNode }[] = [
+    { label: "Job title", value: profile.jobTitle || "—" },
     { label: "Industry", value: profile.industry || "—" },
     { label: "Bio", value: profile.bio || "—" },
-    { label: "Plan", value: subscription ? `${subscription.planTier} · ${subscription.status}` : "free" },
-    { label: "Renews", value: fmtDate(subscription?.currentPeriodEnd ?? null) },
     {
       label: "Platforms",
       value: platforms.length ? (

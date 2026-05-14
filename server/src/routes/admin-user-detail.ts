@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { adminOnly } from "../middleware/admin";
 import { fetchUserDetail } from "../lib/admin-user-detail";
+import { getUserAiStats, getUserRecentDrafts } from "../lib/admin-user-ai";
 
 const router = Router();
 router.use(adminOnly);
@@ -15,7 +16,7 @@ function shape(d: any) {
       createdAt: u.created_at, avatarUrl: u.avatar_url ?? null,
       planTier: u.plan_tier ?? "free",
     },
-    profile: { industry: u.industry ?? null, bio: u.bio ?? null },
+    profile: { industry: u.industry ?? null, bio: u.bio ?? null, jobTitle: u.job_title ?? null },
     subscription: u.plan_tier
       ? {
           planTier: u.plan_tier, status: u.sub_status,
@@ -41,9 +42,21 @@ function shape(d: any) {
 
 router.get("/:id/detail", async (req, res, next) => {
   try {
-    const d = await fetchUserDetail(req.params.id);
+    const month = String(req.query.month ?? "").slice(0, 7) || undefined;
+    const d = await fetchUserDetail(req.params.id, month);
     if (!d) { res.status(404).json({ error: "User not found" }); return; }
     res.json(shape(d));
+  } catch (e) { next(e); }
+});
+
+router.get("/:id/ai-usage", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const month = String(req.query.month ?? "").slice(0, 7) || undefined;
+    const [stats, drafts] = await Promise.all([
+      getUserAiStats(id, month), getUserRecentDrafts(id, month),
+    ]);
+    res.json({ stats, drafts });
   } catch (e) { next(e); }
 });
 

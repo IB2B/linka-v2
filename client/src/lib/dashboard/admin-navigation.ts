@@ -1,5 +1,4 @@
 import {
-  Activity,
   BarChart3,
   CreditCard,
   FileText,
@@ -18,7 +17,6 @@ export const ADMIN_NAV: NavGroup[] = [
     label: "Insights",
     items: [
       { label: "Overview", href: "/admin", icon: LayoutDashboard },
-      { label: "Activity", href: "/admin/activity", icon: Activity },
       { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
       { label: "AI Usage", href: "/admin/ai-usage", icon: Sparkles },
     ],

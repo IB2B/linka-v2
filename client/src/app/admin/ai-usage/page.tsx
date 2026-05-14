@@ -5,6 +5,7 @@ import { UsageHero } from "@/components/admin/ai-usage/usage-hero";
 import { UsageChartCard } from "@/components/admin/ai-usage/usage-chart-card";
 import { ImageOutcomesCard } from "@/components/admin/ai-usage/image-outcomes-card";
 import { TopGenerators } from "@/components/admin/ai-usage/top-generators";
+import { ModelBreakdownCard } from "@/components/admin/ai-usage/model-breakdown-card";
 import { getAiUsageOverview } from "@/lib/admin/get-ai-usage";
 
 export const dynamic = "force-dynamic";
@@ -28,16 +29,16 @@ export default async function AdminAiUsagePage({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <PageHeader
           title="AI Usage"
-          description="Generation volume, image outcomes and the users producing the most content."
+          description="Token consumption, generation volume, image outcomes and cost estimates."
         />
         <RangeTabs days={days} basePath="/admin/ai-usage" />
       </div>
       <div className="space-y-6">
         <UsageHero data={data} />
         <UsageChartCard series={data.series} days={days} />
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-          <TopGenerators users={data.topGenerators} />
-          <div className="grid gap-6">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+          <div className="grid auto-rows-min gap-6">
+            <ModelBreakdownCard rows={data.models} />
             <ImageOutcomesCard rows={data.imageBreakdown} />
             <BreakdownCard
               title="Drafts by platform"
@@ -46,6 +47,7 @@ export default async function AdminAiUsagePage({
               barClassName="bg-emerald-500"
             />
           </div>
+          <TopGenerators users={data.topGenerators} />
         </div>
       </div>
     </>

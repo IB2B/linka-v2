@@ -19,12 +19,12 @@ export async function regenerateText(
     if (post.status === "posted") {
       res.status(400).json({ error: "Already posted." }); return;
     }
-    const content = await generatePost({
+    const result = await generatePost({
       userId, postType: "personal_insight",
       topic: post.prompt ?? undefined,
       platform: post.platform ?? "linkedin", language: "en",
     });
-    await posts.setContent(id, userId, content);
+    await posts.setContent(id, userId, result.content);
     res.json({ post: await posts.findById(id, userId) });
   } catch (e) { next(e); }
 }

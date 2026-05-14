@@ -1,38 +1,52 @@
-import { ChargesTable } from "@/components/admin/subscriptions/charges-table";
-import { InvoicesTable } from "@/components/admin/subscriptions/invoices-table";
-import { PaymentsToggle } from "@/components/admin/subscriptions/payments-toggle";
+import { Suspense } from "react";
+import { PaymentsTable } from "@/components/admin/subscriptions/payments-table";
+import { PaymentsSkeleton } from "@/components/admin/subscriptions/payments-skeleton";
+import { PaymentsSearch } from "@/components/admin/subscriptions/payments-search";
+import { PaymentsPagination } from "@/components/admin/subscriptions/payments-pagination";
 import { SubscriptionsDateRange } from "@/components/admin/subscriptions/subscriptions-date-range";
-import { getAdminCharges, getAdminInvoices } from "@/lib/admin/get-payments";
+import { getAdminPayments } from "@/lib/admin/get-payments";
 
-const ITEMS = [
-  { id: "charges", label: "Charges" },
-  { id: "invoices", label: "Invoices" },
-];
+type Props = { from?: string; to?: string; pq?: string; page?: string };
 
-const BASE = "/admin/subscriptions?tab=payments";
+const PAGE_SIZE = 20;
 
-type Props = { view: string; from?: string; to?: string };
+async function PaymentsContent({ from, to, pq, page }: Props) {
+  const rows = await getAdminPayments({ from, to });
+  const filtered = pq
+    ? rows.filter((r) => r.customerEmail?.toLowerCase().includes(pq.toLowerCase()))
+    : rows;
+  const pageNum = Math.max(1, parseInt(page ?? "1", 10));
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const pageRows = filtered.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE);
+  const hasFilter = !!(from || to || pq);
+  return (
+    <>
+      <PaymentsTable rows={pageRows} hasFilter={hasFilter} />
+      {totalPages > 1 && (
+        <PaymentsPagination page={pageNum} totalPages={totalPages} total={filtered.length} />
+      )}
+    </>
+  );
+}
 
-export async function PaymentsTab({ view, from, to }: Props) {
-  const active = view === "invoices" ? "invoices" : "charges";
-  const range = { from, to };
+export function PaymentsTab({ from, to, pq, page }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="space-y-1">
           <h2 className="text-base font-semibold tracking-tight">Payments History</h2>
           <p className="text-sm tracking-tight text-muted-foreground">
-            Keep track of charges and invoices across all customers.
+            All invoices across all customers, including card details.
           </p>
         </div>
-        <SubscriptionsDateRange from={from} to={to} />
+        <div className="flex flex-wrap items-center gap-2">
+          <PaymentsSearch />
+          <SubscriptionsDateRange from={from} to={to} />
+        </div>
       </div>
-      <PaymentsToggle items={ITEMS} active={active} basePath={BASE} />
-      {active === "charges" ? (
-        <ChargesTable charges={await getAdminCharges(range)} />
-      ) : (
-        <InvoicesTable invoices={await getAdminInvoices(range)} />
-      )}
+      <Suspense fallback={<PaymentsSkeleton />}>
+        <PaymentsContent from={from} to={to} pq={pq} page={page} />
+      </Suspense>
     </div>
   );
 }

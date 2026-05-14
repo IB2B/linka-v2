@@ -6,6 +6,7 @@ import { MOCK_NEWS } from "./mock-news";
 import type {
   GenerateInput,
   GenerationResult,
+  NewsArticle,
   PostType,
   TopicSuggestion,
 } from "@/types/content";

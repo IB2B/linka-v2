@@ -16,6 +16,5 @@ export type AdminStats = {
   posts: { total: number; thisMonth: number; prevMonth: number };
   subscriptions: { paying: number; free: number };
   tickets: { open: number; urgent: number };
-  moderation: { pending: number };
   feedback: { newCount: number };
 };

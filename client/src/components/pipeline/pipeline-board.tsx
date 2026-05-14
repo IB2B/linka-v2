@@ -14,6 +14,11 @@ export function PipelineBoard({ stages, opportunities }: Props) {
   const [openId, setOpenId] = useState<string | null>(null);
   const openOpp = openId ? board.opps.find((o) => o.id === openId) ?? null : null;
 
+  function handleDelete(id: string) {
+    board.setOpps((prev) => prev.filter((o) => o.id !== id));
+    if (openId === id) setOpenId(null);
+  }
+
   return (
     <>
       <div className="-mx-6 min-h-0 flex-1 overflow-x-auto overflow-y-hidden px-6 pb-2">
@@ -31,6 +36,7 @@ export function PipelineBoard({ stages, opportunities }: Props) {
               }
               onDropAtEnd={(stageId) => board.dropAtEnd(stages, stageId)}
               onCardClick={(id) => setOpenId(id)}
+              onCardDelete={handleDelete}
             />
           ))}
         </div>
@@ -38,6 +44,7 @@ export function PipelineBoard({ stages, opportunities }: Props) {
       <OpportunityDetailSheet
         opp={openOpp}
         onClose={() => setOpenId(null)}
+        onDeleted={handleDelete}
       />
     </>
   );

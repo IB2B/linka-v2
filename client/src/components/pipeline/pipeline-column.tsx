@@ -15,11 +15,12 @@ type Props = {
   onDropOnCard: (stageId: string, beforeOppId: string) => void;
   onDropAtEnd: (stageId: string) => void;
   onCardClick: (id: string) => void;
+  onCardDelete: (id: string) => void;
 };
 
 export function PipelineColumn({
   stage, opps, draggingId,
-  onDragStart, onDragEnd, onDropOnCard, onDropAtEnd, onCardClick,
+  onDragStart, onDragEnd, onDropOnCard, onDropAtEnd, onCardClick, onCardDelete,
 }: Props) {
   const [over, setOver] = useState(false);
 
@@ -47,6 +48,7 @@ export function PipelineColumn({
             onDragEnd={onDragEnd}
             onDropBefore={(id) => onDropOnCard(stage.id, id)}
             onClick={onCardClick}
+            onDelete={onCardDelete}
           />
         ))}
         {!opps.length ? (

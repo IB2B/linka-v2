@@ -13,7 +13,10 @@ export async function create(req: AuthRequest, res: Response) {
   const stage = await loadStage(parsed.data.stageId, req.user!.id);
   if (!stage) { res.status(404).json({ error: "Stage not found." }); return; }
   const id = randomUUID();
-  const { title, contactName, contactHandle, sourcePlatform, notes } = parsed.data;
+  const {
+    title, contactName, contactHandle, sourcePlatform, notes,
+    socialUrl, facebookUrl, instagramUrl, xUrl, tiktokUrl, threadsUrl,
+  } = parsed.data;
   await db.query(
     `UPDATE opportunities SET position = position + 1
      WHERE user_id = ? AND stage_id = ?`,
@@ -22,11 +25,14 @@ export async function create(req: AuthRequest, res: Response) {
   await db.query(
     `INSERT INTO opportunities
        (id, user_id, pipeline_id, stage_id, title, contact_name, contact_handle,
-        source_platform, status, notes, position, last_activity_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(3))`,
+        source_platform, status, notes, social_url, facebook_url, instagram_url,
+        x_url, tiktok_url, threads_url, position, last_activity_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(3))`,
     [id, req.user!.id, stage.pipeline_id, stage.id, title,
      contactName ?? null, contactHandle ?? null, sourcePlatform ?? null,
-     stage.outcome, notes ?? null],
+     stage.outcome, notes ?? null,
+     socialUrl ?? null, facebookUrl ?? null, instagramUrl ?? null,
+     xUrl ?? null, tiktokUrl ?? null, threadsUrl ?? null],
   );
   res.status(201).json({ id });
 }
