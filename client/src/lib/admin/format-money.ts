@@ -1,9 +1,7 @@
-const usd = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
-
-export function formatMoney(value: number): string {
-  return usd.format(value);
+export function formatMoney(cents: number, currency = "usd"): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency.toUpperCase(),
+    maximumFractionDigits: 0,
+  }).format(cents / 100);
 }

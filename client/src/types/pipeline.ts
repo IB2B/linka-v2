@@ -4,6 +4,9 @@ export type OpportunityPlatform =
 export type StageOutcome = "open" | "won" | "lost";
 export type OpportunityStatus = StageOutcome;
 
+export type SocialKey =
+  | "socialUrl" | "facebookUrl" | "instagramUrl" | "xUrl" | "tiktokUrl" | "threadsUrl";
+
 export type Pipeline = { id: string; name: string; isDefault: boolean };
 
 export type Stage = {
@@ -24,6 +27,12 @@ export type Opportunity = {
   status: OpportunityStatus;
   notes: string | null;
   conversationId: string | null;
+  socialUrl: string | null;
+  facebookUrl: string | null;
+  instagramUrl: string | null;
+  xUrl: string | null;
+  tiktokUrl: string | null;
+  threadsUrl: string | null;
   position: number;
   lastActivityAt: string | null;
   createdAt: string;
@@ -37,27 +46,7 @@ export type Board = {
   opportunities: Opportunity[];
 };
 
-export type CreatePipelineInput = {
-  name: string;
-  stages?: { name: string; outcome?: StageOutcome }[];
-};
-
-export type CreateOppInput = {
-  title: string;
-  stageId: string;
-  contactName?: string | null;
-  contactHandle?: string | null;
-  sourcePlatform?: OpportunityPlatform | null;
-  notes?: string | null;
-};
-
-export type UpdateOppInput = Partial<{
-  title: string;
-  contactName: string | null;
-  contactHandle: string | null;
-  sourcePlatform: OpportunityPlatform | null;
-  notes: string | null;
-}>;
-
-export type CreateStageInput = { name: string; outcome?: StageOutcome };
-export type UpdateStageInput = Partial<{ name: string; outcome: StageOutcome }>;
+export type {
+  CreatePipelineInput, CreateOppInput, UpdateOppInput,
+  CreateStageInput, UpdateStageInput,
+} from "./pipeline-inputs";

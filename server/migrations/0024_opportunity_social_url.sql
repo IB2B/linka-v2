@@ -1,0 +1,1 @@
+ALTER TABLE opportunities ADD COLUMN social_url VARCHAR(2048) NULL DEFAULT NULL;

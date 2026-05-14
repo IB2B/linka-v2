@@ -21,12 +21,12 @@ export async function generateImageForPostInBackground(
       prompt = postContent.slice(0, 200);
     }
 
-    const source = await generatePostImage(prompt);
+    const { url: source, model: imageModel } = await generatePostImage(prompt);
     console.log(`[image-gen] image ok ${contentId}: ${source.slice(0, 80)}`);
     const url = await persistGeneratedImage(contentId, source);
     console.log(`[image-gen] saved ${contentId}: ${url}`);
 
-    await setImageCompleted(contentId, userId, url, prompt);
+    await setImageCompleted(contentId, userId, url, prompt, imageModel);
     incrementImageCount(userId);
     console.log(`[image-gen] done ${contentId}`);
   } catch (err) {

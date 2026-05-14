@@ -1,10 +1,9 @@
 import {
-  AlertTriangle,
+  CircleHelp,
   CreditCard,
-  LifeBuoy,
-  MessageSquare,
+  PenLine,
   Send,
-  Sparkles,
+  Star,
   UserPlus,
   XCircle,
   type LucideIcon,
@@ -18,13 +17,13 @@ export type ActivityMeta = { Icon: LucideIcon; tone: Tone; verb: (d: string | nu
 
 const META: Record<ActivityType, ActivityMeta> = {
   user_signup:           { Icon: UserPlus,       tone: "success", verb: () => "signed up" },
-  post_generated:        { Icon: Sparkles,       tone: "info",    verb: (d) => `generated a draft${d ? ` for ${d}` : ""}` },
-  post_published:        { Icon: Send,           tone: "success", verb: (d) => `published to ${d ?? "a platform"}` },
-  post_failed:           { Icon: AlertTriangle,  tone: "warning", verb: (d) => `failed to publish to ${d ?? "a platform"}` },
-  subscription_started:  { Icon: CreditCard,     tone: "success", verb: (d) => `started ${d ?? "a"} plan` },
-  subscription_canceled: { Icon: XCircle,        tone: "danger",  verb: () => "canceled subscription" },
-  ticket_opened:         { Icon: LifeBuoy,       tone: "info",    verb: (d) => `opened ticket: ${d ?? "—"}` },
-  feedback_submitted:    { Icon: MessageSquare,  tone: "info",    verb: (d) => `submitted ${d ?? "general"} feedback` },
+  post_generated:        { Icon: PenLine,    tone: "info",    verb: (d) => `generated a draft${d ? ` for ${d}` : ""}` },
+  post_published:        { Icon: Send,       tone: "success", verb: (d) => `published to ${d ?? "a platform"}` },
+  post_failed:           { Icon: XCircle,    tone: "danger",  verb: (d) => `failed to publish to ${d ?? "a platform"}` },
+  subscription_started:  { Icon: CreditCard, tone: "success", verb: (d) => `started ${d ?? "a"} plan` },
+  subscription_canceled: { Icon: XCircle,    tone: "danger",  verb: () => "canceled subscription" },
+  ticket_opened:         { Icon: CircleHelp, tone: "info",    verb: (d) => `opened ticket: ${d ?? "—"}` },
+  feedback_submitted:    { Icon: Star,       tone: "info",    verb: (d) => `submitted ${d ?? "general"} feedback` },
 };
 
 export function metaFor(type: ActivityType): ActivityMeta {

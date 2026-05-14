@@ -13,9 +13,9 @@ export function BillingInvoices({ invoices }: Props) {
     <Card>
       <CardHeader>
         <CardTitle className="text-base flex items-center gap-2">
-          <Receipt className="w-4 h-4 text-muted-foreground" /> Invoices & charges
+          <Receipt className="w-4 h-4 text-muted-foreground" /> Invoices
         </CardTitle>
-        <CardDescription>Your billing history. Click an invoice to view or download.</CardDescription>
+        <CardDescription>Your billing history. Click an invoice to view or download as PDF.</CardDescription>
       </CardHeader>
       <CardContent>
         {invoices.length === 0 ? (

@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { Copy, Eye, KeyRound, MoreHorizontal, Pause, Play, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -15,9 +16,9 @@ import { deleteUserAction, setUserRoleAction, setUserStatusAction } from "@/app/
 import type { AdminUserRow } from "@/types/admin";
 import type { UserRole } from "@/types/user-role";
 
-type Props = { user: AdminUserRow; onView: () => void };
+type Props = { user: AdminUserRow };
 
-export function UserRowActions({ user, onView }: Props) {
+export function UserRowActions({ user }: Props) {
   const [pending, start] = useTransition();
   const suspended = user.status === "SUSPENDED";
 
@@ -48,7 +49,7 @@ export function UserRowActions({ user, onView }: Props) {
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={onView}><Eye />View details</DropdownMenuItem>
+          <DropdownMenuItem render={<Link href={`/admin/users/${user.id}`} />}><Eye />View details</DropdownMenuItem>
           <DropdownMenuItem onClick={() => copy(user.email, "Email")}><Copy />Copy email</DropdownMenuItem>
           <DropdownMenuItem onClick={() => copy(user.id, "User ID")}><Copy />Copy user ID</DropdownMenuItem>
         </DropdownMenuGroup>

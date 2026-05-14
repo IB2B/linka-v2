@@ -41,7 +41,7 @@ export async function generate(
     }
     const input = parsed.data;
     const userId = req.user!.id;
-    const content = await generatePost({
+    const result = await generatePost({
       userId, postType: input.postType,
       topic: input.topic, newsArticle: input.newsArticle,
       platform: input.platform, language: input.language,
@@ -51,13 +51,16 @@ export async function generate(
     const stored = await posts.insertOne({
       userId,
       prompt: input.topic ?? input.newsArticle?.title ?? null,
-      content,
+      content: result.content,
       platform: input.platform,
       imageStatus: wantsImage ? "pending" : "skipped",
+      tokensInput: result.tokensInput,
+      tokensOutput: result.tokensOutput,
+      model: result.model,
     });
     if (wantsImage) {
       void generateImageForPostInBackground(
-        stored.id, userId, content, input.platform,
+        stored.id, userId, result.content, input.platform,
       );
     }
     res.json({ post: stored });

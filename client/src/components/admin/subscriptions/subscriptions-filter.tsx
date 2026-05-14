@@ -13,7 +13,6 @@ import { SUBS_FILTERS } from "@/lib/admin/subscriptions-filters";
 function hrefFor(value: string, q?: string): string {
   const f = SUBS_FILTERS.find((x) => x.value === value);
   const qs = new URLSearchParams();
-  if (f?.tier) qs.set("tier", f.tier);
   if (f?.status) qs.set("status", f.status);
   if (q) qs.set("q", q);
   return qs.size ? `/admin/subscriptions?${qs}` : "/admin/subscriptions";

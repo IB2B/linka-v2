@@ -4,7 +4,7 @@ import { SubscriptionsTable } from "@/components/admin/subscriptions/subscriptio
 import { getAdminSubscriptions } from "@/lib/admin/get-subscriptions";
 import { subsFilterFromParams } from "@/lib/admin/subscriptions-filters";
 
-type Props = { sp: { q?: string; tier?: string; status?: string; from?: string; to?: string } };
+type Props = { sp: { q?: string; status?: string; from?: string; to?: string } };
 
 export async function SubscriptionsTab({ sp }: Props) {
   const { rows, total, summary } = await getAdminSubscriptions(sp);

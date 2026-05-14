@@ -1,6 +1,5 @@
 export type AdminSubscriptionRow = {
   id: string;
-  userId: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -12,9 +11,10 @@ export type AdminSubscriptionRow = {
   canceledAt: string | null;
   mrr: number;
   createdAt: string | null;
+  currency: string;
 };
 
-export type SubsByTier = { tier: string; count: number; mrr: number };
+export type SubsByTier = { tier: string; count: number; mrr: number; currency: string };
 
 export type AdminSubsSummary = {
   mrr: number;
@@ -24,6 +24,7 @@ export type AdminSubsSummary = {
   trialing: number;
   canceledLast30d: number;
   byTier: SubsByTier[];
+  currency: string;
 };
 
 export type AdminSubsResult = {
@@ -32,4 +33,4 @@ export type AdminSubsResult = {
   summary: AdminSubsSummary;
 };
 
-export type SubsQuery = { q?: string; tier?: string; status?: string; from?: string; to?: string };
+export type SubsQuery = { q?: string; status?: string; from?: string; to?: string };

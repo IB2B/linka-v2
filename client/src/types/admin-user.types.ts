@@ -44,7 +44,7 @@ export type ActivityEvent = {
 
 export type AdminUserDetail = {
   user: AdminUserRow;
-  profile: { industry: string | null; bio: string | null };
+  profile: { industry: string | null; bio: string | null; jobTitle: string | null };
   subscription: {
     planTier: string;
     status: string;

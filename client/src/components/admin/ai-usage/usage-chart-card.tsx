@@ -1,5 +1,17 @@
+"use client";
+
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu, DropdownMenuTrigger, DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
 import { UsageChart } from "@/components/admin/ai-usage/usage-chart";
+import {
+  SERIES, seriesTotals, trimLeadingZeros, type SeriesKey,
+} from "@/components/admin/ai-usage/usage-chart-series";
 import type { AiUsagePoint } from "@/types/admin-ai-usage";
 
 const fmt = new Intl.NumberFormat("en-US");
@@ -7,41 +19,55 @@ const fmt = new Intl.NumberFormat("en-US");
 type Props = { series: AiUsagePoint[]; days: number };
 
 export function UsageChartCard({ series, days }: Props) {
-  const totals = series.reduce(
-    (a, p) => ({
-      drafts: a.drafts + p.drafts,
-      images: a.images + p.images,
-      failed: a.failed + p.failedImages,
-    }),
-    { drafts: 0, images: 0, failed: 0 },
-  );
+  const [active, setActive] = useState<Set<SeriesKey>>(new Set(["drafts", "posted", "failed"]));
+
+  const toggle = (k: SeriesKey) =>
+    setActive((prev) => {
+      if (prev.has(k) && prev.size === 1) return prev;
+      const next = new Set(prev);
+      next.has(k) ? next.delete(k) : next.add(k);
+      return next;
+    });
+
+  const totals = seriesTotals(series);
+  const trimmed = totals.drafts + totals.posted === 0 ? series : trimLeadingZeros(series);
+  const label = active.size === 3 ? "All series" : [...active].map((k) => SERIES.find((s) => s.key === k)!.label).join(", ");
+
   return (
     <Card size="sm" className="gap-0 p-0">
       <div className="flex flex-wrap items-end justify-between gap-4 border-b px-5 py-4">
         <div>
           <h3 className="text-sm font-semibold tracking-tight">AI generation over time</h3>
           <p className="text-xs tracking-tight text-muted-foreground">
-            Drafts and images generated over the last {days} days.
+            {trimmed.length < series.length
+              ? `Showing ${trimmed.length} days with activity (of ${days} day window).`
+              : `Drafts and posts over the last ${days} days.`}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-4 text-xs tracking-tight">
-          <Legend dot="var(--chart-1)" label="Drafts" value={fmt.format(totals.drafts)} />
-          <Legend dot="var(--chart-2)" label="Images" value={fmt.format(totals.images)} />
-          <Legend dot="var(--chart-5)" label="Failed" value={fmt.format(totals.failed)} />
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+            <span className="flex items-center gap-1.5 text-xs">
+              {label} <ChevronDown className="size-3 text-muted-foreground" />
+            </span>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44">
+            {SERIES.map(({ key, label: name, color }) => (
+              <DropdownMenuCheckboxItem key={key} checked={active.has(key)} onClick={() => toggle(key)}>
+                <span className="flex items-center gap-2">
+                  <span className="size-2 rounded-full shrink-0" style={{ background: color }} />
+                  {name}
+                  <span className="ml-auto tabular-nums text-muted-foreground text-xs">
+                    {fmt.format(totals[key])}
+                  </span>
+                </span>
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="px-3 pb-3">
-        <UsageChart data={series} />
+        <UsageChart data={trimmed} activeKeys={[...active]} />
       </div>
     </Card>
-  );
-}
-
-function Legend({ dot, label, value }: { dot: string; label: string; value: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span className="size-2 rounded-full" style={{ background: dot }} />
-      {label} <span className="tabular-nums text-muted-foreground">{value}</span>
-    </span>
   );
 }

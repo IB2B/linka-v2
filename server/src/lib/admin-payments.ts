@@ -1,33 +1,16 @@
+import type Stripe from "stripe";
 import { stripe } from "./stripe";
 
-export type AdminCharge = {
-  id: string;
-  created: number;
-  description: string | null;
-  amount: number;
-  currency: string;
-  status: string;
-  paid: boolean;
-  refunded: boolean;
-  cardBrand: string | null;
-  cardLast4: string | null;
+export type AdminPayment = {
+  id: string; number: string | null; created: number;
+  amount: number; currency: string; status: string | null;
+  customerEmail: string | null; description: string | null;
+  cardBrand: string | null; cardLast4: string | null;
+  hostedInvoiceUrl: string | null; invoicePdf: string | null;
   receiptUrl: string | null;
-  customerEmail: string | null;
 };
 
-export type AdminInvoice = {
-  id: string;
-  number: string | null;
-  created: number;
-  amountDue: number;
-  amountPaid: number;
-  currency: string;
-  status: string | null;
-  hostedInvoiceUrl: string | null;
-  invoicePdf: string | null;
-  customerEmail: string | null;
-  description: string | null;
-};
+export type RevenuePoint = { month: string; revenue: number };
 
 type DateRange = { from?: string; to?: string };
 
@@ -38,39 +21,48 @@ function createdParam(r: DateRange) {
   return Object.keys(p).length ? p : undefined;
 }
 
-export async function listCharges(limit = 50, range: DateRange = {}): Promise<AdminCharge[]> {
-  const created = createdParam(range);
-  const res = await stripe.charges.list({ limit, ...(created ? { created } : {}) });
-  return res.data.map((c) => ({
-    id: c.id,
-    created: c.created * 1000,
-    description: c.description ?? null,
-    amount: c.amount,
-    currency: c.currency,
-    status: c.status,
-    paid: c.paid,
-    refunded: c.refunded,
-    cardBrand: c.payment_method_details?.card?.brand ?? null,
-    cardLast4: c.payment_method_details?.card?.last4 ?? null,
+function chargeToPayment(c: Stripe.Charge): AdminPayment {
+  const inv = typeof c.invoice === "object" && c.invoice !== null ? c.invoice : null;
+  const card = c.payment_method_details?.card ?? null;
+  return {
+    id: inv?.id ?? c.id, number: inv?.number ?? null, created: c.created * 1000,
+    amount: c.amount_captured || c.amount, currency: c.currency,
+    status: c.status ?? null,
+    customerEmail: inv?.customer_email ?? c.billing_details?.email ?? null,
+    description: inv?.description ?? c.description ?? null,
+    cardBrand: card?.brand ?? null, cardLast4: card?.last4 ?? null,
+    hostedInvoiceUrl: inv?.hosted_invoice_url ?? null,
+    invoicePdf: inv?.invoice_pdf ?? null,
     receiptUrl: c.receipt_url ?? null,
-    customerEmail: c.billing_details?.email ?? null,
-  }));
+  };
 }
 
-export async function listInvoices(limit = 50, range: DateRange = {}): Promise<AdminInvoice[]> {
+export async function listPayments(cap = 500, range: DateRange = {}): Promise<AdminPayment[]> {
   const created = createdParam(range);
-  const res = await stripe.invoices.list({ limit, ...(created ? { created } : {}) });
-  return res.data.map((i) => ({
-    id: i.id ?? "",
-    number: i.number ?? null,
-    created: i.created * 1000,
-    amountDue: i.amount_due,
-    amountPaid: i.amount_paid,
-    currency: i.currency,
-    status: i.status ?? null,
-    hostedInvoiceUrl: i.hosted_invoice_url ?? null,
-    invoicePdf: i.invoice_pdf ?? null,
-    customerEmail: i.customer_email ?? null,
-    description: i.description ?? null,
-  }));
+  const all = await stripe.charges
+    .list({ limit: 100, expand: ["data.invoice"], ...(created ? { created } : {}) })
+    .autoPagingToArray({ limit: cap });
+  return all.map(chargeToPayment);
+}
+
+export async function getMonthlyRevenue(months = 12): Promise<RevenuePoint[]> {
+  const since = Math.floor(Date.now() / 1000) - months * 31 * 24 * 3600;
+  const all = await stripe.invoices
+    .list({ limit: 100, status: "paid", created: { gte: since } })
+    .autoPagingToArray({ limit: 5000 });
+  const map: Record<string, number> = {};
+  for (const inv of all) {
+    const d = new Date(inv.created * 1000);
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+    map[key] = (map[key] ?? 0) + inv.amount_paid;
+  }
+  const result: RevenuePoint[] = [];
+  for (let i = months - 1; i >= 0; i--) {
+    const d = new Date();
+    d.setUTCDate(1);
+    d.setUTCMonth(d.getUTCMonth() - i);
+    const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+    result.push({ month: key, revenue: (map[key] ?? 0) / 100 });
+  }
+  return result;
 }

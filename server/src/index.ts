@@ -18,6 +18,7 @@ import trendsRouter from "./routes/trends";
 import analyticsRouter from "./routes/analytics";
 import recyclerRouter from "./routes/recycler";
 import feedbackRouter from "./routes/feedback";
+import servicesRouter from "./routes/services";
 import { mountAdminRoutes } from "./routes/admin-index";
 import { proxyImage } from "./controllers/image-proxy.controller";
 import { authenticate } from "./middleware/auth";
@@ -53,6 +54,7 @@ app.use("/api/trends", trendsRouter);
 app.use("/api/analytics", analyticsRouter);
 app.use("/api/recycler", recyclerRouter);
 app.use("/api/feedback", feedbackRouter);
+app.use("/api/services", servicesRouter);
 mountAdminRoutes(app);
 
 app.use(errorHandler);

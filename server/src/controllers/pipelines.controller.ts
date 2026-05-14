@@ -32,8 +32,9 @@ export async function getBoard(req: AuthRequest, res: Response) {
     ),
     db.query<any[]>(
       `SELECT id, pipeline_id, stage_id, title, contact_name, contact_handle,
-              source_platform, status, notes, conversation_id, position,
-              last_activity_at, created_at, updated_at
+              source_platform, status, notes, conversation_id, social_url,
+              facebook_url, instagram_url, x_url, tiktok_url, threads_url,
+              position, last_activity_at, created_at, updated_at
        FROM opportunities
        WHERE user_id = ? AND pipeline_id = ?
        ORDER BY position ASC, created_at ASC`,

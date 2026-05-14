@@ -27,7 +27,7 @@ export function SubscriptionRow({ row }: { row: AdminSubscriptionRow }) {
       <td className="px-4 py-3"><PlanBadge tier={row.planTier} /></td>
       <td className="px-4 py-3"><SubStatusBadge status={row.status} /></td>
       <td className="px-4 py-3 text-sm tabular-nums tracking-tight">
-        {row.mrr > 0 ? formatMoney(row.mrr) : "—"}
+        {row.mrr > 0 ? formatMoney(row.mrr, row.currency) : "—"}
       </td>
       <td className="px-4 py-3 text-sm tabular-nums tracking-tight text-muted-foreground">
         {row.currentPeriodEnd ? `${renews} ${fmtDate(row.currentPeriodEnd)}` : "—"}

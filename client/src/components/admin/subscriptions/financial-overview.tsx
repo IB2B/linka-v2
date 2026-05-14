@@ -10,6 +10,7 @@ import type { AdminSubsSummary } from "@/types/admin-subscription";
 const fmt = new Intl.NumberFormat("en-US");
 
 export function FinancialOverview({ summary }: { summary: AdminSubsSummary }) {
+  const cur = summary.currency ?? "usd";
   const total = summary.paying + summary.free + summary.trialing;
   const conv = total ? Math.round((summary.paying / total) * 100) : 0;
   return (
@@ -20,10 +21,10 @@ export function FinancialOverview({ summary }: { summary: AdminSubsSummary }) {
             Monthly recurring revenue
           </span>
           <span className="text-5xl font-semibold tabular-nums tracking-tight">
-            {formatMoney(summary.mrr)}
+            {formatMoney(summary.mrr, cur)}
           </span>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm tracking-tight text-muted-foreground">
-            <span><span className="tabular-nums">{formatMoney(summary.arr)}</span> ARR</span>
+            <span><span className="tabular-nums">{formatMoney(summary.arr, cur)}</span> ARR</span>
             <span aria-hidden>·</span>
             <span><span className="tabular-nums">{conv}%</span> paid conversion</span>
           </div>
@@ -41,7 +42,7 @@ export function FinancialOverview({ summary }: { summary: AdminSubsSummary }) {
             Revenue mix
           </span>
           <span className="text-xs tabular-nums tracking-tight text-muted-foreground">
-            {formatMoney(summary.mrr)} total
+            {formatMoney(summary.mrr, cur)} total
           </span>
         </div>
         <TierMixBar tiers={summary.byTier} totalMrr={summary.mrr} />

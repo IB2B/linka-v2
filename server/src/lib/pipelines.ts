@@ -1,30 +1,6 @@
-import { z } from "zod";
-
 import { db } from "./db";
 
-const PLATFORMS = ["linkedin", "x", "instagram", "threads", "facebook", "tiktok"] as const;
-
-export const createOppSchema = z.object({
-  title: z.string().trim().min(1).max(255),
-  stageId: z.string().uuid(),
-  contactName: z.string().trim().max(160).optional().nullable(),
-  contactHandle: z.string().trim().max(160).optional().nullable(),
-  sourcePlatform: z.enum(PLATFORMS).optional().nullable(),
-  notes: z.string().trim().max(5000).optional().nullable(),
-});
-
-export const updateOppSchema = z.object({
-  title: z.string().trim().min(1).max(255).optional(),
-  contactName: z.string().trim().max(160).nullable().optional(),
-  contactHandle: z.string().trim().max(160).nullable().optional(),
-  sourcePlatform: z.enum(PLATFORMS).nullable().optional(),
-  notes: z.string().trim().max(5000).nullable().optional(),
-});
-
-export const moveOppSchema = z.object({
-  stageId: z.string().uuid(),
-  position: z.number().int().min(0),
-});
+export { createOppSchema, updateOppSchema, moveOppSchema } from "./opp-schemas";
 
 export function mapStage(r: any) {
   return { id: r.id, name: r.name, position: r.position, outcome: r.outcome };
@@ -38,6 +14,12 @@ export function mapOpp(r: any) {
     sourcePlatform: r.source_platform,
     status: r.status, notes: r.notes,
     conversationId: r.conversation_id,
+    socialUrl: r.social_url ?? null,
+    facebookUrl: r.facebook_url ?? null,
+    instagramUrl: r.instagram_url ?? null,
+    xUrl: r.x_url ?? null,
+    tiktokUrl: r.tiktok_url ?? null,
+    threadsUrl: r.threads_url ?? null,
     position: r.position,
     lastActivityAt: r.last_activity_at,
     createdAt: r.created_at, updatedAt: r.updated_at,
@@ -50,6 +32,12 @@ const COL_MAP: Record<string, string> = {
   contactHandle: "contact_handle",
   sourcePlatform: "source_platform",
   notes: "notes",
+  socialUrl: "social_url",
+  facebookUrl: "facebook_url",
+  instagramUrl: "instagram_url",
+  xUrl: "x_url",
+  tiktokUrl: "tiktok_url",
+  threadsUrl: "threads_url",
 };
 
 export function toUpdateColumn(key: string): string | null {

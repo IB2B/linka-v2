@@ -9,6 +9,7 @@ import { FeaturesSection } from "./features-section";
 import { NotificationsSection } from "./notifications-section";
 import { ConnectedAccountsSection } from "./connected-accounts-section";
 import { DangerSection } from "./danger-section";
+import { ServicesSection } from "./services-section";
 import { SettingsNav } from "./settings-nav";
 import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
 
@@ -40,6 +41,7 @@ export function SettingsShell({ accounts, recyclerEnabled, ...profile }: Props) 
         )}
         {active === "notifications" && <NotificationsSection />}
         {active === "accounts" && <ConnectedAccountsSection accounts={accounts} />}
+        {active === "services" && <ServicesSection />}
         {active === "danger" && <DangerSection />}
       </div>
     </div>
