@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { adminOnly } from "../middleware/admin";
+import { superAdminOnly } from "../middleware/admin";
 import { getAiUsageKpis } from "../lib/ai-usage-kpis";
 import { getAiUsageSeries } from "../lib/ai-usage-series";
 import {
@@ -7,7 +7,7 @@ import {
 } from "../lib/ai-usage-extras";
 
 const router = Router();
-router.use(adminOnly);
+router.use(superAdminOnly);
 
 const ALLOWED = new Set([7, 30, 90]);
 

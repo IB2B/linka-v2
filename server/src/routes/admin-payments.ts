@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { adminOnly } from "../middleware/admin";
+import { superAdminOnly } from "../middleware/admin";
 import { listPayments, getMonthlyRevenue } from "../lib/admin-payments";
 
 const router = Router();
-router.use(adminOnly);
+router.use(superAdminOnly);
 
 router.get("/", async (req, res, next) => {
   try {

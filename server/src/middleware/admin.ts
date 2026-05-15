@@ -9,3 +9,10 @@ export function adminOnly(req: AuthRequest, res: Response, next: NextFunction): 
     requireRole("ADMIN", "SUPER_ADMIN")(req, res, next);
   });
 }
+
+export function superAdminOnly(req: AuthRequest, res: Response, next: NextFunction): void {
+  authenticate(req, res, (err?: unknown) => {
+    if (err) return next(err);
+    requireRole("SUPER_ADMIN")(req, res, next);
+  });
+}
