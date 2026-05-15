@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { serverFetch } from "@/lib/server-fetch";
 
 export type ServiceStatus = "ok" | "degraded" | "down" | "unconfigured";
 
@@ -14,17 +14,11 @@ export type ServicesStatusResult = {
   tavily: ServiceStatus;
 };
 
-const API_BASE = process.env.API_URL ?? "http://localhost:4000";
-
 export async function getServicesStatusAction(): Promise<
   ServicesStatusResult | { error: string }
 > {
   try {
-    const cookieStore = await cookies();
-    const res = await fetch(`${API_BASE}/api/services/status`, {
-      headers: { cookie: cookieStore.toString() },
-      cache: "no-store",
-    });
+    const res = await serverFetch("/api/services/status");
     if (!res.ok) return { error: "Failed to fetch service status." };
     return res.json() as Promise<ServicesStatusResult>;
   } catch {

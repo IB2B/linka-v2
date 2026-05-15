@@ -4,6 +4,7 @@ import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 import type { AssistResult } from "@/lib/inbox/assist.types";
+import { isSafeUploadUrl } from "@/lib/inbox/safe-upload-url";
 
 type Result = { success: true } | { error: string };
 type AssistOk = { success: true; data: AssistResult } | { error: string };
@@ -56,6 +57,7 @@ export async function uploadAttachmentAction(formData: FormData): Promise<{ url:
   });
   const body = await res.json().catch(() => ({}));
   if (!res.ok) return { error: body.error ?? "Upload failed." };
+  if (!isSafeUploadUrl(body.url)) return { error: "Upload failed." };
   return { url: body.url };
 }
 

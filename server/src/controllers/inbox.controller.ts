@@ -7,6 +7,7 @@ import {
   type RawConversation,
 } from "../lib/late-inbox";
 import { INBOX_DM_PLATFORMS } from "../lib/inbox-platforms";
+import { userOwnsAccount } from "../lib/inbox-account-guard";
 import { mapConversation, mapMessage } from "./inbox.helpers";
 
 export async function getConversations(req: AuthRequest, res: Response) {
@@ -25,6 +26,7 @@ export async function getMessages(req: AuthRequest, res: Response) {
   const cursor = typeof req.query.cursor === "string" ? req.query.cursor : undefined;
   const accountId = typeof req.query.accountId === "string" ? req.query.accountId : "";
   if (!accountId) { res.status(400).json({ error: "accountId is required" }); return; }
+  if (!(await userOwnsAccount(req.user!.id, accountId))) { res.status(403).json({ error: "Account not accessible." }); return; }
   const data = await listInboxMessages(id, accountId, cursor);
   res.json({ messages: (data.messages ?? []).map(mapMessage), nextCursor: data.nextCursor ?? null });
 }
@@ -40,6 +42,9 @@ export async function postReply(req: AuthRequest, res: Response) {
   if (!parsed.success) { res.status(400).json({ error: "Invalid request." }); return; }
   if (!parsed.data.text && !parsed.data.mediaUrl) {
     res.status(400).json({ error: "Message or attachment is required." }); return;
+  }
+  if (!(await userOwnsAccount(req.user!.id, parsed.data.accountId))) {
+    res.status(403).json({ error: "Account not accessible." }); return;
   }
   const id = String(req.params.id);
   const sent = await sendInboxMessage(id, parsed.data.accountId, parsed.data.text, parsed.data.mediaUrl);

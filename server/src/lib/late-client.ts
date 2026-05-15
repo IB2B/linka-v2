@@ -41,3 +41,7 @@ export async function schedulePostOnLate(
   });
   return { latePostId: r.post._id };
 }
+
+export async function deleteLatePost(latePostId: string): Promise<void> {
+  await lateFetch(`/posts/${encodeURIComponent(latePostId)}`, { method: "DELETE" });
+}
