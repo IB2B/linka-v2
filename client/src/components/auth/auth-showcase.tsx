@@ -1,3 +1,5 @@
+import { BrandLogo } from "@/components/brand-logo";
+
 export function AuthShowcase() {
   return (
     <>
@@ -11,7 +13,7 @@ export function AuthShowcase() {
       />
 
       <div className="relative z-10 flex items-center gap-2 text-base font-semibold">
-        <div className="size-6 rounded-md bg-zinc-50" />
+        <BrandLogo size={20} className="text-zinc-50" />
         linka
       </div>
 

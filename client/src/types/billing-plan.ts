@@ -1,4 +1,4 @@
-export type PlanTier = "starter" | "pro" | "scale";
+export type PlanTier = "starter" | "pro" | "scale" | "enterprise";
 
 export type BillingPlan = {
   id: PlanTier;

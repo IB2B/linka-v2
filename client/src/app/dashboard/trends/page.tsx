@@ -3,8 +3,12 @@ import { TrendsGrid } from "@/components/trends/trends-grid";
 import { TrendsEmpty } from "@/components/trends/trends-empty";
 import { TopicPicker } from "@/components/trends/topic-picker";
 import { getTrends } from "@/lib/trends/get-trends";
+import { checkPaidFeature } from "@/lib/billing/check-paid-feature";
+import { UpgradeWall } from "@/components/billing/upgrade-wall";
 
 export default async function TrendsPage() {
+  const access = await checkPaidFeature("trends");
+  if (!access.hasAccess) return <UpgradeWall feature="trends" />;
   const { trends, ideas } = await getTrends();
 
   return (

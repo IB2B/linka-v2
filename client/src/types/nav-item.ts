@@ -4,6 +4,7 @@ export type NavItem = {
   label: string;
   href: string;
   icon: LucideIcon;
+  badge?: number;
 };
 
 export type NavGroup = {

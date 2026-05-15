@@ -12,13 +12,13 @@ export function LandingHero() {
         Available June 2026
       </Badge>
       <h1 className="max-w-4xl text-[44px] font-semibold leading-[1.05] tracking-tight text-[#0F1113] md:text-[72px]">
-        AI-led social growth for founders
-        <br className="hidden md:block" /> who&rsquo;d rather ship than post.
+        Stop writing posts.
+        <br className="hidden md:block" /> Start building your audience.
       </h1>
       <p className="max-w-xl text-[17px] leading-[1.55] tracking-tight text-[#525252]">
-        Linka writes, designs and schedules every post across LinkedIn, X,
-        Instagram and TikTok — in your voice, on autopilot, without the agency
-        retainer.
+        Linka learns your voice, generates on-brand content across every
+        platform, and publishes it at the right time — so you can focus on
+        building.
       </p>
       <HeroCta />
       <div className="mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] tracking-tight text-[#737373]">

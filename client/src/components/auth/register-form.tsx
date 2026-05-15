@@ -9,10 +9,12 @@ import { ROLE_REDIRECTS } from "@/lib/auth/constants";
 import { FormField } from "@/components/forms/form-field";
 import { FormSubmitButton } from "@/components/forms/form-submit-button";
 import { PasswordField } from "@/components/forms/password-field";
+import { PasswordStrength } from "@/components/forms/password-strength";
 
 export function RegisterForm() {
   const router = useRouter();
   const [pending, setPending] = useState(false);
+  const [password, setPassword] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -53,7 +55,12 @@ export function RegisterForm() {
         <FormField id="lastName" name="lastName" type="text" label="Last name" autoComplete="family-name" required />
       </div>
       <FormField id="email" name="email" type="email" label="Email" autoComplete="email" placeholder="you@example.com" required />
-      <PasswordField id="password" name="password" label="Password" autoComplete="new-password" required />
+      <PasswordField
+        id="password" name="password" label="Password"
+        autoComplete="new-password" required
+        onInput={(e) => setPassword((e.currentTarget as HTMLInputElement).value)}
+      />
+      <PasswordStrength password={password} />
       <PasswordField id="confirmPassword" name="confirmPassword" label="Confirm password" autoComplete="new-password" required />
       <FormSubmitButton label="Create account" pending={pending} />
     </form>

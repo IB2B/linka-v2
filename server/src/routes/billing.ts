@@ -8,7 +8,7 @@ import { authenticate, type AuthRequest } from "../middleware/auth";
 const router = Router();
 router.use(authenticate);
 
-const POSTS_LIMIT: Record<string, number> = { FREE: 5, starter: 30, pro: 200, scale: -1 };
+const POSTS_LIMIT: Record<string, number> = { starter: 10, pro: 100, scale: 500, enterprise: 2000 };
 const EMPTY = {
   balance: 0, currency: "usd", paymentMethods: [],
   defaultPaymentMethodId: null, invoices: [], upcoming: null,
@@ -29,7 +29,7 @@ router.get("/overview", async (req: AuthRequest, res, next) => {
       currentPeriodEnd: sub?.current_period_end ? new Date(sub.current_period_end).getTime() : null,
       cancelAtPeriodEnd: !!sub?.cancel_at_period_end,
       postsThisMonth: 0,
-      postsLimit: POSTS_LIMIT[sub?.plan_tier ?? "FREE"] ?? 5,
+      postsLimit: POSTS_LIMIT[sub?.plan_tier ?? "starter"] ?? 10,
     });
   } catch (e) { next(e); }
 });

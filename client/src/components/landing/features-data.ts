@@ -10,15 +10,15 @@ export type Feature = {
 
 export const FEATURES: Feature[] = [
   { icon: Wand2, tone: "fuchsia", title: "Writes in your voice",
-    body: "Trained on your past posts. Hooks, CTAs, formatting — all you, none of the AI tells." },
-  { icon: ImageIcon, tone: "rose", title: "Designs the image",
-    body: "On-brand carousels and feed images generated alongside the copy. No Canva tab needed." },
+    body: "Trained on your content. Every hook, CTA and format sounds like you wrote it on your best day — not like AI." },
+  { icon: ImageIcon, tone: "rose", title: "Generates the visuals",
+    body: "On-brand images and carousels created alongside the copy. No Canva, no designer, no extra tab." },
   { icon: CalendarClock, tone: "violet", title: "Schedules everywhere",
-    body: "LinkedIn, Instagram, X, TikTok, Pinterest — one calendar, one queue, optimal time-slots." },
+    body: "One calendar for LinkedIn, Instagram, X, TikTok, Pinterest and more. Posts go out at the best slot per platform." },
   { icon: Radar, tone: "amber", title: "Trend Radar",
-    body: "Surfaces trending topics in your niche before they peak so you ride the wave, not the wake." },
+    body: "Surfaces trending topics in your niche before they peak. Be first, not late." },
   { icon: Inbox, tone: "sky", title: "Inbox Autopilot",
-    body: "Drafts on-brand replies to every comment & DM. You approve, it sends. Inbox zero, finally." },
+    body: "AI-drafted replies to every comment and DM. You review, it sends. Inbox zero, every day." },
   { icon: BarChart3, tone: "emerald", title: "Analytics that act",
-    body: "Knows which hook, time and platform converted — and writes more of what works." },
+    body: "Learns which hooks, times and formats drive results — then writes more of what actually works." },
 ];

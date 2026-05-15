@@ -3,6 +3,7 @@ import type { AuthRequest } from "../middleware/auth";
 import { lateFetch } from "../lib/late-api";
 import { getOrCreateLateProfile } from "../lib/late-profile";
 import { fetchPinterestAvatar } from "../lib/pinterest-avatar";
+import { fetchRedditAvatar } from "../lib/reddit-avatar";
 
 type RawAccount = {
   _id: string;
@@ -57,6 +58,9 @@ export async function listAccounts(req: AuthRequest, res: Response) {
     let avatar = pickAvatar(a) ?? fallbackAvatar(a.platform, username);
     if (!avatar && a.platform === "pinterest") {
       avatar = await fetchPinterestAvatar(username);
+    }
+    if (!avatar && a.platform === "reddit") {
+      avatar = await fetchRedditAvatar(username);
     }
     return { id: a._id, platform: a.platform, username, avatar_url: avatar };
   }));

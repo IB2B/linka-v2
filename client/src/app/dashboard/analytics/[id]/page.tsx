@@ -8,12 +8,14 @@ import { CommentsCard } from "@/components/analytics/post-detail/comments-card";
 import { CommentsLoading } from "@/components/analytics/post-detail/comments-loading";
 import { AnalyticsSyncPoller } from "@/components/analytics/post-detail/analytics-sync-poller";
 import { loadPostDetail } from "@/lib/analytics/load-post-detail";
+import { requirePaidFeature } from "@/lib/billing/require-paid-feature";
 
 type Params = { id: string };
 
 export default async function PostAnalyticsPage({
   params,
 }: { params: Promise<Params> }) {
+  await requirePaidFeature("analytics");
   const { id } = await params;
   const data = await loadPostDetail(id);
 

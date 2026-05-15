@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { KeyRound, MoreHorizontal, Pause, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { RoleSubMenu } from "@/components/admin/users/role-sub-menu";
+import { DeleteUserDialog } from "./delete-user-dialog";
 import { setUserRoleAction, setUserStatusAction, deleteUserAction } from "@/app/admin/users/actions";
 import type { AdminUserRow } from "@/types/admin";
 import type { UserRole } from "@/types/user-role";
 
 export function UserDetailActions({ user }: { user: AdminUserRow }) {
   const [pending, start] = useTransition();
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const router = useRouter();
   const suspended = user.status === "SUSPENDED";
 
@@ -32,38 +34,44 @@ export function UserDetailActions({ user }: { user: AdminUserRow }) {
     r.error ? toast.error(r.error) : toast.success(suspended ? "Reactivated." : "Suspended.");
   });
 
-  const onDelete = () => {
-    if (!confirm(`Delete ${user.email}? This cannot be undone.`)) return;
-    start(async () => {
-      const r = await deleteUserAction(user.id);
-      if (r.error) { toast.error(r.error); return; }
-      toast.success("User deleted.");
-      router.push("/admin/users");
-    });
-  };
+  const confirmDelete = () => start(async () => {
+    const r = await deleteUserAction(user.id);
+    if (r.error) { toast.error(r.error); return; }
+    toast.success("User deleted.");
+    router.push("/admin/users");
+  });
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" size="sm" aria-label="Actions" />}>
-        {pending ? <Spinner /> : <><MoreHorizontal className="mr-1.5 size-4" />Actions</>}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-52">
-        <DropdownMenuGroup>
-          <DropdownMenuLabel>Quick actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => toast.message("Password reset link sent.")}>
-            <KeyRound />Send password reset
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button variant="outline" size="sm" aria-label="Actions" />}>
+          {pending ? <Spinner /> : <><MoreHorizontal className="mr-1.5 size-4" />Actions</>}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-52">
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Quick actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => toast.message("Password reset link sent.")}>
+              <KeyRound />Send password reset
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={toggleStatus}>
+              {suspended ? <Play /> : <Pause />}{suspended ? "Reactivate" : "Suspend"}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <RoleSubMenu onSetRole={setRole} />
+          <DropdownMenuSeparator />
+          <DropdownMenuItem variant="destructive" onClick={() => setDeleteOpen(true)}>
+            <Trash2 />Delete user
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={toggleStatus}>
-            {suspended ? <Play /> : <Pause />}{suspended ? "Reactivate" : "Suspend"}
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <RoleSubMenu onSetRole={setRole} />
-        <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" onClick={onDelete}>
-          <Trash2 />Delete user
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DeleteUserDialog
+        email={user.email}
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        onConfirm={confirmDelete}
+        pending={pending}
+      />
+    </>
   );
 }
