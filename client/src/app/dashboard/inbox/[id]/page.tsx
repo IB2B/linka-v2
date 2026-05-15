@@ -7,6 +7,7 @@ import { ReplyComposer } from "@/components/inbox/reply-composer";
 import { InboxError } from "@/components/inbox/inbox-error";
 import { getConversations } from "@/lib/inbox/get-conversations";
 import { getMessages } from "@/lib/inbox/get-messages";
+import { requirePaidFeature } from "@/lib/billing/require-paid-feature";
 
 type Params = Promise<{ id: string }>;
 type SP = Promise<{ platform?: string }>;
@@ -14,6 +15,7 @@ type SP = Promise<{ platform?: string }>;
 export default async function ConversationPage({
   params, searchParams,
 }: { params: Params; searchParams: SP }) {
+  await requirePaidFeature("inbox");
   const [{ id }, { platform = "" }] = await Promise.all([params, searchParams]);
 
   const convosRes = await getConversations(platform || undefined);

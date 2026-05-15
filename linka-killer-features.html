@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>linka — killer features research (2026)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --surface: #111114;
+    --surface-2: #18181d;
+    --border: #25252c;
+    --border-strong: #34343d;
+    --text: #ededf0;
+    --text-dim: #a1a1aa;
+    --text-faint: #6b6b75;
+    --accent: #a3e635;
+    --accent-dim: #84cc16;
+    --tier0: #f97316;
+    --tier1: #3b82f6;
+    --tier2: #a855f7;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  code, .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.9em; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px dashed var(--accent-dim); }
+  a:hover { color: var(--accent-dim); }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* hero */
+  .hero {
+    padding: 80px 0 64px;
+    border-bottom: 1px solid var(--border);
+    background:
+      radial-gradient(ellipse at top left, rgba(163, 230, 53, 0.08), transparent 60%),
+      radial-gradient(ellipse at top right, rgba(249, 115, 22, 0.06), transparent 60%);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    padding: 6px 12px;
+    border: 1px solid rgba(163, 230, 53, 0.3);
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin: 0 0 20px;
+    letter-spacing: -0.02em;
+  }
+  h1 .accent { color: var(--accent); }
+  .lede {
+    font-size: 19px;
+    color: var(--text-dim);
+    max-width: 720px;
+    margin: 0 0 32px;
+  }
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    color: var(--text-faint);
+    font-size: 14px;
+  }
+  .meta-row span { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* sections */
+  section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  h2 .num {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-faint);
+    font-size: 0.7em;
+    margin-right: 12px;
+  }
+  .section-sub {
+    color: var(--text-dim);
+    margin: 0 0 40px;
+    font-size: 17px;
+    max-width: 720px;
+  }
+
+  /* insight card */
+  .insight {
+    background: linear-gradient(135deg, rgba(163, 230, 53, 0.08), rgba(249, 115, 22, 0.04));
+    border: 1px solid rgba(163, 230, 53, 0.25);
+    border-radius: 16px;
+    padding: 32px;
+    margin-top: 32px;
+  }
+  .insight .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+  }
+  .insight p {
+    font-size: 20px;
+    margin: 0;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* tier cards */
+  .tier-grid { display: grid; gap: 20px; }
+  .feature {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .feature:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+  .feature-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .feature-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--text-faint);
+  }
+  .feature h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    flex: 1;
+  }
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .pill.tier0 { background: rgba(249, 115, 22, 0.15); color: var(--tier0); }
+  .pill.tier1 { background: rgba(59, 130, 246, 0.15); color: var(--tier1); }
+  .pill.tier2 { background: rgba(168, 85, 247, 0.15); color: var(--tier2); }
+  .pill.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+  .pill.done { background: rgba(163, 230, 53, 0.15); color: var(--accent); }
+  .feature.done { border-color: rgba(163, 230, 53, 0.3); opacity: 0.7; }
+  .feature.done .feature-num::after { content: ' ✓'; color: var(--accent); }
+  .feature p { margin: 0 0 12px; color: var(--text-dim); }
+  .feature ul { margin: 12px 0; padding-left: 20px; color: var(--text-dim); }
+  .feature li { margin: 6px 0; }
+  .feature li strong { color: var(--text); font-weight: 600; }
+  .why {
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin-top: 16px;
+    background: rgba(163, 230, 53, 0.04);
+    border-radius: 0 8px 8px 0;
+  }
+  .why .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .why p { margin: 0; color: var(--text); font-size: 15px; }
+
+  /* compact list (tier 2 + dont build) */
+  .compact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .compact-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+  .compact-item strong { display: block; margin-bottom: 4px; }
+  .compact-item span { color: var(--text-dim); font-size: 14px; }
+  .compact-item.danger { border-color: rgba(239, 68, 68, 0.25); }
+  .compact-item.danger strong { color: var(--danger); }
+
+  /* positioning table */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; background: var(--surface); }
+  th, td { text-align: left; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  th {
+    background: var(--surface-2);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+  }
+  tr:last-child td { border-bottom: none; }
+  td .examples { color: var(--text-dim); font-size: 14px; }
+
+  /* sprint roadmap */
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .sprint {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+  }
+  .sprint-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 8px;
+  }
+  .sprint h4 {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .sprint p {
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  /* current vs missing */
+  .have-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .have-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .have-col h4 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 16px;
+  }
+  .have-col.shipped h4 { color: var(--accent); }
+  .have-col.gap h4 { color: var(--tier0); }
+  .have-col ul { margin: 0; padding-left: 20px; color: var(--text-dim); }
+  .have-col li { margin: 6px 0; font-size: 15px; }
+
+  /* sources */
+  .sources {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+    font-size: 14px;
+  }
+  .sources a {
+    display: block;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  .sources a:hover { background: var(--surface-2); color: var(--text); border-color: var(--border-strong); }
+
+  /* footer */
+  footer { padding: 48px 0; text-align: center; color: var(--text-faint); font-size: 14px; }
+
+  /* responsive */
+  @media (max-width: 720px) {
+    h1 { font-size: 36px; }
+    h2 { font-size: 24px; }
+    .lede { font-size: 17px; }
+    .insight p { font-size: 17px; }
+    .have-grid { grid-template-columns: 1fr; }
+    section { padding: 48px 0; }
+    .hero { padding: 56px 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow">Competitor research · Apr 2026</span>
+    <h1>Killer features that will <span class="accent">make linka win</span>.</h1>
+    <p class="lede">
+      A deep scan of 25+ social-media-management competitors, mapped against linka's current
+      surface area, to identify the features with the highest revenue and differentiation upside.
+    </p>
+    <div class="meta-row">
+      <span><span class="dot"></span>25+ competitors analyzed</span>
+      <span><span class="dot"></span>16 source articles</span>
+      <span><span class="dot"></span>3-tier prioritized roadmap</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2><span class="num">00</span>The headline insight</h2>
+    <p class="section-sub">If you only read one paragraph in this document, read this one.</p>
+
+    <div class="insight">
+      <div class="label">The market gap</div>
+      <p>
+        The market is crowded with <em>"schedulers + an AI button bolted on."</em>
+        The winners in 2026 are tools that <strong>think for the user</strong> &mdash;
+        autopilot inboxes, viral scoring, content recyclers, video repurposing.
+        That is the lane linka should own.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">01</span>Where linka stands today</h2>
+    <p class="section-sub">What's already shipped vs the gaps that competitors are charging for.</p>
+
+    <div class="have-grid">
+      <div class="have-col shipped">
+        <h4>Already shipped</h4>
+        <ul>
+          <li>Late API multi-platform posting</li>
+          <li>AI text generation (OpenAI / Anthropic / Gemini)</li>
+          <li>AI image generation (gpt-image / Imagine)</li>
+          <li>Voice lab &mdash; brand-voice analysis</li>
+          <li>Posts, calendar, analytics dashboards</li>
+          <li><strong>DM inbox &amp; conversations</strong> (today)</li>
+          <li>Support center &amp; tickets (today)</li>
+          <li>Stripe billing &amp; 3-role permissions</li>
+        </ul>
+      </div>
+      <div class="have-col gap">
+        <h4>Gaps vs competitors</h4>
+        <ul>
+          <li>No content recycler / evergreen rotation</li>
+          <li>No pre-publish virality / quality score</li>
+          <li>No inbox autopilot or auto-reply rules</li>
+          <li>No video-to-shorts repurposing</li>
+          <li>No hook library / swipe file</li>
+          <li>No competitor tracking</li>
+          <li>No trend radar &rarr; idea engine</li>
+          <li>No team approval workflows / collision detection</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">02</span>Tier 0 &mdash; the three killer bets</h2>
+    <p class="section-sub">
+      These are not feature additions &mdash; they are positioning shifts. Build these and the pitch
+      changes from "another scheduler" to "the social tool that runs itself."
+    </p>
+
+    <div class="tier-grid">
+
+      <article class="feature done">
+        <div class="feature-head">
+          <span class="feature-num">01</span>
+          <h3>AI Inbox Autopilot</h3>
+          <span class="pill tier0">Tier 0</span>
+          <span class="pill done">Shipped</span>
+        </div>
+        <p>Layer autopilot on top of the inbox you just shipped &mdash; the way Yuma and Eclincher do for ecommerce.</p>
+        <ul>
+          <li>Classify each DM/comment by <strong>intent</strong> (purchase, support, spam, complaint, FAQ) and sentiment.</li>
+          <li>Three response modes per rule: <strong>auto-reply, queue for approval, or flag-and-skip</strong>.</li>
+          <li>Train on the user's voice using the existing <code>voice-analysis.ts</code> pipeline.</li>
+          <li>Surface buying-signal DMs to the top, hide spam, auto-tag, auto-route to teammates.</li>
+          <li>Show <strong>"saved replies this week"</strong> and <strong>"$ pipeline surfaced"</strong> &mdash; make the value visible.</li>
+        </ul>
+        <div class="why">
+          <div class="label">Why this wins</div>
+          <p>Sprout and Agorapulse charge $250+/mo for unified inbox; none have a true autopilot at the SMB tier. Buffer's engagement tool has no collision detection, no auto-routing, no advanced tagging. linka is already 60% there.</p>
+        </div>
+      </article>
+
+      <article class="feature done">
+        <div class="feature-head">
+          <span class="feature-num">02</span>
+          <h3>Viral Score &amp; Hook Library</h3>
+          <span class="pill tier0">Tier 0</span>
+          <span class="pill done">Shipped</span>
+        </div>
+        <p>The thing Tweet Hunter built a multi-million ARR business on. Two coupled features:</p>
+        <ul>
+          <li><strong>Pre-publish virality score</strong> &mdash; before "schedule," show 0&ndash;100 with reasons ("hook is weak," "no concrete number," "ends without CTA"). FeedHive does this and users love it.</li>
+          <li><strong>Hook library</strong> &mdash; 500&ndash;2000 curated viral hooks per platform, filterable by niche/tone/format. One click rewrites the user's draft using that hook.</li>
+          <li>Tweet Hunter has 3M+ tweets indexed. linka doesn't need scale &mdash; <strong>1,000 curated hooks beats 3M unsorted</strong>.</li>
+        </ul>
+        <div class="why">
+          <div class="label">Why this wins</div>
+          <p>Turns a generic "AI generate" button into "AI that knows what works." This is the #1 reason creators pay $40/mo for Tweet Hunter or Hypefury.</p>
+        </div>
+      </article>
+
+      <article class="feature">
+        <div class="feature-head">
+          <span class="feature-num">03</span>
+          <h3>Smart Recycler</h3>
+          <span class="pill tier0">Tier 0</span>
+        </div>
+        <p>FeedHive's secret weapon. The AI:</p>
+        <ul>
+          <li>Scans <code>generated_content</code> + <code>posting_history</code>, ranks by engagement.</li>
+          <li>Picks evergreen winners <strong>and</strong> "underdog" posts (good content that flopped due to bad timing).</li>
+          <li>Auto-suggests rewrites so the resurface isn't literally the same post.</li>
+          <li>User sets cadence ("recycle 1/week per platform"); linka fills the calendar passively.</li>
+        </ul>
+        <div class="why">
+          <div class="label">Why this wins</div>
+          <p>Solves the #1 user pain &mdash; <em>"what do I post today?"</em> &mdash; without any new content creation. Highest-leverage feature in the category. Users wake up, queue is full.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">03</span>Tier 1 &mdash; strong differentiators</h2>
+    <p class="section-sub">Build these after Tier 0 lands. Each one is a credible chapter in the marketing site.</p>
+
+    <div class="tier-grid">
+
+      <article class="feature">
+        <div class="feature-head">
+          <span class="feature-num">04</span>
+          <h3>Video &rarr; Shorts repurposing</h3>
+          <span class="pill tier1">Tier 1</span>
+        </div>
+        <p>Drop in a YouTube/Loom/Zoom URL &rarr; AI extracts 5&ndash;10 short clips with captions, hooks, and per-clip virality scores. OpusClip and Vizard charge $20&ndash;60/mo for <em>only this</em>; bundling it inside a posting tool is a strong wedge. Vizard claims 92% accuracy on viral-moment detection.</p>
+      </article>
+
+      <article class="feature">
+        <div class="feature-head">
+          <span class="feature-num">05</span>
+          <h3>Trend Radar &amp; Idea Engine</h3>
+          <span class="pill tier1">Tier 1</span>
+        </div>
+        <p>Daily feed of trending topics in the user's niche (Tavily integration is already referenced) &mdash; plus 5 auto-generated post ideas riding each trend. Ocoya's Travis AI does this and it's one of their top retention features. Surfaces "post in the next 4 hours" urgency that beats generic "AI write a post."</p>
+      </article>
+
+      <article class="feature">
+        <div class="feature-head">
+          <span class="feature-num">06</span>
+          <h3>Competitor tracking lite</h3>
+          <span class="pill tier1">Tier 1</span>
+        </div>
+        <p>Pick 5 competitor handles &rarr; daily digest: top post this week, hashtags they're using, post frequency, winning formats. Predis charges for this. Brandwatch charges $1,000+. A <em>good-enough</em> SMB version is a marketing weapon &mdash; every screenshot users share is free advertising.</p>
+      </article>
+
+      <article class="feature">
+        <div class="feature-head">
+          <span class="feature-num">07</span>
+          <h3>Best-time-to-post (per audience)</h3>
+          <span class="pill tier1">Tier 1</span>
+        </div>
+        <p>Most tools show generic "Tuesday 2pm" charts. The killer version analyzes <em>this user's actual followers'</em> engagement on past posts and shows their personal best window per platform. Late API gives publish-time data; engagement comes from platform analytics endpoints.</p>
+      </article>
+
+      <article class="feature">
+        <div class="feature-head">
+          <span class="feature-num">08</span>
+          <h3>Approval workflows &amp; collision detection</h3>
+          <span class="pill tier1">Tier 1</span>
+        </div>
+        <p>For teams: comment-in-context on draft posts, role-based approval (<code>USER</code> drafts &rarr; <code>ADMIN</code> approves), inbox collision detection ("Sarah is replying to this DM"). This is Hootsuite and Buffer's biggest gap per user complaints. linka already has the role system &mdash; wiring it in is mostly UX.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">04</span>Tier 2 &mdash; expected, not differentiating</h2>
+    <p class="section-sub">Table stakes for retention. Ship them, but don't lead the marketing site with them.</p>
+
+    <div class="compact-grid">
+      <div class="compact-item"><strong>Hashtag intelligence</strong><span>AI picks niche-specific hashtags from post content + trending volume.</span></div>
+      <div class="compact-item"><strong>Content pillars + AI calendar</strong><span>User defines 3&ndash;5 pillars, AI plans a month hitting each.</span></div>
+      <div class="compact-item"><strong>Bulk CSV import</strong><span>Publer's killer feature for agencies migrating in.</span></div>
+      <div class="compact-item"><strong>Browser extension</strong><span>Clip articles &rarr; drafts in one click.</span></div>
+      <div class="compact-item"><strong>Mobile app</strong><span>Table stakes &mdash; nearly every solo-creator complaint references missing mobile.</span></div>
+      <div class="compact-item"><strong>Analytics PDF export</strong><span>Agencies sending client reports.</span></div>
+      <div class="compact-item"><strong>Image watermarking</strong><span>Publer ships it; cheap differentiator.</span></div>
+      <div class="compact-item"><strong>Multi-language posts</strong><span>Ocoya does 26 languages; trivial via existing AI stack.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">05</span>What NOT to build</h2>
+    <p class="section-sub">These are commoditized, expensive, or moats linka can't out-build. Avoid them.</p>
+
+    <div class="compact-grid">
+      <div class="compact-item danger"><strong>Enterprise social listening</strong><span>Brandwatch territory &mdash; needs a 500M-posts/day firehose.</span></div>
+      <div class="compact-item danger"><strong>Native ad management</strong><span>Meta/Google APIs are maintenance hell; users tolerate switching tabs.</span></div>
+      <div class="compact-item danger"><strong>In-house Canva clone</strong><span>You'd lose. Integrate Canva via embed instead.</span></div>
+      <div class="compact-item danger"><strong>Generic chat assistant</strong><span>Every tool has one, none are differentiated.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">06</span>Strategic positioning</h2>
+    <p class="section-sub">Competitors fall into three buckets. Each has a clear weakness linka can exploit.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Bucket</th><th>Examples</th><th>Weakness</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Schedulers + AI bolted on</strong></td>
+            <td class="examples">Buffer, Later, Publer</td>
+            <td>Shallow AI, weak inbox, no autopilot</td>
+          </tr>
+          <tr>
+            <td><strong>Enterprise suites</strong></td>
+            <td class="examples">Hootsuite, Sprout Social, Sprinklr</td>
+            <td>$250&ndash;1000/mo, bloated, slow to ship</td>
+          </tr>
+          <tr>
+            <td><strong>AI-first creator tools</strong></td>
+            <td class="examples">Tweet Hunter, Typefully, Hypefury</td>
+            <td>Single-platform (mostly X), no inbox, no team</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="insight" style="margin-top: 32px;">
+      <div class="label">linka's lane</div>
+      <p>
+        <strong>AI-first, multi-platform, with the inbox and team features the creator tools lack &mdash; at SMB pricing.</strong>
+        Position the product as <em>"the social media tool that runs itself"</em> &mdash; autopilot inbox, smart recycler,
+        viral score, auto-replies. That is the headline. Everything else is supporting cast.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">07</span>Recommended sprint roadmap</h2>
+    <p class="section-sub">Four sprints, 1&ndash;2 weeks each. No new vendors. Each one compounds on infrastructure already shipped.</p>
+
+    <div class="roadmap">
+      <div class="sprint">
+        <div class="sprint-num">SPRINT 1</div>
+        <h4>Pre-publish virality score</h4>
+        <p>Uses what you have &mdash; Anthropic + posts table. Highest-leverage starting point.</p>
+      </div>
+      <div class="sprint">
+        <div class="sprint-num">SPRINT 2</div>
+        <h4>Smart Recycler</h4>
+        <p>Reads <code>posting_history</code>, AI rewrites top performers, auto-fills calendar.</p>
+      </div>
+      <div class="sprint">
+        <div class="sprint-num">SPRINT 3</div>
+        <h4>Inbox autopilot rules</h4>
+        <p>Extends the inbox shipped today. Classify, route, auto-reply, queue for approval.</p>
+      </div>
+      <div class="sprint">
+        <div class="sprint-num">SPRINT 4</div>
+        <h4>Hook library + 1-click rewrite</h4>
+        <p>Curated 1,000-hook database, filterable, integrated into the generate flow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2><span class="num">08</span>Sources</h2>
+    <p class="section-sub">Primary research from competitor docs, comparison sites, and 2026 industry analyses.</p>
+
+    <div class="sources">
+      <a href="https://zapier.com/blog/best-ai-social-media-management/" target="_blank" rel="noopener">Zapier &mdash; 9 best AI social tools 2026</a>
+      <a href="https://buffer.com/resources/best-social-media-management-tools/" target="_blank" rel="noopener">Buffer &mdash; 11 best tools 2026</a>
+      <a href="https://docs.feedhive.com/recycling-content" target="_blank" rel="noopener">FeedHive &mdash; content recycling docs</a>
+      <a href="https://sproutsocial.com/features/smart-inbox/" target="_blank" rel="noopener">Sprout Social &mdash; Smart Inbox</a>
+      <a href="https://aazarshad.com/resources/tweet-hunter-vs-typefully-vs-hypefury/" target="_blank" rel="noopener">Tweet Hunter vs Typefully vs Hypefury</a>
+      <a href="https://yuma.ai/social-ai" target="_blank" rel="noopener">Yuma &mdash; social AI for DMs/comments</a>
+      <a href="https://www.eclincher.com/articles/using-ai-agent-for-social-media-auto-reply-responses" target="_blank" rel="noopener">Eclincher &mdash; AI auto-reply agent</a>
+      <a href="https://www.opus.pro/" target="_blank" rel="noopener">OpusClip &mdash; viral score for clips</a>
+      <a href="https://vizard.ai/" target="_blank" rel="noopener">Vizard &mdash; 92% viral-moment detection</a>
+      <a href="https://genesysgrowth.com/blog/predis-ai-vs-feedhive-vs-flick" target="_blank" rel="noopener">Predis vs FeedHive vs Flick 2026</a>
+      <a href="https://www.brandwatch.com/blog/social-listening-tools/" target="_blank" rel="noopener">Brandwatch &mdash; listening tools 2026</a>
+      <a href="https://www.hootsuite.com/research/social-trends" target="_blank" rel="noopener">Hootsuite &mdash; 2026 social trends</a>
+      <a href="https://vistasocial.com/insights/vista-social-vs-metricool/" target="_blank" rel="noopener">Vista Social vs Metricool</a>
+      <a href="https://embedsocial.com/blog/social-inbox-tools/" target="_blank" rel="noopener">EmbedSocial &mdash; best inbox tools 2026</a>
+      <a href="https://www.typeface.ai/blog/using-ai-for-consistent-brand-voice" target="_blank" rel="noopener">Typeface &mdash; brand voice training</a>
+      <a href="https://www.hootsuite.com/hootsuite-vs-buffer" target="_blank" rel="noopener">Buffer vs Hootsuite gaps</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Prepared for linka &middot; April 2026 &middot; Internal strategy document
+  </div>
+</footer>
+
+</body>
+</html>

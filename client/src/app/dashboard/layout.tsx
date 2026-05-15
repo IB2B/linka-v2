@@ -6,6 +6,7 @@ import {
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { HeaderActions } from "@/components/dashboard/header-actions";
 import { NavBreadcrumb } from "@/components/dashboard/nav-breadcrumb";
+import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/auth/require-role";
 import type { DashboardUser } from "@/types/dashboard-user";
 
@@ -15,6 +16,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user } = await requireRole("USER");
+  if (!user.onboardingCompleted) redirect("/onboarding");
 
   const dashboardUser: DashboardUser = {
     id: user.id,
@@ -23,6 +25,9 @@ export default async function DashboardLayout({
     lastName: user.lastName,
     avatarUrl: user.avatarUrl,
     role: user.role,
+    tier: user.tier,
+    postsUsed: user.postsUsed,
+    postsLimit: user.postsLimit,
     features: user.features,
   };
 

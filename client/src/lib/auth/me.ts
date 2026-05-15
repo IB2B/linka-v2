@@ -5,6 +5,8 @@ export type UserFeatures = {
   recycler: boolean;
 };
 
+export type UserTier = "free" | "starter" | "professional" | "enterprise";
+
 export type Me = {
   id: string;
   email: string;
@@ -14,6 +16,11 @@ export type Me = {
   avatarUrl: string | null;
   industry: string | null;
   bio: string | null;
+  jobTitle: string | null;
+  tier: UserTier;
+  onboardingCompleted: boolean;
+  postsUsed: number;
+  postsLimit: number;
   features: UserFeatures;
 };
 

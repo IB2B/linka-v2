@@ -11,7 +11,7 @@ import type {
   TopicSuggestion,
 } from "@/types/content";
 
-type Result<T> = { data?: T; error?: string };
+type Result<T> = { data?: T; error?: string; code?: string };
 
 async function api(path: string, init: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
@@ -71,8 +71,9 @@ export async function generatePostAction(
   const json = (await res.json().catch(() => ({}))) as {
     post?: { id: string; content: string };
     error?: string;
+    code?: string;
   };
-  if (!res.ok || !json.post) return { error: json.error ?? "Generation failed." };
+  if (!res.ok || !json.post) return { error: json.error ?? "Generation failed.", code: json.code };
   revalidatePath("/dashboard/posts");
   return { data: { contentId: json.post.id, content: json.post.content } };
 }

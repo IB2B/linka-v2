@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import { SidebarBrand } from "@/components/dashboard/sidebar-brand";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { SidebarUpgrade } from "@/components/dashboard/sidebar-upgrade";
 import { SidebarUser } from "@/components/dashboard/sidebar-user";
 import type { AppSidebarProps } from "@/types/app-sidebar-props";
 
@@ -17,9 +18,10 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         <SidebarBrand />
       </SidebarHeader>
       <SidebarContent>
-        <SidebarNav role={user.role} features={user.features} />
+        <SidebarNav role={user.role} tier={user.tier} features={user.features} />
       </SidebarContent>
       <SidebarFooter>
+        <SidebarUpgrade user={user} />
         <SidebarUser user={user} />
       </SidebarFooter>
       <SidebarRail />

@@ -43,7 +43,10 @@ router.post("/webhook", async (req, res, next) => {
     if (event.type === "checkout.session.completed") {
       const s = event.data.object as Stripe.Checkout.Session;
       const sub = await stripe.subscriptions.retrieve(s.subscription as string);
-      await upsertSubscription(s.metadata!.user_id, sub, s.metadata!.tier);
+      await Promise.all([
+        upsertSubscription(s.metadata!.user_id, sub, s.metadata!.tier),
+        db.query("UPDATE users SET onboarding_completed=1 WHERE id=?", [s.metadata!.user_id]),
+      ]);
     }
     if (event.type === "customer.subscription.updated" || event.type === "customer.subscription.deleted") {
       const sub = event.data.object as Stripe.Subscription;

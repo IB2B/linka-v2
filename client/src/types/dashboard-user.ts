@@ -1,4 +1,4 @@
-import type { UserFeatures } from "@/lib/auth/me";
+import type { UserFeatures, UserTier } from "@/lib/auth/me";
 import type { UserRole } from "@/types/user-role";
 
 export type DashboardUser = {
@@ -8,5 +8,8 @@ export type DashboardUser = {
   lastName: string;
   avatarUrl: string | null;
   role: UserRole;
+  tier: UserTier;
+  postsUsed: number;
+  postsLimit: number;
   features: UserFeatures;
 };

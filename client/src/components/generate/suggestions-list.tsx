@@ -5,7 +5,7 @@ import { RefreshCw, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { SuggestionItem } from "./suggestion-item";
 import { suggestTopicsAction } from "@/app/dashboard/generate/actions";
 import type { PostType, TopicSuggestion } from "@/types/content";
@@ -51,9 +51,10 @@ export function SuggestionsList({ postType, pending, onSelect }: Props) {
         </Button>
       </div>
       {loading && items.length === 0 ? (
-        <div className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground">
-          <Spinner aria-hidden />
-          Getting suggestions…
+        <div className="space-y-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-14 w-full rounded-md" />
+          ))}
         </div>
       ) : items.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">

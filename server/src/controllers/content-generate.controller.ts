@@ -6,6 +6,7 @@ import { generatePost } from "../services/post-generation.service";
 import { generateImageForPostInBackground }
   from "../services/image-generation.service";
 import { checkImageRateLimit } from "../lib/image-rate-limiter";
+import { getMonthlyUsage } from "../lib/posts-monthly-usage";
 import * as posts from "../models/generated-content.model";
 
 const PLATFORMS = ["linkedin", "twitter", "facebook", "instagram", "threads"] as const;
@@ -41,6 +42,14 @@ export async function generate(
     }
     const input = parsed.data;
     const userId = req.user!.id;
+    const usage = await getMonthlyUsage(userId);
+    if (usage.used >= usage.limit) {
+      res.status(403).json({
+        error: `Monthly limit reached (${usage.used}/${usage.limit}). Upgrade to keep generating.`,
+        code: "POST_LIMIT_REACHED",
+      });
+      return;
+    }
     const result = await generatePost({
       userId, postType: input.postType,
       topic: input.topic, newsArticle: input.newsArticle,

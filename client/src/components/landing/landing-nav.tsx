@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 
 const links = [
   { href: "#features", label: "Features" },
@@ -12,7 +13,7 @@ export function LandingNav() {
   return (
     <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 pt-6">
       <Link href="/" className="flex items-center gap-2">
-        <span className="size-2 rounded-full bg-[#6D5FF9]" />
+        <BrandLogo size={16} className="text-[#0F1113]" />
         <span className="text-sm font-semibold tracking-tight text-[#0F1113]">
           linka<span className="text-[#A3A3A3]">.studio</span>
         </span>

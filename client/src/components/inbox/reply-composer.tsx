@@ -42,6 +42,9 @@ export function ReplyComposer({ conversationId, accountId }: Props) {
   }
 
   function suggest() {
+    if (text.trim()) {
+      if (!confirm("Replace your draft with an AI suggestion?")) return;
+    }
     startAi(async () => {
       const r = await assistReplyAction(conversationId, accountId);
       if ("error" in r) { toast.error(r.error); return; }

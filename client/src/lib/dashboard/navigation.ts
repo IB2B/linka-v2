@@ -15,23 +15,29 @@ import {
 } from "lucide-react";
 
 import { ADMIN_NAV } from "@/lib/dashboard/admin-navigation";
-import type { UserFeatures } from "@/lib/auth/me";
+import type { UserFeatures, UserTier } from "@/lib/auth/me";
+import { hasFeature } from "@/lib/billing/plan-features";
 import type { NavGroup, NavItem } from "@/types/nav-item";
 import type { UserRole } from "@/types/user-role";
 
-function workspace(prefix: string, features: UserFeatures): NavGroup {
+function workspace(
+  prefix: string, tier: UserTier, features: UserFeatures, unreadCount?: number,
+): NavGroup {
   const items: (NavItem | false)[] = [
     { label: "Overview", href: prefix, icon: LayoutDashboard },
-    { label: "Inbox", href: `${prefix}/inbox`, icon: Inbox },
+    hasFeature(tier, "inbox") &&
+      { label: "Conversations", href: `${prefix}/inbox`, icon: Inbox, badge: unreadCount || undefined },
     { label: "Pipeline", href: `${prefix}/pipeline`, icon: KanbanSquare },
     { label: "Posts", href: `${prefix}/posts`, icon: FileText },
     { label: "Generate", href: `${prefix}/generate`, icon: Sparkles },
-    { label: "Trend Radar", href: `${prefix}/trends`, icon: Radar },
+    hasFeature(tier, "trends") &&
+      { label: "Trend Radar", href: `${prefix}/trends`, icon: Radar },
     { label: "Voice Lab", href: `${prefix}/voice-lab`, icon: Mic },
     { label: "Calendar", href: `${prefix}/calendar`, icon: Calendar },
     features.recycler &&
       { label: "Recycler", href: `${prefix}/recycler`, icon: RefreshCw },
-    { label: "Analytics", href: `${prefix}/analytics`, icon: BarChart3 },
+    hasFeature(tier, "analytics") &&
+      { label: "Analytics", href: `${prefix}/analytics`, icon: BarChart3 },
   ];
   return { label: "Workspace", items: items.filter(Boolean) as NavItem[] };
 }
@@ -48,8 +54,8 @@ function account(prefix: string): NavGroup {
 }
 
 export function getNavigationForRole(
-  role: UserRole, features: UserFeatures,
+  role: UserRole, tier: UserTier, features: UserFeatures, unreadCount?: number,
 ): NavGroup[] {
   if (role === "ADMIN" || role === "SUPER_ADMIN") return ADMIN_NAV;
-  return [workspace("/dashboard", features), account("/dashboard")];
+  return [workspace("/dashboard", tier, features, unreadCount), account("/dashboard")];
 }

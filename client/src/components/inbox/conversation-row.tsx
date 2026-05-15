@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal, ExternalLink, BellOff, Trash2, CheckCheck } from "lucide-react";
+import { MoreHorizontal, ExternalLink, BellOff, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
@@ -18,8 +18,10 @@ function formatRelative(iso: string | null) {
   const d = new Date(iso);
   const diff = Date.now() - d.getTime();
   if (diff < 60_000) return "just now";
-  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m`;
-  if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h`;
+  if (diff < 3_600_000) return `${Math.floor(diff / 60_000)}m ago`;
+  if (diff < 86_400_000) return `${Math.floor(diff / 3_600_000)}h ago`;
+  if (diff < 172_800_000) return `Yesterday ${d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+  if (diff < 604_800_000) return d.toLocaleDateString("en-US", { weekday: "short", hour: "numeric", minute: "2-digit" });
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
@@ -43,14 +45,11 @@ export function ConversationRow({ conversation: c, active, hrefSuffix }: Props) 
           <p className="truncate text-sm font-medium">{c.participantName}</p>
           <span className="shrink-0 text-[10px] text-muted-foreground">{formatRelative(c.lastMessageAt)}</span>
         </div>
-        <p className={cn("truncate text-xs", c.unread ? "font-medium text-foreground" : "text-muted-foreground")}>
+        <p className="truncate text-xs text-muted-foreground">
           {c.lastMessageDirection === "outgoing" ? <span className="text-muted-foreground">You: </span> : null}
           {c.lastMessage || "—"}
         </p>
       </div>
-      {c.unread && !active ? (
-        <span className="relative mt-1.5 size-2 shrink-0 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)] pointer-events-none" aria-label="Unread" />
-      ) : null}
       <DropdownMenu>
         <DropdownMenuTrigger
           className="relative z-10 ml-auto shrink-0 flex size-6 items-center justify-center rounded-md opacity-0 transition-opacity group-hover:opacity-100 hover:bg-muted"
@@ -61,9 +60,6 @@ export function ConversationRow({ conversation: c, active, hrefSuffix }: Props) 
         <DropdownMenuContent align="end" className="w-48">
           <DropdownMenuItem onClick={() => window.open(c.url ?? "#", "_blank")}>
             <ExternalLink className="size-3.5" /> Open in app
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => toast.info("Mark as read — coming soon")}>
-            <CheckCheck className="size-3.5" /> Mark as read
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => toast.info("Mute — coming soon")}>
             <BellOff className="size-3.5" /> Mute

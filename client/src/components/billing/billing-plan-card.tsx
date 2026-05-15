@@ -1,7 +1,5 @@
-import { Sparkles, CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardDescription, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { TIER_PRICE } from "@/lib/billing/format";
@@ -9,7 +7,6 @@ import { TIER_PRICE } from "@/lib/billing/format";
 type Props = { tier: string; status: string; postsThisMonth: number; postsLimit: number };
 
 export function BillingPlanCard({ tier, status, postsThisMonth, postsLimit }: Props) {
-  const router = useRouter();
   const monthlyPrice = TIER_PRICE[tier] ?? 0;
   const usagePercent = postsLimit > 0 ? Math.min(100, Math.round((postsThisMonth / postsLimit) * 100)) : 0;
 
@@ -45,10 +42,6 @@ export function BillingPlanCard({ tier, status, postsThisMonth, postsLimit }: Pr
             )} style={{ width: `${usagePercent}%` }} />
           </div>
         </div>
-        <Button size="sm" className="w-full gap-2" onClick={() => router.push("/dashboard/billing#plans")}>
-          <Sparkles className="w-3.5 h-3.5" />
-          {tier === "ENTERPRISE" ? "View plans" : "Change plan"}
-        </Button>
       </CardContent>
     </Card>
   );

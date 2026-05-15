@@ -11,11 +11,16 @@ export async function inboxFetch<T>(
   const host = hdrs.get("host");
   const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
-  const res = await fetch(`${proto}://${host}${path}`, {
-    ...init,
-    headers: { cookie, "Content-Type": "application/json", ...init.headers },
-    cache: "no-store",
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${proto}://${host}${path}`, {
+      ...init,
+      headers: { cookie, "Content-Type": "application/json", ...init.headers },
+      cache: "no-store",
+    });
+  } catch {
+    return { ok: false, status: 503, error: "service_unavailable" };
+  }
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: "Failed to load." }));
     return { ok: false, status: res.status, error: body.error ?? "Failed to load." };

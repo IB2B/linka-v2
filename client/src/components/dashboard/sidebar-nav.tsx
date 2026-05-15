@@ -21,9 +21,9 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function SidebarNav({ role, features }: SidebarNavProps) {
+export function SidebarNav({ role, tier, features }: SidebarNavProps) {
   const pathname = usePathname();
-  const groups = getNavigationForRole(role, features);
+  const groups = getNavigationForRole(role, tier, features);
 
   return (
     <>

@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "../lib/db";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 import { getUserMe } from "../lib/user-me-query";
 import { changePassword } from "./users-password";
+import { patchProfile } from "./users-profile";
 import avatarRouter from "./users-avatar";
 
 const router = Router();
@@ -34,20 +34,22 @@ router.patch("/me", async (req: AuthRequest, res, next) => {
   } catch (e) { next(e); }
 });
 
-const profileSchema = z.object({
-  industry: z.string().trim().optional(),
-  bio: z.string().trim().optional(),
+router.patch("/me/profile", (req: AuthRequest, res, next) => {
+  patchProfile(req, res).catch(next);
 });
 
-router.patch("/me/profile", async (req: AuthRequest, res, next) => {
+router.patch("/me/onboarding", async (req: AuthRequest, res, next) => {
   try {
-    const parsed = profileSchema.safeParse(req.body);
+    const parsed = z.object({
+      step: z.number().int().min(1).optional(),
+      completed: z.boolean().optional(),
+    }).safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: parsed.error.issues[0].message }); return; }
-    await db.query(
-      `INSERT INTO user_profiles (id, user_id, industry, bio) VALUES (?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE industry = VALUES(industry), bio = VALUES(bio)`,
-      [randomUUID(), req.user!.id, parsed.data.industry ?? null, parsed.data.bio ?? null],
-    );
+    const { step, completed } = parsed.data;
+    if (step !== undefined)
+      await db.query("UPDATE users SET onboarding_step=? WHERE id=?", [step, req.user!.id]);
+    if (completed !== undefined)
+      await db.query("UPDATE users SET onboarding_completed=? WHERE id=?", [completed, req.user!.id]);
     res.json({ ok: true });
   } catch (e) { next(e); }
 });

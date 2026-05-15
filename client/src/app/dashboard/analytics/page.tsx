@@ -11,6 +11,8 @@ import { getPublishedPlatforms } from "@/lib/posts/get-published-platforms";
 import { getPlatformMetrics } from "@/lib/analytics/get-platform-metrics";
 import { getImageRoi } from "@/lib/analytics/get-image-roi";
 import { getDailyEngagement } from "@/lib/analytics/get-daily-engagement";
+import { checkPaidFeature } from "@/lib/billing/check-paid-feature";
+import { UpgradeWall } from "@/components/billing/upgrade-wall";
 
 type Search = { range?: string };
 
@@ -19,6 +21,8 @@ export default async function AnalyticsPage({
 }: {
   searchParams: Promise<Search>;
 }) {
+  const access = await checkPaidFeature("analytics");
+  if (!access.hasAccess) return <UpgradeWall feature="analytics" />;
   const { range: raw } = await searchParams;
   const range = parseRange(raw);
   const [posts, metrics, platformMetrics, imageRoi, engagement] = await Promise.all([

@@ -7,17 +7,17 @@ export type Step = {
 export const STEPS: Step[] = [
   {
     n: "01",
-    title: "Connect your socials",
-    body: "Link LinkedIn, Instagram, X, TikTok and Pinterest in two clicks. We pull your last 90 days to learn your tone.",
+    title: "Connect your accounts",
+    body: "Link LinkedIn, Instagram, X, TikTok and more in seconds. Linka reads your past content to learn your tone and style.",
   },
   {
     n: "02",
-    title: "Pick a goal",
-    body: "Grow followers, drive signups, book calls — Linka tunes hooks, formats and posting cadence to that goal.",
+    title: "Set your goal",
+    body: "Grow followers, drive signups, or book calls. We tune the copy, format and posting cadence to hit that goal.",
   },
   {
     n: "03",
-    title: "Approve &amp; ship",
-    body: "Wake up to a week of drafts. Swipe to approve, edit a word if you want, and it queues at the best slot per platform.",
+    title: "Approve and publish",
+    body: "Wake up to a week of ready-to-ship drafts. Approve, tweak a word if you like, and they go out at the optimal time.",
   },
 ];

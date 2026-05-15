@@ -28,9 +28,13 @@ export async function InboxShell({ activeId, platform, children }: Props) {
         ) : (
           <InboxError
             message={result.status === 402 ? "Inbox add-on required" : "Couldn't load conversations"}
-            hint={result.status === 402
-              ? "Enable the Inbox add-on on your Late workspace to manage DMs here."
-              : result.error}
+            hint={
+              result.status === 402
+                ? "Enable the Inbox add-on on your Late workspace to manage DMs here."
+                : result.error === "service_unavailable"
+                  ? "Our messaging provider is temporarily unavailable. Please try again in a few minutes."
+                  : result.error
+            }
           />
         )}
       </aside>
