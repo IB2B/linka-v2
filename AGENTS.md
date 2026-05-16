@@ -6,7 +6,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # linka — project rules
 
-Social media management app. AI generates post text/images, users post via the **Late API**. Three roles: `USER` | `ADMIN` | `SUPER_ADMIN` (uppercase enum). Three role-based dashboards under `/dashboard`, `/admin`, `/super-admin`.
+Social media management app. AI generates post text/images, users post via the **Late API**. Two roles: `USER` | `ADMIN` (uppercase enum). Two role-based dashboards under `/dashboard` and `/admin`.
 
 ## Hard rules
 
@@ -65,4 +65,4 @@ Social media management app. AI generates post text/images, users post via the *
 
 ## Proxy (formerly middleware)
 
-Next.js 16+ renamed the `middleware.ts` convention to `proxy.ts`. The function is exported as `proxy` (or default). The current `client/src/proxy.ts` only redirects unauthenticated visitors away from `/dashboard`, `/admin`, `/super-admin` based on the presence of the `token` cookie — full JWT verification happens server-side on every `/api/*` call.
+Next.js 16+ renamed the `middleware.ts` convention to `proxy.ts`. The function is exported as `proxy` (or default). The current `client/src/proxy.ts` only redirects unauthenticated visitors away from `/dashboard` and `/admin` based on the presence of the `token` cookie — full JWT verification happens server-side on every `/api/*` call.

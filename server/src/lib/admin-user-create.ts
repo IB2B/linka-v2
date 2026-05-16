@@ -17,8 +17,7 @@ const schema = z.object({
 export async function createAdminUser(req: AuthRequest, res: Response): Promise<void> {
   const parsed = schema.safeParse(req.body);
   if (!parsed.success) { res.status(400).json({ error: parsed.error.issues[0].message }); return; }
-  const { firstName, lastName, email, password } = parsed.data;
-  const role = parsed.data.role === "ADMIN" && req.user!.role !== "SUPER_ADMIN" ? "USER" : parsed.data.role;
+  const { firstName, lastName, email, password, role } = parsed.data;
   const [existing] = await db.query<any[]>("SELECT id FROM users WHERE email = ?", [email]);
   if (existing.length) { res.status(400).json({ error: "Email already in use." }); return; }
   const id = randomUUID();

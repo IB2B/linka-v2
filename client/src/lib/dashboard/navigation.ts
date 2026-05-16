@@ -56,6 +56,6 @@ function account(prefix: string): NavGroup {
 export function getNavigationForRole(
   role: UserRole, tier: UserTier, features: UserFeatures, unreadCount?: number,
 ): NavGroup[] {
-  if (role === "ADMIN" || role === "SUPER_ADMIN") return ADMIN_NAV;
+  if (role === "ADMIN") return ADMIN_NAV;
   return [workspace("/dashboard", tier, features, unreadCount), account("/dashboard")];
 }

@@ -4,8 +4,6 @@ export interface BillingOverview {
   postsThisMonth: number;
   postsLimit: number;
   hasStripeCustomer: boolean;
-  balance: number;
-  currency: string;
   paymentMethods: Array<{
     id: string;
     brand: string;

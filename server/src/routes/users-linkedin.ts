@@ -49,7 +49,8 @@ const handleUpload: RequestHandler = (req, res) => {
       ]);
       res.json({ ok: true, samplesCount: samples.length });
     } catch (e) {
-      res.status(500).json({ error: (e as Error).message });
+      console.error("[linkedin-pdf]", e);
+      res.status(500).json({ error: "Failed to parse LinkedIn PDF." });
     } finally {
       await unlink(r.file.path).catch(() => {});
     }

@@ -1,19 +1,19 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 import type { AssistResult } from "@/lib/inbox/assist.types";
 import { isSafeUploadUrl } from "@/lib/inbox/safe-upload-url";
 
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
+
 type Result = { success: true } | { error: string };
 type AssistOk = { success: true; data: AssistResult } | { error: string };
 
 async function api(path: string, init: RequestInit = {}): Promise<Response> {
-  const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
-  return fetch(`${proto}://${host}${path}`, {
+  const cookieStore = await cookies();
+  return fetch(`${API_BASE}${path}`, {
     ...init,
     headers: {
       "content-type": "application/json",
@@ -47,10 +47,8 @@ export async function assistReplyAction(conversationId: string, accountId: strin
 }
 
 export async function uploadAttachmentAction(formData: FormData): Promise<{ url: string } | { error: string }> {
-  const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
-  const res = await fetch(`${proto}://${host}/api/inbox/upload`, {
+  const cookieStore = await cookies();
+  const res = await fetch(`${API_BASE}/api/inbox/upload`, {
     method: "POST",
     headers: { cookie: cookieStore.toString() },
     body: formData,

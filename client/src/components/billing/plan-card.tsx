@@ -29,12 +29,20 @@ export function PlanCard({ plan, currentTier }: Props) {
   }
 
   return (
-    <Card className={cn("flex flex-col", plan.highlighted && "border-primary shadow-sm")}>
+    <Card
+      className={cn(
+        "flex flex-col transition",
+        plan.highlighted &&
+          "relative ring-2 ring-primary shadow-lg shadow-primary/20 sm:-translate-y-1",
+      )}
+    >
       <CardHeader className="space-y-2">
         <CardTitle className="flex items-center justify-between text-base">
           {plan.name}
           {plan.highlighted && (
-            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">Popular</span>
+            <span className="rounded-full bg-primary px-2.5 py-0.5 text-xs font-semibold text-primary-foreground shadow-sm">
+              {plan.badge ?? "Popular"}
+            </span>
           )}
         </CardTitle>
         <div className="flex items-baseline gap-1">

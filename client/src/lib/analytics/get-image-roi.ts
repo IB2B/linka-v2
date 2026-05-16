@@ -1,4 +1,6 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 export type ImageRoiGroup = {
   postCount: number;
@@ -17,12 +19,9 @@ export type ImageRoiData = {
 
 export async function getImageRoi(): Promise<ImageRoiData> {
   const cookieStore = await cookies();
-  const hdrs = await headers();
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
   try {
-    const res = await fetch(`${proto}://${host}/api/analytics/image-roi`, {
+    const res = await fetch(`${API_BASE}/api/analytics/image-roi`, {
       headers: { cookie }, cache: "no-store",
     });
     if (!res.ok) return { withImage: null, withoutImage: null };

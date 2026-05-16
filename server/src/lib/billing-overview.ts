@@ -2,8 +2,6 @@ import type Stripe from "stripe";
 import { stripe } from "./stripe";
 
 export type CustomerOverview = {
-  balance: number;
-  currency: string;
   paymentMethods: object[];
   defaultPaymentMethodId: string | null;
   invoices: object[];
@@ -35,11 +33,14 @@ export async function getCustomerOverview(customerId: string): Promise<CustomerO
   try {
     const up = await stripe.invoices.createPreview({ customer: customerId });
     upcoming = { amountDue: up.amount_due, currency: up.currency, nextPaymentAttempt: up.next_payment_attempt ? up.next_payment_attempt * 1000 : null };
-  } catch { upcoming = null; }
+  } catch {
+    const subs = await stripe.subscriptions.list({ customer: customerId, status: "active", limit: 1 });
+    const s = subs.data[0];
+    if (s) {
+      const amt = s.items.data[0]?.price.unit_amount ?? 0;
+      upcoming = { amountDue: amt, currency: s.currency, nextPaymentAttempt: s.current_period_end * 1000 };
+    }
+  }
 
-  return {
-    balance: customer.balance ?? 0,
-    currency: customer.currency ?? "usd",
-    paymentMethods, defaultPaymentMethodId: defaultPmId, invoices, upcoming,
-  };
+  return { paymentMethods, defaultPaymentMethodId: defaultPmId, invoices, upcoming };
 }

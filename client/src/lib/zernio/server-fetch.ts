@@ -1,16 +1,15 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 export async function socialFetch<T>(
   path: string, init: RequestInit = {},
 ): Promise<T> {
   const cookieStore = await cookies();
-  const hdrs = await headers();
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const cookie = cookieStore.getAll()
     .map((c) => `${c.name}=${c.value}`).join("; ");
 
-  const res = await fetch(`${proto}://${host}${path}`, {
+  const res = await fetch(`${API_BASE}${path}`, {
     ...init,
     headers: { cookie, "Content-Type": "application/json", ...init.headers },
     cache: "no-store",

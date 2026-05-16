@@ -1,21 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ExternalLink, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BillingStatusBanners } from "./billing-status-banners";
-import { BillingPlanCard } from "./billing-plan-card";
-import { BillingNextCharge } from "./billing-next-charge";
-import { BillingWallet } from "./billing-wallet";
+import { BillingCurrentPlanCard } from "./billing-current-plan-card";
 import { BillingPaymentMethods } from "./billing-payment-methods";
+import { BillingNextCharge } from "./billing-next-charge";
 import { BillingInvoices } from "./billing-invoices";
+import { BillingFreeLayout } from "./billing-free-layout";
+import { BillingUpgradeButton } from "./billing-upgrade-button";
 import type { BillingOverview } from "@/types/billing-overview";
 import { billingService } from "@/lib/api/services";
 import { getErrorMessage } from "@/lib/api/http";
 
-export function BillingDashboard({ overview }: { overview: BillingOverview }) {
+type Props = { overview: BillingOverview; confirmError?: string };
+
+export function BillingDashboard({ overview, confirmError }: Props) {
   const [portalPending, setPortalPending] = useState(false);
+
+  useEffect(() => {
+    if (confirmError) toast.error(confirmError);
+  }, [confirmError]);
 
   async function openPortal() {
     setPortalPending(true);
@@ -28,29 +35,40 @@ export function BillingDashboard({ overview }: { overview: BillingOverview }) {
     }
   }
 
-  const { tier, status, balance, currency, paymentMethods, invoices, upcoming, currentPeriodEnd, cancelAtPeriodEnd, postsThisMonth, postsLimit } = overview;
+  const { tier, status, paymentMethods, invoices, upcoming, currentPeriodEnd, cancelAtPeriodEnd, postsThisMonth, postsLimit } = overview;
+  const isFree = tier === "FREE" || tier === "STARTER";
+
+  if (isFree) {
+    return (
+      <div className="flex flex-col gap-6 p-6">
+        <BillingFreeLayout postsThisMonth={postsThisMonth} postsLimit={postsLimit} />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Billing</h1>
-          <p className="text-sm text-muted-foreground mt-1.5">Manage your plan, payment methods, invoices, and account balance.</p>
+          <p className="text-sm text-muted-foreground mt-1.5">Manage your plan, payment methods, and invoices.</p>
         </div>
-        {overview.hasStripeCustomer && (
-          <Button variant="outline" onClick={openPortal} disabled={portalPending} className="gap-2 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary">
-            {portalPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
-            Manage in Stripe
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          <BillingUpgradeButton tier={tier} />
+          {overview.hasStripeCustomer && (
+            <Button variant="outline" onClick={openPortal} disabled={portalPending} className="gap-2 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary">
+              {portalPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <ExternalLink className="w-4 h-4" />}
+              Manage in Stripe
+            </Button>
+          )}
+        </div>
       </div>
       <BillingStatusBanners status={status} cancelAtPeriodEnd={cancelAtPeriodEnd} currentPeriodEnd={currentPeriodEnd} onPortal={openPortal} portalPending={portalPending} />
       <div className="grid gap-4 lg:grid-cols-3">
-        <BillingPlanCard tier={tier} status={status} postsThisMonth={postsThisMonth} postsLimit={postsLimit} />
-        <BillingNextCharge upcoming={upcoming} currentPeriodEnd={currentPeriodEnd} hasPaid={tier !== "FREE"} />
-        <BillingWallet balance={balance} currency={currency} />
+        <BillingCurrentPlanCard tier={tier} status={status} postsThisMonth={postsThisMonth} postsLimit={postsLimit} />
+        <BillingPaymentMethods paymentMethods={paymentMethods} onPortal={openPortal} portalPending={portalPending} />
+        <BillingNextCharge tier={tier} upcoming={upcoming} currentPeriodEnd={currentPeriodEnd} hasPaid={!isFree} cancelAtPeriodEnd={cancelAtPeriodEnd} />
       </div>
-      <BillingPaymentMethods paymentMethods={paymentMethods} onPortal={openPortal} portalPending={portalPending} />
       <BillingInvoices invoices={invoices} />
     </div>
   );

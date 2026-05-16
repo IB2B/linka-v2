@@ -6,13 +6,6 @@ export type { AuthRequest };
 export function adminOnly(req: AuthRequest, res: Response, next: NextFunction): void {
   authenticate(req, res, (err?: unknown) => {
     if (err) return next(err);
-    requireRole("ADMIN", "SUPER_ADMIN")(req, res, next);
-  });
-}
-
-export function superAdminOnly(req: AuthRequest, res: Response, next: NextFunction): void {
-  authenticate(req, res, (err?: unknown) => {
-    if (err) return next(err);
-    requireRole("SUPER_ADMIN")(req, res, next);
+    requireRole("ADMIN")(req, res, next);
   });
 }

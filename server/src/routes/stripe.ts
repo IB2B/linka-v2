@@ -2,7 +2,8 @@ import { Router } from "express";
 import type Stripe from "stripe";
 import { db } from "../lib/db";
 import { stripe, PRICE_IDS } from "../lib/stripe";
-import { upsertSubscription } from "../lib/subscriptions";
+import { confirmCheckoutSession } from "../lib/stripe-session-confirm";
+import { handleStripeEvent } from "../lib/stripe-webhook-handler";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 
 const router = Router();
@@ -25,10 +26,20 @@ router.post("/checkout", authenticate, async (req: AuthRequest, res, next) => {
       customer_email: user.email,
       metadata: { user_id: user.id, tier },
       subscription_data: { metadata: { user_id: user.id, tier } },
-      success_url: `${base}/dashboard/billing?success=1`,
+      success_url: `${base}/dashboard/billing?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/dashboard/billing`,
     });
     res.json({ url: session.url });
+  } catch (e) { next(e); }
+});
+
+router.post("/confirm", authenticate, async (req: AuthRequest, res, next) => {
+  try {
+    const { sessionId } = req.body as { sessionId?: string };
+    if (!sessionId) { res.status(400).json({ error: "Missing sessionId" }); return; }
+    const result = await confirmCheckoutSession(req.user!.id, sessionId);
+    if (!result.ok) { res.status(400).json({ error: result.error }); return; }
+    res.json({ ok: true });
   } catch (e) { next(e); }
 });
 
@@ -39,20 +50,7 @@ router.post("/webhook", async (req, res, next) => {
     try {
       event = stripe.webhooks.constructEvent(req.body as Buffer, sig, process.env.STRIPE_WEBHOOK_SECRET!);
     } catch { res.status(400).json({ error: "Invalid signature" }); return; }
-
-    if (event.type === "checkout.session.completed") {
-      const s = event.data.object as Stripe.Checkout.Session;
-      const sub = await stripe.subscriptions.retrieve(s.subscription as string);
-      await Promise.all([
-        upsertSubscription(s.metadata!.user_id, sub, s.metadata!.tier),
-        db.query("UPDATE users SET onboarding_completed=1 WHERE id=?", [s.metadata!.user_id]),
-      ]);
-    }
-    if (event.type === "customer.subscription.updated" || event.type === "customer.subscription.deleted") {
-      const sub = event.data.object as Stripe.Subscription;
-      const userId = sub.metadata?.user_id;
-      if (userId) await upsertSubscription(userId, sub, sub.metadata?.tier);
-    }
+    await handleStripeEvent(event);
     res.json({ received: true });
   } catch (e) { next(e); }
 });

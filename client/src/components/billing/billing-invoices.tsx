@@ -54,12 +54,12 @@ export function BillingInvoices({ invoices }: Props) {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
                         {inv.hostedInvoiceUrl && (
-                          <Button variant="ghost" size="sm" className="h-7 px-2 gap-1 text-xs text-primary hover:bg-primary/10" render={<a href={inv.hostedInvoiceUrl} target="_blank" rel="noopener noreferrer" />}>
+                          <Button variant="ghost" size="sm" nativeButton={false} className="h-7 px-2 gap-1 text-xs text-primary hover:bg-primary/10" render={<a href={inv.hostedInvoiceUrl} target="_blank" rel="noopener noreferrer" />}>
                             View <ArrowUpRight className="w-3 h-3" />
                           </Button>
                         )}
                         {inv.invoicePdf && (
-                          <Button variant="ghost" size="sm" className="h-7 px-2 gap-1 text-xs text-primary hover:bg-primary/10" render={<a href={inv.invoicePdf} target="_blank" rel="noopener noreferrer" />}>
+                          <Button variant="ghost" size="sm" nativeButton={false} className="h-7 px-2 gap-1 text-xs text-primary hover:bg-primary/10" render={<a href={inv.invoicePdf} target="_blank" rel="noopener noreferrer" />}>
                             <Download className="w-3 h-3" /> PDF
                           </Button>
                         )}

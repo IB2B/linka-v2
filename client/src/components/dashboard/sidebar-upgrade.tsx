@@ -9,6 +9,6 @@ export function SidebarUpgrade({ user }: { user: DashboardUser }) {
   const { state, isMobile } = useSidebar();
   if (user.role !== "USER") return null;
   if (state === "collapsed" && !isMobile) return null;
-  if (user.tier === "free") return <SidebarUpgradeCta />;
+  if (user.tier === "free") return <SidebarUpgradeCta tier={user.tier} />;
   return <SidebarUsageMeter user={user} />;
 }

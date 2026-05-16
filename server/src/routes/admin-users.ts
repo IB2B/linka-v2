@@ -5,7 +5,6 @@ import { adminOnly, type AuthRequest } from "../middleware/admin";
 import { listAdminUsers } from "../lib/admin-users-list";
 import { createAdminUser } from "../lib/admin-user-create";
 import { exportAdminUsers } from "../controllers/admin-users-export.controller";
-import { getTargetRole, canActOnTarget } from "../lib/admin-target-guard";
 import { recordAdminAction } from "../lib/admin-audit";
 
 const router = Router();
@@ -25,12 +24,11 @@ router.get("/", async (req, res, next) => {
 router.get("/export", exportAdminUsers);
 router.post("/", (req: AuthRequest, res, next) => { createAdminUser(req, res).catch(next); });
 
-const roleSchema = z.object({ role: z.enum(["USER", "ADMIN", "SUPER_ADMIN"]) });
+const roleSchema = z.object({ role: z.enum(["USER", "ADMIN"]) });
 async function guardTarget(req: AuthRequest, res: import("express").Response): Promise<boolean> {
-  const id = String(req.params.id);
-  if (id === req.user!.id) { res.status(400).json({ error: "Cannot act on yourself." }); return false; }
-  const target = await getTargetRole(id);
-  if (target && !canActOnTarget(req.user!.role, target)) { res.status(403).json({ error: "Not allowed." }); return false; }
+  if (String(req.params.id) === req.user!.id) {
+    res.status(400).json({ error: "Cannot act on yourself." }); return false;
+  }
   return true;
 }
 
@@ -39,9 +37,6 @@ router.patch("/:id/role", async (req: AuthRequest, res, next) => {
     if (!(await guardTarget(req, res))) return;
     const parsed = roleSchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: "Invalid role" }); return; }
-    if (parsed.data.role !== "USER" && req.user!.role !== "SUPER_ADMIN") {
-      res.status(403).json({ error: "Only SUPER_ADMIN can grant admin roles." }); return;
-    }
     await db.query("UPDATE users SET role = ? WHERE id = ?", [parsed.data.role, req.params.id]);
     await recordAdminAction(req.user!.id, "user.role_changed", String(req.params.id), { role: parsed.data.role });
     res.json({ ok: true });
