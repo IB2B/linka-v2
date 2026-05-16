@@ -1,17 +1,17 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 import type { CreateTicketInput } from "@/lib/support/support.types";
 
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
+
 type Result = { success: true } | { error: string };
 
 async function postJson(path: string, body: unknown = {}): Promise<Result> {
-  const [cookieStore, headerStore] = await Promise.all([cookies(), headers()]);
-  const host = headerStore.get("host");
-  const proto = headerStore.get("x-forwarded-proto") ?? "http";
-  const res = await fetch(`${proto}://${host}${path}`, {
+  const cookieStore = await cookies();
+  const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: { "content-type": "application/json", cookie: cookieStore.toString() },
     body: JSON.stringify(body),

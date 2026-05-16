@@ -1,11 +1,11 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import type { UserRole } from "@/types/user-role";
 
 export type UserFeatures = {
   recycler: boolean;
 };
 
-export type UserTier = "free" | "starter" | "professional" | "enterprise";
+export type UserTier = "free" | "starter" | "pro" | "scale" | "professional" | "enterprise";
 
 export type Me = {
   id: string;
@@ -24,14 +24,13 @@ export type Me = {
   features: UserFeatures;
 };
 
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
+
 export async function fetchMe(): Promise<Me | null> {
   const cookieStore = await cookies();
-  const hdrs = await headers();
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
 
-  const res = await fetch(`${proto}://${host}/api/users/me`, {
+  const res = await fetch(`${API_BASE}/api/users/me`, {
     headers: { cookie },
     cache: "no-store",
   });

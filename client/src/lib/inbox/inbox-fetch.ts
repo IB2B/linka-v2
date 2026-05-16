@@ -1,4 +1,6 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 export type InboxFetchResult<T> =
   | { ok: true; data: T }
@@ -7,13 +9,11 @@ export type InboxFetchResult<T> =
 export async function inboxFetch<T>(
   path: string, init: RequestInit = {},
 ): Promise<InboxFetchResult<T>> {
-  const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
+  const cookieStore = await cookies();
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
   let res: Response;
   try {
-    res = await fetch(`${proto}://${host}${path}`, {
+    res = await fetch(`${API_BASE}${path}`, {
       ...init,
       headers: { cookie, "Content-Type": "application/json", ...init.headers },
       cache: "no-store",

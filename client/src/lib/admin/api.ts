@@ -1,12 +1,11 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 export async function adminApi(path: string, init: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
-  const hdrs = await headers();
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
-  return fetch(`${proto}://${host}${path}`, {
+  return fetch(`${API_BASE}${path}`, {
     ...init,
     headers: { "Content-Type": "application/json", cookie, ...(init.headers ?? {}) },
     cache: "no-store",

@@ -8,7 +8,7 @@ type Props = { paymentMethods: BillingOverview["paymentMethods"]; onPortal: () =
 
 export function BillingPaymentMethods({ paymentMethods, onPortal, portalPending }: Props) {
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -23,7 +23,7 @@ export function BillingPaymentMethods({ paymentMethods, onPortal, portalPending 
           </Button>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-1 flex-col justify-end">
         {paymentMethods.length === 0 ? (
           <div className="text-center py-10 border border-dashed rounded-lg">
             <div className="w-10 h-10 mx-auto rounded-full bg-muted flex items-center justify-center mb-3">

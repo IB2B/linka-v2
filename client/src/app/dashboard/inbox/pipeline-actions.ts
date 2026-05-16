@@ -1,12 +1,12 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 async function api(path: string, init: RequestInit = {}): Promise<Response> {
-  const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
-  return fetch(`${proto}://${host}${path}`, {
+  const cookieStore = await cookies();
+  return fetch(`${API_BASE}${path}`, {
     ...init,
     headers: {
       "content-type": "application/json",

@@ -13,7 +13,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = await requireRole(["ADMIN", "SUPER_ADMIN"]);
+  const { user } = await requireRole("ADMIN");
 
   const dashboardUser: DashboardUser = {
     id: user.id,

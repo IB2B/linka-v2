@@ -1,12 +1,12 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 
 import type { TicketDetail } from "./support.types";
 
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
+
 export async function getTicket(id: string): Promise<TicketDetail | null> {
-  const [cookieStore, headerStore] = await Promise.all([cookies(), headers()]);
-  const host = headerStore.get("host");
-  const proto = headerStore.get("x-forwarded-proto") ?? "http";
-  const res = await fetch(`${proto}://${host}/api/support/tickets/${id}`, {
+  const cookieStore = await cookies();
+  const res = await fetch(`${API_BASE}/api/support/tickets/${id}`, {
     headers: { cookie: cookieStore.toString() },
     cache: "no-store",
   });

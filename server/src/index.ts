@@ -1,6 +1,9 @@
 import "dotenv/config";
 import { join } from "node:path";
 import express from "express";
+import { checkEnv } from "./lib/env-check";
+
+checkEnv();
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRouter from "./routes/auth";

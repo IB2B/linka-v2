@@ -1,4 +1,6 @@
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 export type DailyEngagementRow = {
   date: string;
@@ -11,13 +13,10 @@ export type DailyEngagementRow = {
 
 export async function getDailyEngagement(days = 30): Promise<DailyEngagementRow[]> {
   const cookieStore = await cookies();
-  const hdrs = await headers();
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
   try {
     const res = await fetch(
-      `${proto}://${host}/api/analytics/daily?days=${days}`,
+      `${API_BASE}/api/analytics/daily?days=${days}`,
       { headers: { cookie }, cache: "no-store" },
     );
     if (!res.ok) return [];

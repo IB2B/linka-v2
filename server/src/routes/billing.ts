@@ -10,8 +10,7 @@ router.use(authenticate);
 
 const POSTS_LIMIT: Record<string, number> = { starter: 10, pro: 100, scale: 500, enterprise: 2000 };
 const EMPTY = {
-  balance: 0, currency: "usd", paymentMethods: [],
-  defaultPaymentMethodId: null, invoices: [], upcoming: null,
+  paymentMethods: [], defaultPaymentMethodId: null, invoices: [], upcoming: null,
 };
 
 router.get("/overview", async (req: AuthRequest, res, next) => {

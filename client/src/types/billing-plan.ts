@@ -8,4 +8,5 @@ export type BillingPlan = {
   description: string;
   features: readonly string[];
   highlighted?: boolean;
+  badge?: string;
 };

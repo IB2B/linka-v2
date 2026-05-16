@@ -5,7 +5,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export const PRICE_IDS: Record<string, string> = {
-  starter: process.env.STRIPE_PRICE_STARTER!,
-  pro: process.env.STRIPE_PRICE_PROFESSIONAL!,
-  scale: process.env.STRIPE_PRICE_ENTERPRISE!,
+  pro: process.env.STRIPE_PRICE_STARTER!,
+  scale: process.env.STRIPE_PRICE_PROFESSIONAL!,
+  enterprise: process.env.STRIPE_PRICE_ENTERPRISE!,
 };

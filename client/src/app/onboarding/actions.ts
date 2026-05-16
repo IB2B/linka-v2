@@ -1,16 +1,16 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 type Result = { ok?: boolean; error?: string };
 
 async function call(path: string, method: string, body: unknown): Promise<Response> {
-  const [cs, hdrs] = await Promise.all([cookies(), headers()]);
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
+  const cs = await cookies();
   const cookie = cs.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
-  return fetch(`${proto}://${host}${path}`, {
+  return fetch(`${API_BASE}${path}`, {
     method, body: JSON.stringify(body), cache: "no-store",
     headers: { "Content-Type": "application/json", cookie },
   });

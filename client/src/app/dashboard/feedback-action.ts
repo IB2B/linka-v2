@@ -1,6 +1,8 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+
+const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 export type FeedbackCategory = "feature" | "general";
 
@@ -14,13 +16,10 @@ export async function submitFeedbackAction(
   input: SubmitInput,
 ): Promise<{ error?: string; success?: boolean }> {
   const cookieStore = await cookies();
-  const hdrs = await headers();
-  const host = hdrs.get("host");
-  const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const cookie = cookieStore.getAll()
     .map((c) => `${c.name}=${c.value}`).join("; ");
 
-  const res = await fetch(`${proto}://${host}/api/feedback`, {
+  const res = await fetch(`${API_BASE}/api/feedback`, {
     method: "POST",
     headers: { "Content-Type": "application/json", cookie },
     body: JSON.stringify(input),
