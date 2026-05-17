@@ -34,10 +34,12 @@ export function PostActions({ post }: { post: GeneratedPost }) {
   }
 
   function onPublishNow() {
+    const platform = post.platform;
+    if (!platform) { toast.error("Post has no target platform."); return; }
     pubStart(async () => {
-      const res = await publishPostAction(post.id);
+      const res = await publishPostAction(post.id, [platform]);
       if (res.error) toast.error(res.error);
-      else showPublishToast({ publishedTo: res.publishedTo ?? [], failed: res.failed ?? [] });
+      else showPublishToast({ publishedTo: res.publishedTo ?? [platform], failed: res.failed ?? [] });
     });
   }
 

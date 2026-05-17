@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "../lib/db";
 import { stripe } from "../lib/stripe";
 import { getCustomerOverview } from "../lib/billing-overview";
-import { ensureCustomerSubscription } from "../lib/subscriptions";
+import { ensureCustomerSubscription, upsertSubscription } from "../lib/subscriptions";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 
 const router = Router();
@@ -16,8 +16,18 @@ const EMPTY = {
 router.get("/overview", async (req: AuthRequest, res, next) => {
   try {
     const [subs] = await db.query<any[]>("SELECT * FROM subscriptions WHERE user_id = ?", [req.user!.id]);
-    const sub = subs[0];
+    let sub = subs[0];
     const customerId = sub?.stripe_customer_id ?? null;
+    const ACTIVE_STATUSES = ["active", "past_due", "trialing"];
+    if (customerId && !sub?.current_period_end && ACTIVE_STATUSES.includes(sub?.status ?? "")) {
+      const list = await stripe.subscriptions.list({ customer: customerId, status: "active", limit: 1 });
+      const fresh = list.data[0];
+      if (fresh) {
+        await upsertSubscription(req.user!.id, fresh, sub?.plan_tier);
+        const [reload] = await db.query<any[]>("SELECT * FROM subscriptions WHERE user_id = ?", [req.user!.id]);
+        sub = reload[0];
+      }
+    }
     const overview = customerId ? await getCustomerOverview(customerId) : EMPTY;
 
     res.json({

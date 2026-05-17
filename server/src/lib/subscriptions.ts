@@ -3,6 +3,9 @@ import type Stripe from "stripe";
 import { db } from "./db";
 
 export async function upsertSubscription(userId: string, sub: Stripe.Subscription, tier?: string) {
+  const item = sub.items.data[0];
+  const periodStart = item?.current_period_start ?? null;
+  const periodEnd = item?.current_period_end ?? null;
   await db.query(
     `INSERT INTO subscriptions (
        id, user_id, stripe_customer_id, stripe_subscription_id, plan_tier, status,
@@ -20,8 +23,8 @@ export async function upsertSubscription(userId: string, sub: Stripe.Subscriptio
     [
       randomUUID(), userId, sub.customer as string, sub.id,
       tier ?? sub.metadata?.tier ?? "starter", sub.status,
-      new Date(sub.current_period_start * 1000),
-      new Date(sub.current_period_end * 1000),
+      periodStart ? new Date(periodStart * 1000) : null,
+      periodEnd ? new Date(periodEnd * 1000) : null,
       sub.cancel_at_period_end,
       sub.canceled_at ? new Date(sub.canceled_at * 1000) : null,
     ],

@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useMemo, useState } from "react";
 import type { SocialKey, Opportunity } from "@/types/pipeline";
+import { SOCIAL_PROFILES } from "./opp-social-config";
+import { OppSocialRow } from "./opp-social-row";
+import { OppSocialAdd } from "./opp-social-add";
 
 type Props = {
   opp: Opportunity;
@@ -11,58 +12,51 @@ type Props = {
   onSave: (k: SocialKey, url: string | null) => void;
 };
 
-const SOCIALS: { key: SocialKey; label: string; bg: string; placeholder: string }[] = [
-  { key: "socialUrl",    label: "LinkedIn",  bg: "#0A66C2", placeholder: "https://linkedin.com/in/…" },
-  { key: "facebookUrl",  label: "Facebook",  bg: "#1877F2", placeholder: "https://facebook.com/…" },
-  { key: "instagramUrl", label: "Instagram", bg: "#E4405F", placeholder: "https://instagram.com/…" },
-  { key: "xUrl",         label: "X",         bg: "#000",    placeholder: "https://x.com/…" },
-  { key: "tiktokUrl",    label: "TikTok",    bg: "#010101", placeholder: "https://tiktok.com/@…" },
-  { key: "threadsUrl",   label: "Threads",   bg: "#000",    placeholder: "https://threads.net/@…" },
-];
-
-function SocialRow({ cfg, value, disabled, onSave }: {
-  cfg: typeof SOCIALS[0]; value: string | null;
-  disabled: boolean; onSave: (url: string | null) => void;
-}) {
-  const ref = useRef<HTMLInputElement>(null);
-  return (
-    <div className="flex items-center gap-2">
-      <span
-        className="flex size-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
-        style={{ background: cfg.bg }}
-      >
-        {cfg.label[0]}
-      </span>
-      <input
-        ref={ref} key={value ?? ""} type="url"
-        defaultValue={value ?? ""} disabled={disabled}
-        placeholder={cfg.placeholder}
-        onBlur={() => { const v = ref.current?.value.trim() ?? ""; onSave(v || null); }}
-        className="flex-1 rounded-md border bg-background px-2.5 py-1.5 text-sm outline-none focus:ring-2 focus:ring-ring/40 disabled:opacity-50"
-      />
-      {value && /^https?:\/\//i.test(value) ? (
-        <Button variant="ghost" size="icon-sm"
-          onClick={() => window.open(value, "_blank", "noopener,noreferrer")}
-          aria-label={`Open ${cfg.label}`}>
-          <ExternalLink className="size-3.5" />
-        </Button>
-      ) : null}
-    </div>
-  );
-}
-
 export function OppSocialLinks({ opp, disabled, onSave }: Props) {
+  const [extras, setExtras] = useState<SocialKey[]>([]);
+
+  const visible = useMemo(
+    () => SOCIAL_PROFILES.filter((p) => opp[p.key] || extras.includes(p.key)),
+    [opp, extras],
+  );
+  const available = useMemo(
+    () => SOCIAL_PROFILES.filter((p) => !opp[p.key] && !extras.includes(p.key)),
+    [opp, extras],
+  );
+
+  function remove(key: SocialKey) {
+    if (opp[key]) onSave(key, null);
+    setExtras((e) => e.filter((k) => k !== key));
+  }
+
   return (
     <div className="space-y-2">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        Social profiles
-      </p>
-      <div className="space-y-2">
-        {SOCIALS.map((cfg) => (
-          <SocialRow key={cfg.key} cfg={cfg} value={opp[cfg.key]} disabled={disabled}
-            onSave={(url) => onSave(cfg.key, url)} />
-        ))}
+      <div className="flex items-center justify-between">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Social profiles
+        </p>
+        <OppSocialAdd
+          available={available}
+          onAdd={(cfg) => setExtras((e) => [...e, cfg.key])}
+        />
       </div>
+      {visible.length === 0 ? (
+        <p className="rounded-md border border-dashed bg-card/50 px-3 py-4 text-center text-xs text-muted-foreground">
+          No social profiles linked yet.
+        </p>
+      ) : (
+        <div className="space-y-2">
+          {visible.map((cfg) => (
+            <OppSocialRow
+              key={cfg.key} cfg={cfg}
+              value={opp[cfg.key]} disabled={disabled}
+              autoFocus={extras.includes(cfg.key) && !opp[cfg.key]}
+              onSave={(url) => onSave(cfg.key, url)}
+              onRemove={() => remove(cfg.key)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

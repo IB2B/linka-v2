@@ -6,11 +6,10 @@ import type { GeneratedPost } from "@/types/post";
 import type { PostMetrics } from "@/types/analytics";
 
 export function RecentPostsTable({
-  posts, metrics, published,
+  posts, metrics,
 }: {
   posts: GeneratedPost[];
   metrics: Map<string, PostMetrics>;
-  published: Map<string, string[]>;
 }) {
   return (
     <Card className="overflow-hidden">
@@ -45,7 +44,6 @@ export function RecentPostsTable({
                   key={p.id}
                   post={p}
                   metrics={metrics.get(p.id)}
-                  publishedPlatforms={published.get(p.id)}
                 />
               ))}
             </tbody>

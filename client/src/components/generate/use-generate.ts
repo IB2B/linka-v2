@@ -10,7 +10,7 @@ export type GenOpts = { type?: PostType; topic?: string; article?: NewsArticle; 
 
 export function useGenerate(postType: PostType, settings: PostSettings) {
   const [generatingFor, setGeneratingFor] = useState<string | null>(null);
-  const [result, setResult] = useState<GenerationResult | null>(null);
+  const [results, setResults] = useState<GenerationResult[]>([]);
   const [lastOpts, setLastOpts] = useState<GenOpts | null>(null);
   const [pending, start] = useTransition();
 
@@ -21,7 +21,7 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
     start(async () => {
       const res = await generatePostAction({
         postType: type, topic: opts.topic, newsArticle: opts.article,
-        platform: settings.platform, language: settings.language, withImage: settings.withImage,
+        platforms: settings.platforms, language: settings.language, withImage: settings.withImage,
       });
       setGeneratingFor(null);
       if (res.error) {
@@ -29,7 +29,10 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
         toast.error(res.error, isLimit ? {
           action: { label: "Upgrade", onClick: () => { window.location.href = "/dashboard/billing"; } },
         } : undefined);
-      } else setResult(res.data ?? null);
+        return;
+      }
+      setResults(res.data?.posts ?? []);
+      (res.data?.errors ?? []).forEach((e) => toast.error(`${e.platform}: ${e.error}`));
     });
   }
 
@@ -43,9 +46,9 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
     generate,
     randomGenerate,
     regenerate: () => { if (lastOpts) generate(lastOpts); },
-    clearResult: () => setResult(null),
+    clearResults: () => setResults([]),
     pending,
     generatingFor,
-    result,
+    results,
   };
 }

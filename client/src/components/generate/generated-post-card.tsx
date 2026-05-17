@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, RefreshCw, PenLine, Sparkles } from "lucide-react";
+import { Copy, Check, RefreshCw, PenLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
+import { PlatformIcon } from "@/components/accounts/platform-icon";
+import { PLATFORMS } from "@/lib/content/platforms";
+import type { Platform as ZernioPlatform } from "@/lib/zernio/zernio-account.types";
 import type { GenerationResult } from "@/types/content";
 
 type Props = {
@@ -16,6 +19,7 @@ type Props = {
 
 export function GeneratedPostCard({ result, pending, onRegenerate, onReset }: Props) {
   const [copied, setCopied] = useState(false);
+  const label = PLATFORMS.find((p) => p.value === result.platform)?.label ?? result.platform;
 
   function copy() {
     navigator.clipboard.writeText(result.content);
@@ -27,7 +31,8 @@ export function GeneratedPostCard({ result, pending, onRegenerate, onReset }: Pr
     <Card className="border-primary/30 bg-primary/5">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2 text-base text-primary">
-          <Sparkles className="size-4" /> Generated post
+          <PlatformIcon platform={result.platform as ZernioPlatform} className="size-4" />
+          {label} post
         </CardTitle>
       </CardHeader>
       <CardContent>

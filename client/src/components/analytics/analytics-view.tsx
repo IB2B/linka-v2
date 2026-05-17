@@ -19,13 +19,12 @@ import type { DailyEngagementRow } from "@/lib/analytics/get-daily-engagement";
 type Props = {
   data: Analytics;
   metrics: Map<string, PostMetrics>;
-  published: Map<string, string[]>;
   platformMetrics: PlatformMetricRow[];
   imageRoi: ImageRoiData;
   engagement: DailyEngagementRow[];
 };
 
-export function AnalyticsView({ data, metrics, published, platformMetrics, imageRoi, engagement }: Props) {
+export function AnalyticsView({ data, metrics, platformMetrics, imageRoi, engagement }: Props) {
   const cadencePoints = computeCadence(engagement);
   const cadenceInsight = computeCadenceInsight(cadencePoints);
   const underperformers = computeUnderperformers(data.recent, metrics);
@@ -56,7 +55,7 @@ export function AnalyticsView({ data, metrics, published, platformMetrics, image
         <CadenceCard points={cadencePoints} insight={cadenceInsight} />
       </div>
       <UnderperformersCard posts={underperformers} />
-      <RecentPostsTable posts={data.recent} metrics={metrics} published={published} />
+      <RecentPostsTable posts={data.recent} metrics={metrics} />
     </div>
   );
 }

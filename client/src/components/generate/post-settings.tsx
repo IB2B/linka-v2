@@ -19,10 +19,10 @@ export function PostSettingsPanel({ value, onChange, disabled }: Props) {
   return (
     <div className="space-y-3">
       <div className="space-y-1.5">
-        <Label className="text-xs text-muted-foreground">Platform</Label>
+        <Label className="text-xs text-muted-foreground">Platforms</Label>
         <PlatformPicker
-          value={value.platform as Platform}
-          onChange={(p) => onChange({ ...value, platform: p })}
+          values={value.platforms as Platform[]}
+          onChange={(p) => onChange({ ...value, platforms: p })}
           disabled={disabled}
         />
       </div>

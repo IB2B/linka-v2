@@ -56,13 +56,12 @@ export function OpportunityDetailSheet({ opp, onClose, onDeleted }: Props) {
             <OppSocialLinks opp={opp} disabled={pending}
               onSave={(k: SocialKey, url) => save({ [k]: url })} />
           ) : null}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-muted-foreground">Notes</label>
-            <textarea key={opp?.id} defaultValue={opp?.notes ?? ""} rows={6}
+          <div className="space-y-2">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Notes</p>
+            <textarea key={opp?.id} defaultValue={opp?.notes ?? ""} rows={5}
               placeholder="Add context, links, terms…"
               onBlur={(e) => save({ notes: e.target.value })}
-              className="w-full rounded-md border bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-ring/40" />
-            <p className="text-[11px] text-muted-foreground">Saves on blur.</p>
+              className="w-full resize-none rounded-md border bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-ring/40" />
           </div>
         </div>
         <div className="flex justify-end border-t p-3">

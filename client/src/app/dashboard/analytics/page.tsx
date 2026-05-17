@@ -7,7 +7,6 @@ import { computeAnalytics } from "@/lib/analytics/compute";
 import { parseRange, rangeLabel } from "@/lib/analytics/range";
 import { getPosts } from "@/lib/posts/get-posts";
 import { getAnalyticsSummary } from "@/lib/analytics/get-analytics-summary";
-import { getPublishedPlatforms } from "@/lib/posts/get-published-platforms";
 import { getPlatformMetrics } from "@/lib/analytics/get-platform-metrics";
 import { getImageRoi } from "@/lib/analytics/get-image-roi";
 import { getDailyEngagement } from "@/lib/analytics/get-daily-engagement";
@@ -33,7 +32,6 @@ export default async function AnalyticsPage({
     getDailyEngagement(30),
   ]);
   const data = computeAnalytics(posts, range);
-  const published = await getPublishedPlatforms(data.recent.map((p) => p.id));
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -48,7 +46,7 @@ export default async function AnalyticsPage({
         <AnalyticsEmpty />
       ) : (
         <AnalyticsView
-          data={data} metrics={metrics} published={published}
+          data={data} metrics={metrics}
           platformMetrics={platformMetrics} imageRoi={imageRoi}
           engagement={engagement}
         />

@@ -36,9 +36,11 @@ export async function getCustomerOverview(customerId: string): Promise<CustomerO
   } catch {
     const subs = await stripe.subscriptions.list({ customer: customerId, status: "active", limit: 1 });
     const s = subs.data[0];
-    if (s) {
-      const amt = s.items.data[0]?.price.unit_amount ?? 0;
-      upcoming = { amountDue: amt, currency: s.currency, nextPaymentAttempt: s.current_period_end * 1000 };
+    const item = s?.items.data[0];
+    if (s && item) {
+      const amt = item.price.unit_amount ?? 0;
+      const end = item.current_period_end;
+      upcoming = { amountDue: amt, currency: s.currency, nextPaymentAttempt: end ? end * 1000 : null };
     }
   }
 

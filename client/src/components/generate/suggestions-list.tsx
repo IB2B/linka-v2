@@ -20,9 +20,9 @@ export function SuggestionsList({ postType, pending, onSelect }: Props) {
   const [items, setItems] = useState<TopicSuggestion[]>([]);
   const [loading, start] = useTransition();
 
-  function load() {
+  function load(refresh = false) {
     start(async () => {
-      const res = await suggestTopicsAction(postType, 5);
+      const res = await suggestTopicsAction(postType, 5, refresh);
       if (res.error) toast.error(res.error);
       else setItems(res.data ?? []);
     });
@@ -43,7 +43,7 @@ export function SuggestionsList({ postType, pending, onSelect }: Props) {
         <Button
           size="sm"
           variant="ghost"
-          onClick={load}
+          onClick={() => load(true)}
           disabled={loading || pending}
         >
           <RefreshCw className={loading ? "size-4 animate-spin" : "size-4"} />

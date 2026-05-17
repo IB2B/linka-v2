@@ -16,16 +16,16 @@ import type { NewsArticle, PostSettings, PostType } from "@/types/content";
 type Props = { initialNews: NewsArticle[] };
 type Step = 1 | 2 | 3;
 
-const DEFAULT_SETTINGS: PostSettings = { platform: "linkedin", language: "en", withImage: true };
+const DEFAULT_SETTINGS: PostSettings = { platforms: ["linkedin"], language: "en", withImage: true };
 
 export function GenerateForm({ initialNews }: Props) {
   const [step, setStep] = useState<Step>(1);
   const [postType, setPostType] = useState<PostType>("news_commentary");
   const [settings, setSettings] = useState<PostSettings>(DEFAULT_SETTINGS);
-  const { generate, randomGenerate, regenerate, clearResult, pending, generatingFor, result } =
+  const { generate, randomGenerate, regenerate, clearResults, pending, generatingFor, results } =
     useGenerate(postType, settings);
 
-  function reset() { clearResult(); setStep(1); }
+  function reset() { clearResults(); setStep(1); }
 
   return (
     <div className="space-y-8">
@@ -52,9 +52,13 @@ export function GenerateForm({ initialNews }: Props) {
         </div>
       )}
 
-      {result && (
-        <GeneratedPostCard result={result} pending={pending}
-          onRegenerate={regenerate} onReset={reset} />
+      {results.length > 0 && (
+        <div className="space-y-4">
+          {results.map((r) => (
+            <GeneratedPostCard key={r.contentId} result={r} pending={pending}
+              onRegenerate={regenerate} onReset={reset} />
+          ))}
+        </div>
       )}
 
       {generatingFor ? <GenerationOverlay label={generatingFor} /> : null}
