@@ -27,21 +27,27 @@ export type NewsArticle = {
 };
 
 export type GenerationResult = {
+  platform: string;
   contentId: string;
   content: string;
+};
+
+export type GenerationBatchError = {
+  platform: string;
+  error: string;
 };
 
 export type GenerateInput = {
   postType: PostType;
   topic?: string;
   newsArticle?: NewsArticle;
-  platform?: string;
+  platforms?: string[];
   language?: string;
   withImage?: boolean;
 };
 
 export type PostSettings = {
-  platform: string;
+  platforms: string[];
   language: string;
   withImage: boolean;
 };

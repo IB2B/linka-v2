@@ -2,12 +2,8 @@ import type { Response, NextFunction } from "express";
 import { z } from "zod";
 import type { AuthRequest } from "../middleware/auth";
 import { POST_TYPES } from "../lib/post-type-guidance";
-import { generatePost } from "../services/post-generation.service";
-import { generateImageForPostInBackground }
-  from "../services/image-generation.service";
-import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import { getMonthlyUsage } from "../lib/posts-monthly-usage";
-import * as posts from "../models/generated-content.model";
+import { generateForPlatform } from "../lib/content-generate-one";
 
 const PLATFORMS = ["linkedin", "twitter", "facebook", "instagram", "threads"] as const;
 
@@ -18,18 +14,21 @@ const articleSchema = z.object({
   summary: z.string().optional(),
 });
 
-const schema = z
-  .object({
-    postType: z.enum(POST_TYPES as [string, ...string[]]),
-    topic: z.string().trim().min(1).optional(),
-    newsArticle: articleSchema.optional(),
-    platform: z.enum(PLATFORMS).default("linkedin"),
-    language: z.string().trim().min(2).max(8).default("en"),
-    withImage: z.boolean().default(false),
-  })
-  .refine((d) => Boolean(d.topic || d.newsArticle), {
-    message: "Provide a topic or a news article.",
-  });
+const schema = z.object({
+  postType: z.enum(POST_TYPES as [string, ...string[]]),
+  topic: z.string().trim().min(1).optional(),
+  newsArticle: articleSchema.optional(),
+  platforms: z.array(z.enum(PLATFORMS)).min(1).max(PLATFORMS.length).default(["linkedin"]),
+  language: z.string().trim().min(2).max(8).default("en"),
+  withImage: z.boolean().default(false),
+}).refine((d) => Boolean(d.topic || d.newsArticle), {
+  message: "Provide a topic or a news article.",
+});
+
+type Out = {
+  posts: { platform: string; id: string; content: string }[];
+  errors?: { platform: string; error: string }[];
+};
 
 export async function generate(
   req: AuthRequest, res: Response, next: NextFunction,
@@ -43,37 +42,26 @@ export async function generate(
     const input = parsed.data;
     const userId = req.user!.id;
     const usage = await getMonthlyUsage(userId);
-    if (usage.used >= usage.limit) {
+    const remaining = usage.limit - usage.used;
+    if (remaining < input.platforms.length) {
       res.status(403).json({
-        error: `Monthly limit reached (${usage.used}/${usage.limit}). Upgrade to keep generating.`,
+        error: `Need ${input.platforms.length} posts but only ${remaining} left (${usage.used}/${usage.limit}). Upgrade to keep generating.`,
         code: "POST_LIMIT_REACHED",
       });
       return;
     }
-    const result = await generatePost({
-      userId, postType: input.postType,
-      topic: input.topic, newsArticle: input.newsArticle,
-      platform: input.platform, language: input.language,
+    const settled = await Promise.allSettled(
+      input.platforms.map((p) => generateForPlatform(userId, input, p)),
+    );
+    const out: Out = { posts: [] };
+    settled.forEach((t, i) => {
+      const platform = input.platforms[i];
+      if (t.status === "fulfilled") out.posts.push({ platform, ...t.value });
+      else {
+        out.errors ??= [];
+        out.errors.push({ platform, error: t.reason instanceof Error ? t.reason.message : "Generation failed." });
+      }
     });
-    const wantsImage =
-      input.withImage && checkImageRateLimit(userId).allowed;
-    const stored = await posts.insertOne({
-      userId,
-      prompt: input.topic ?? input.newsArticle?.title ?? null,
-      content: result.content,
-      platform: input.platform,
-      imageStatus: wantsImage ? "pending" : "skipped",
-      tokensInput: result.tokensInput,
-      tokensOutput: result.tokensOutput,
-      model: result.model,
-    });
-    if (wantsImage) {
-      void generateImageForPostInBackground(
-        stored.id, userId, result.content, input.platform,
-      );
-    }
-    res.json({ post: stored });
-  } catch (e) {
-    next(e);
-  }
+    res.json(out);
+  } catch (e) { next(e); }
 }

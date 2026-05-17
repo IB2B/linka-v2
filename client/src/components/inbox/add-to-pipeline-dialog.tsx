@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Spinner } from "@/components/ui/spinner";
 import { PipelineList, StagePicker } from "./pipeline-picker";
+import { PipelineEmptyState } from "./pipeline-empty-state";
 import { getPipelinesAction, addToPipelineAction } from "@/app/dashboard/inbox/pipeline-actions";
 
 type Pipeline = { id: string; name: string; stages: { id: string; name: string }[] };
@@ -47,6 +48,8 @@ export function AddToPipelineDialog({ open, onOpenChange, contact }: Props) {
         <DialogHeader><DialogTitle>Add to pipeline</DialogTitle></DialogHeader>
         {loading ? (
           <div className="flex justify-center py-6"><Spinner /></div>
+        ) : pipelines.length === 0 ? (
+          <PipelineEmptyState onClose={() => onOpenChange(false)} />
         ) : !selected ? (
           <PipelineList pipelines={pipelines} onSelect={setSelected} />
         ) : (

@@ -31,13 +31,15 @@ export function BillingNextCharge({ tier, upcoming, currentPeriodEnd, hasPaid, c
         <CardTitle className="text-3xl font-semibold tracking-tight tabular-nums mt-1">
           {priceLabel}
         </CardTitle>
+        <p className="text-sm text-muted-foreground mt-1">
+          {renewalMs ? `On ${formatDate(renewalMs)}` : "No upcoming charge"}
+        </p>
       </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Calendar className="w-4 h-4" />
-          <span>{renewalMs ? formatDate(renewalMs) : "No upcoming charge"}</span>
-        </div>
-        <p className="text-xs text-muted-foreground leading-relaxed">{description}</p>
+      <CardContent>
+        <p className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed">
+          <Calendar className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+          <span>{description}</span>
+        </p>
       </CardContent>
     </Card>
   );

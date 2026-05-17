@@ -30,10 +30,14 @@ function pickAvatar(a: RawAccount): string | null {
     || null;
 }
 
+function normalizeAvatarUrl(url: string | null): string | null {
+  return url ? url.replace(/&amp;/g, "&") : null;
+}
+
 const UNAVATAR_DOMAIN: Record<string, string> = {
   twitter: "twitter", x: "twitter", instagram: "instagram",
   tiktok: "tiktok", youtube: "youtube", github: "github",
-  substack: "substack",
+  substack: "substack", reddit: "reddit",
 };
 
 function fallbackAvatar(platform: string, username: string): string | null {
@@ -55,13 +59,14 @@ export async function listAccounts(req: AuthRequest, res: Response) {
   });
   const accounts = await Promise.all(filtered.map(async (a) => {
     const username = a.username ?? a.displayName ?? a.name ?? "";
-    let avatar = pickAvatar(a) ?? fallbackAvatar(a.platform, username);
+    let avatar = normalizeAvatarUrl(pickAvatar(a));
     if (!avatar && a.platform === "pinterest") {
       avatar = await fetchPinterestAvatar(username);
     }
     if (!avatar && a.platform === "reddit") {
       avatar = await fetchRedditAvatar(username);
     }
+    if (!avatar) avatar = fallbackAvatar(a.platform, username);
     return { id: a._id, platform: a.platform, username, avatar_url: avatar };
   }));
   res.json({ accounts });

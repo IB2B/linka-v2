@@ -1,6 +1,7 @@
 import { InboxAvatar } from "@/components/inbox/inbox-avatar";
 import { cn } from "@/lib/utils";
 import { formatRelative } from "@/lib/admin/format-relative";
+import { TicketMessageBody } from "./ticket-message-body";
 import type { TicketAuthor } from "@/lib/support/support.types";
 
 type Props = {
@@ -39,14 +40,7 @@ export function TicketMessage({
             {formatRelative(createdAt)}
           </span>
         </div>
-        <div className={cn(
-          "rounded-2xl px-3.5 py-2 text-sm whitespace-pre-wrap break-words shadow-xs ring-1",
-          mine
-            ? "rounded-br-md bg-primary text-primary-foreground ring-primary/20"
-            : "rounded-bl-md bg-background text-foreground ring-border",
-        )}>
-          {body}
-        </div>
+        <TicketMessageBody body={body} mine={mine} />
         {attachmentUrl ? (
           <a
             href={attachmentUrl} target="_blank" rel="noreferrer"

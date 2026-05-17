@@ -12,11 +12,10 @@ const COLS: Array<keyof PostMetrics> =
   ["views", "likes", "comments", "shares"];
 
 export function RecentPostsRow({
-  post, metrics, publishedPlatforms,
+  post, metrics,
 }: {
   post: GeneratedPost;
   metrics?: PostMetrics;
-  publishedPlatforms?: string[];
 }) {
   const router = useRouter();
   const preview =
@@ -36,7 +35,6 @@ export function RecentPostsRow({
       </td>
       <td className="px-4 py-3">
         <PlatformBadges
-          published={publishedPlatforms}
           scheduled={post.scheduledPlatforms}
           intended={post.platform}
         />
@@ -46,7 +44,7 @@ export function RecentPostsRow({
       </td>
       {COLS.map((k) => (
         <td key={k} className="px-4 py-3 text-right text-sm tabular-nums text-muted-foreground">
-          {metrics ? metrics[k].toLocaleString() : "—"}
+          {metrics ? metrics[k].toLocaleString() : post.status === "posted" ? "0" : "—"}
         </td>
       ))}
       <td className="px-4 py-3 text-xs whitespace-nowrap">

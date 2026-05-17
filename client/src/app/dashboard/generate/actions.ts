@@ -4,16 +4,14 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { MOCK_NEWS } from "./mock-news";
 import type {
-  GenerateInput,
-  GenerationResult,
-  NewsArticle,
-  PostType,
-  TopicSuggestion,
+  GenerateInput, GenerationResult, GenerationBatchError,
+  NewsArticle, PostType, TopicSuggestion,
 } from "@/types/content";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 type Result<T> = { data?: T; error?: string; code?: string };
+type GenerationBatch = { posts: GenerationResult[]; errors?: GenerationBatchError[] };
 
 async function api(path: string, init: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
@@ -31,16 +29,14 @@ export async function fetchNewsAction(): Promise<Result<NewsArticle[]>> {
 }
 
 export async function suggestTopicsAction(
-  postType: PostType,
-  count = 5,
+  postType: PostType, count = 5, refresh = false,
 ): Promise<Result<TopicSuggestion[]>> {
   const res = await api("/api/content/suggest-topics", {
     method: "POST",
-    body: JSON.stringify({ postType, count }),
+    body: JSON.stringify({ postType, count, refresh }),
   });
   const json = (await res.json().catch(() => ({}))) as {
-    suggestions?: TopicSuggestion[];
-    error?: string;
+    suggestions?: TopicSuggestion[]; error?: string;
   };
   if (!res.ok) return { error: json.error ?? "Failed to get suggestions." };
   return { data: json.suggestions ?? [] };
@@ -48,31 +44,20 @@ export async function suggestTopicsAction(
 
 export async function generatePostAction(
   input: GenerateInput,
-): Promise<Result<GenerationResult>> {
+): Promise<Result<GenerationBatch>> {
   const res = await api("/api/content/generate", {
     method: "POST",
     body: JSON.stringify({
-      postType: input.postType,
-      topic: input.topic,
-      newsArticle: input.newsArticle
-        ? {
-            title: input.newsArticle.title,
-            url: input.newsArticle.url,
-            source: input.newsArticle.source,
-            summary: input.newsArticle.summary,
-          }
-        : undefined,
-      platform: input.platform,
-      language: input.language,
-      withImage: input.withImage,
+      postType: input.postType, topic: input.topic, newsArticle: input.newsArticle,
+      platforms: input.platforms, language: input.language, withImage: input.withImage,
     }),
   });
   const json = (await res.json().catch(() => ({}))) as {
-    post?: { id: string; content: string };
-    error?: string;
-    code?: string;
+    posts?: { platform: string; id: string; content: string }[];
+    errors?: GenerationBatchError[]; error?: string; code?: string;
   };
-  if (!res.ok || !json.post) return { error: json.error ?? "Generation failed.", code: json.code };
+  if (!res.ok) return { error: json.error ?? "Generation failed.", code: json.code };
+  const posts = (json.posts ?? []).map((p) => ({ platform: p.platform, contentId: p.id, content: p.content }));
   revalidatePath("/dashboard/posts");
-  return { data: { contentId: json.post.id, content: json.post.content } };
+  return { data: { posts, errors: json.errors } };
 }
