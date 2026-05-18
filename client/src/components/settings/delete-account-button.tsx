@@ -6,7 +6,7 @@ import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DeleteAccountDialog } from "./delete-account-dialog";
 
-export function DeleteAccountButton() {
+export function DeleteAccountButton({ email }: { email: string }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -20,7 +20,7 @@ export function DeleteAccountButton() {
         <Trash2 className="size-3.5" />
         Delete account
       </Button>
-      <DeleteAccountDialog open={open} onOpenChange={setOpen} />
+      <DeleteAccountDialog email={email} open={open} onOpenChange={setOpen} />
     </>
   );
 }

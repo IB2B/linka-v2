@@ -3,9 +3,11 @@ import type { Feature } from "./features-data";
 export function FeatureCard({ feature }: { feature: Feature }) {
   const Icon = feature.icon;
   return (
-    <div className="flex flex-col gap-3 bg-white p-7 transition hover:bg-[#FAFAFA]">
-      <Icon className="size-5 text-[#6D5FF9]" strokeWidth={1.75} />
-      <h3 className="mt-1 text-[15px] font-semibold tracking-tight text-[#0F1113]">
+    <div className="group flex flex-col gap-4 bg-white p-7 transition hover:bg-[#FAFAFA]">
+      <span className="inline-flex size-9 items-center justify-center rounded-lg bg-[#6D5FF9]/8 ring-1 ring-[#6D5FF9]/12 transition group-hover:bg-[#6D5FF9]/14">
+        <Icon className="size-4 text-[#6D5FF9]" strokeWidth={1.75} />
+      </span>
+      <h3 className="text-[15px] font-semibold tracking-tight text-[#0F1113]">
         {feature.title}
       </h3>
       <p className="text-[14px] leading-[1.6] tracking-tight text-[#525252]">

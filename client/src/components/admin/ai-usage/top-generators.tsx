@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { InboxAvatar } from "@/components/inbox/inbox-avatar";
 import {
-  calcTokenCost as cost, formatTokenCount as fmtK,
+  calcTotalCost as cost, formatTokenCount as fmtK,
 } from "@/lib/admin/token-cost";
 import type { TopGenerator } from "@/types/admin-ai-usage";
 
@@ -43,7 +43,7 @@ export function TopGenerators({ users }: { users: TopGenerator[] }) {
             {users.map((u, i) => {
               const name = `${u.firstName ?? ""} ${u.lastName ?? ""}`.trim() || u.email;
               const totalTok = u.tokensInput + u.tokensOutput;
-              const userCost = cost(u.tokensInput, u.tokensOutput);
+              const userCost = cost(u.tokensInput, u.tokensOutput, u.images);
               return (
                 <li key={u.id} className="grid grid-cols-[auto_1fr_auto_auto_auto] items-center gap-x-4 px-4 py-3">
                   <span className="grid size-5 shrink-0 place-items-center rounded-md bg-muted text-[11px] font-medium tabular-nums text-muted-foreground">

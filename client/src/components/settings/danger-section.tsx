@@ -4,7 +4,7 @@ import { DangerRow } from "./danger-row";
 import { LogoutAllButton } from "./logout-all-button";
 import { DeleteAccountButton } from "./delete-account-button";
 
-export function DangerSection() {
+export function DangerSection({ email }: { email: string }) {
   return (
     <SettingsSection
       title="Danger Zone"
@@ -19,7 +19,7 @@ export function DangerSection() {
         <DangerRow
           title="Delete account"
           description="Permanently delete your account and all associated data. This cannot be undone."
-          action={<DeleteAccountButton />}
+          action={<DeleteAccountButton email={email} />}
         />
       </div>
     </SettingsSection>

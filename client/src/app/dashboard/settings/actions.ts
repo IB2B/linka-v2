@@ -56,7 +56,7 @@ export async function updateWorkProfileAction(formData: FormData): Promise<Actio
 }
 
 export async function logoutAllDevicesAction(): Promise<ActionResult> {
-  await apiFetch("/api/auth/logout", { method: "POST" });
+  await apiFetch("/api/auth/logout-all", { method: "POST" });
   redirect("/login");
 }
 

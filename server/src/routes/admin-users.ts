@@ -6,6 +6,7 @@ import { listAdminUsers } from "../lib/admin-users-list";
 import { createAdminUser } from "../lib/admin-user-create";
 import { exportAdminUsers } from "../controllers/admin-users-export.controller";
 import { recordAdminAction } from "../lib/admin-audit";
+import { softDeleteUser } from "../lib/user-soft-delete";
 
 const router = Router();
 router.use(adminOnly);
@@ -37,7 +38,10 @@ router.patch("/:id/role", async (req: AuthRequest, res, next) => {
     if (!(await guardTarget(req, res))) return;
     const parsed = roleSchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: "Invalid role" }); return; }
-    await db.query("UPDATE users SET role = ? WHERE id = ?", [parsed.data.role, req.params.id]);
+    await db.query(
+      "UPDATE users SET role = ?, session_version = session_version + 1 WHERE id = ?",
+      [parsed.data.role, req.params.id],
+    );
     await recordAdminAction(req.user!.id, "user.role_changed", String(req.params.id), { role: parsed.data.role });
     res.json({ ok: true });
   } catch (e) { next(e); }
@@ -46,7 +50,7 @@ router.patch("/:id/role", async (req: AuthRequest, res, next) => {
 router.delete("/:id", async (req: AuthRequest, res, next) => {
   try {
     if (!(await guardTarget(req, res))) return;
-    await db.query("DELETE FROM users WHERE id = ?", [req.params.id]);
+    await softDeleteUser(String(req.params.id));
     await recordAdminAction(req.user!.id, "user.deleted", String(req.params.id));
     res.json({ ok: true });
   } catch (e) { next(e); }
@@ -58,7 +62,10 @@ router.patch("/:id/status", async (req: AuthRequest, res, next) => {
     if (!(await guardTarget(req, res))) return;
     const parsed = statusSchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: "Invalid status" }); return; }
-    await db.query("UPDATE users SET status = ? WHERE id = ?", [parsed.data.status, req.params.id]);
+    await db.query(
+      "UPDATE users SET status = ?, session_version = session_version + 1 WHERE id = ?",
+      [parsed.data.status, req.params.id],
+    );
     await recordAdminAction(req.user!.id, "user.status_changed", String(req.params.id), { status: parsed.data.status });
     res.json({ ok: true });
   } catch (e) { next(e); }

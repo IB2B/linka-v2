@@ -10,6 +10,7 @@ import adminFeedbackRouter from "./admin-feedback";
 import adminSupportRouter from "./admin-support";
 import adminAnalyticsRouter from "./admin-analytics";
 import adminAiUsageRouter from "./admin-ai-usage";
+import adminEmailRouter from "./admin-email";
 
 export function mountAdminRoutes(app: Express): void {
   app.use("/api/admin/stats", adminStatsRouter);
@@ -23,4 +24,5 @@ export function mountAdminRoutes(app: Express): void {
   app.use("/api/admin/support", adminSupportRouter);
   app.use("/api/admin/analytics", adminAnalyticsRouter);
   app.use("/api/admin/ai-usage", adminAiUsageRouter);
+  app.use("/api/admin/email", adminEmailRouter);
 }

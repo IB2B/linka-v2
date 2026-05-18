@@ -36,7 +36,12 @@ export default async function AdminLayout({
           <span className="text-sm font-medium text-muted-foreground">
             Admin
           </span>
-          <HeaderActions prefix="/admin" />
+          <HeaderActions
+            prefix="/admin"
+            role={user.role}
+            tier={user.tier}
+            features={user.features}
+          />
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6">{children}</div>
       </SidebarInset>

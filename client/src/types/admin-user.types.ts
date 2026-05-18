@@ -42,6 +42,16 @@ export type ActivityEvent = {
   actor: ActivityActor | null;
 };
 
+export type RefundLastCharge = {
+  id: string; amount: number; currency: string; refunded: boolean;
+};
+
+export type RefundEligibility = {
+  draftCount: number;
+  lastCharge: RefundLastCharge | null;
+  subActive: boolean;
+};
+
 export type AdminUserDetail = {
   user: AdminUserRow;
   profile: { industry: string | null; bio: string | null; jobTitle: string | null };
@@ -54,4 +64,5 @@ export type AdminUserDetail = {
   stats: { generated: number; published: number; failed: number; last30d: number };
   activity: ActivityEvent[];
   platforms: string[];
+  refundEligibility: RefundEligibility;
 };

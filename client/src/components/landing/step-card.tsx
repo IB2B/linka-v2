@@ -2,8 +2,14 @@ import type { Step } from "./steps-data";
 
 export function StepCard({ step }: { step: Step }) {
   return (
-    <div className="flex flex-col gap-3 border-t border-[#E5E5E5] pt-6">
-      <span className="text-[12px] font-medium tracking-tight text-[#6D5FF9]">
+    <div className="relative flex flex-col gap-3 border-t border-[#E5E5E5] pt-6">
+      <span
+        aria-hidden
+        className="absolute -top-1 right-0 text-[44px] font-semibold leading-none tracking-tight text-[#0F1113]/6"
+      >
+        {step.n}
+      </span>
+      <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6D5FF9]">
         Step {step.n}
       </span>
       <h3

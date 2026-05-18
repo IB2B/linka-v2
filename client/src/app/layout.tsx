@@ -28,7 +28,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${plexMono.variable} h-full antialiased tracking-tight`}
     >
-      <body className="min-h-full flex flex-col">
+      <body suppressHydrationWarning className="min-h-full flex flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

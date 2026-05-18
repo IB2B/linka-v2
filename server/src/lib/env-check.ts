@@ -6,6 +6,9 @@ const RECOMMENDED = [
   "STRIPE_PRICE_STARTER",
   "STRIPE_PRICE_PROFESSIONAL",
   "STRIPE_PRICE_ENTERPRISE",
+  "SMTP_HOST",
+  "SMTP_USER",
+  "SMTP_PASS",
 ];
 
 function missing(keys: string[]): string[] {

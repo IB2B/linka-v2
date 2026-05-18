@@ -10,7 +10,7 @@ export function PricingSection() {
         title="One coffee a day. A whole content team."
         sub="7-day free trial on every paid plan. No card until day 7. Cancel any time."
       />
-      <div className="mt-12 grid gap-4 md:grid-cols-3">
+      <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {PLANS.map((p) => (
           <PricingCard key={p.name} plan={p} />
         ))}
