@@ -12,11 +12,16 @@ export async function authenticate(req: AuthRequest, res: Response, next: NextFu
 
   try {
     const payload = verifyToken(token);
-    const [rows] = await db.query<any[]>("SELECT status FROM users WHERE id = ?", [payload.sub]);
-    if (!rows.length || rows[0].status === "SUSPENDED") {
+    const [rows] = await db.query<any[]>(
+      "SELECT role, status, session_version, deleted_at FROM users WHERE id = ?", [payload.sub],
+    );
+    if (!rows.length || rows[0].status === "SUSPENDED" || rows[0].deleted_at) {
       res.status(401).json({ error: "Account inactive." }); return;
     }
-    req.user = { id: payload.sub, role: payload.role };
+    if (Number(rows[0].session_version ?? 0) !== Number(payload.sv ?? 0)) {
+      res.status(401).json({ error: "Session expired." }); return;
+    }
+    req.user = { id: payload.sub, role: rows[0].role };
     next();
   } catch {
     res.status(401).json({ error: "Invalid or expired session" });

@@ -48,3 +48,13 @@ export async function deleteUserAction(id: string): Promise<Result> {
   revalidatePath("/admin/users");
   return { success: true };
 }
+
+export async function refundUserAction(id: string, chargeId: string): Promise<Result> {
+  const res = await adminApi(`/api/admin/payments/refund-user/${id}`, {
+    method: "POST", body: JSON.stringify({ chargeId }),
+  });
+  if (!res.ok) return { error: await readError(res, "Refund failed.") };
+  revalidatePath(`/admin/users/${id}`);
+  revalidatePath("/admin/users");
+  return { success: true };
+}

@@ -1,13 +1,14 @@
 export type IntegrationStatus = {
   key: string;
   label: string;
-  category: "ai" | "billing" | "social" | "search";
+  category: "ai" | "billing" | "social" | "search" | "email";
   configured: boolean;
 };
 
 const INTEGRATIONS: Omit<IntegrationStatus, "configured">[] = [
   { key: "late",      label: "Late API",  category: "social"  },
   { key: "stripe",    label: "Stripe",    category: "billing" },
+  { key: "smtp",      label: "Email (SMTP)", category: "email" },
   { key: "openai",    label: "OpenAI",    category: "ai"      },
   { key: "anthropic", label: "Anthropic", category: "ai"      },
   { key: "gemini",    label: "Gemini",    category: "ai"      },
@@ -18,6 +19,7 @@ const INTEGRATIONS: Omit<IntegrationStatus, "configured">[] = [
 const ENV_VARS: Record<string, string[]> = {
   late: ["LATE_API_KEY"],
   stripe: ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET"],
+  smtp: ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"],
   openai: ["OPENAI_API_KEY"],
   anthropic: ["ANTHROPIC_API_KEY"],
   gemini: ["GEMINI_API_KEY", "GOOGLE_AI_API_KEY"],

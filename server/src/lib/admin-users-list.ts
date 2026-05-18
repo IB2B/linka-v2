@@ -10,7 +10,7 @@ function pickLastActive(a: Date | null, b: Date | null): string | null {
 }
 
 export async function listAdminUsers(f: ListFilters) {
-  const conds: string[] = [];
+  const conds: string[] = ["u.deleted_at IS NULL"];
   const params: any[] = [];
   if (f.q) {
     conds.push("(u.email LIKE ? OR CONCAT_WS(' ', u.first_name, u.last_name) LIKE ?)");
@@ -18,7 +18,7 @@ export async function listAdminUsers(f: ListFilters) {
   }
   if (f.role) { conds.push("u.role = ?"); params.push(f.role); }
   if (f.status) { conds.push("u.status = ?"); params.push(f.status); }
-  const where = conds.length ? `WHERE ${conds.join(" AND ")}` : "";
+  const where = `WHERE ${conds.join(" AND ")}`;
 
   const [rows] = await db.query<any[]>(
     `SELECT u.id, u.email, u.first_name, u.last_name, u.role, u.status,

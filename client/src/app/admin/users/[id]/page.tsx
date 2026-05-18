@@ -29,7 +29,12 @@ export default async function AdminUserPage({ params, searchParams }: Props) {
       <UserDraftsTable drafts={ai.drafts} />
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
         <div className="space-y-6">
-          <UserDetailSubscription subscription={detail.subscription} />
+          <UserDetailSubscription
+            subscription={detail.subscription}
+            userId={detail.user.id}
+            email={detail.user.email}
+            eligibility={detail.refundEligibility}
+          />
           <Card size="sm" className="gap-0 p-0">
             <div className="border-b px-5 py-3">
               <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">

@@ -9,8 +9,6 @@ export type Notification = {
   at: string;
 };
 
-export type NotificationFilter = "all" | "failed" | "upcoming";
-
 export type NotificationApiItem = {
   id: string;
   content: string;
@@ -38,11 +36,6 @@ export function buildNotifications(
     }
   }
   return out.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
-}
-
-export function filterNotifications(list: Notification[], filter: NotificationFilter): Notification[] {
-  if (filter === "all") return list;
-  return list.filter((n) => n.kind === filter);
 }
 
 export type { NotificationGroup } from "./notifications-group";

@@ -11,7 +11,7 @@ export function ForgotPasswordSent({ email }: { email: string }) {
         <p className="text-sm text-muted-foreground">
           If an account exists for{" "}
           <span className="font-medium text-foreground">{email}</span>, we sent
-          a link to reset your password. The link expires in 30 minutes.
+          a link to reset your password. The link expires in 1 hour.
         </p>
       </div>
       <p className="text-xs text-muted-foreground">

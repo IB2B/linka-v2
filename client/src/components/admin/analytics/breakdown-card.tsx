@@ -8,13 +8,17 @@ type Props = {
   rows: CountRow[];
   emptyText?: string;
   format?: (key: string) => string;
+  icon?: (key: string) => React.ReactNode;
   barClassName?: string;
+  rowColor?: (key: string) => string;
 };
 
-export function BreakdownCard({ title, rows, emptyText, format, barClassName }: Props) {
+export function BreakdownCard({
+  title, rows, emptyText, format, icon, barClassName, rowColor,
+}: Props) {
   const total = rows.reduce((a, r) => a + r.count, 0);
   return (
-    <Card size="sm" className="gap-0 p-0">
+    <Card size="sm" className="gap-0 p-0 transition hover:ring-foreground/20">
       <div className="flex items-center justify-between border-b px-5 py-3">
         <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
           {title}
@@ -28,13 +32,15 @@ export function BreakdownCard({ title, rows, emptyText, format, barClassName }: 
           {emptyText ?? "No data yet."}
         </div>
       ) : (
-        <ul className="space-y-2 px-5 py-4">
+        <ul className="space-y-2.5 px-5 py-4">
           {rows.map((r) => {
             const pct = total === 0 ? 0 : Math.round((r.count / total) * 100);
+            const color = rowColor?.(r.key);
             return (
               <li key={r.key} className="space-y-1">
                 <div className="flex items-baseline justify-between gap-2 text-xs tracking-tight">
-                  <span className="font-medium capitalize">
+                  <span className="flex items-center gap-1.5 font-medium capitalize">
+                    {icon?.(r.key)}
                     {format ? format(r.key) : r.key}
                   </span>
                   <span className="text-muted-foreground tabular-nums">
@@ -42,8 +48,10 @@ export function BreakdownCard({ title, rows, emptyText, format, barClassName }: 
                   </span>
                 </div>
                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                  <span className={`block h-full ${barClassName ?? "bg-foreground/70"}`}
-                    style={{ width: `${pct}%` }} />
+                  <span
+                    className={`block h-full ${barClassName ?? "bg-foreground/70"}`}
+                    style={color ? { width: `${pct}%`, background: color } : { width: `${pct}%` }}
+                  />
                 </div>
               </li>
             );

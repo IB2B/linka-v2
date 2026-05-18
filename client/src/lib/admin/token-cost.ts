@@ -1,10 +1,15 @@
 // Anthropic Haiku 4.5 pricing — keep in sync with the model used by
 // server/src/services/post-generation.service.ts.
-const PRICE_INPUT_PER_M = 0.8;
-const PRICE_OUTPUT_PER_M = 4.0;
+export const PRICE_INPUT_PER_M = 0.8;
+export const PRICE_OUTPUT_PER_M = 4.0;
+export const PRICE_PER_IMAGE = 0.04;
 
 export function calcTokenCost(inputTokens: number, outputTokens: number): number {
   return (inputTokens / 1e6) * PRICE_INPUT_PER_M + (outputTokens / 1e6) * PRICE_OUTPUT_PER_M;
+}
+
+export function calcTotalCost(inputTokens: number, outputTokens: number, images: number): number {
+  return calcTokenCost(inputTokens, outputTokens) + images * PRICE_PER_IMAGE;
 }
 
 export function formatTokenCost(n: number): string {

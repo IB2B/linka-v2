@@ -6,6 +6,8 @@ import { getUserMe } from "../lib/user-me-query";
 import { changePassword } from "./users-password";
 import { patchProfile } from "./users-profile";
 import avatarRouter from "./users-avatar";
+import { softDeleteUser } from "../lib/user-soft-delete";
+import { CLEAR_COOKIE_OPTS } from "../lib/cookie-opts";
 
 const router = Router();
 router.use("/me/avatar", avatarRouter);
@@ -60,8 +62,8 @@ router.post("/me/password", (req: AuthRequest, res, next) => {
 
 router.delete("/me", async (req: AuthRequest, res, next) => {
   try {
-    await db.query("DELETE FROM users WHERE id = ?", [req.user!.id]);
-    res.clearCookie("token");
+    await softDeleteUser(req.user!.id);
+    res.clearCookie("token", CLEAR_COOKIE_OPTS);
     res.json({ ok: true });
   } catch (e) { next(e); }
 });

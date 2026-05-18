@@ -42,7 +42,7 @@ export function SettingsShell({ accounts, recyclerEnabled, ...profile }: Props) 
         {active === "notifications" && <NotificationsSection />}
         {active === "accounts" && <ConnectedAccountsSection accounts={accounts} />}
         {active === "services" && <ServicesSection />}
-        {active === "danger" && <DangerSection />}
+        {active === "danger" && <DangerSection email={profile.email} />}
       </div>
     </div>
   );

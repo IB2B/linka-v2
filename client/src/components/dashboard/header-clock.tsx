@@ -39,12 +39,12 @@ export function HeaderClock() {
 
   return (
     <div
-      className="hidden h-7 items-center gap-1.5 rounded-md border bg-muted/40 px-2 text-xs font-medium text-muted-foreground md:inline-flex"
+      className="hidden h-8 items-center gap-1.5 px-1.5 text-xs font-medium text-muted-foreground md:inline-flex"
       title={tz}
     >
       <Clock className="size-3.5" />
       <span className="tabular-nums text-foreground">{formatTime(tz, now)}</span>
-      <span className="text-muted-foreground">· {formatLabel(tz)}</span>
+      <span className="hidden text-muted-foreground lg:inline">· {formatLabel(tz)}</span>
     </div>
   );
 }

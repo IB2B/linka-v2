@@ -2,6 +2,7 @@ import { Router } from "express";
 import { adminOnly } from "../middleware/admin";
 import { fetchUserDetail } from "../lib/admin-user-detail";
 import { getUserAiStats, getUserRecentDrafts } from "../lib/admin-user-ai";
+import { getRefundEligibility } from "../lib/admin-refund-eligibility";
 
 const router = Router();
 router.use(adminOnly);
@@ -43,9 +44,12 @@ function shape(d: any) {
 router.get("/:id/detail", async (req, res, next) => {
   try {
     const month = String(req.query.month ?? "").slice(0, 7) || undefined;
-    const d = await fetchUserDetail(req.params.id, month);
+    const [d, refundEligibility] = await Promise.all([
+      fetchUserDetail(req.params.id, month),
+      getRefundEligibility(req.params.id),
+    ]);
     if (!d) { res.status(404).json({ error: "User not found" }); return; }
-    res.json(shape(d));
+    res.json({ ...shape(d), refundEligibility });
   } catch (e) { next(e); }
 });
 

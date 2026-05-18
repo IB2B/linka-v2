@@ -9,14 +9,18 @@ export function FinalCta() {
       <div className="relative overflow-hidden rounded-2xl border border-[#E5E5E5] bg-white px-8 py-16 md:px-14 md:py-20">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_0%,rgba(109,95,249,0.12)_0%,transparent_70%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_0%,rgba(109,95,249,0.14)_0%,transparent_70%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(15,17,19,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(15,17,19,0.03)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(60%_60%_at_50%_40%,#000_10%,transparent_85%)]"
         />
         <div className="relative flex flex-col items-center gap-6 text-center">
-          <Badge variant="outline" className="gap-1.5 tracking-tight text-[#525252]">
+          <Badge variant="outline" className="gap-1.5 bg-white/70 tracking-tight text-[#525252] backdrop-blur">
             <span className="size-1.5 rounded-full bg-[#00B67A]" />
             Booking June 2026
           </Badge>
-          <h2 className="max-w-3xl text-[36px] font-semibold leading-[1.1] tracking-tight text-[#0F1113] md:text-[56px]">
+          <h2 className="max-w-3xl text-[36px] font-semibold leading-[1.05] tracking-[-0.03em] text-[#0F1113] md:text-[60px]">
             Stop posting. Start shipping.
           </h2>
           <p className="max-w-xl text-[15px] leading-[1.6] tracking-tight text-[#525252]">

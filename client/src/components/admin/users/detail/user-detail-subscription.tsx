@@ -1,13 +1,19 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { RefundAction } from "./refund-action";
 import type { AdminUserDetail } from "@/types/admin";
 
 const fmtDate = (s: string | null) =>
   s ? new Date(s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
 
-type Props = { subscription: AdminUserDetail["subscription"] };
+type Props = {
+  subscription: AdminUserDetail["subscription"];
+  userId: string;
+  email: string;
+  eligibility: AdminUserDetail["refundEligibility"];
+};
 
-export function UserDetailSubscription({ subscription }: Props) {
+export function UserDetailSubscription({ subscription, userId, email, eligibility }: Props) {
   const rows: { label: string; value: React.ReactNode }[] = subscription
     ? [
         { label: "Plan", value: <span className="capitalize font-medium">{subscription.planTier}</span> },
@@ -40,6 +46,12 @@ export function UserDetailSubscription({ subscription }: Props) {
             </div>
           ))}
         </dl>
+      </div>
+      <div className="flex items-center justify-between border-t bg-muted/30 px-5 py-3">
+        <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
+          {eligibility.draftCount} drafts generated
+        </span>
+        <RefundAction userId={userId} email={email} eligibility={eligibility} />
       </div>
     </Card>
   );

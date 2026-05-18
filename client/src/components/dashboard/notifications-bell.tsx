@@ -7,21 +7,15 @@ import { ArrowRight, Bell } from "lucide-react";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { NotificationsTabs } from "./notifications-tabs";
 import { NotificationsGroups } from "./notifications-groups";
 import { NotificationsEmpty } from "./notifications-empty";
-import {
-  buildNotifications, filterNotifications,
-  type Notification, type NotificationApiItem, type NotificationFilter,
-} from "./notifications-data";
+import { buildNotifications, type Notification, type NotificationApiItem } from "./notifications-data";
 
 const POLL_MS = 60_000;
 
 export function NotificationsBell({ prefix }: { prefix: string }) {
   const [list, setList] = useState<Notification[]>([]);
-  const [filter, setFilter] = useState<NotificationFilter>("all");
 
   useEffect(() => {
     let cancelled = false;
@@ -38,31 +32,32 @@ export function NotificationsBell({ prefix }: { prefix: string }) {
     return () => { cancelled = true; clearInterval(id); };
   }, [prefix]);
 
-  const filtered = filterNotifications(list, filter);
   const total = list.length;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="outline" size="sm">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="relative"
+            aria-label={total > 0 ? `Notifications (${total} new)` : "Notifications"}
+          >
             <Bell />
-            Notifications
-            {total > 0 ? <Badge variant="destructive">{total}</Badge> : null}
+            {total > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-destructive px-1 text-[9px] font-semibold leading-none text-white">
+                {total > 9 ? "9+" : total}
+              </span>
+            )}
           </Button>
         }
       />
-      <DropdownMenuContent align="end" className="w-[22rem] p-0">
-        <div className="flex items-center justify-between px-3 py-2.5">
+      <DropdownMenuContent align="end" className="w-[20rem] p-0">
+        <div className="border-b px-3 py-2.5">
           <span className="text-sm font-semibold">Notifications</span>
-          <span className="text-[11px] text-muted-foreground">
-            {total === 0 ? "No new updates" : `${total} new`}
-          </span>
         </div>
-        <NotificationsTabs list={list} value={filter} onChange={setFilter} />
-        {filtered.length === 0
-          ? <NotificationsEmpty filter={filter} />
-          : <NotificationsGroups list={filtered} />}
+        {list.length === 0 ? <NotificationsEmpty /> : <NotificationsGroups list={list} />}
         <div className="border-t p-1.5">
           <Link
             href={`${prefix}/posts`}

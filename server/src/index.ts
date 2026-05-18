@@ -7,6 +7,8 @@ checkEnv();
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRouter from "./routes/auth";
+import authLogoutRouter from "./routes/auth-logout";
+import authPasswordRouter from "./routes/auth-password";
 import billingRouter from "./routes/billing";
 import stripeRouter from "./routes/stripe";
 import usersRouter from "./routes/users";
@@ -44,6 +46,8 @@ app.use("/uploads", express.static(join(process.cwd(), "uploads"), {
 app.get("/api/health", (_req, res) => { res.json({ ok: true }); });
 app.get("/api/image-proxy", authenticate, proxyImage);
 app.use("/api/auth", authRouter);
+app.use("/api/auth", authLogoutRouter);
+app.use("/api/auth", authPasswordRouter);
 app.use("/api/billing", billingRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/users", usersRouter);
