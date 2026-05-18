@@ -14,7 +14,7 @@ export function SettingsNav({ items, active }: Props) {
         return (
           <Link
             key={i.id}
-            href={i.id === "policies" ? "/admin/settings" : `/admin/settings?section=${i.id}`}
+            href={i.id === "profile" ? "/admin/settings" : `/admin/settings?section=${i.id}`}
             scroll={false}
             className={cn(
               "shrink-0 rounded-md px-3 py-1.5 text-sm tracking-tight transition",

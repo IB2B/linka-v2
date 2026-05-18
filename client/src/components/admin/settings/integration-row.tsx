@@ -6,6 +6,7 @@ const CATEGORY_LABEL: Record<IntegrationStatus["category"], string> = {
   billing: "Billing",
   social: "Social",
   search: "Search",
+  email: "Email",
 };
 
 export function IntegrationRow({ integration }: { integration: IntegrationStatus }) {
