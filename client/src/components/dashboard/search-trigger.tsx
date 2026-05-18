@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { SearchPalette } from "./search-palette";
-import type { NavGroup } from "@/types/nav-item";
+import { getNavigationForRole } from "@/lib/dashboard/navigation";
+import type { SidebarNavProps } from "@/types/sidebar-nav-props";
 
-export function SearchTrigger({ groups }: { groups: NavGroup[] }) {
+export function SearchTrigger({ role, tier, features }: SidebarNavProps) {
   const [open, setOpen] = useState(false);
+  const groups = useMemo(
+    () => getNavigationForRole(role, tier, features),
+    [role, tier, features],
+  );
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {

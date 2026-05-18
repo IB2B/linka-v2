@@ -6,7 +6,6 @@ import {
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { HeaderActions } from "@/components/dashboard/header-actions";
 import { requireRole } from "@/lib/auth/require-role";
-import { getNavigationForRole } from "@/lib/dashboard/navigation";
 import type { DashboardUser } from "@/types/dashboard-user";
 
 export default async function AdminLayout({
@@ -39,7 +38,9 @@ export default async function AdminLayout({
           </span>
           <HeaderActions
             prefix="/admin"
-            groups={getNavigationForRole(user.role, user.tier, user.features)}
+            role={user.role}
+            tier={user.tier}
+            features={user.features}
           />
         </header>
         <div className="flex flex-1 flex-col gap-6 p-6">{children}</div>

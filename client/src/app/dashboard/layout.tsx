@@ -8,7 +8,6 @@ import { HeaderActions } from "@/components/dashboard/header-actions";
 import { NavBreadcrumb } from "@/components/dashboard/nav-breadcrumb";
 import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/auth/require-role";
-import { getNavigationForRole } from "@/lib/dashboard/navigation";
 import type { DashboardUser } from "@/types/dashboard-user";
 
 export default async function DashboardLayout({
@@ -42,7 +41,9 @@ export default async function DashboardLayout({
           <NavBreadcrumb />
           <HeaderActions
             prefix="/dashboard"
-            groups={getNavigationForRole(user.role, user.tier, user.features)}
+            role={user.role}
+            tier={user.tier}
+            features={user.features}
           />
         </header>
         <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>
