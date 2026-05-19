@@ -5,7 +5,7 @@ export async function getUserMe(userId: string) {
   const [userResult, usageResult] = await Promise.all([
     db.query<any[]>(
       `SELECT u.id, u.email, u.role, u.first_name, u.last_name,
-              u.onboarding_completed,
+              u.onboarding_completed, u.email_verified_at,
               p.avatar_url, p.industry, p.bio, p.job_title,
               r.enabled AS recycler_enabled,
               s.plan_tier
@@ -34,6 +34,7 @@ export async function getUserMe(userId: string) {
     jobTitle: u.job_title ?? null,
     tier,
     onboardingCompleted: u.onboarding_completed === 1,
+    emailVerified: u.email_verified_at !== null,
     postsUsed: Number(usageResult[0][0]?.n ?? 0),
     postsLimit: postsLimitFor(tier),
     features: { recycler: u.recycler_enabled === 1 },

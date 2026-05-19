@@ -8,7 +8,6 @@ import { GenerateStepTwo } from "./generate-step-two";
 import { TopicSection } from "./topic-section";
 import { GenerationOverlay } from "./generation-overlay";
 import { GenerateStepBar } from "./generate-step-bar";
-import { GeneratedPostCard } from "./generated-post-card";
 import { useGenerate } from "./use-generate";
 import { Button } from "@/components/ui/button";
 import type { NewsArticle, PostSettings, PostType } from "@/types/content";
@@ -22,10 +21,8 @@ export function GenerateForm({ initialNews }: Props) {
   const [step, setStep] = useState<Step>(1);
   const [postType, setPostType] = useState<PostType>("news_commentary");
   const [settings, setSettings] = useState<PostSettings>(DEFAULT_SETTINGS);
-  const { generate, randomGenerate, regenerate, clearResults, pending, generatingFor, results } =
+  const { generate, randomGenerate, pending, generatingFor } =
     useGenerate(postType, settings);
-
-  function reset() { clearResults(); setStep(1); }
 
   return (
     <div className="space-y-8">
@@ -49,15 +46,6 @@ export function GenerateForm({ initialNews }: Props) {
           </Button>
           <TopicSection postType={postType} initialNews={initialNews} pending={pending}
             onGenerate={(opts) => generate(opts)} />
-        </div>
-      )}
-
-      {results.length > 0 && (
-        <div className="space-y-4">
-          {results.map((r) => (
-            <GeneratedPostCard key={r.contentId} result={r} pending={pending}
-              onRegenerate={regenerate} onReset={reset} />
-          ))}
         </div>
       )}
 

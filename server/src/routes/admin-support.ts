@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { z } from "zod";
-import { db } from "../lib/db";
 import { adminOnly, type AuthRequest } from "../middleware/admin";
 import { listSupportTickets } from "../lib/admin-support-list";
 import { getSupportSummary } from "../lib/admin-support-summary";
 import { getTicketDetail } from "../lib/admin-support-detail";
 import { addAdminReply } from "../lib/admin-support-reply";
+import { updateTicket } from "../controllers/admin-support-update.controller";
+import { SUPPORT_ATTACHMENT_RE } from "../lib/support-attachment";
 
 const router = Router();
 router.use(adminOnly);
@@ -34,35 +35,11 @@ router.get("/", async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-const patchSchema = z.object({
-  status: z.enum(["open", "pending", "resolved", "closed"]).optional(),
-  priority: z.enum(["low", "normal", "high", "urgent"]).optional(),
-});
-
-router.patch("/:id", async (req, res, next) => {
-  try {
-    const parsed = patchSchema.safeParse(req.body);
-    if (!parsed.success || (!parsed.data.status && !parsed.data.priority)) {
-      res.status(400).json({ error: "Invalid update" }); return;
-    }
-    const sets: string[] = []; const params: any[] = [];
-    if (parsed.data.status) {
-      sets.push("status = ?"); params.push(parsed.data.status);
-      sets.push(parsed.data.status === "closed" ? "closed_at = NOW()" : "closed_at = NULL");
-    }
-    if (parsed.data.priority) { sets.push("priority = ?"); params.push(parsed.data.priority); }
-    params.push(req.params.id);
-    const [r] = await db.query<any>(
-      `UPDATE support_tickets SET ${sets.join(", ")} WHERE id = ?`, params,
-    );
-    if (!r || (r as any).affectedRows === 0) { res.status(404).json({ error: "Not found" }); return; }
-    res.json({ ok: true });
-  } catch (e) { next(e); }
-});
+router.patch("/:id", updateTicket);
 
 const replySchema = z.object({
   body: z.string().trim().min(1).max(5000),
-  attachmentUrl: z.string().trim().max(500).optional(),
+  attachmentUrl: z.string().regex(SUPPORT_ATTACHMENT_RE).optional(),
 });
 
 router.post("/:id/reply", async (req: AuthRequest, res, next) => {

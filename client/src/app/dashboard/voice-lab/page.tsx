@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { Separator } from "@/components/ui/separator";
@@ -10,14 +11,13 @@ import { AnalyzeAllButton } from "@/components/voice-lab/analyze-all-button";
 import { getVoiceLabData } from "@/lib/voice-lab/get-data";
 
 export default async function VoiceLabPage() {
-  const { samples, limits, profile } = await getVoiceLabData();
+  const [{ samples, limits, profile }, t] = await Promise.all([
+    getVoiceLabData(), getTranslations("voiceLab"),
+  ]);
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <PageHeader
-          title="Voice Lab"
-          description="Train AI to write in your authentic voice."
-        />
+        <PageHeader title={t("title")} description={t("description")} />
         <div className="flex flex-wrap items-center gap-2">
           <AnalyzeAllButton
             disabled={samples.length < 2}

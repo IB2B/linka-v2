@@ -1,0 +1,206 @@
+{
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your profile, security, and connected accounts.",
+    "sections": {
+      "profile": "Profile",
+      "security": "Security",
+      "preferences": "Preferences",
+      "features": "Features",
+      "notifications": "Notifications",
+      "accounts": "Connected Accounts",
+      "services": "Services",
+      "danger": "Danger Zone"
+    },
+    "preferences": {
+      "language": "Language",
+      "timezone": "Timezone",
+      "languageUpdated": "Language updated."
+    }
+  },
+  "nav": {
+    "Workspace": "Workspace", "Account": "Account", "Insights": "Insights",
+    "Manage": "Manage", "System": "System", "Overview": "Overview",
+    "Conversations": "Conversations", "Pipeline": "Pipeline", "Posts": "Posts",
+    "Generate": "Generate", "Trend Radar": "Trend Radar", "Voice Lab": "Voice Lab",
+    "Calendar": "Calendar", "Recycler": "Recycler", "Analytics": "Analytics",
+    "Billing": "Billing", "Support": "Support", "Settings": "Settings",
+    "AI Usage": "AI Usage", "Users": "Users", "Subscriptions": "Subscriptions",
+    "Content": "Content", "Feedback": "Feedback"
+  },
+  "userMenu": {
+    "sendFeedback": "Send feedback", "language": "Language", "theme": "Theme",
+    "themeLight": "Light", "themeDark": "Dark", "themeSystem": "System",
+    "termsOfService": "Terms of Service", "privacyPolicy": "Privacy Policy",
+    "logout": "Log out"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back, {name}",
+    "overview": "Overview",
+    "subtitle": "Your drafts, schedule, and engagement at a glance.",
+    "stats": {
+      "drafts": "Drafts", "scheduled": "Scheduled",
+      "posted": "Posted", "generated": "Generated"
+    },
+    "engagement": {
+      "title": "Engagement",
+      "description": "Likes, comments, views & impressions over the last {days} days",
+      "empty": "No engagement data yet — published posts will show metrics here.",
+      "likes": "Likes", "comments": "Comments", "views": "Views", "impressions": "Impressions"
+    },
+    "upcoming": {
+      "title": "Upcoming", "link": "Calendar",
+      "empty": "Nothing scheduled. Plan your first post."
+    },
+    "status": {
+      "title": "Status breakdown",
+      "subtitle": "{count} total · all time",
+      "posted": "Posted", "scheduled": "Scheduled", "drafts": "Drafts"
+    },
+    "usage": {
+      "title": "Plan usage", "manage": "Manage",
+      "planLabel": "{tier} plan",
+      "postsFormat": "{used}/{limit} posts",
+      "percentUsed": "{percent}% used this month"
+    },
+    "recent": {
+      "title": "Recent posts", "viewAll": "View all",
+      "empty": "You haven't generated any posts yet."
+    },
+    "sidebarMeter": {
+      "planLabel": "{tier} plan",
+      "postsRemaining": "{count, plural, =1 {1 post remaining} other {# posts remaining}}"
+    }
+  },
+  "inbox": {
+    "empty": {
+      "title": "No conversation selected",
+      "message": "Pick a conversation from the list to read and reply."
+    },
+    "aiSuggest": "AI suggest",
+    "composer": {
+      "placeholder": "Type a reply… (Enter to send, Shift+Enter for newline)",
+      "send": "Send",
+      "confirmReplace": "Replace your draft with an AI suggestion?",
+      "sent": "Sent",
+      "spamFlagged": "Looks like spam — flagged."
+    }
+  },
+  "landing": {
+    "nav": {
+      "features": "Features", "process": "Process", "pricing": "Pricing", "faq": "FAQ",
+      "signIn": "Sign in", "getStarted": "Get started", "language": "Language"
+    },
+    "hero": {
+      "badge": "Available June 2026",
+      "title1": "Stop writing posts.",
+      "title2": "Start building your audience.",
+      "body": "Linka learns your voice, generates on-brand content across every platform, and publishes it at the right time — so you can focus on building.",
+      "ctaPrimary": "Start free trial",
+      "ctaSecondary": "See pricing",
+      "stat1": "2,400+ creators",
+      "stat2": "184M impressions shipped",
+      "stat3": "7-day free trial"
+    },
+    "socialProof": "Used by teams shipping at",
+    "features": { "eyebrow": "Features", "title": "Replace six tools. Keep one workspace.", "sub": "Linka is the writer, the designer, the scheduler and the analyst. One subscription, one calendar, every channel." },
+    "process": { "eyebrow": "Process", "title": "From signup to first post in three minutes.", "stepLabel": "Step" },
+    "testimonials": { "eyebrow": "Customers", "title": "The work speaks. They speak too." },
+    "comparison": { "eyebrow": "Compared", "title": "Linka vs. how you're doing it now." },
+    "pricing": { "eyebrow": "Pricing", "title": "One coffee a day. A whole content team.", "sub": "7-day free trial on every paid plan. No card until day 7. Cancel any time." },
+    "faq": { "eyebrow": "FAQ", "title": "Things people ask before signing." },
+    "finalCta": {
+      "badge": "Booking June 2026",
+      "title": "Stop posting. Start shipping.",
+      "body": "7 days free. No card until day 7. Cancel in one click. Your audience is already scrolling.",
+      "ctaPrimary": "Start free trial",
+      "ctaSecondary": "Sign in"
+    },
+    "footer": {
+      "tagline": "AI-led social growth for founders who'd rather ship than post.",
+      "product": "Product", "company": "Company", "legal": "Legal",
+      "copyright": "© {year} linka — all rights reserved",
+      "designed": "Designed with ♥ from somewhere on Earth"
+    }
+  },
+  "onboarding": {
+    "language": {
+      "title": "Choose your language",
+      "description": "We'll translate the rest of onboarding for you."
+    },
+    "company": {
+      "title": "Tell us about your company",
+      "description": "This helps us tailor content to your audience and industry."
+    },
+    "connect": {
+      "title": "Connect your accounts",
+      "description": "Link the platforms you publish on."
+    },
+    "plan": {
+      "title": "Choose your plan",
+      "description": "Start free and upgrade any time. No credit card required."
+    }
+  },
+  "posts": {
+    "title": "Posts",
+    "description": "Every draft you've generated. Review, copy, or delete.",
+    "newPost": "New post",
+    "searchPlaceholder": "Search content, prompt, platform…",
+    "select": "Select",
+    "gridView": "Grid view",
+    "tableView": "Table view",
+    "schedule": "Schedule",
+    "reschedule": "Reschedule",
+    "postNow": "Post now",
+    "view": "View",
+    "delete": "Delete",
+    "toast": { "deleted": "Post deleted.", "noPlatform": "Post has no target platform." },
+    "status": {
+      "all": "All", "draft": "Draft", "scheduled": "Scheduled", "posted": "Posted", "failed": "Failed"
+    }
+  },
+  "generate": {
+    "title": "Generate post",
+    "description": "Pick a type, pick a topic, ship a post — your voice, on autopilot.",
+    "toast": {
+      "postGenerated": "Post generated",
+      "postsGenerated": "{count} posts generated",
+      "surprisePost": "a surprise post",
+      "upgrade": "Upgrade"
+    }
+  },
+  "calendar": { "title": "Calendar", "description": "Plan, review, and reschedule your social posts at a glance." },
+  "voiceLab": { "title": "Voice Lab", "description": "Train AI to write in your authentic voice." },
+  "recycler": { "title": "Smart Recycler", "description": "Resurface your best posts with a fresh angle." },
+  "support": { "title": "Support", "description": "Run into a problem? Tell us what's wrong and we'll get back to you by email." },
+  "trends": { "title": "Trend Radar", "description": "Live trends in your niche, with AI-generated post angles." },
+  "analytics": { "title": "Analytics", "description": "Pipeline health." },
+  "billing": { "title": "Billing" },
+  "pipeline": {
+    "title": "Pipeline",
+    "newPipeline": "New pipeline",
+    "pipelineName": "Pipeline name",
+    "addStage": "Add stage",
+    "addOpportunity": "Add opportunity",
+    "dropCard": "Drop a card here",
+    "cancel": "Cancel",
+    "create": "Create",
+    "add": "Add",
+    "noStages": "No stages yet. Click <action>Add stage</action> above to start moving deals.",
+    "stages": "Stages",
+    "stagesOptional": "Optional. Add stages now or later from the board.",
+    "stagePlaceholderN": "Stage {n} name",
+    "stageNamePlaceholder": "Stage name (e.g. Discovery)",
+    "newStage": "New stage",
+    "newOpportunity": "New opportunity",
+    "empty": {
+      "title": "No pipeline yet",
+      "message": "Create your first pipeline above to start tracking deals across stages."
+    },
+    "toast": {
+      "pipelineCreated": "Pipeline created.",
+      "stageAdded": "Stage added."
+    },
+    "outcomes": { "open": "Open", "won": "Won", "lost": "Lost" }
+  }
+}

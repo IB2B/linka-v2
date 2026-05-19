@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export function FinalCta() {
+export async function FinalCta() {
+  const t = await getTranslations("landing.finalCta");
   return (
     <section className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-24">
       <div className="relative overflow-hidden rounded-2xl border border-[#E5E5E5] bg-white px-8 py-16 md:px-14 md:py-20">
@@ -18,14 +21,13 @@ export function FinalCta() {
         <div className="relative flex flex-col items-center gap-6 text-center">
           <Badge variant="outline" className="gap-1.5 bg-white/70 tracking-tight text-[#525252] backdrop-blur">
             <span className="size-1.5 rounded-full bg-[#00B67A]" />
-            Booking June 2026
+            {t("badge")}
           </Badge>
           <h2 className="max-w-3xl text-[36px] font-semibold leading-[1.05] tracking-[-0.03em] text-[#0F1113] md:text-[60px]">
-            Stop posting. Start shipping.
+            {t("title")}
           </h2>
           <p className="max-w-xl text-[15px] leading-[1.6] tracking-tight text-[#525252]">
-            7 days free. No card until day 7. Cancel in one click. Your audience
-            is already scrolling.
+            {t("body")}
           </p>
           <div className="flex flex-wrap justify-center gap-2 pt-1">
             <Button
@@ -34,7 +36,7 @@ export function FinalCta() {
               size="lg"
               className="tracking-tight"
             >
-              Start free trial <ArrowUpRight />
+              {t("ctaPrimary")} <ArrowUpRight />
             </Button>
             <Button
               render={<Link href="/login" />}
@@ -43,7 +45,7 @@ export function FinalCta() {
               variant="outline"
               className="tracking-tight"
             >
-              Sign in
+              {t("ctaSecondary")}
             </Button>
           </div>
         </div>

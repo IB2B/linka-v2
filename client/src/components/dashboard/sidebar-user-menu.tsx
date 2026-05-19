@@ -1,14 +1,15 @@
 import Link from "next/link";
-import { ChevronsUpDown, LogOut } from "lucide-react";
+import { LogOut, MessageSquare } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { SidebarUserPreview } from "@/components/dashboard/sidebar-user-preview";
-import { SidebarUserMenuHelp } from "./sidebar-user-menu-help";
 import { SidebarUserMenuLegal } from "./sidebar-user-menu-legal";
 import { SidebarUserMenuTheme } from "./sidebar-user-menu-theme";
+import { SidebarUserMenuLanguage } from "./sidebar-user-menu-language";
 import type { SidebarUserProps } from "@/types/sidebar-user-props";
 
 type Props = SidebarUserProps & {
@@ -20,6 +21,7 @@ type Props = SidebarUserProps & {
 
 export function SidebarUserMenu({ user, isMobile, pending, logout, onSendFeedback }: Props) {
   const settingsHref = user.role === "USER" ? "/dashboard/settings" : "/admin/settings";
+  const t = useTranslations("userMenu");
   return (
     <DropdownMenuContent className="min-w-56 rounded-lg" side={isMobile ? "bottom" : "right"} align="end" sideOffset={4}>
       <DropdownMenuGroup>
@@ -28,14 +30,27 @@ export function SidebarUserMenu({ user, isMobile, pending, logout, onSendFeedbac
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      {user.role === "USER" ? (<><SidebarUserMenuHelp onSendFeedback={onSendFeedback} /><DropdownMenuSeparator /></>) : null}
+      {user.role === "USER" ? (
+        <>
+          <DropdownMenuGroup>
+            <DropdownMenuItem onClick={onSendFeedback}>
+              <MessageSquare />
+              {t("sendFeedback")}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+        </>
+      ) : null}
       <SidebarUserMenuLegal />
       <DropdownMenuSeparator />
-      <DropdownMenuGroup><SidebarUserMenuTheme /></DropdownMenuGroup>
+      <DropdownMenuGroup>
+        <SidebarUserMenuLanguage label={t("language")} />
+        <SidebarUserMenuTheme />
+      </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem disabled={pending} closeOnClick={false} onClick={() => logout()}>
         {pending ? <Spinner aria-hidden /> : <LogOut />}
-        Log out
+        {t("logout")}
       </DropdownMenuItem>
     </DropdownMenuContent>
   );

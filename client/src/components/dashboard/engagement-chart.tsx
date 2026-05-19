@@ -3,19 +3,13 @@
 import {
   Area, AreaChart, CartesianGrid, XAxis, YAxis,
 } from "recharts";
+import { useTranslations } from "next-intl";
 
 import {
   ChartContainer, ChartLegend, ChartLegendContent,
   ChartTooltip, ChartTooltipContent, type ChartConfig,
 } from "@/components/ui/chart";
 import type { EngagementDay } from "@/lib/dashboard/engagement.types";
-
-const CONFIG = {
-  likes: { label: "Likes", color: "var(--chart-1)" },
-  comments: { label: "Comments", color: "var(--chart-2)" },
-  views: { label: "Views", color: "var(--chart-3)" },
-  impressions: { label: "Impressions", color: "var(--chart-4)" },
-} satisfies ChartConfig;
 
 const KEYS = ["likes", "comments", "views", "impressions"] as const;
 
@@ -34,6 +28,13 @@ function formatLabel(iso: string): string {
 }
 
 export function EngagementChart({ data }: { data: EngagementDay[] }) {
+  const t = useTranslations("dashboard.engagement");
+  const CONFIG = {
+    likes: { label: t("likes"), color: "var(--chart-1)" },
+    comments: { label: t("comments"), color: "var(--chart-2)" },
+    views: { label: t("views"), color: "var(--chart-3)" },
+    impressions: { label: t("impressions"), color: "var(--chart-4)" },
+  } satisfies ChartConfig;
   return (
     <ChartContainer config={CONFIG} className="aspect-auto h-[260px] w-full">
       <AreaChart data={data} margin={{ left: 8, right: 8, top: 8 }}>

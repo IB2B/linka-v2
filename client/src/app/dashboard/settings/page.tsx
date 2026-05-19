@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 
 import { Separator } from "@/components/ui/separator";
 import { PageHeader } from "@/components/dashboard/page-header";
@@ -8,25 +9,23 @@ import { fetchMe } from "@/lib/auth/me";
 import { getAccounts } from "@/lib/zernio/get-accounts";
 
 export default async function SettingsPage() {
-  const [me, accounts] = await Promise.all([fetchMe(), getAccounts()]);
+  const [me, accounts, t] = await Promise.all([
+    fetchMe(), getAccounts(), getTranslations("settings"),
+  ]);
 
   return (
     <>
       <Suspense>
         <AccountsToast />
       </Suspense>
-      <PageHeader
-        title="Settings"
-        description="Manage your profile, security, and connected accounts."
-      />
+      <PageHeader title={t("title")} description={t("description")} />
       <Separator className="my-2" />
       <SettingsShell
         firstName={me?.firstName ?? ""}
         lastName={me?.lastName ?? ""}
         email={me?.email ?? ""}
         avatarUrl={me?.avatarUrl ?? null}
-        jobTitle=""
-        companyName=""
+        jobTitle={me?.jobTitle ?? ""}
         industry={me?.industry ?? ""}
         headline={me?.bio ?? ""}
         accounts={accounts}

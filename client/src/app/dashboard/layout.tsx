@@ -16,6 +16,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user } = await requireRole("USER");
+  if (!user.emailVerified) redirect("/verify-email");
   if (!user.onboardingCompleted) redirect("/onboarding");
 
   const dashboardUser: DashboardUser = {

@@ -1,8 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
-const LABELS: Record<string, string> = {
+import type { NavKey } from "@/types/nav-item";
+
+const ROUTE_LABEL: Record<string, NavKey> = {
   "/dashboard": "Overview",
   "/dashboard/inbox": "Conversations",
   "/dashboard/pipeline": "Pipeline",
@@ -20,16 +23,16 @@ const LABELS: Record<string, string> = {
 
 export function NavBreadcrumb() {
   const pathname = usePathname();
+  const t = useTranslations("nav");
 
-  // Exact match first, then longest prefix match for nested routes.
-  const label =
-    LABELS[pathname] ??
-    Object.entries(LABELS)
+  const key: NavKey =
+    ROUTE_LABEL[pathname] ??
+    Object.entries(ROUTE_LABEL)
       .filter(([k]) => k !== "/dashboard" && pathname.startsWith(k))
       .sort((a, b) => b[0].length - a[0].length)[0]?.[1] ??
-    "Dashboard";
+    "Overview";
 
   return (
-    <span className="text-sm font-medium text-muted-foreground">{label}</span>
+    <span className="text-sm font-medium text-muted-foreground">{t(key)}</span>
   );
 }

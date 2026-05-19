@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { skipStepAction } from "@/app/onboarding/actions";
 import {
-  LinkedInIcon, XIcon, InstagramIcon, TikTokIcon,
+  LinkedInIcon, XIcon, InstagramIcon,
   YouTubeIcon, FacebookIcon, ThreadsIcon, PinterestIcon,
 } from "./platform-icons";
 
@@ -13,7 +13,6 @@ const PLATFORMS = [
   { name: "LinkedIn",       Icon: LinkedInIcon,  color: "#0A66C2", free: true },
   { name: "X / Twitter",    Icon: XIcon,         color: "#000000", free: false },
   { name: "Instagram",      Icon: InstagramIcon, color: "#E1306C", free: false },
-  { name: "TikTok",         Icon: TikTokIcon,    color: "#010101", free: false },
   { name: "YouTube Shorts", Icon: YouTubeIcon,   color: "#FF0000", free: false },
   { name: "Facebook",       Icon: FacebookIcon,  color: "#1877F2", free: false },
   { name: "Threads",        Icon: ThreadsIcon,   color: "#000000", free: false },

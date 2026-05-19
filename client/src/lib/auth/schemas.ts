@@ -46,9 +46,17 @@ export const forgotPasswordRequestSchema = z.object({
 
 export const forgotPasswordSuccessSchema = z.object({ ok: z.literal(true) });
 
+export const verifyEmailRequestSchema = z.object({
+  code: z.string().regex(/^\d{6}$/, "Enter the 6-digit code."),
+});
+
+export const verifyEmailSuccessSchema = z.object({ ok: z.literal(true) });
+
 export type LoginRequest = z.infer<typeof loginRequestSchema>;
 export type LoginSuccess = z.infer<typeof loginSuccessSchema>;
 export type RegisterRequest = z.infer<typeof registerRequestSchema>;
 export type RegisterSuccess = z.infer<typeof registerSuccessSchema>;
 export type ForgotPasswordRequest = z.infer<typeof forgotPasswordRequestSchema>;
 export type ForgotPasswordSuccess = z.infer<typeof forgotPasswordSuccessSchema>;
+export type VerifyEmailRequest = z.infer<typeof verifyEmailRequestSchema>;
+export type VerifyEmailSuccess = z.infer<typeof verifyEmailSuccessSchema>;

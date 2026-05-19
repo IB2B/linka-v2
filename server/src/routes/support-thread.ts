@@ -5,14 +5,13 @@ import { db } from "../lib/db";
 import type { AuthRequest } from "../middleware/auth";
 import { getTicketWithReplies } from "../lib/support-ticket-detail";
 import { resolveTicket, rateTicket, markTicketViewed } from "../lib/support-ticket-actions";
+import { SUPPORT_ATTACHMENT_RE } from "../lib/support-attachment";
 
 const router = Router({ mergeParams: true });
 
-const ATTACH_RE = /^\/uploads\/support\/[\w.-]+$/;
-
 const replySchema = z.object({
   body: z.string().trim().min(1).max(5000),
-  attachmentUrl: z.string().regex(ATTACH_RE).optional(),
+  attachmentUrl: z.string().regex(SUPPORT_ATTACHMENT_RE).optional(),
 });
 
 const rateSchema = z.object({ rating: z.coerce.number().int().min(1).max(5) });

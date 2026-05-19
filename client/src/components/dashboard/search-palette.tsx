@@ -1,12 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   CommandDialog, CommandInput, CommandList, CommandEmpty,
   CommandGroup, CommandItem,
 } from "@/components/ui/command";
 import { navToSearchItems, type SearchItem } from "./nav-to-search-items";
-import type { NavGroup } from "@/types/nav-item";
+import type { NavGroup, NavKey } from "@/types/nav-item";
 
 type Props = {
   open: boolean;
@@ -14,14 +15,15 @@ type Props = {
   groups: NavGroup[];
 };
 
-function groupBy(items: SearchItem[]): Record<string, SearchItem[]> {
-  const out: Record<string, SearchItem[]> = {};
+function groupBy(items: SearchItem[]): Record<NavKey, SearchItem[]> {
+  const out = {} as Record<NavKey, SearchItem[]>;
   for (const item of items) (out[item.group] ??= []).push(item);
   return out;
 }
 
 export function SearchPalette({ open, onOpenChange, groups }: Props) {
   const router = useRouter();
+  const t = useTranslations("nav");
   const grouped = groupBy(navToSearchItems(groups));
 
   const go = (href: string) => {
@@ -35,17 +37,18 @@ export function SearchPalette({ open, onOpenChange, groups }: Props) {
       <CommandList>
         <CommandEmpty>No results.</CommandEmpty>
         {Object.entries(grouped).map(([group, items]) => (
-          <CommandGroup key={group} heading={group}>
+          <CommandGroup key={group} heading={t(group as NavKey)}>
             {items.map((item) => {
               const Icon = item.icon;
+              const label = t(item.label);
               return (
                 <CommandItem
                   key={item.href}
-                  value={`${item.label} ${item.href}`}
+                  value={`${label} ${item.href}`}
                   onSelect={() => go(item.href)}
                 >
                   <Icon className="size-4 text-muted-foreground" />
-                  {item.label}
+                  {label}
                 </CommandItem>
               );
             })}

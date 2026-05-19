@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "../lib/db";
 import { adminOnly, type AuthRequest } from "../middleware/admin";
 import { listAdminUsers } from "../lib/admin-users-list";
+import { parseSortKey, parseSortDir } from "../lib/admin-users-sort";
 import { createAdminUser } from "../lib/admin-user-create";
 import { exportAdminUsers } from "../controllers/admin-users-export.controller";
 import { recordAdminAction } from "../lib/admin-audit";
@@ -18,7 +19,9 @@ router.get("/", async (req, res, next) => {
     const status = typeof req.query.status === "string" ? req.query.status : undefined;
     const limit = Math.min(Number(req.query.limit ?? 50), 200);
     const offset = Math.max(Number(req.query.offset ?? 0), 0);
-    res.json(await listAdminUsers({ q, role, status, limit, offset }));
+    const sort = parseSortKey(req.query.sort);
+    const dir = parseSortDir(req.query.dir);
+    res.json(await listAdminUsers({ q, role, status, sort, dir, limit, offset }));
   } catch (e) { next(e); }
 });
 

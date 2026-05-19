@@ -5,7 +5,6 @@ import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 
 import { registerRequest } from "@/lib/api/auth-client";
-import { ROLE_REDIRECTS } from "@/lib/auth/constants";
 import { FormField } from "@/components/forms/form-field";
 import { FormSubmitButton } from "@/components/forms/form-submit-button";
 import { PasswordField } from "@/components/forms/password-field";
@@ -38,13 +37,7 @@ export function RegisterForm() {
       return;
     }
 
-    if (result.data.emailConfirmationRequired) {
-      toast.success("Check your email to confirm your account.");
-      router.push("/login");
-      return;
-    }
-
-    router.push(ROLE_REDIRECTS[result.data.role]);
+    router.push("/verify-email");
     router.refresh();
   }
 

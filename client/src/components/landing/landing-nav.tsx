@@ -1,15 +1,18 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
+import { LandingLanguageSwitch } from "./landing-language-switch";
 
-const links = [
-  { href: "#features", label: "Features" },
-  { href: "#process", label: "Process" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#faq", label: "FAQ" },
-];
-
-export function LandingNav() {
+export async function LandingNav() {
+  const t = await getTranslations("landing.nav");
+  const links = [
+    { href: "#features", label: t("features") },
+    { href: "#process", label: t("process") },
+    { href: "#pricing", label: t("pricing") },
+    { href: "#faq", label: t("faq") },
+  ];
   return (
     <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 pt-6">
       <Link href="/" className="flex items-center gap-2">
@@ -30,6 +33,7 @@ export function LandingNav() {
         ))}
       </nav>
       <div className="flex items-center gap-1.5">
+        <LandingLanguageSwitch />
         <Button
           render={<Link href="/login" />}
           nativeButton={false}
@@ -37,7 +41,7 @@ export function LandingNav() {
           size="sm"
           className="hidden tracking-tight sm:inline-flex"
         >
-          Sign in
+          {t("signIn")}
         </Button>
         <Button
           render={<Link href="/register" />}
@@ -45,7 +49,7 @@ export function LandingNav() {
           size="sm"
           className="tracking-tight"
         >
-          Get started
+          {t("getStarted")}
         </Button>
       </div>
     </header>

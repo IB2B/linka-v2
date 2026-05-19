@@ -5,7 +5,8 @@ import { hashPassword, comparePassword } from "../lib/password";
 import { signToken } from "../lib/jwt";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 import { sendEmail } from "../lib/email/send";
-import { welcomeEmail } from "../lib/email/templates/welcome";
+import { emailVerificationEmail } from "../lib/email/templates/email-verification";
+import { generateCode, storeCode } from "../lib/email-verification";
 import { COOKIE_OPTS } from "../lib/cookie-opts";
 import { rateLimitMw } from "../middleware/rate-limit-mw";
 import { registerSchema, loginSchema } from "./auth-schemas";
@@ -34,11 +35,13 @@ router.post("/register", registerIpLimit, async (req, res, next) => {
       "INSERT INTO users (id, email, password_hash, first_name, last_name) VALUES (?, ?, ?, ?, ?)",
       [id, email, passwordHash, firstName, lastName],
     );
+    const code = generateCode();
+    await storeCode(id, code);
     res.cookie("token", signToken(id, "USER", 0), COOKIE_OPTS);
-    res.json({ role: "USER", emailConfirmationRequired: false });
-    const tpl = welcomeEmail({ firstName, appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "" });
+    res.json({ role: "USER", emailConfirmationRequired: true });
+    const tpl = emailVerificationEmail({ firstName, code });
     sendEmail({ to: email, subject: tpl.subject, html: tpl.html })
-      .catch((e) => console.error("[email/welcome]", e));
+      .catch((e) => console.error("[email/verify]", e));
   } catch (e) { next(e); }
 });
 

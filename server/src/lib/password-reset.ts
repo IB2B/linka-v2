@@ -1,8 +1,12 @@
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import { db } from "./db";
 import { hashPassword } from "./password";
 
 const TOKEN_TTL_MIN = 60;
+
+function hashToken(token: string): string {
+  return createHash("sha256").update(token).digest("hex");
+}
 
 async function invalidateExisting(userId: string): Promise<void> {
   await db.query(
@@ -18,7 +22,7 @@ export async function createResetToken(userId: string): Promise<string> {
   await db.query(
     `INSERT INTO password_reset_tokens (token, user_id, expires_at)
      VALUES (?, ?, NOW(3) + INTERVAL ? MINUTE)`,
-    [token, userId, TOKEN_TTL_MIN],
+    [hashToken(token), userId, TOKEN_TTL_MIN],
   );
   return token;
 }
@@ -39,7 +43,7 @@ export async function redeemResetToken(token: string, newPassword: string): Prom
        FROM password_reset_tokens prt
        INNER JOIN users u ON u.id = prt.user_id AND u.deleted_at IS NULL
       WHERE prt.token = ?`,
-    [token],
+    [hashToken(token)],
   );
   if (!row) throw new Error("Invalid or expired reset link.");
   if (row.used_at) throw new Error("This reset link has already been used.");

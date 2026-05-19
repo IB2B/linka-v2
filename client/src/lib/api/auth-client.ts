@@ -1,52 +1,18 @@
+import { postJson } from "@/lib/api/post-json";
 import {
-  apiErrorSchema,
   forgotPasswordSuccessSchema,
   loginSuccessSchema,
   registerSuccessSchema,
+  verifyEmailSuccessSchema,
   type ForgotPasswordRequest,
   type ForgotPasswordSuccess,
   type LoginRequest,
   type LoginSuccess,
   type RegisterRequest,
   type RegisterSuccess,
+  type VerifyEmailRequest,
+  type VerifyEmailSuccess,
 } from "@/lib/auth/schemas";
-
-export type ApiResult<T> =
-  | { ok: true; data: T }
-  | { ok: false; error: string };
-
-async function postJson<T extends object>(
-  url: string,
-  body: object,
-  successSchema: { safeParse: (v: unknown) => { success: boolean; data?: T } },
-): Promise<ApiResult<T>> {
-  let res: Response;
-  try {
-    res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-  } catch {
-    return { ok: false, error: "Network error. Please try again." };
-  }
-
-  const json: unknown = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    const parsed = apiErrorSchema.safeParse(json);
-    return {
-      ok: false,
-      error: parsed.success ? parsed.data.error : "Request failed.",
-    };
-  }
-
-  const parsed = successSchema.safeParse(json);
-  if (!parsed.success || !parsed.data) {
-    return { ok: false, error: "Unexpected response from server." };
-  }
-  return { ok: true, data: parsed.data };
-}
 
 export function loginRequest(payload: LoginRequest) {
   return postJson<LoginSuccess>("/api/auth/login", payload, loginSuccessSchema);
@@ -65,6 +31,22 @@ export function forgotPasswordRequest(payload: ForgotPasswordRequest) {
     "/api/auth/forgot-password",
     payload,
     forgotPasswordSuccessSchema,
+  );
+}
+
+export function verifyEmailRequest(payload: VerifyEmailRequest) {
+  return postJson<VerifyEmailSuccess>(
+    "/api/auth/verify-email",
+    payload,
+    verifyEmailSuccessSchema,
+  );
+}
+
+export function resendVerificationRequest() {
+  return postJson<VerifyEmailSuccess>(
+    "/api/auth/resend-verification",
+    {},
+    verifyEmailSuccessSchema,
   );
 }
 

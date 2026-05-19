@@ -1,10 +1,12 @@
+import { getTranslations } from "next-intl/server";
+
 import { PageHeader } from "@/components/dashboard/page-header";
 import { Separator } from "@/components/ui/separator";
 import { AnalyticsEmpty } from "@/components/analytics/analytics-empty";
 import { AnalyticsView } from "@/components/analytics/analytics-view";
 import { DateRangeSelector } from "@/components/analytics/date-range-selector";
 import { computeAnalytics } from "@/lib/analytics/compute";
-import { parseRange, rangeLabel } from "@/lib/analytics/range";
+import { parseRange } from "@/lib/analytics/range";
 import { getPosts } from "@/lib/posts/get-posts";
 import { getAnalyticsSummary } from "@/lib/analytics/get-analytics-summary";
 import { getPlatformMetrics } from "@/lib/analytics/get-platform-metrics";
@@ -24,21 +26,19 @@ export default async function AnalyticsPage({
   if (!access.hasAccess) return <UpgradeWall feature="analytics" />;
   const { range: raw } = await searchParams;
   const range = parseRange(raw);
-  const [posts, metrics, platformMetrics, imageRoi, engagement] = await Promise.all([
+  const [posts, metrics, platformMetrics, imageRoi, engagement, t] = await Promise.all([
     getPosts(),
     getAnalyticsSummary(),
     getPlatformMetrics(),
     getImageRoi(),
     getDailyEngagement(30),
+    getTranslations("analytics"),
   ]);
   const data = computeAnalytics(posts, range);
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <PageHeader
-          title="Analytics"
-          description={`Pipeline health for ${rangeLabel(range).toLowerCase()}.`}
-        />
+        <PageHeader title={t("title")} description={t("description")} />
         <DateRangeSelector />
       </div>
       <Separator className="my-2" />

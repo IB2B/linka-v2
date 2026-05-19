@@ -1,6 +1,7 @@
 "use client";
 
 import { Plus, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import type { StageOutcome } from "@/types/pipeline";
@@ -15,36 +16,30 @@ type Props = {
 };
 
 export function NewPipelineStages({ stages, onChange }: Props) {
+  const t = useTranslations("pipeline");
+
   function update(i: number, patch: Partial<StageDraft>) {
     onChange(stages.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
   }
-  function remove(i: number) {
-    onChange(stages.filter((_, idx) => idx !== i));
-  }
-  function add() {
-    onChange([...stages, { name: "", outcome: "open" }]);
-  }
+  function remove(i: number) { onChange(stages.filter((_, idx) => idx !== i)); }
+  function add() { onChange([...stages, { name: "", outcome: "open" }]); }
 
   return (
     <div className="grid gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-muted-foreground">Stages</span>
+        <span className="text-xs font-medium text-muted-foreground">{t("stages")}</span>
         <Button type="button" size="sm" variant="ghost" onClick={add}>
-          <Plus className="size-3.5" /> Add stage
+          <Plus className="size-3.5" /> {t("addStage")}
         </Button>
       </div>
       {stages.length === 0 ? (
-        <p className="text-xs text-muted-foreground">
-          Optional. Add stages now or later from the board.
-        </p>
+        <p className="text-xs text-muted-foreground">{t("stagesOptional")}</p>
       ) : null}
       {stages.map((s, i) => (
         <div key={i} className="flex items-center gap-2">
           <input
-            value={s.name}
-            onChange={(e) => update(i, { name: e.target.value })}
-            maxLength={80}
-            placeholder={`Stage ${i + 1} name`}
+            value={s.name} onChange={(e) => update(i, { name: e.target.value })} maxLength={80}
+            placeholder={t("stagePlaceholderN", { n: i + 1 })}
             className="flex-1 rounded-md border bg-background px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-ring/40"
           />
           <select
@@ -53,7 +48,7 @@ export function NewPipelineStages({ stages, onChange }: Props) {
             className="rounded-md border bg-background px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-ring/40"
           >
             {OUTCOMES.map((o) => (
-              <option key={o} value={o}>{o}</option>
+              <option key={o} value={o}>{t(`outcomes.${o}`)}</option>
             ))}
           </select>
           <Button type="button" size="icon" variant="ghost" onClick={() => remove(i)}>

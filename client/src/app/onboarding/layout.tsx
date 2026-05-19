@@ -8,6 +8,7 @@ export default async function OnboardingLayout({
 }) {
   const user = await fetchMe();
   if (!user) redirect("/login");
+  if (!user.emailVerified) redirect("/verify-email");
   if (user.onboardingCompleted) redirect("/dashboard");
   return <>{children}</>;
 }

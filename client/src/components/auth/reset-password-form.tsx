@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { PasswordField } from "@/components/forms/password-field";
+import { PasswordStrength } from "@/components/forms/password-strength";
 import { FormSubmitButton } from "@/components/forms/form-submit-button";
 
 const schema = z.object({
@@ -19,6 +20,7 @@ const schema = z.object({
 export function ResetPasswordForm({ token }: { token: string }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
+  const [password, setPassword] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,7 +52,15 @@ export function ResetPasswordForm({ token }: { token: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <PasswordField id="newPassword" name="newPassword" label="New password" autoComplete="new-password" required />
+      <PasswordField
+        id="newPassword"
+        name="newPassword"
+        label="New password"
+        autoComplete="new-password"
+        required
+        onInput={(e) => setPassword((e.currentTarget as HTMLInputElement).value)}
+      />
+      <PasswordStrength password={password} />
       <PasswordField id="confirmPassword" name="confirmPassword" label="Confirm password" autoComplete="new-password" required />
       <FormSubmitButton label="Set new password" pending={pending} />
     </form>

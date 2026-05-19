@@ -1,0 +1,206 @@
+{
+  "settings": {
+    "title": "Paramètres",
+    "description": "Gérez votre profil, votre sécurité et vos comptes connectés.",
+    "sections": {
+      "profile": "Profil",
+      "security": "Sécurité",
+      "preferences": "Préférences",
+      "features": "Fonctionnalités",
+      "notifications": "Notifications",
+      "accounts": "Comptes connectés",
+      "services": "Services",
+      "danger": "Zone de danger"
+    },
+    "preferences": {
+      "language": "Langue",
+      "timezone": "Fuseau horaire",
+      "languageUpdated": "Langue mise à jour."
+    }
+  },
+  "nav": {
+    "Workspace": "Espace de travail", "Account": "Compte", "Insights": "Analyses",
+    "Manage": "Gérer", "System": "Système", "Overview": "Vue d'ensemble",
+    "Conversations": "Conversations", "Pipeline": "Pipeline", "Posts": "Publications",
+    "Generate": "Générer", "Trend Radar": "Radar des tendances", "Voice Lab": "Voice Lab",
+    "Calendar": "Calendrier", "Recycler": "Recyclage", "Analytics": "Analytiques",
+    "Billing": "Facturation", "Support": "Support", "Settings": "Paramètres",
+    "AI Usage": "Utilisation IA", "Users": "Utilisateurs", "Subscriptions": "Abonnements",
+    "Content": "Contenu", "Feedback": "Commentaires"
+  },
+  "userMenu": {
+    "sendFeedback": "Envoyer des commentaires", "language": "Langue", "theme": "Thème",
+    "themeLight": "Clair", "themeDark": "Sombre", "themeSystem": "Système",
+    "termsOfService": "Conditions d'utilisation", "privacyPolicy": "Politique de confidentialité",
+    "logout": "Se déconnecter"
+  },
+  "dashboard": {
+    "welcomeBack": "Bon retour, {name}",
+    "overview": "Vue d'ensemble",
+    "subtitle": "Vos brouillons, votre planning et votre engagement en un coup d'œil.",
+    "stats": {
+      "drafts": "Brouillons", "scheduled": "Planifiées",
+      "posted": "Publiées", "generated": "Générées"
+    },
+    "engagement": {
+      "title": "Engagement",
+      "description": "Mentions J'aime, commentaires, vues et impressions des {days} derniers jours",
+      "empty": "Aucune donnée d'engagement pour le moment — les publications publiées afficheront ici leurs métriques.",
+      "likes": "J'aime", "comments": "Commentaires", "views": "Vues", "impressions": "Impressions"
+    },
+    "upcoming": {
+      "title": "À venir", "link": "Calendrier",
+      "empty": "Rien de planifié. Planifiez votre première publication."
+    },
+    "status": {
+      "title": "Répartition par statut",
+      "subtitle": "{count} au total · depuis toujours",
+      "posted": "Publiées", "scheduled": "Planifiées", "drafts": "Brouillons"
+    },
+    "usage": {
+      "title": "Utilisation du forfait", "manage": "Gérer",
+      "planLabel": "Forfait {tier}",
+      "postsFormat": "{used}/{limit} publications",
+      "percentUsed": "{percent}% utilisés ce mois-ci"
+    },
+    "recent": {
+      "title": "Publications récentes", "viewAll": "Tout voir",
+      "empty": "Vous n'avez encore généré aucune publication."
+    },
+    "sidebarMeter": {
+      "planLabel": "Forfait {tier}",
+      "postsRemaining": "{count, plural, =1 {1 publication restante} other {# publications restantes}}"
+    }
+  },
+  "inbox": {
+    "empty": {
+      "title": "Aucune conversation sélectionnée",
+      "message": "Choisissez une conversation dans la liste pour lire et répondre."
+    },
+    "aiSuggest": "Suggestion IA",
+    "composer": {
+      "placeholder": "Tapez une réponse… (Entrée pour envoyer, Maj+Entrée pour aller à la ligne)",
+      "send": "Envoyer",
+      "confirmReplace": "Remplacer votre brouillon par une suggestion IA ?",
+      "sent": "Envoyé",
+      "spamFlagged": "On dirait du spam — signalé."
+    }
+  },
+  "landing": {
+    "nav": {
+      "features": "Fonctionnalités", "process": "Processus", "pricing": "Tarifs", "faq": "FAQ",
+      "signIn": "Connexion", "getStarted": "Commencer", "language": "Langue"
+    },
+    "hero": {
+      "badge": "Disponible juin 2026",
+      "title1": "Arrêtez d'écrire des posts.",
+      "title2": "Construisez votre audience.",
+      "body": "Linka apprend votre voix, génère du contenu cohérent sur chaque plateforme et publie au bon moment — pour que vous puissiez vous concentrer sur la création.",
+      "ctaPrimary": "Essai gratuit",
+      "ctaSecondary": "Voir les tarifs",
+      "stat1": "2 400+ créateurs",
+      "stat2": "184 M d'impressions diffusées",
+      "stat3": "Essai gratuit 7 jours"
+    },
+    "socialProof": "Utilisé par les équipes qui livrent chez",
+    "features": { "eyebrow": "Fonctionnalités", "title": "Remplacez six outils. Gardez un seul workspace.", "sub": "Linka est l'auteur, le designer, le programmateur et l'analyste. Un abonnement, un calendrier, tous les canaux." },
+    "process": { "eyebrow": "Processus", "title": "De l'inscription à la première publication en trois minutes.", "stepLabel": "Étape" },
+    "testimonials": { "eyebrow": "Clients", "title": "Le travail parle. Eux aussi." },
+    "comparison": { "eyebrow": "Comparé", "title": "Linka vs. comment vous le faites actuellement." },
+    "pricing": { "eyebrow": "Tarifs", "title": "Un café par jour. Une équipe de contenu entière.", "sub": "Essai gratuit de 7 jours sur tous les forfaits payants. Pas de carte avant le 7e jour. Annulez à tout moment." },
+    "faq": { "eyebrow": "FAQ", "title": "Les questions posées avant de s'inscrire." },
+    "finalCta": {
+      "badge": "Réservations juin 2026",
+      "title": "Arrêtez de publier. Commencez à livrer.",
+      "body": "7 jours gratuits. Pas de carte avant le 7e jour. Annulez en un clic. Votre audience scrolle déjà.",
+      "ctaPrimary": "Essai gratuit",
+      "ctaSecondary": "Connexion"
+    },
+    "footer": {
+      "tagline": "Croissance sociale boostée par l'IA pour les fondateurs qui préfèrent livrer que poster.",
+      "product": "Produit", "company": "Entreprise", "legal": "Légal",
+      "copyright": "© {year} linka — tous droits réservés",
+      "designed": "Conçu avec ♥ depuis quelque part sur Terre"
+    }
+  },
+  "onboarding": {
+    "language": {
+      "title": "Choisissez votre langue",
+      "description": "Nous traduirons le reste de l'onboarding pour vous."
+    },
+    "company": {
+      "title": "Parlez-nous de votre entreprise",
+      "description": "Cela nous aide à adapter le contenu à votre audience et à votre secteur."
+    },
+    "connect": {
+      "title": "Connectez vos comptes",
+      "description": "Reliez les plateformes sur lesquelles vous publiez."
+    },
+    "plan": {
+      "title": "Choisissez votre forfait",
+      "description": "Commencez gratuitement et passez à un forfait supérieur quand vous voulez. Pas de carte requise."
+    }
+  },
+  "posts": {
+    "title": "Publications",
+    "description": "Tous les brouillons que vous avez générés. Consultez, copiez ou supprimez.",
+    "newPost": "Nouvelle publication",
+    "searchPlaceholder": "Rechercher contenu, prompt, plateforme…",
+    "select": "Sélectionner",
+    "gridView": "Vue grille",
+    "tableView": "Vue tableau",
+    "schedule": "Planifier",
+    "reschedule": "Replanifier",
+    "postNow": "Publier maintenant",
+    "view": "Voir",
+    "delete": "Supprimer",
+    "toast": { "deleted": "Publication supprimée.", "noPlatform": "La publication n'a pas de plateforme cible." },
+    "status": {
+      "all": "Tous", "draft": "Brouillon", "scheduled": "Planifié", "posted": "Publié", "failed": "Échoué"
+    }
+  },
+  "generate": {
+    "title": "Générer une publication",
+    "description": "Choisissez un type, un sujet, publiez — votre voix, en pilote automatique.",
+    "toast": {
+      "postGenerated": "Publication générée",
+      "postsGenerated": "{count} publications générées",
+      "surprisePost": "une publication surprise",
+      "upgrade": "Mettre à niveau"
+    }
+  },
+  "calendar": { "title": "Calendrier", "description": "Planifiez, révisez et reprogrammez vos publications en un coup d'œil." },
+  "voiceLab": { "title": "Voice Lab", "description": "Entraînez l'IA à écrire dans votre voix authentique." },
+  "recycler": { "title": "Smart Recycler", "description": "Réutilisez vos meilleurs posts avec un nouvel angle." },
+  "support": { "title": "Support", "description": "Un souci ? Dites-nous ce qui ne va pas et nous répondrons par e-mail." },
+  "trends": { "title": "Radar des tendances", "description": "Tendances en direct dans votre niche, avec des angles de publication générés par IA." },
+  "analytics": { "title": "Analytiques", "description": "Performance du pipeline." },
+  "billing": { "title": "Facturation" },
+  "pipeline": {
+    "title": "Pipeline",
+    "newPipeline": "Nouveau pipeline",
+    "pipelineName": "Nom du pipeline",
+    "addStage": "Ajouter une étape",
+    "addOpportunity": "Ajouter une opportunité",
+    "dropCard": "Déposez une carte ici",
+    "cancel": "Annuler",
+    "create": "Créer",
+    "add": "Ajouter",
+    "noStages": "Aucune étape pour le moment. Cliquez sur <action>Ajouter une étape</action> ci-dessus pour commencer à déplacer des opportunités.",
+    "stages": "Étapes",
+    "stagesOptional": "Facultatif. Ajoutez des étapes maintenant ou plus tard depuis le tableau.",
+    "stagePlaceholderN": "Nom de l'étape {n}",
+    "stageNamePlaceholder": "Nom de l'étape (ex. Découverte)",
+    "newStage": "Nouvelle étape",
+    "newOpportunity": "Nouvelle opportunité",
+    "empty": {
+      "title": "Aucun pipeline pour le moment",
+      "message": "Créez votre premier pipeline ci-dessus pour suivre vos opportunités par étape."
+    },
+    "toast": {
+      "pipelineCreated": "Pipeline créé.",
+      "stageAdded": "Étape ajoutée."
+    },
+    "outcomes": { "open": "Ouverte", "won": "Gagnée", "lost": "Perdue" }
+  }
+}

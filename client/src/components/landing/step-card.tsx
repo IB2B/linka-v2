@@ -1,6 +1,8 @@
 import type { Step } from "./steps-data";
 
-export function StepCard({ step }: { step: Step }) {
+type Props = { step: Step; stepLabel: string };
+
+export function StepCard({ step, stepLabel }: Props) {
   return (
     <div className="relative flex flex-col gap-3 border-t border-[#E5E5E5] pt-6">
       <span
@@ -10,7 +12,7 @@ export function StepCard({ step }: { step: Step }) {
         {step.n}
       </span>
       <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#6D5FF9]">
-        Step {step.n}
+        {stepLabel} {step.n}
       </span>
       <h3
         className="text-[18px] font-semibold tracking-tight text-[#0F1113]"

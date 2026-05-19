@@ -24,12 +24,12 @@ export async function patchProfile(req: AuthRequest, res: Response): Promise<voi
     `INSERT INTO user_profiles (id, user_id, industry, bio, job_title, company_type, company_size, funding_amount)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
      ON DUPLICATE KEY UPDATE
-       industry       = VALUES(industry),
-       bio            = VALUES(bio),
-       job_title      = VALUES(job_title),
-       company_type   = VALUES(company_type),
-       company_size   = VALUES(company_size),
-       funding_amount = VALUES(funding_amount)`,
+       industry       = COALESCE(VALUES(industry), industry),
+       bio            = COALESCE(VALUES(bio), bio),
+       job_title      = COALESCE(VALUES(job_title), job_title),
+       company_type   = COALESCE(VALUES(company_type), company_type),
+       company_size   = COALESCE(VALUES(company_size), company_size),
+       funding_amount = COALESCE(VALUES(funding_amount), funding_amount)`,
     [randomUUID(), req.user!.id,
      industry ?? null, bio ?? null, jobTitle ?? null,
      companyType ?? null, companySize ?? null, fundingAmount ?? null],

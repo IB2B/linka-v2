@@ -6,14 +6,18 @@ import { UsersSearch } from "@/components/admin/users/users-search";
 import { UsersTable } from "@/components/admin/users/users-table";
 import { getAdminUsers } from "@/lib/admin/get-users";
 import { filterFromParams } from "@/lib/admin/users-filters";
+import { parseSort, parseDir } from "@/lib/admin/users-sort";
 
 export const dynamic = "force-dynamic";
 
-type Props = { searchParams: Promise<{ q?: string; role?: string; status?: string }> };
+type Sp = { q?: string; role?: string; status?: string; sort?: string; dir?: string };
+type Props = { searchParams: Promise<Sp> };
 
 export default async function AdminUsersPage({ searchParams }: Props) {
   const sp = await searchParams;
-  const { users, total } = await getAdminUsers(sp);
+  const sort = parseSort(sp.sort);
+  const dir = parseDir(sp.dir);
+  const { users, total } = await getAdminUsers({ ...sp, sort, dir });
   return (
     <>
       <PageHeader
@@ -30,7 +34,7 @@ export default async function AdminUsersPage({ searchParams }: Props) {
           <AddUserDialog />
         </div>
       </div>
-      <UsersTable users={users} />
+      <UsersTable users={users} sort={sort} dir={dir} params={sp} />
     </>
   );
 }

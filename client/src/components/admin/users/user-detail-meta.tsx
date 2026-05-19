@@ -6,6 +6,9 @@ export function UserDetailMeta({ detail }: { detail: AdminUserDetail }) {
   const rows: { label: string; value: React.ReactNode }[] = [
     { label: "Job title", value: profile.jobTitle || "—" },
     { label: "Industry", value: profile.industry || "—" },
+    { label: "Company type", value: profile.companyType || "—" },
+    { label: "Company size", value: profile.companySize ? `${profile.companySize} employees` : "—" },
+    { label: "Funding", value: profile.fundingAmount || "—" },
     { label: "Bio", value: profile.bio || "—" },
     {
       label: "Platforms",

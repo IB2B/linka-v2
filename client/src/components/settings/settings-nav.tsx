@@ -4,25 +4,31 @@ import {
   User, Lock, SlidersHorizontal, Bell, Link2, ToggleRight, AlertTriangle, Activity,
   type LucideIcon,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
-const SECTIONS: { id: string; label: string; icon: LucideIcon }[] = [
-  { id: "profile", label: "Profile", icon: User },
-  { id: "security", label: "Security", icon: Lock },
-  { id: "preferences", label: "Preferences", icon: SlidersHorizontal },
-  { id: "features", label: "Features", icon: ToggleRight },
-  { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "accounts", label: "Connected Accounts", icon: Link2 },
-  { id: "services", label: "Services", icon: Activity },
-  { id: "danger", label: "Danger Zone", icon: AlertTriangle },
+type SectionId =
+  | "profile" | "security" | "preferences" | "features"
+  | "notifications" | "accounts" | "services" | "danger";
+
+const SECTIONS: { id: SectionId; icon: LucideIcon }[] = [
+  { id: "profile", icon: User },
+  { id: "security", icon: Lock },
+  { id: "preferences", icon: SlidersHorizontal },
+  { id: "features", icon: ToggleRight },
+  { id: "notifications", icon: Bell },
+  { id: "accounts", icon: Link2 },
+  { id: "services", icon: Activity },
+  { id: "danger", icon: AlertTriangle },
 ];
 
 type Props = { active: string; onSelect: (id: string) => void };
 
 export function SettingsNav({ active, onSelect }: Props) {
+  const t = useTranslations("settings.sections");
   return (
     <nav className="sticky top-6 flex flex-col gap-0.5">
-      {SECTIONS.map(({ id, label, icon: Icon }) => {
+      {SECTIONS.map(({ id, icon: Icon }) => {
         const isDanger = id === "danger";
         const isActive = active === id;
         return (
@@ -38,7 +44,7 @@ export function SettingsNav({ active, onSelect }: Props) {
             )}
           >
             <Icon className="size-4 shrink-0" />
-            <span className="truncate">{label}</span>
+            <span className="truncate">{t(id)}</span>
           </button>
         );
       })}

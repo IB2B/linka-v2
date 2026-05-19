@@ -42,6 +42,14 @@ export async function createUserAction(input: CreateUserInput): Promise<Result> 
   return { success: true };
 }
 
+export async function sendPasswordResetAction(id: string): Promise<Result> {
+  const res = await adminApi(`/api/admin/users/${id}/password-reset`, {
+    method: "POST",
+  });
+  if (!res.ok) return { error: await readError(res, "Failed to send reset email.") };
+  return { success: true };
+}
+
 export async function deleteUserAction(id: string): Promise<Result> {
   const res = await adminApi(`/api/admin/users/${id}`, { method: "DELETE" });
   if (!res.ok) return { error: await readError(res, "Failed to delete user.") };
