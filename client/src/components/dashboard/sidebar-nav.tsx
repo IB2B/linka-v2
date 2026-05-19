@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import {
   SidebarGroup,
@@ -24,26 +25,28 @@ function isActive(pathname: string, href: string) {
 export function SidebarNav({ role, tier, features }: SidebarNavProps) {
   const pathname = usePathname();
   const groups = getNavigationForRole(role, tier, features);
+  const t = useTranslations("nav");
 
   return (
     <>
       {groups.map((group) => (
         <SidebarGroup key={group.label}>
-          <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+          <SidebarGroupLabel>{t(group.label)}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {group.items.map((item) => {
                 const Icon = item.icon;
                 const active = isActive(pathname, item.href);
+                const label = t(item.label);
                 return (
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
                       isActive={active}
-                      tooltip={item.label}
+                      tooltip={label}
                       render={
                         <Link href={item.href}>
                           <Icon />
-                          <span>{item.label}</span>
+                          <span>{label}</span>
                         </Link>
                       }
                     />

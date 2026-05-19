@@ -1,6 +1,8 @@
 import "dotenv/config";
+import "./lib/sentry";
 import { join } from "node:path";
 import express from "express";
+import * as Sentry from "@sentry/node";
 import { checkEnv } from "./lib/env-check";
 
 checkEnv();
@@ -9,6 +11,7 @@ import cors from "cors";
 import authRouter from "./routes/auth";
 import authLogoutRouter from "./routes/auth-logout";
 import authPasswordRouter from "./routes/auth-password";
+import authVerifyEmailRouter from "./routes/auth-verify-email";
 import billingRouter from "./routes/billing";
 import stripeRouter from "./routes/stripe";
 import usersRouter from "./routes/users";
@@ -25,11 +28,13 @@ import analyticsRouter from "./routes/analytics";
 import recyclerRouter from "./routes/recycler";
 import feedbackRouter from "./routes/feedback";
 import servicesRouter from "./routes/services";
+import socialNotificationsRouter from "./routes/social-notifications";
 import { mountAdminRoutes } from "./routes/admin-index";
 import { proxyImage } from "./controllers/image-proxy.controller";
 import { authenticate } from "./middleware/auth";
 import { errorHandler } from "./middleware/error";
 import { reapStuckImageJobs } from "./lib/image-reaper";
+import { startSocialEngagementPoller } from "./lib/social-engagement-poller";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -48,6 +53,7 @@ app.get("/api/image-proxy", authenticate, proxyImage);
 app.use("/api/auth", authRouter);
 app.use("/api/auth", authLogoutRouter);
 app.use("/api/auth", authPasswordRouter);
+app.use("/api/auth", authVerifyEmailRouter);
 app.use("/api/billing", billingRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/users", usersRouter);
@@ -64,10 +70,13 @@ app.use("/api/analytics", analyticsRouter);
 app.use("/api/recycler", recyclerRouter);
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/services", servicesRouter);
+app.use("/api/social/notifications", socialNotificationsRouter);
 mountAdminRoutes(app);
 
+Sentry.setupExpressErrorHandler(app);
 app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`[server] listening on :${PORT}`);
   reapStuckImageJobs().catch((e) => console.error("[image-reaper]", e));
+  startSocialEngagementPoller();
 });

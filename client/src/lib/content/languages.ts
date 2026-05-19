@@ -10,7 +10,6 @@ export const LANGUAGES: Language[] = [
   { value: "de", label: "German" },
   { value: "it", label: "Italian" },
   { value: "pt", label: "Portuguese" },
-  { value: "ar", label: "Arabic" },
   { value: "nl", label: "Dutch" },
   { value: "ja", label: "Japanese" },
   { value: "zh", label: "Chinese" },

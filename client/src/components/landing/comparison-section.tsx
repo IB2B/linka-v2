@@ -1,13 +1,13 @@
+import { getTranslations } from "next-intl/server";
+
 import { SectionHeading } from "./section-heading";
 import { COMPARISON } from "./comparison-data";
 
-export function ComparisonSection() {
+export async function ComparisonSection() {
+  const t = await getTranslations("landing.comparison");
   return (
     <section className="relative z-10 mx-auto w-full max-w-6xl px-6 py-24">
-      <SectionHeading
-        eyebrow="Compared"
-        title="Linka vs. how you're doing it now."
-      />
+      <SectionHeading eyebrow={t("eyebrow")} title={t("title")} />
       <div className="mt-12 overflow-hidden rounded-xl border border-[#E5E5E5] bg-white">
         <div className="grid grid-cols-4 gap-2 border-b border-[#E5E5E5] bg-[#FAFAFA] px-6 py-4 text-[11px] font-medium uppercase tracking-[0.16em] text-[#737373]">
           <span />

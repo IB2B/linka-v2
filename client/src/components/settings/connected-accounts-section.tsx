@@ -8,7 +8,7 @@ export function ConnectedAccountsSection({ accounts }: Props) {
   return (
     <SettingsSection
       title="Connected Accounts"
-      description="Manage your LinkedIn, Facebook, Instagram, X, Threads, and TikTok connections."
+      description="Manage your LinkedIn, Facebook, Instagram, X, and Threads connections."
     >
       <AccountGrid accounts={accounts} />
     </SettingsSection>

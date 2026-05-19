@@ -18,6 +18,7 @@ export type Me = {
   bio: string | null;
   jobTitle: string | null;
   tier: UserTier;
+  emailVerified: boolean;
   onboardingCompleted: boolean;
   postsUsed: number;
   postsLimit: number;

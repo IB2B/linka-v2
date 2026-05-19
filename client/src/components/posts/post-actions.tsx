@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { Calendar, Eye, Send, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -14,6 +15,7 @@ import { showPublishToast } from "@/lib/posts/publish-toast";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostActions({ post }: { post: GeneratedPost }) {
+  const t = useTranslations("posts");
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [delPending, delStart] = useTransition();
@@ -26,16 +28,13 @@ export function PostActions({ post }: { post: GeneratedPost }) {
     delStart(async () => {
       const res = await deletePostAction(post.id);
       if (res.error) toast.error(res.error);
-      else {
-        toast.success("Post deleted.");
-        setConfirmOpen(false);
-      }
+      else { toast.success(t("toast.deleted")); setConfirmOpen(false); }
     });
   }
 
   function onPublishNow() {
     const platform = post.platform;
-    if (!platform) { toast.error("Post has no target platform."); return; }
+    if (!platform) { toast.error(t("toast.noPlatform")); return; }
     pubStart(async () => {
       const res = await publishPostAction(post.id, [platform]);
       if (res.error) toast.error(res.error);
@@ -47,11 +46,11 @@ export function PostActions({ post }: { post: GeneratedPost }) {
     <>
       <div className="flex w-full items-center gap-1">
         <Button render={<Link href={`/dashboard/posts/${post.id}`} />}
-          nativeButton={false} size="icon-sm" variant="ghost" aria-label="View">
+          nativeButton={false} size="icon-sm" variant="ghost" aria-label={t("view")}>
           <Eye className="size-4" />
         </Button>
         <Button size="icon-sm" variant="ghost" onClick={() => setConfirmOpen(true)}
-          disabled={delPending} aria-label="Delete">
+          disabled={delPending} aria-label={t("delete")}>
           {delPending ? <Spinner /> : <Trash2 className="size-4" />}
         </Button>
         <div className="ml-auto flex gap-2">
@@ -59,13 +58,13 @@ export function PostActions({ post }: { post: GeneratedPost }) {
             <Button size="sm" variant="outline"
               onClick={() => setScheduleOpen(true)} disabled={pubPending}>
               <Calendar className="size-4" />
-              {isScheduled ? "Reschedule" : "Schedule"}
+              {isScheduled ? t("reschedule") : t("schedule")}
             </Button>
           ) : null}
           {!isPosted ? (
             <Button size="sm" onClick={onPublishNow} disabled={pubPending}>
               {pubPending ? <Spinner aria-hidden /> : <Send className="size-4" />}
-              Post now
+              {t("postNow")}
             </Button>
           ) : null}
         </div>

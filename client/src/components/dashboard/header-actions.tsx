@@ -17,7 +17,7 @@ export function HeaderActions({ prefix, role, tier, features }: Props) {
       <SearchTrigger role={role} tier={tier} features={features} />
       <HeaderClock />
       <div className="hidden h-4 w-px bg-border md:block" aria-hidden />
-      <NotificationsBell prefix={prefix} />
+      <NotificationsBell prefix={prefix} role={role} />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -15,6 +16,7 @@ import { NewPipelineStages } from "./new-pipeline-stages";
 import type { StageDraft } from "./new-pipeline-stages";
 
 export function NewPipelineDialog() {
+  const t = useTranslations("pipeline");
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -32,7 +34,7 @@ export function NewPipelineDialog() {
       const r = await createPipelineAction({ name: trimmed, stages: cleaned });
       if ("error" in r) toast.error(r.error);
       else {
-        toast.success("Pipeline created.");
+        toast.success(t("toast.pipelineCreated"));
         setName(""); setStages([]); setOpen(false);
         router.push(`/dashboard/pipeline?pipelineId=${r.id}`);
       }
@@ -42,29 +44,26 @@ export function NewPipelineDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Button size="sm" variant="outline" onClick={() => setOpen(true)}>
-        <Plus className="size-3.5" /> New pipeline
+        <Plus className="size-3.5" /> {t("newPipeline")}
       </Button>
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="border-b px-4 py-3">
-          <DialogTitle className="text-base">New pipeline</DialogTitle>
+          <DialogTitle className="text-base">{t("newPipeline")}</DialogTitle>
         </DialogHeader>
         <form onSubmit={submit} className="grid gap-3 px-4 pb-4">
           <input
-            autoFocus
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            maxLength={120}
-            placeholder="Pipeline name"
+            autoFocus value={name} onChange={(e) => setName(e.target.value)} maxLength={120}
+            placeholder={t("pipelineName")}
             className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/40"
           />
           <NewPipelineStages stages={stages} onChange={setStages} />
           <div className="flex justify-end gap-2">
             <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
-              Cancel
+              {t("cancel")}
             </Button>
             <Button type="submit" disabled={pending || !name.trim()}>
               {pending ? <Spinner aria-hidden /> : null}
-              Create
+              {t("create")}
             </Button>
           </div>
         </form>

@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 import { PageHeader } from "@/components/dashboard/page-header";
 import { NewTicketDialog } from "@/components/support/new-ticket-dialog";
 import { TicketList } from "@/components/support/ticket-list";
@@ -5,15 +7,12 @@ import { FaqSection } from "@/components/support/faq-section";
 import { getTickets } from "@/lib/support/get-tickets";
 
 export default async function SupportPage() {
-  const tickets = await getTickets();
+  const [tickets, t] = await Promise.all([getTickets(), getTranslations("support")]);
 
   return (
     <>
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <PageHeader
-          title="Support"
-          description="Run into a problem? Tell us what's wrong and we'll get back to you by email."
-        />
+        <PageHeader title={t("title")} description={t("description")} />
         <NewTicketDialog />
       </div>
       <div className="space-y-6">

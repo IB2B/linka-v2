@@ -1,19 +1,22 @@
+import { getTranslations } from "next-intl/server";
+
 import {
   Card, CardContent, CardDescription, CardHeader, CardTitle,
 } from "@/components/ui/card";
 import { EngagementChart } from "./engagement-chart";
 import type { EngagementDay } from "@/lib/dashboard/engagement.types";
 
-export function EngagementCard({ data }: { data: EngagementDay[] }) {
+export async function EngagementCard({ data }: { data: EngagementDay[] }) {
+  const t = await getTranslations("dashboard.engagement");
   const hasData = data.some((d) =>
     d.likes + d.comments + d.views + d.impressions > 0,
   );
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Engagement</CardTitle>
+        <CardTitle>{t("title")}</CardTitle>
         <CardDescription>
-          Likes, comments, views & impressions over the last {data.length} days
+          {t("description", { days: data.length })}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -21,7 +24,7 @@ export function EngagementCard({ data }: { data: EngagementDay[] }) {
           <EngagementChart data={data} />
         ) : (
           <div className="flex h-[260px] items-center justify-center text-sm text-muted-foreground">
-            No engagement data yet — published posts will show metrics here.
+            {t("empty")}
           </div>
         )}
       </CardContent>

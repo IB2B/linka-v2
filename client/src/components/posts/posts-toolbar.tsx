@@ -1,6 +1,7 @@
 "use client";
 
 import { LayoutGrid, Rows3, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,6 +25,7 @@ type Props = {
 export function PostsToolbar({
   query, onQueryChange, status, onStatusChange, view, onViewChange, count, total, children,
 }: Props) {
+  const t = useTranslations("posts");
   return (
     <div className="flex flex-wrap items-center gap-2">
       <div className="relative w-96 shrink-0">
@@ -31,7 +33,7 @@ export function PostsToolbar({
         <Input
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Search content, prompt, platform…"
+          placeholder={t("searchPlaceholder")}
           className="pl-8"
         />
       </div>
@@ -40,11 +42,11 @@ export function PostsToolbar({
       <div className="ml-auto flex items-center gap-1">
         <div className="flex items-center gap-0.5 rounded-md border bg-card p-0.5">
           <Button size="icon-sm" variant={view === "grid" ? "secondary" : "ghost"}
-            onClick={() => onViewChange("grid")} aria-label="Grid view">
+            onClick={() => onViewChange("grid")} aria-label={t("gridView")}>
             <LayoutGrid className="size-4" />
           </Button>
           <Button size="icon-sm" variant={view === "table" ? "secondary" : "ghost"}
-            onClick={() => onViewChange("table")} aria-label="Table view">
+            onClick={() => onViewChange("table")} aria-label={t("tableView")}>
             <Rows3 className="size-4" />
           </Button>
         </div>

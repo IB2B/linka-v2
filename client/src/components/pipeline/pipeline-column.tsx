@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 import type { Opportunity, Stage } from "@/types/pipeline";
 import { PipelineCard } from "./pipeline-card";
@@ -22,6 +23,7 @@ export function PipelineColumn({
   stage, opps, draggingId,
   onDragStart, onDragEnd, onDropOnCard, onDropAtEnd, onCardClick, onCardDelete,
 }: Props) {
+  const t = useTranslations("pipeline");
   const [over, setOver] = useState(false);
 
   return (
@@ -53,7 +55,7 @@ export function PipelineColumn({
         ))}
         {!opps.length ? (
           <p className="px-2 py-8 text-center text-xs text-muted-foreground">
-            Drop a card here
+            {t("dropCard")}
           </p>
         ) : null}
       </div>

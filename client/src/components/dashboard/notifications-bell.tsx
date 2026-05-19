@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ArrowRight, Bell } from "lucide-react";
+import { ArrowRight, Bell, CheckCheck } from "lucide-react";
 
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuTrigger,
@@ -10,60 +9,58 @@ import {
 import { Button } from "@/components/ui/button";
 import { NotificationsGroups } from "./notifications-groups";
 import { NotificationsEmpty } from "./notifications-empty";
-import { buildNotifications, type Notification, type NotificationApiItem } from "./notifications-data";
+import { useNotifications } from "./use-notifications";
+import type { UserRole } from "@/types/user-role";
 
-const POLL_MS = 60_000;
+type Props = { prefix: string; role: UserRole };
 
-export function NotificationsBell({ prefix }: { prefix: string }) {
-  const [list, setList] = useState<Notification[]>([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    async function load() {
-      try {
-        const r = await fetch("/api/posts/notifications", { cache: "no-store" });
-        if (!r.ok) return;
-        const d = (await r.json()) as { items: NotificationApiItem[] };
-        if (!cancelled) setList(buildNotifications(d.items ?? [], prefix));
-      } catch { /* ignore */ }
-    }
-    load();
-    const id = setInterval(load, POLL_MS);
-    return () => { cancelled = true; clearInterval(id); };
-  }, [prefix]);
-
-  const total = list.length;
+export function NotificationsBell({ prefix, role }: Props) {
+  const isAdmin = role === "ADMIN";
+  const { list, unreadCount, canMarkAll, markRead, markAllRead } = useNotifications(prefix, isAdmin);
+  const tailHref = isAdmin ? `${prefix}/support` : `${prefix}/posts`;
+  const tailLabel = isAdmin ? "View all tickets" : "View all posts";
+  const headerCaption = unreadCount > 0 ? `${unreadCount} new` : "All caught up";
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
           <Button
-            variant="ghost"
-            size="icon-sm"
-            className="relative"
-            aria-label={total > 0 ? `Notifications (${total} new)` : "Notifications"}
+            variant="ghost" size="icon-sm" className="relative"
+            aria-label={unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications"}
           >
             <Bell />
-            {total > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-destructive px-1 text-[9px] font-semibold leading-none text-white">
-                {total > 9 ? "9+" : total}
+            {unreadCount > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-sky-500 px-1 text-[9px] font-semibold leading-none text-white ring-2 ring-background">
+                {unreadCount > 9 ? "9+" : unreadCount}
               </span>
             )}
           </Button>
         }
       />
-      <DropdownMenuContent align="end" className="w-[20rem] p-0">
-        <div className="border-b px-3 py-2.5">
-          <span className="text-sm font-semibold">Notifications</span>
+      <DropdownMenuContent align="end" className="w-[22rem] p-0">
+        <div className="flex items-center justify-between gap-2 border-b px-3 py-2.5">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold leading-tight">Notifications</p>
+            <p className="text-[11px] text-muted-foreground leading-tight">{headerCaption}</p>
+          </div>
+          {canMarkAll && (
+            <button
+              type="button" onClick={markAllRead}
+              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <CheckCheck className="size-3.5" />
+              Mark all read
+            </button>
+          )}
         </div>
-        {list.length === 0 ? <NotificationsEmpty /> : <NotificationsGroups list={list} />}
+        {list.length === 0 ? <NotificationsEmpty /> : <NotificationsGroups list={list} onItemClick={markRead} />}
         <div className="border-t p-1.5">
           <Link
-            href={`${prefix}/posts`}
+            href={tailHref}
             className="flex items-center justify-between rounded-md px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
-            View all posts
+            {tailLabel}
             <ArrowRight className="size-3.5" />
           </Link>
         </div>

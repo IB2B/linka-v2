@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+
 import type { DashboardUser } from "@/types/dashboard-user";
 
 const TIER_LABEL: Record<string, string> = {
@@ -14,14 +18,15 @@ function tierLabel(tier: string): string {
 }
 
 export function SidebarUsageMeter({ user }: { user: DashboardUser }) {
-  const label = tierLabel(user.tier);
+  const t = useTranslations("dashboard.sidebarMeter");
+  const tier = tierLabel(user.tier);
   const pct = Math.min(100, Math.round((user.postsUsed / user.postsLimit) * 100));
   const remaining = Math.max(0, user.postsLimit - user.postsUsed);
 
   return (
     <div className="mx-1 mb-1 space-y-2 rounded-lg border bg-card p-3">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-semibold">{label} plan</p>
+        <p className="text-xs font-semibold">{t("planLabel", { tier })}</p>
         <p className="text-xs tabular-nums text-muted-foreground">
           {user.postsUsed}/{user.postsLimit}
         </p>
@@ -33,7 +38,7 @@ export function SidebarUsageMeter({ user }: { user: DashboardUser }) {
         />
       </div>
       <p className="text-xs text-muted-foreground">
-        {remaining} post{remaining !== 1 ? "s" : ""} remaining
+        {t("postsRemaining", { count: remaining })}
       </p>
     </div>
   );

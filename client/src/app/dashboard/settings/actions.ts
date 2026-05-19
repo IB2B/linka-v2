@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { forwardSetCookies } from "@/lib/server-actions/forward-set-cookie";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
@@ -25,6 +26,7 @@ async function apiFetch(path: string, init: RequestInit = {}): Promise<Response>
 
 async function send(path: string, method: string, body: object): Promise<ActionResult> {
   const res = await apiFetch(path, { method, body: JSON.stringify(body) });
+  await forwardSetCookies(res);
   if (res.ok) { revalidateSettings(); return { success: true }; }
   const json = (await res.json().catch(() => ({}))) as { error?: string };
   return { error: json.error ?? "Request failed." };
@@ -50,13 +52,15 @@ export async function changePasswordAction(formData: FormData): Promise<ActionRe
 
 export async function updateWorkProfileAction(formData: FormData): Promise<ActionResult> {
   return send("/api/users/me/profile", "PATCH", {
+    jobTitle: String(formData.get("jobTitle") ?? "").trim(),
     industry: String(formData.get("industry") ?? "").trim(),
     bio: String(formData.get("headline") ?? "").trim(),
   });
 }
 
 export async function logoutAllDevicesAction(): Promise<ActionResult> {
-  await apiFetch("/api/auth/logout-all", { method: "POST" });
+  const res = await apiFetch("/api/auth/logout-all", { method: "POST" });
+  await forwardSetCookies(res);
   redirect("/login");
 }
 
@@ -66,5 +70,6 @@ export async function deleteAccountAction(): Promise<ActionResult> {
     const json = (await res.json().catch(() => ({}))) as { error?: string };
     return { error: json.error ?? "Failed to delete account." };
   }
+  await forwardSetCookies(res);
   redirect("/login");
 }

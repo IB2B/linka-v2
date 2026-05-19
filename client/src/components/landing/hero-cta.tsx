@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+
 import { Button } from "@/components/ui/button";
 
-export function HeroCta() {
+export async function HeroCta() {
+  const t = await getTranslations("landing.hero");
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
       <Button
@@ -11,7 +14,7 @@ export function HeroCta() {
         size="lg"
         className="tracking-tight"
       >
-        Start free trial <ArrowUpRight />
+        {t("ctaPrimary")} <ArrowUpRight />
       </Button>
       <Button
         render={<Link href="#pricing" />}
@@ -20,7 +23,7 @@ export function HeroCta() {
         variant="outline"
         className="tracking-tight"
       >
-        See pricing
+        {t("ctaSecondary")}
       </Button>
     </div>
   );

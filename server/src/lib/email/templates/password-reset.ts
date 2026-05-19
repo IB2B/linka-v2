@@ -7,18 +7,20 @@ export function passwordResetEmail({ firstName, resetUrl }: ResetInput) {
   const body = `
     <p>Hey ${escape(name)},</p>
     <p>
-      Someone (hopefully you) asked to reset the password on your linka account.
-      Click the button below to pick a new one. The link expires in <strong>1 hour</strong>.
+      Someone (hopefully you) asked to reset the password on your linka
+      account. Click the button below to pick a new one. The link expires
+      in <strong>1 hour</strong>.
     </p>
-    <p style="margin:24px 0">
+    <p style="margin:32px 0">
       <a class="btn" href="${resetUrl}">Reset password</a>
     </p>
-    <p style="font-size:13px;color:#737373">
-      If the button doesn't work, paste this into your browser:<br/>
-      <code style="word-break:break-all">${resetUrl}</code>
+    <p class="small">
+      If the button doesn&rsquo;t work, paste this link into your browser:
     </p>
-    <p style="font-size:13px;color:#737373">
-      Didn't request this? Ignore this email — your password stays unchanged.
+    <p class="small"><code>${resetUrl}</code></p>
+    <p class="small" style="margin-top:32px">
+      Didn&rsquo;t request this? You can safely ignore this email &mdash;
+      your password stays unchanged.
     </p>
   `;
   return {

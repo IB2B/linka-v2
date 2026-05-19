@@ -1,6 +1,11 @@
 import { db } from "./db";
+import { orderBy, type SortKey, type SortDir } from "./admin-users-sort";
 
-export type ListFilters = { q?: string; role?: string; status?: string; limit: number; offset: number };
+export type ListFilters = {
+  q?: string; role?: string; status?: string;
+  sort?: SortKey; dir?: SortDir;
+  limit: number; offset: number;
+};
 
 function pickLastActive(a: Date | null, b: Date | null): string | null {
   const at = a ? a.getTime() : 0;
@@ -37,7 +42,7 @@ export async function listAdminUsers(f: ListFilters) {
        FROM posting_history WHERE posted_at IS NOT NULL GROUP BY user_id
      ) ph ON ph.user_id = u.id
      ${where}
-     ORDER BY u.created_at DESC
+     ORDER BY ${orderBy(f.sort, f.dir)}
      LIMIT ? OFFSET ?`,
     [...params, f.limit, f.offset],
   );

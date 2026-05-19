@@ -18,6 +18,7 @@ export async function softDeleteUser(userId: string): Promise<void> {
            first_name = '',
            last_name = '',
            password_hash = '',
+           late_profile_id = NULL,
            deleted_at = NOW(3),
            session_version = session_version + 1
      WHERE id = ? AND deleted_at IS NULL`,

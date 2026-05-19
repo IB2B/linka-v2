@@ -1,7 +1,7 @@
-import type { NavGroup } from "@/types/nav-item";
+import type { NavGroup, NavKey } from "@/types/nav-item";
 import type { LucideIcon } from "lucide-react";
 
-export type SearchItem = { group: string; label: string; href: string; icon: LucideIcon };
+export type SearchItem = { group: NavKey; label: NavKey; href: string; icon: LucideIcon };
 
 export function navToSearchItems(groups: NavGroup[]): SearchItem[] {
   const out: SearchItem[] = [];

@@ -54,7 +54,14 @@ export type RefundEligibility = {
 
 export type AdminUserDetail = {
   user: AdminUserRow;
-  profile: { industry: string | null; bio: string | null; jobTitle: string | null };
+  profile: {
+    industry: string | null;
+    bio: string | null;
+    jobTitle: string | null;
+    companyType: string | null;
+    companySize: string | null;
+    fundingAmount: string | null;
+  };
   subscription: {
     planTier: string;
     status: string;

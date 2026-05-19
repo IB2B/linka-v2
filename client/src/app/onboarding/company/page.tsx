@@ -1,12 +1,16 @@
+import { getTranslations } from "next-intl/server";
+
 import { StepShell } from "@/components/onboarding/step-shell";
 import { CompanyForm } from "@/components/onboarding/company-form";
 
-export default function OnboardingCompanyPage() {
+export default async function OnboardingCompanyPage() {
+  const t = await getTranslations("onboarding.company");
   return (
     <StepShell
-      step={1}
-      title="Tell us about your company"
-      description="This helps us tailor content to your audience and industry."
+      step={2}
+      total={4}
+      title={t("title")}
+      description={t("description")}
       alignLeft
     >
       <CompanyForm />

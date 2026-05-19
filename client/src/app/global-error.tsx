@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import * as Sentry from "@sentry/nextjs";
 import { ErrorPage } from "@/components/error-page";
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
 
 export default function GlobalError({ error, reset }: Props) {
   useEffect(() => {
+    Sentry.captureException(error);
     console.error(error);
   }, [error]);
 

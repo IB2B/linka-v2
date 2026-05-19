@@ -37,7 +37,7 @@ export async function getTopGenerators(days: number): Promise<TopGenerator[]> {
             COALESCE(SUM(g.tokens_input),0) tok_in,
             COALESCE(SUM(g.tokens_output),0) tok_out
      FROM generated_content g
-     INNER JOIN users u ON u.id = g.user_id
+     INNER JOIN users u ON u.id = g.user_id AND u.deleted_at IS NULL
      LEFT JOIN user_profiles p ON p.user_id = u.id
      WHERE g.created_at >= NOW() - INTERVAL ? DAY
      GROUP BY u.id ORDER BY drafts DESC LIMIT 10`,

@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,8 +17,8 @@ import { sendReplyAction, assistReplyAction, uploadAttachmentAction } from "@/ap
 import type { AssistResult } from "@/lib/inbox/assist.types";
 
 type Props = { conversationId: string; accountId: string | null };
-
 export function ReplyComposer({ conversationId, accountId }: Props) {
+  const t = useTranslations("inbox.composer");
   const [text, setText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [assist, setAssist] = useState<AssistResult | null>(null);
@@ -29,27 +30,24 @@ export function ReplyComposer({ conversationId, accountId }: Props) {
     start(async () => {
       let mediaUrl: string | undefined;
       if (file) {
-        const fd = new FormData();
-        fd.append("file", file);
+        const fd = new FormData(); fd.append("file", file);
         const up = await uploadAttachmentAction(fd);
         if ("error" in up) { toast.error(up.error); return; }
         mediaUrl = up.url;
       }
       const r = await sendReplyAction(conversationId, text, accountId, mediaUrl);
       if ("error" in r) toast.error(r.error);
-      else { setText(""); setFile(null); setAssist(null); toast.success("Sent"); }
+      else { setText(""); setFile(null); setAssist(null); toast.success(t("sent")); }
     });
   }
 
   function suggest() {
-    if (text.trim()) {
-      if (!confirm("Replace your draft with an AI suggestion?")) return;
-    }
+    if (text.trim() && !confirm(t("confirmReplace"))) return;
     startAi(async () => {
       const r = await assistReplyAction(conversationId, accountId);
       if ("error" in r) { toast.error(r.error); return; }
       setAssist(r.data);
-      if (r.data.intent === "spam") { toast.info("Looks like spam — flagged."); return; }
+      if (r.data.intent === "spam") { toast.info(t("spamFlagged")); return; }
       if (r.data.replies[0]) setText(r.data.replies[0].text);
     });
   }
@@ -62,17 +60,17 @@ export function ReplyComposer({ conversationId, accountId }: Props) {
       {assist && <SuggestionPills replies={assist.replies} onSelect={setText} />}
       {file && <AttachmentPreview file={file} onRemove={() => setFile(null)} />}
       <div className="flex items-end gap-1.5">
-        <EmojiPickerButton onSelect={(e) => setText((t) => t + e)} />
+        <EmojiPickerButton onSelect={(e) => setText((tx) => tx + e)} />
         <AttachmentButton onFile={setFile} />
         <Textarea
           value={text} onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
-          placeholder="Type a reply… (Enter to send, Shift+Enter for newline)"
+          placeholder={t("placeholder")}
           rows={1} className="max-h-32 min-h-9 resize-none"
         />
         <Button type="button" onClick={send} disabled={!canSend} size="lg" className="self-stretch">
           {pending ? <Spinner aria-hidden /> : <Send aria-hidden className="size-4" />}
-          Send
+          {t("send")}
         </Button>
       </div>
     </div>

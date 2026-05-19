@@ -1,3 +1,3 @@
 export const INBOX_DM_PLATFORMS = new Set([
-  "instagram", "facebook", "twitter", "reddit", "bluesky",
+  "instagram", "facebook", "twitter", "x", "linkedin", "reddit", "bluesky",
 ]);

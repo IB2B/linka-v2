@@ -9,14 +9,13 @@ type Props = {
   email: string;
   avatarUrl: string | null;
   jobTitle: string;
-  companyName: string;
   industry: string;
   headline: string;
 };
 
 export function ProfileSection({
   avatarUrl, firstName, lastName, email,
-  jobTitle, companyName, industry, headline,
+  jobTitle, industry, headline,
 }: Props) {
   return (
     <div className="space-y-10">
@@ -38,8 +37,7 @@ export function ProfileSection({
         description="Used to personalize AI-generated content to your context."
       >
         <ProfileWorkForm
-          jobTitle={jobTitle} companyName={companyName}
-          industry={industry} headline={headline}
+          jobTitle={jobTitle} industry={industry} headline={headline}
         />
       </SettingsSection>
     </div>

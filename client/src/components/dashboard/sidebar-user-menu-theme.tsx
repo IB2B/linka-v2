@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Moon, Monitor, Sun, Palette, Check } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
+import { useTheme } from "@/components/theme/use-theme";
 
 import {
   DropdownMenuItem, DropdownMenuSub,
@@ -10,12 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const OPTIONS = [
-  { value: "light", label: "Light", icon: Sun },
-  { value: "dark", label: "Dark", icon: Moon },
-  { value: "system", label: "System", icon: Monitor },
+  { value: "light", labelKey: "themeLight", icon: Sun },
+  { value: "dark", labelKey: "themeDark", icon: Moon },
+  { value: "system", labelKey: "themeSystem", icon: Monitor },
 ] as const;
 
 export function SidebarUserMenuTheme() {
+  const t = useTranslations("userMenu");
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -25,13 +27,13 @@ export function SidebarUserMenuTheme() {
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
         <Palette />
-        Theme
+        {t("theme")}
       </DropdownMenuSubTrigger>
       <DropdownMenuSubContent className="min-w-36">
-        {OPTIONS.map(({ value, label, icon: Icon }) => (
+        {OPTIONS.map(({ value, labelKey, icon: Icon }) => (
           <DropdownMenuItem key={value} onClick={() => setTheme(value)}>
             <Icon />
-            {label}
+            {t(labelKey)}
             {active === value ? <Check className="ml-auto size-4" /> : null}
           </DropdownMenuItem>
         ))}

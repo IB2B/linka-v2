@@ -12,7 +12,11 @@ export function ConnectedAccountsRow({ account }: { account: ZernioAccount }) {
           {meta?.label ?? account.platform}
         </p>
         <p className="truncate text-[11px] text-muted-foreground">
-          {account.connected ? `@${account.username}` : "Not connected"}
+          {account.connected
+            ? `@${account.username}`
+            : meta?.inboxHint
+              ? `Not connected · ${meta.inboxHint}`
+              : "Not connected"}
         </p>
       </div>
       {account.connected ? (

@@ -6,6 +6,7 @@ import {
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { HeaderActions } from "@/components/dashboard/header-actions";
 import { requireRole } from "@/lib/auth/require-role";
+import { redirect } from "next/navigation";
 import type { DashboardUser } from "@/types/dashboard-user";
 
 export default async function AdminLayout({
@@ -14,6 +15,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const { user } = await requireRole("ADMIN");
+  if (!user.emailVerified) redirect("/verify-email");
 
   const dashboardUser: DashboardUser = {
     id: user.id,

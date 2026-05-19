@@ -1,13 +1,16 @@
+import { getTranslations } from "next-intl/server";
+
 import { SectionCard } from "./section-card";
 import { UpcomingPostRow } from "./upcoming-post-row";
 import { EmptyRow } from "./empty-row";
 import type { GeneratedPost } from "@/types/post";
 
-export function UpcomingPosts({ posts }: { posts: GeneratedPost[] }) {
+export async function UpcomingPosts({ posts }: { posts: GeneratedPost[] }) {
+  const t = await getTranslations("dashboard.upcoming");
   return (
-    <SectionCard title="Upcoming" href="/dashboard/calendar" hrefLabel="Calendar">
+    <SectionCard title={t("title")} href="/dashboard/calendar" hrefLabel={t("link")}>
       {posts.length === 0 ? (
-        <EmptyRow message="Nothing scheduled. Plan your first post." />
+        <EmptyRow message={t("empty")} />
       ) : (
         posts.map((p) => <UpcomingPostRow key={p.id} post={p} />)
       )}

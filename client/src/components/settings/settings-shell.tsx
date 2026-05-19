@@ -19,7 +19,6 @@ type Props = {
   email: string;
   avatarUrl: string | null;
   jobTitle: string;
-  companyName: string;
   industry: string;
   headline: string;
   accounts: ZernioAccount[];

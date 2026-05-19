@@ -2,21 +2,23 @@
 
 import Link from "next/link";
 import { FileText, ShieldCheck } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import {
   DropdownMenuGroup, DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
 export function SidebarUserMenuLegal() {
+  const t = useTranslations("userMenu");
   return (
     <DropdownMenuGroup>
       <DropdownMenuItem render={<Link href="/terms" />}>
         <FileText />
-        Terms of Service
+        {t("termsOfService")}
       </DropdownMenuItem>
       <DropdownMenuItem render={<Link href="/privacy" />}>
         <ShieldCheck />
-        Privacy Policy
+        {t("privacyPolicy")}
       </DropdownMenuItem>
     </DropdownMenuGroup>
   );

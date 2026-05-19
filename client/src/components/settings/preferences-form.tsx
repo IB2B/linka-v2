@@ -1,16 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { toast } from "sonner";
 
+import { Spinner } from "@/components/ui/spinner";
 import { TIMEZONES, loadTimezone, saveTimezone } from "@/lib/preferences/timezone";
+import { setLocaleAction } from "@/lib/i18n/set-locale-action";
+import { LOCALES, LOCALE_LABELS, type Locale } from "@/i18n/config";
 
 const SELECT_CLS =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
 
 export function PreferencesForm() {
+  const t = useTranslations("settings.preferences");
+  const locale = useLocale();
+  const [pending, start] = useTransition();
   const [tz, setTz] = useState<string>("UTC");
 
   useEffect(() => { setTz(loadTimezone()); }, []);
+
+  function onLocaleChange(next: string) {
+    if (next === locale) return;
+    start(async () => {
+      const r = await setLocaleAction(next);
+      if (r.error) toast.error(r.error);
+      else toast.success(t("languageUpdated"));
+    });
+  }
 
   function onTzChange(value: string) {
     setTz(value);
@@ -21,27 +38,30 @@ export function PreferencesForm() {
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="language">
-            Language
+          <label className="flex items-center gap-2 text-sm font-medium" htmlFor="language">
+            {t("language")}
+            {pending ? <Spinner size="xs" /> : null}
           </label>
-          <select id="language" className={SELECT_CLS}>
-            <option value="en">English</option>
-            <option value="fr">French</option>
-            <option value="es">Spanish</option>
-            <option value="ar">Arabic</option>
-            <option value="de">German</option>
+          <select
+            id="language" className={SELECT_CLS}
+            value={locale} disabled={pending}
+            onChange={(e) => onLocaleChange(e.target.value)}
+          >
+            {LOCALES.map((l) => (
+              <option key={l} value={l}>{LOCALE_LABELS[l as Locale]}</option>
+            ))}
           </select>
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium" htmlFor="timezone">
-            Timezone
+            {t("timezone")}
           </label>
           <select
             id="timezone" className={SELECT_CLS}
             value={tz} onChange={(e) => onTzChange(e.target.value)}
           >
-            {TIMEZONES.map((t) => (
-              <option key={t.value} value={t.value}>{t.label}</option>
+            {TIMEZONES.map((tzOpt) => (
+              <option key={tzOpt.value} value={tzOpt.value}>{tzOpt.label}</option>
             ))}
           </select>
         </div>

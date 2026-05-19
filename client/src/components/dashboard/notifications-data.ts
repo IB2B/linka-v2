@@ -1,4 +1,6 @@
-export type NotificationKind = "failed" | "upcoming" | "posted";
+export type NotificationKind = "failed" | "upcoming" | "posted" | "ticket" | "likes" | "comments";
+
+export type NotificationPriority = "urgent" | "high" | "normal" | "low";
 
 export type Notification = {
   id: string;
@@ -7,6 +9,9 @@ export type Notification = {
   body: string;
   href: string;
   at: string;
+  seen?: boolean;
+  priority?: NotificationPriority;
+  avatarLabel?: string;
 };
 
 export type NotificationApiItem = {

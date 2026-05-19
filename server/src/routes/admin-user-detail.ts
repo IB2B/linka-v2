@@ -17,7 +17,11 @@ function shape(d: any) {
       createdAt: u.created_at, avatarUrl: u.avatar_url ?? null,
       planTier: u.plan_tier ?? "free",
     },
-    profile: { industry: u.industry ?? null, bio: u.bio ?? null, jobTitle: u.job_title ?? null },
+    profile: {
+      industry: u.industry ?? null, bio: u.bio ?? null, jobTitle: u.job_title ?? null,
+      companyType: u.company_type ?? null, companySize: u.company_size ?? null,
+      fundingAmount: u.funding_amount ?? null,
+    },
     subscription: u.plan_tier
       ? {
           planTier: u.plan_tier, status: u.sub_status,
