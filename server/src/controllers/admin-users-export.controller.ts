@@ -5,8 +5,9 @@ import { listAdminUsers } from "../lib/admin-users-list";
 function esc(v: string | number | null): string {
   if (v === null || v === undefined) return "";
   const s = String(v);
-  if (/[",\n\r]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
-  return s;
+  const safe = /^[=+\-@\t\r]/.test(s) ? `'${s}` : s;
+  if (/[",\n\r]/.test(safe)) return `"${safe.replace(/"/g, '""')}"`;
+  return safe;
 }
 
 export async function exportAdminUsers(
