@@ -24,8 +24,8 @@ router.post("/test", async (req, res) => {
     });
     res.json({ ok: true, messageId: r.messageId });
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Send failed.";
-    res.status(500).json({ error: msg });
+    console.error("[admin/email-test]", e);
+    res.status(500).json({ error: "Send failed." });
   }
 });
 
