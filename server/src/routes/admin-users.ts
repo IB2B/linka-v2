@@ -8,6 +8,7 @@ import { createAdminUser } from "../lib/admin-user-create";
 import { exportAdminUsers } from "../controllers/admin-users-export.controller";
 import { recordAdminAction } from "../lib/admin-audit";
 import { softDeleteUser } from "../lib/user-soft-delete";
+import { guardAdminTarget } from "../lib/admin-target-guard";
 
 const router = Router();
 router.use(adminOnly);
@@ -29,16 +30,10 @@ router.get("/export", exportAdminUsers);
 router.post("/", (req: AuthRequest, res, next) => { createAdminUser(req, res).catch(next); });
 
 const roleSchema = z.object({ role: z.enum(["USER", "ADMIN"]) });
-async function guardTarget(req: AuthRequest, res: import("express").Response): Promise<boolean> {
-  if (String(req.params.id) === req.user!.id) {
-    res.status(400).json({ error: "Cannot act on yourself." }); return false;
-  }
-  return true;
-}
 
 router.patch("/:id/role", async (req: AuthRequest, res, next) => {
   try {
-    if (!(await guardTarget(req, res))) return;
+    if (!(await guardAdminTarget(req, res))) return;
     const parsed = roleSchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: "Invalid role" }); return; }
     await db.query(
@@ -52,7 +47,7 @@ router.patch("/:id/role", async (req: AuthRequest, res, next) => {
 
 router.delete("/:id", async (req: AuthRequest, res, next) => {
   try {
-    if (!(await guardTarget(req, res))) return;
+    if (!(await guardAdminTarget(req, res))) return;
     await softDeleteUser(String(req.params.id));
     await recordAdminAction(req.user!.id, "user.deleted", String(req.params.id));
     res.json({ ok: true });
@@ -62,7 +57,7 @@ router.delete("/:id", async (req: AuthRequest, res, next) => {
 const statusSchema = z.object({ status: z.enum(["ACTIVE", "SUSPENDED"]) });
 router.patch("/:id/status", async (req: AuthRequest, res, next) => {
   try {
-    if (!(await guardTarget(req, res))) return;
+    if (!(await guardAdminTarget(req, res))) return;
     const parsed = statusSchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: "Invalid status" }); return; }
     await db.query(

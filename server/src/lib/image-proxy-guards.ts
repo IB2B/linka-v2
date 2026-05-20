@@ -1,8 +1,6 @@
 import dns from "node:dns/promises";
 import net from "node:net";
 
-export const MAX_PROXY_BYTES = 10 * 1024 * 1024;
-
 function isPrivateV4(ip: string): boolean {
   const p = ip.split(".").map(Number);
   if (p.length !== 4 || p.some((n) => !Number.isFinite(n))) return true;
@@ -30,25 +28,14 @@ export function isPrivateIp(ip: string): boolean {
   return true;
 }
 
-export async function hostnameIsPublic(host: string): Promise<boolean> {
+export type PinnedHost = { ip: string; family: 4 | 6 };
+
+export async function resolvePinnedHost(host: string): Promise<PinnedHost | null> {
   try {
     const records = await dns.lookup(host, { all: true });
-    return records.length > 0 && records.every((r) => !isPrivateIp(r.address));
-  } catch { return false; }
-}
-
-export async function readBoundedBody(body: ReadableStream<Uint8Array> | null, contentLength: number): Promise<Buffer> {
-  if (contentLength > MAX_PROXY_BYTES) throw new Error("Image too large");
-  const reader = body?.getReader();
-  if (!reader) return Buffer.alloc(0);
-  const chunks: Uint8Array[] = [];
-  let size = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    size += value.byteLength;
-    if (size > MAX_PROXY_BYTES) { try { await reader.cancel(); } catch {} throw new Error("Image too large"); }
-    chunks.push(value);
-  }
-  return Buffer.concat(chunks);
+    if (records.length === 0) return null;
+    if (records.some((r) => isPrivateIp(r.address))) return null;
+    const r = records[0]!;
+    return { ip: r.address, family: r.family as 4 | 6 };
+  } catch { return null; }
 }

@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { hostnameIsPublic, readBoundedBody } from "../lib/image-proxy-guards";
+import { resolvePinnedHost } from "../lib/image-proxy-guards";
+import { fetchPinned } from "../lib/image-proxy-fetch";
 
 const ALLOWED_CONTENT_TYPES = new Set([
   "image/jpeg", "image/png", "image/webp", "image/gif", "image/avif",
@@ -37,19 +38,14 @@ export async function proxyImage(
     if (url.protocol !== "https:" || !isAllowed(url.hostname)) {
       res.status(400).end(); return;
     }
-    if (!(await hostnameIsPublic(url.hostname))) { res.status(400).end(); return; }
-    const upstream = await fetch(url, {
-      headers: { "User-Agent": "Mozilla/5.0 linka-image-proxy" },
-      redirect: "error",
-    });
-    if (!upstream.ok) { res.status(upstream.status).end(); return; }
-    const ct = (upstream.headers.get("content-type") ?? "").split(";")[0].trim();
-    if (!ALLOWED_CONTENT_TYPES.has(ct)) { res.status(400).end(); return; }
-    const cl = Number(upstream.headers.get("content-length") ?? 0);
-    const buf = await readBoundedBody(upstream.body, cl);
-    res.setHeader("content-type", ct);
+    const pinned = await resolvePinnedHost(url.hostname);
+    if (!pinned) { res.status(400).end(); return; }
+    const r = await fetchPinned(url, pinned, "Mozilla/5.0 linka-image-proxy");
+    if (r.status < 200 || r.status >= 300) { res.status(r.status).end(); return; }
+    if (!ALLOWED_CONTENT_TYPES.has(r.contentType)) { res.status(400).end(); return; }
+    res.setHeader("content-type", r.contentType);
     res.setHeader("cache-control", "public, max-age=86400, immutable");
     res.setHeader("x-content-type-options", "nosniff");
-    res.send(buf);
+    res.send(r.body);
   } catch (e) { next(e); }
 }
