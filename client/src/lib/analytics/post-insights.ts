@@ -5,14 +5,14 @@ export function buildInsights(
   platforms: PlatformBreakdown[], percentile: number,
 ): string[] {
   const out: string[] = [];
-  if (baselineSize > 0 && baseline.engagementRate > 0.0001) {
+  if (baselineSize >= 5 && baseline.engagementRate > 0.0001) {
     const lift = Math.round(
       ((totals.engagementRate - baseline.engagementRate) / baseline.engagementRate) * 100,
     );
     if (lift >= 20) out.push(`Engagement is ${lift}% above your average.`);
     else if (lift <= -20) out.push(`Engagement is ${Math.abs(lift)}% below your average.`);
   }
-  if (baselineSize > 0) {
+  if (baselineSize >= 5) {
     if (percentile >= 90) out.push(`Top ${Math.max(100 - percentile, 1)}% of your posts.`);
     else if (percentile >= 75) out.push("Outperforming most of your recent posts.");
     else if (percentile <= 25) out.push("Underperforming most of your recent posts.");

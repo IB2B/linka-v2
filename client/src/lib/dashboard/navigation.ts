@@ -9,7 +9,6 @@ import {
   LifeBuoy,
   Mic,
   Radar,
-  RefreshCw,
   Settings,
   Sparkles,
 } from "lucide-react";
@@ -21,7 +20,7 @@ import type { NavGroup, NavItem } from "@/types/nav-item";
 import type { UserRole } from "@/types/user-role";
 
 function workspace(
-  prefix: string, tier: UserTier, features: UserFeatures, unreadCount?: number,
+  prefix: string, tier: UserTier, unreadCount?: number,
 ): NavGroup {
   const items: (NavItem | false)[] = [
     { label: "Overview", href: prefix, icon: LayoutDashboard },
@@ -34,8 +33,6 @@ function workspace(
       { label: "Trend Radar", href: `${prefix}/trends`, icon: Radar },
     { label: "Voice Lab", href: `${prefix}/voice-lab`, icon: Mic },
     { label: "Calendar", href: `${prefix}/calendar`, icon: Calendar },
-    features.recycler &&
-      { label: "Recycler", href: `${prefix}/recycler`, icon: RefreshCw },
     hasFeature(tier, "analytics") &&
       { label: "Analytics", href: `${prefix}/analytics`, icon: BarChart3 },
   ];
@@ -57,5 +54,5 @@ export function getNavigationForRole(
   role: UserRole, tier: UserTier, features: UserFeatures, unreadCount?: number,
 ): NavGroup[] {
   if (role === "ADMIN") return ADMIN_NAV;
-  return [workspace("/dashboard", tier, features, unreadCount), account("/dashboard")];
+  return [workspace("/dashboard", tier, unreadCount), account("/dashboard")];
 }

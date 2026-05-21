@@ -54,7 +54,11 @@ export function NotificationsBell({ prefix, role }: Props) {
             </button>
           )}
         </div>
-        {list.length === 0 ? <NotificationsEmpty /> : <NotificationsGroups list={list} onItemClick={markRead} />}
+        {list.length === 0 ? <NotificationsEmpty /> : (
+          <NotificationsGroups
+            list={list} onItemClick={markRead} onMarkRead={markRead}
+          />
+        )}
         <div className="border-t p-1.5">
           <Link
             href={tailHref}

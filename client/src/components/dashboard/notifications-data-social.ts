@@ -26,7 +26,7 @@ export function buildSocialNotifications(
     kind: s.kind,
     title: buildTitle(s.kind, s.delta, s.platform),
     body: s.excerpt,
-    href: `${prefix}/posts/${s.postId}`,
+    href: `${prefix}/analytics/${s.postId}`,
     at: s.createdAt,
     seen: s.seenAt !== null,
   }));

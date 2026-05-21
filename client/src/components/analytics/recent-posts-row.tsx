@@ -44,7 +44,7 @@ export function RecentPostsRow({
       </td>
       {COLS.map((k) => (
         <td key={k} className="px-4 py-3 text-right text-sm tabular-nums text-muted-foreground">
-          {metrics ? metrics[k].toLocaleString() : post.status === "posted" ? "0" : "—"}
+          {metrics ? metrics[k].toLocaleString() : "—"}
         </td>
       ))}
       <td className="px-4 py-3 text-xs whitespace-nowrap">

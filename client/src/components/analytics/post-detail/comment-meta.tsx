@@ -15,7 +15,7 @@ export function CommentMeta({ comment, right }: Props) {
       </span>
       {comment.isVerified && <VerifiedBadge />}
       {comment.isOwner && (
-        <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[11px] font-medium text-zinc-600">
+        <span className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
           Author
         </span>
       )}
@@ -24,7 +24,7 @@ export function CommentMeta({ comment, right }: Props) {
           <a
             href={comment.url} target="_blank" rel="noopener noreferrer"
             aria-label="Open on platform"
-            className="rounded-md p-1 text-muted-foreground hover:bg-zinc-100 hover:text-foreground"
+            className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <ExternalLink className="size-3.5" />
           </a>

@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ProfileSection } from "./profile-section";
 import { PasswordSection } from "./password-section";
 import { PreferencesSection } from "./preferences-section";
-import { FeaturesSection } from "./features-section";
 import { NotificationsSection } from "./notifications-section";
 import { ConnectedAccountsSection } from "./connected-accounts-section";
 import { DangerSection } from "./danger-section";
@@ -22,10 +21,9 @@ type Props = {
   industry: string;
   headline: string;
   accounts: ZernioAccount[];
-  recyclerEnabled: boolean;
 };
 
-export function SettingsShell({ accounts, recyclerEnabled, ...profile }: Props) {
+export function SettingsShell({ accounts, ...profile }: Props) {
   const [active, setActive] = useState("profile");
 
   return (
@@ -35,9 +33,6 @@ export function SettingsShell({ accounts, recyclerEnabled, ...profile }: Props) 
         {active === "profile" && <ProfileSection {...profile} />}
         {active === "security" && <PasswordSection />}
         {active === "preferences" && <PreferencesSection />}
-        {active === "features" && (
-          <FeaturesSection recyclerEnabled={recyclerEnabled} />
-        )}
         {active === "notifications" && <NotificationsSection />}
         {active === "accounts" && <ConnectedAccountsSection accounts={accounts} />}
         {active === "services" && <ServicesSection />}

@@ -11,15 +11,6 @@ export async function likeComment(
   );
 }
 
-export async function hideComment(
-  postId: string, commentId: string, accountId: string,
-) {
-  return lateFetch<{ hidden?: boolean }>(
-    `/inbox/comments/${enc(postId)}/${enc(commentId)}/hide`,
-    { method: "POST", body: JSON.stringify({ accountId }) },
-  );
-}
-
 export async function deleteComment(
   postId: string, commentId: string, accountId: string,
 ) {

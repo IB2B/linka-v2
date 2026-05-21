@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AlertTriangle, Calendar, Heart, LifeBuoy, MessageCircle, type LucideIcon } from "lucide-react";
+import { AlertTriangle, Calendar, Check, Heart, LifeBuoy, MessageCircle, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { Notification, NotificationKind } from "./notifications-data";
@@ -29,9 +29,13 @@ function timeAgo(iso: string): string {
   return `${Math.round(h / 24)}d`;
 }
 
-type Props = { n: Notification; onClick?: () => void };
+type Props = {
+  n: Notification;
+  onClick?: () => void;
+  onMarkRead?: () => void;
+};
 
-export function NotificationItem({ n, onClick }: Props) {
+export function NotificationItem({ n, onClick, onMarkRead }: Props) {
   const Icon = ICONS[n.kind];
   const unread = n.seen !== true;
   return (
@@ -58,9 +62,21 @@ export function NotificationItem({ n, onClick }: Props) {
         </div>
         <p className="truncate text-xs text-muted-foreground">{n.body}</p>
       </div>
-      <span className="shrink-0 text-[10px] text-muted-foreground tabular-nums">
-        {timeAgo(n.at)}
-      </span>
+      <div className="flex shrink-0 items-center gap-1.5">
+        <span className="text-[10px] text-muted-foreground tabular-nums">
+          {timeAgo(n.at)}
+        </span>
+        {unread && onMarkRead && (
+          <button
+            type="button"
+            aria-label="Mark as read"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onMarkRead(); }}
+            className="grid size-5 place-items-center rounded-md text-muted-foreground opacity-0 transition-all hover:bg-muted hover:text-foreground group-hover:opacity-100 focus:opacity-100"
+          >
+            <Check className="size-3" />
+          </button>
+        )}
+      </div>
     </Link>
   );
 }

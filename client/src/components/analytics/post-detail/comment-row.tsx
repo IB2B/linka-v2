@@ -25,15 +25,13 @@ export function CommentRow({ postId, platform, comment, me, depth = 0 }: Props) 
   const [replyOpen, setReplyOpen] = useState(false);
   const [liked, setLiked] = useState(comment.isLiked);
   const [likeCount, setLikeCount] = useState(comment.likeCount);
-  const [hidden, setHidden] = useState(comment.isHidden);
   const [deleted, setDeleted] = useState(false);
   const [localReplies, setLocalReplies] = useState<PostComment[]>([]);
 
   useEffect(() => { setLocalReplies([]); }, [comment.replies]);
   useEffect(() => {
     setLiked(comment.isLiked); setLikeCount(comment.likeCount);
-    setHidden(comment.isHidden);
-  }, [comment.isLiked, comment.likeCount, comment.isHidden]);
+  }, [comment.isLiked, comment.likeCount]);
 
   if (deleted) return null;
 
@@ -47,11 +45,11 @@ export function CommentRow({ postId, platform, comment, me, depth = 0 }: Props) 
       <CommentAvatar name={comment.authorName} src={comment.authorAvatar} platform={platform} />
       <div className="min-w-0 flex-1">
         <CommentBubble
-          comment={comment} hidden={hidden}
+          comment={comment}
           right={
             <CommentOverflowMenu
               postId={postId} platform={platform} comment={comment}
-              onHidden={() => setHidden(true)} onDeleted={() => setDeleted(true)}
+              onDeleted={() => setDeleted(true)}
             />
           }
         />

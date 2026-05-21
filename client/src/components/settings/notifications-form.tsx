@@ -1,53 +1,50 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { NotificationRow } from "./notification-row";
+import { NOTIF_PREFS, type NotifPrefId, type NotifPrefs } from "./notification-prefs.types";
 
-const PREFS = [
-  { id: "notif_published", label: "Post published", description: "When a scheduled post goes live." },
-  { id: "notif_failed", label: "Post failed", description: "When a post fails so you can retry." },
-  { id: "notif_limit", label: "Post limit warnings", description: "At 80% and 100% of your monthly limit." },
-  { id: "notif_digest", label: "Weekly digest", description: "A weekly summary of your activity and stats." },
-  { id: "notif_updates", label: "Product updates", description: "New features, improvements, and tips." },
-  { id: "notif_marketing", label: "Promotions", description: "Discounts, promos, and launch announcements." },
-] as const;
-
-type PrefId = (typeof PREFS)[number]["id"];
-type State = Record<PrefId, boolean>;
-
-const DEFAULT: State = {
-  notif_published: true,
-  notif_failed: true,
-  notif_limit: true,
-  notif_digest: false,
-  notif_updates: false,
-  notif_marketing: false,
+const DEFAULT: NotifPrefs = {
+  notifPublished: true,
+  notifFailed: true,
+  notifLimit: true,
 };
 
 export function NotificationsForm() {
-  const [prefs, setPrefs] = useState<State>(DEFAULT);
+  const [prefs, setPrefs] = useState<NotifPrefs>(DEFAULT);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("notif_prefs");
-    if (saved) setPrefs(JSON.parse(saved) as State);
+    fetch("/api/users/me/notification-prefs", { cache: "no-store" })
+      .then((r) => r.ok ? r.json() : DEFAULT)
+      .then((d: NotifPrefs) => { setPrefs(d); setLoaded(true); })
+      .catch(() => setLoaded(true));
   }, []);
 
-  function toggle(id: PrefId, value: boolean) {
-    const next = { ...prefs, [id]: value };
-    setPrefs(next);
-    localStorage.setItem("notif_prefs", JSON.stringify(next));
+  async function toggle(id: NotifPrefId, value: boolean) {
+    const prev = prefs[id];
+    setPrefs((p) => ({ ...p, [id]: value }));
+    try {
+      const r = await fetch("/api/users/me/notification-prefs", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [id]: value }),
+      });
+      if (!r.ok) throw new Error("save failed");
+    } catch {
+      setPrefs((p) => ({ ...p, [id]: prev }));
+      toast.error("Couldn't save preference.");
+    }
   }
 
   return (
     <div className="divide-y divide-border">
-      {PREFS.map((pref) => (
+      {NOTIF_PREFS.map((p) => (
         <NotificationRow
-          key={pref.id}
-          id={pref.id}
-          label={pref.label}
-          description={pref.description}
-          checked={prefs[pref.id]}
-          onChange={(v) => toggle(pref.id, v)}
+          key={p.id} id={p.id} label={p.label} description={p.description}
+          checked={prefs[p.id]} disabled={!loaded}
+          onChange={(v) => toggle(p.id, v)}
         />
       ))}
     </div>

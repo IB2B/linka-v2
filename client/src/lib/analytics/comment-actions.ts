@@ -22,8 +22,5 @@ async function post(path: string, body: Body): Promise<Result> {
 export const likeComment = (postId: string, body: Body) =>
   post(`/api/posts/${postId}/comments/like`, body);
 
-export const hideComment = (postId: string, body: Body) =>
-  post(`/api/posts/${postId}/comments/hide`, body);
-
 export const deleteComment = (postId: string, body: Body) =>
   post(`/api/posts/${postId}/comments/delete`, body);

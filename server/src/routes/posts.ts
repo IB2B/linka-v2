@@ -19,10 +19,8 @@ import { listNotifications }
 import { listComments } from "../controllers/post-comments.controller";
 import { replyComment } from "../controllers/post-comments-reply.controller";
 import { suggestReply } from "../controllers/post-comments-suggest.controller";
-import { uploadCommentImage } from "../controllers/post-comment-image.controller";
-import { commentImageUpload } from "../lib/comment-image-upload";
 import {
-  likeAction, hideAction, deleteAction,
+  likeAction, deleteAction,
 } from "../controllers/post-comments-actions.controller";
 
 const router = Router();
@@ -35,13 +33,7 @@ router.get("/:id", getOne);
 router.get("/:id/comments", listComments);
 router.post("/:id/comments/reply", replyComment);
 router.post("/:id/comments/suggest", suggestReply);
-router.post(
-  "/:id/comments/image",
-  commentImageUpload.single("image"),
-  uploadCommentImage,
-);
 router.post("/:id/comments/like", likeAction);
-router.post("/:id/comments/hide", hideAction);
 router.post("/:id/comments/delete", deleteAction);
 router.post("/:id/schedule", schedule);
 router.post("/:id/publish", publish);

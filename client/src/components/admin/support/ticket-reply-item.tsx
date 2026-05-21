@@ -1,4 +1,5 @@
 import { InboxAvatar } from "@/components/inbox/inbox-avatar";
+import { TicketMessageBody } from "@/components/support/ticket-message-body";
 import { cn } from "@/lib/utils";
 import { formatRelative } from "@/lib/admin/format-relative";
 import type { TicketReply } from "@/types/admin-ticket-detail";
@@ -30,14 +31,7 @@ export function TicketReplyItem({ reply }: { reply: TicketReply }) {
             {formatRelative(reply.createdAt)}
           </span>
         </div>
-        <div className={cn(
-          "rounded-2xl px-3.5 py-2 text-sm whitespace-pre-wrap break-words shadow-xs ring-1",
-          mine
-            ? "rounded-br-md bg-primary text-primary-foreground ring-primary/20"
-            : "rounded-bl-md bg-background text-foreground ring-border",
-        )}>
-          {reply.body}
-        </div>
+        <TicketMessageBody body={reply.body} mine={mine} />
         {reply.attachmentUrl ? (
           <a
             href={reply.attachmentUrl} target="_blank" rel="noreferrer"

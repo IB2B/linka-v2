@@ -4,8 +4,8 @@ import { z } from "zod";
 import type { AuthRequest } from "../middleware/auth";
 import {
   listInboxConversations, listInboxMessages, sendInboxMessage,
-  type RawConversation,
 } from "../lib/late-inbox";
+import type { RawConversation } from "../lib/late-inbox";
 import { INBOX_DM_PLATFORMS } from "../lib/inbox-platforms";
 import { userOwnsAccount } from "../lib/inbox-account-guard";
 import { mapConversation, mapMessage } from "./inbox.helpers";
@@ -18,7 +18,8 @@ export async function getConversations(req: AuthRequest, res: Response) {
   }
   const dm = (raw: RawConversation[]) => raw.filter((c) => INBOX_DM_PLATFORMS.has(c.platform));
   const data = await listInboxConversations(req.user!.id, platform);
-  res.json({ conversations: dm(data.conversations ?? []).map(mapConversation) });
+  const raw = data.conversations ?? [];
+  res.json({ conversations: dm(raw).map(mapConversation) });
 }
 
 export async function getMessages(req: AuthRequest, res: Response) {
