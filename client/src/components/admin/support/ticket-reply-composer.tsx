@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import { AttachmentInput } from "@/components/support/attachment-input";
+import { EmojiPicker } from "@/components/emoji-picker";
 import { replyToTicketAction } from "@/app/admin/support/actions";
 
 export function TicketReplyComposer({ id }: { id: string }) {
@@ -52,7 +53,10 @@ export function TicketReplyComposer({ id }: { id: string }) {
             className="min-h-24 resize-none border-0 bg-transparent shadow-none focus-visible:ring-0"
           />
           <div className="flex items-center justify-between gap-2 border-t px-2.5 py-2">
-            <AttachmentInput value={attachmentUrl} onChange={setAttachmentUrl} disabled={pending} />
+            <div className="flex items-center gap-1">
+              <EmojiPicker onPick={(e) => setText((t) => t + e)} />
+              <AttachmentInput value={attachmentUrl} onChange={setAttachmentUrl} disabled={pending} />
+            </div>
             <Button onClick={send} disabled={!canSend} size="sm">
               {pending ? <Spinner aria-hidden /> : <Send className="size-3.5" />}
               Send reply

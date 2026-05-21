@@ -14,9 +14,12 @@ export async function getAnalyticsSummary(
     const all = await posts.listForUser(req.user!.id);
     const posted = all.filter((p) => p.latePostId);
     const userId = req.user!.id;
-    const settled = await concurrentMap(posted, 5, (p) =>
-      fetchAndSnapshotAnalytics(p.latePostId!, p.id, userId),
-    );
+    const settled = await concurrentMap(posted, 5, (p) => {
+      const allowed = p.scheduledPlatforms?.length
+        ? p.scheduledPlatforms
+        : p.platform ? [p.platform] : null;
+      return fetchAndSnapshotAnalytics(p.latePostId!, p.id, userId, allowed);
+    });
     const items: Item[] = posted.map((p, i) => {
       const r = settled[i];
       const totals = r.status === "fulfilled" && r.value.state === "ok"

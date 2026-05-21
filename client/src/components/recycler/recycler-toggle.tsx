@@ -5,27 +5,26 @@ import { RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import { SettingsSection } from "./settings-section";
-import { FeatureRow } from "./feature-row";
-import { FeatureToggleConfirm } from "./feature-toggle-confirm";
+import { FeatureRow } from "@/components/settings/feature-row";
+import { FeatureToggleConfirm } from "@/components/settings/feature-toggle-confirm";
 import { setRecyclerEnabledAction } from "@/app/dashboard/settings/feature-actions";
 
-type Props = { recyclerEnabled: boolean };
+type Props = { enabled: boolean };
 
-export function FeaturesSection({ recyclerEnabled }: Props) {
-  const [recycler, setRecycler] = useState(recyclerEnabled);
+export function RecyclerToggle({ enabled }: Props) {
+  const [on, setOn] = useState(enabled);
   const [confirmTarget, setConfirmTarget] = useState<boolean | null>(null);
   const [pending, start] = useTransition();
   const router = useRouter();
 
-  function applyRecycler(next: boolean) {
+  function apply(next: boolean) {
     start(async () => {
       const res = await setRecyclerEnabledAction(next);
       if (res.error) {
         toast.error(res.error);
         return;
       }
-      setRecycler(next);
+      setOn(next);
       setConfirmTarget(null);
       toast.success(next ? "Recycler enabled." : "Recycler disabled.");
       router.refresh();
@@ -33,15 +32,12 @@ export function FeaturesSection({ recyclerEnabled }: Props) {
   }
 
   return (
-    <SettingsSection
-      title="Features"
-      description="Turn modules on or off. Disabled features are hidden from the sidebar."
-    >
+    <>
       <FeatureRow
         icon={RefreshCw}
         title="Recycler"
         description="Resurface your top-performing posts as fresh rewrites you can repost."
-        checked={recycler}
+        checked={on}
         onChange={(next) => setConfirmTarget(next)}
         pending={pending}
       />
@@ -51,8 +47,8 @@ export function FeaturesSection({ recyclerEnabled }: Props) {
         willEnable={confirmTarget === true}
         pending={pending}
         onOpenChange={(v) => !v && setConfirmTarget(null)}
-        onConfirm={() => applyRecycler(confirmTarget!)}
+        onConfirm={() => apply(confirmTarget!)}
       />
-    </SettingsSection>
+    </>
   );
 }

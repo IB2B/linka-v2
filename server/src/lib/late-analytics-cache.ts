@@ -1,6 +1,6 @@
 import type { PostAnalyticsResult } from "../types/analytics";
 
-const TTL_MS = 60_000;
+const TTL_MS = 10_000;
 const cache = new Map<string, { result: PostAnalyticsResult; expires: number }>();
 
 export function getCached(key: string): PostAnalyticsResult | null {

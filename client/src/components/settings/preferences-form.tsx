@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Spinner } from "@/components/ui/spinner";
-import { TIMEZONES, loadTimezone, saveTimezone } from "@/lib/preferences/timezone";
 import { setLocaleAction } from "@/lib/i18n/set-locale-action";
 import { LOCALES, LOCALE_LABELS, type Locale } from "@/i18n/config";
 
@@ -16,9 +15,6 @@ export function PreferencesForm() {
   const t = useTranslations("settings.preferences");
   const locale = useLocale();
   const [pending, start] = useTransition();
-  const [tz, setTz] = useState<string>("UTC");
-
-  useEffect(() => { setTz(loadTimezone()); }, []);
 
   function onLocaleChange(next: string) {
     if (next === locale) return;
@@ -27,11 +23,6 @@ export function PreferencesForm() {
       if (r.error) toast.error(r.error);
       else toast.success(t("languageUpdated"));
     });
-  }
-
-  function onTzChange(value: string) {
-    setTz(value);
-    saveTimezone(value);
   }
 
   return (
@@ -49,19 +40,6 @@ export function PreferencesForm() {
           >
             {LOCALES.map((l) => (
               <option key={l} value={l}>{LOCALE_LABELS[l as Locale]}</option>
-            ))}
-          </select>
-        </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="timezone">
-            {t("timezone")}
-          </label>
-          <select
-            id="timezone" className={SELECT_CLS}
-            value={tz} onChange={(e) => onTzChange(e.target.value)}
-          >
-            {TIMEZONES.map((tzOpt) => (
-              <option key={tzOpt.value} value={tzOpt.value}>{tzOpt.label}</option>
             ))}
           </select>
         </div>

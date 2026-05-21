@@ -5,7 +5,6 @@ import { toast } from "sonner";
 
 import { replyToComment } from "@/lib/analytics/reply-comment";
 import { suggestReply as fetchSuggestion } from "@/lib/analytics/suggest-reply";
-import { uploadCommentImage } from "@/lib/analytics/upload-comment-image";
 
 type Args = {
   postId: string;
@@ -19,8 +18,6 @@ type Args = {
 
 export function useReplyState(a: Args) {
   const [text, setText] = useState("");
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
   const [pending, start] = useTransition();
   const taRef = useRef<HTMLTextAreaElement>(null);
@@ -46,32 +43,23 @@ export function useReplyState(a: Args) {
     requestAnimationFrame(() => taRef.current?.focus());
   }
 
-  async function onFile(file: File) {
-    setUploading(true);
-    const r = await uploadCommentImage(a.postId, file);
-    setUploading(false);
-    if (!r.ok) { toast.error(r.error); return; }
-    setImageUrl(r.url);
-  }
-
   function send() {
     if (!trimmed) return;
     start(async () => {
       const r = await replyToComment({
         postId: a.postId, platform: a.platform, commentId: a.commentId,
-        message: trimmed, imageUrl: imageUrl ?? undefined,
+        message: trimmed,
       });
       if (!r.ok) { toast.error(r.error); return; }
       toast.success("Reply sent");
       a.onPosted(trimmed);
-      setText(""); setImageUrl(null);
+      setText("");
       a.onDone();
     });
   }
 
   return {
     text, setText, trimmed, taRef,
-    imageUrl, setImageUrl, uploading, onFile,
     suggesting, suggest, pending, send, insertEmoji,
   };
 }

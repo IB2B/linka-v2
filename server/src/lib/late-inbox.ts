@@ -42,10 +42,10 @@ export async function listInboxConversations(userId: string, platform?: string) 
   const profileId = await getOrCreateLateProfile(userId);
   const qs = new URLSearchParams({ profileId, limit: "10" });
   if (platform) qs.set("platform", platform);
-  const r = await lateFetch<LatePage<RawConversation>>(
-    `/inbox/conversations?${qs.toString()}`,
-  );
-  return { conversations: r.data ?? r.conversations ?? [] };
+  const url = `/inbox/conversations?${qs.toString()}`;
+  const r = await lateFetch<LatePage<RawConversation>>(url);
+  const list = r.data ?? r.conversations ?? [];
+  return { conversations: list };
 }
 
 export async function listInboxMessages(

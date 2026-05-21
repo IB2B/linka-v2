@@ -7,17 +7,22 @@ import { PostAnalyticsBody } from "@/components/analytics/post-detail/post-analy
 import { CommentsCard } from "@/components/analytics/post-detail/comments-card";
 import { CommentsLoading } from "@/components/analytics/post-detail/comments-loading";
 import { AnalyticsSyncPoller } from "@/components/analytics/post-detail/analytics-sync-poller";
+import { AnalyticsToolbar } from "@/components/analytics/post-detail/analytics-toolbar";
 import { loadPostDetail } from "@/lib/analytics/load-post-detail";
 import { requirePaidFeature } from "@/lib/billing/require-paid-feature";
 
 type Params = { id: string };
+type Search = { t?: string };
 
 export default async function PostAnalyticsPage({
-  params,
-}: { params: Promise<Params> }) {
+  params, searchParams,
+}: { params: Promise<Params>; searchParams: Promise<Search> }) {
   await requirePaidFeature("analytics");
   const { id } = await params;
-  const data = await loadPostDetail(id);
+  const { t } = await searchParams;
+  const data = await loadPostDetail(id, !!t);
+  const lastUpdated = data.analytics?.state === "ok"
+    ? data.analytics.lastUpdated : null;
 
   return (
     <div className="space-y-6">
@@ -32,11 +37,13 @@ export default async function PostAnalyticsPage({
       <PostHeroCard
         post={data.post}
         platforms={
-          data.analytics?.state === "ok"
-            ? data.analytics.platforms.map((p) => p.platform)
+          data.post.scheduledPlatforms?.length
+            ? data.post.scheduledPlatforms
             : data.post.platform ? [data.post.platform] : []
         }
       />
+
+      <AnalyticsToolbar lastUpdated={lastUpdated} postId={id} />
 
       {data.analytics?.state === "syncing" && <AnalyticsSyncPoller />}
       <PostAnalyticsBody data={data} />

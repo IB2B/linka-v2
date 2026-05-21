@@ -9,23 +9,22 @@ const COMMENT_SUPPORTED = new Set([
 async function enrichOne(
   postId: string, p: PlatformBreakdown,
 ): Promise<PlatformBreakdown> {
-  if (p.status !== "pending") return p;
+  if (p.status === "failed") return p;
   if (!p.accountId) return p;
   if (!COMMENT_SUPPORTED.has(p.platform)) return p;
   try {
     const data = await listPostComments(postId, p.accountId);
     const comments = data.comments ?? [];
     const commentCount = comments.length;
-    const likeSum = comments.reduce((s, c) => s + (c.likeCount ?? 0), 0);
-    if (commentCount === 0 && likeSum === 0) return p;
+    if (commentCount <= p.metrics.comments) {
+      return p.status === "pending" && commentCount > 0
+        ? { ...p, status: "ok", metrics: { ...p.metrics, comments: commentCount } }
+        : p;
+    }
     return {
       ...p,
       status: "ok",
-      metrics: {
-        ...p.metrics,
-        comments: commentCount,
-        likes: likeSum,
-      },
+      metrics: { ...p.metrics, comments: commentCount },
     };
   } catch (e) {
     console.error("[late-enrich] comments fallback failed", p.platform, e);

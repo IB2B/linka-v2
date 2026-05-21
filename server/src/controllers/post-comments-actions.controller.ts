@@ -5,7 +5,7 @@ import type { AuthRequest } from "../middleware/auth";
 import { findById } from "../models/generated-content.model";
 import { resolvePlatformAccounts } from "../lib/late-accounts";
 import {
-  likeComment, hideComment, deleteComment,
+  likeComment, deleteComment,
 } from "../lib/late-comment-actions";
 
 const baseSchema = z.object({
@@ -34,16 +34,6 @@ export async function likeAction(
     const c = await ctx(req, res); if (!c) return;
     const r = await likeComment(c.postId, c.body.commentId, c.accountId, c.body.cid);
     res.json({ liked: r.liked ?? true });
-  } catch (e) { next(e); }
-}
-
-export async function hideAction(
-  req: AuthRequest, res: Response, next: NextFunction,
-): Promise<void> {
-  try {
-    const c = await ctx(req, res); if (!c) return;
-    const r = await hideComment(c.postId, c.body.commentId, c.accountId);
-    res.json({ hidden: r.hidden ?? true });
   } catch (e) { next(e); }
 }
 

@@ -23,9 +23,11 @@ export type PostDetailData = {
   insights: string[];
 };
 
-export async function loadPostDetail(id: string): Promise<PostDetailData> {
+export async function loadPostDetail(
+  id: string, force = false,
+): Promise<PostDetailData> {
   const [post, analytics, summary] = await Promise.all([
-    getPost(id), getPostAnalytics(id), getAnalyticsSummary(),
+    getPost(id), getPostAnalytics(id, force), getAnalyticsSummary(),
   ]);
   if (!post) notFound();
   const [rawSeries, commentGroups] = await Promise.all([

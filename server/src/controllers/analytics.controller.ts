@@ -14,8 +14,12 @@ export async function getPostAnalytics(
       res.json({ analytics: { state: "unposted" } });
       return;
     }
+    const allowed = post.scheduledPlatforms?.length
+      ? post.scheduledPlatforms
+      : post.platform ? [post.platform] : null;
+    const force = req.query.refresh === "1";
     const analytics = await fetchAndSnapshotAnalytics(
-      post.latePostId, post.id, req.user!.id,
+      post.latePostId, post.id, req.user!.id, allowed, force,
     );
     res.json({ analytics });
   } catch (e) { next(e); }

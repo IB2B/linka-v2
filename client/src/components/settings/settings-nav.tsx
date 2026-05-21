@@ -1,21 +1,20 @@
 "use client";
 
 import {
-  User, Lock, SlidersHorizontal, Bell, Link2, ToggleRight, AlertTriangle, Activity,
+  User, Lock, SlidersHorizontal, Bell, Link2, AlertTriangle, Activity,
   type LucideIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 type SectionId =
-  | "profile" | "security" | "preferences" | "features"
+  | "profile" | "security" | "preferences"
   | "notifications" | "accounts" | "services" | "danger";
 
 const SECTIONS: { id: SectionId; icon: LucideIcon }[] = [
   { id: "profile", icon: User },
   { id: "security", icon: Lock },
   { id: "preferences", icon: SlidersHorizontal },
-  { id: "features", icon: ToggleRight },
   { id: "notifications", icon: Bell },
   { id: "accounts", icon: Link2 },
   { id: "services", icon: Activity },

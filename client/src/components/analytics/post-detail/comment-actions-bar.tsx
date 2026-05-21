@@ -46,8 +46,8 @@ export function CommentActionsBar(p: Props) {
           className={cn(
             "inline-flex items-center gap-1 rounded-md px-1.5 py-1 transition-colors disabled:opacity-60",
             p.liked
-              ? "text-sky-600 hover:bg-sky-50"
-              : "text-muted-foreground hover:bg-zinc-100 hover:text-foreground",
+              ? "text-primary hover:bg-primary/10"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground",
           )}
         >
           <ThumbsUp className={cn("size-3.5", p.liked && "fill-current")} />
@@ -56,7 +56,7 @@ export function CommentActionsBar(p: Props) {
       )}
       <button
         type="button" onClick={p.onToggleReply} aria-label="Reply"
-        className="inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-muted-foreground transition-colors hover:bg-zinc-100 hover:text-foreground"
+        className="inline-flex items-center gap-1 rounded-md px-1.5 py-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       >
         <MessageSquare className="size-3.5" />
         {p.comment.replyCount > 0 && (

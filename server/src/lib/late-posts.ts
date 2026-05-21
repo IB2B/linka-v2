@@ -50,3 +50,7 @@ export function publishedPlatforms(p: LatePostPlatform[]): LatePostPlatform[] {
     return false;
   });
 }
+
+export function failedPlatforms(p: LatePostPlatform[]): LatePostPlatform[] {
+  return p.filter((x) => typeof x.status === "string" && FAILURE.test(x.status));
+}

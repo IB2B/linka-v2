@@ -8,6 +8,7 @@ import { patchProfile } from "./users-profile";
 import avatarRouter from "./users-avatar";
 import { softDeleteUser } from "../lib/user-soft-delete";
 import { CLEAR_COOKIE_OPTS } from "../lib/cookie-opts";
+import { getNotificationPrefs, patchNotificationPrefs } from "./users-notification-prefs";
 
 const router = Router();
 router.use("/me/avatar", avatarRouter);
@@ -58,6 +59,14 @@ router.patch("/me/onboarding", async (req: AuthRequest, res, next) => {
 
 router.post("/me/password", (req: AuthRequest, res, next) => {
   changePassword(req, res).catch(next);
+});
+
+router.get("/me/notification-prefs", (req: AuthRequest, res, next) => {
+  getNotificationPrefs(req, res).catch(next);
+});
+
+router.patch("/me/notification-prefs", (req: AuthRequest, res, next) => {
+  patchNotificationPrefs(req, res).catch(next);
 });
 
 router.delete("/me", async (req: AuthRequest, res, next) => {

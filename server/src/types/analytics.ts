@@ -22,7 +22,12 @@ export type PostAnalyticsResult =
   | { state: "unposted" }
   | { state: "syncing" }
   | { state: "addon-required" }
-  | { state: "ok"; totals: PostMetrics; platforms: PlatformBreakdown[] };
+  | {
+      state: "ok";
+      totals: PostMetrics;
+      platforms: PlatformBreakdown[];
+      lastUpdated: string | null;
+    };
 
 export type PostSnapshot = {
   fetchedAt: string;

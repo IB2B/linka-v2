@@ -16,7 +16,10 @@ export function aggregateFromPlatforms(
   for (const p of synced) {
     for (const k of KEYS) {
       if (k === "engagementRate") continue;
-      sum[k] += p.metrics[k];
+      // reach = unique users; summing double-counts cross-platform overlap.
+      // Lower bound is the per-platform max.
+      if (k === "reach") sum.reach = Math.max(sum.reach, p.metrics.reach);
+      else sum[k] += p.metrics[k];
     }
   }
   const denom = sum.impressions || sum.reach || sum.views;

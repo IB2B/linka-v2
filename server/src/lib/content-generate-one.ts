@@ -3,6 +3,7 @@ import { generateImageForPostInBackground }
   from "../services/image-generation.service";
 import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import * as posts from "../models/generated-content.model";
+import { checkAndNotifyUsageLimit } from "./check-usage-limit";
 
 type Input = {
   postType: string;
@@ -36,5 +37,7 @@ export async function generateForPlatform(
       stored.id, userId, result.content, platform,
     );
   }
+  checkAndNotifyUsageLimit(userId).catch((e) =>
+    console.error("[usage-limit]", e));
   return { id: stored.id, content: result.content };
 }

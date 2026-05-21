@@ -7,6 +7,7 @@ import { publishPostOnLate, schedulePostOnLate, deleteLatePost } from "../lib/la
 import { partitionPublishResult } from "../lib/late-publish-result";
 import { publishOutcomeToRows } from "../lib/publish-outcome-to-rows";
 import { resolveOrFail } from "./posts-publish-helpers";
+import { sendPostFailedEmail } from "../lib/post-event-emails";
 
 const platformsSchema = z.array(z.string()).optional();
 const scheduleSchema = z.object({
@@ -65,6 +66,12 @@ export async function publish(
       await posts.markPosted(post.id, req.user!.id, result.latePostId);
     }
     await recordOutcomes(req.user!.id, post.id, publishOutcomeToRows(outcome));
+    if (outcome.failed.length > 0) {
+      sendPostFailedEmail(
+        req.user!.id, post.id, post.content.slice(0, 140),
+        outcome.failed.map((f) => f.platform),
+      ).catch((e) => console.error("[email] post-failed", e));
+    }
     res.json({
       post: await posts.findById(post.id, req.user!.id),
       ...outcome,

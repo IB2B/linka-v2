@@ -1,16 +1,38 @@
+"use client";
+
+import { type KeyboardEvent } from "react";
 import { Link as LinkIcon } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
-import { FeedbackStatusBadge } from "@/components/admin/feedback/feedback-status-badge";
 import { FeedbackCategoryBadge } from "@/components/admin/feedback/feedback-category-badge";
+import { FeedbackStatusBadge } from "@/components/admin/feedback/feedback-status-badge";
 import { FeedbackAuthor } from "@/components/admin/feedback/feedback-author";
-import { FeedbackActions } from "@/components/admin/feedback/feedback-actions";
 import { formatRelative } from "@/lib/admin/format-relative";
 import type { FeedbackRow } from "@/types/admin-feedback";
 
-export function FeedbackCard({ row }: { row: FeedbackRow }) {
+type Props = { row: FeedbackRow; active?: boolean; onOpen: () => void };
+
+export function FeedbackCard({ row, active, onOpen }: Props) {
+  const isNew = row.status === "new";
+
+  function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); }
+  }
+
   return (
-    <Card size="sm" className="gap-4 px-5 py-4">
+    <Card
+      size="sm"
+      role="button"
+      tabIndex={0}
+      aria-label="Open feedback details"
+      onClick={onOpen}
+      onKeyDown={onKeyDown}
+      className={cn(
+        "cursor-pointer gap-3 px-5 py-4 transition hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none",
+        active && "bg-muted/50 ring-1 ring-ring/30",
+      )}
+    >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
           <FeedbackCategoryBadge category={row.category} />
@@ -18,15 +40,19 @@ export function FeedbackCard({ row }: { row: FeedbackRow }) {
         </div>
         <span
           className="text-xs tabular-nums tracking-tight text-muted-foreground"
-          title={new Date(row.createdAt).toLocaleString()}
+          title={new Date(row.createdAt).toLocaleString("en-US")}
+          suppressHydrationWarning
         >
           {formatRelative(row.createdAt)}
         </span>
       </div>
 
-      <blockquote className="border-l-2 pl-3 text-sm tracking-tight whitespace-pre-wrap text-foreground/90">
+      <p className={cn(
+        "line-clamp-3 text-sm tracking-tight whitespace-pre-wrap",
+        isNew ? "font-medium text-foreground" : "text-foreground/85",
+      )}>
         {row.message}
-      </blockquote>
+      </p>
 
       {row.pageUrl ? (
         <div className="inline-flex items-center gap-1.5 text-xs tracking-tight text-muted-foreground">
@@ -35,9 +61,8 @@ export function FeedbackCard({ row }: { row: FeedbackRow }) {
         </div>
       ) : null}
 
-      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+      <div className="border-t pt-3">
         <FeedbackAuthor user={row.user} />
-        <FeedbackActions id={row.id} status={row.status} />
       </div>
     </Card>
   );

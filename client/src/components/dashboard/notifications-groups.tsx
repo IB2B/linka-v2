@@ -1,9 +1,13 @@
 import { NotificationItem } from "./notification-item";
 import { groupByDate, type Notification } from "./notifications-data";
 
-type Props = { list: Notification[]; onItemClick?: (id: string) => void };
+type Props = {
+  list: Notification[];
+  onItemClick?: (id: string) => void;
+  onMarkRead?: (id: string) => void;
+};
 
-export function NotificationsGroups({ list, onItemClick }: Props) {
+export function NotificationsGroups({ list, onItemClick, onMarkRead }: Props) {
   const groups = groupByDate(list);
   return (
     <div className="max-h-[26rem] overflow-y-auto p-1">
@@ -13,7 +17,11 @@ export function NotificationsGroups({ list, onItemClick }: Props) {
             {g.label}
           </div>
           {g.items.map((n) => (
-            <NotificationItem key={n.id} n={n} onClick={() => onItemClick?.(n.id)} />
+            <NotificationItem
+              key={n.id} n={n}
+              onClick={() => onItemClick?.(n.id)}
+              onMarkRead={onMarkRead ? () => onMarkRead(n.id) : undefined}
+            />
           ))}
         </div>
       ))}

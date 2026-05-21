@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { AuthRequest } from "../middleware/auth";
 import * as posts from "../models/generated-content.model";
 import { rewriteForRecycle } from "../services/recycle-rewrite.service";
+import { checkAndNotifyUsageLimit } from "../lib/check-usage-limit";
 
 const schema = z.object({ postId: z.string().min(1) });
 
@@ -27,6 +28,8 @@ export async function regenerateFromPost(
     const draft = await posts.insertOne({
       userId, prompt: original.prompt, content, platform,
     });
+    checkAndNotifyUsageLimit(userId).catch((e) =>
+      console.error("[usage-limit]", e));
     res.json({ post: draft, sourcePostId: original.id });
   } catch (e) { next(e); }
 }
