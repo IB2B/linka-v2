@@ -1,8 +1,8 @@
 -- Extra seed opportunities so the pipeline board feels alive.
 -- Uses the default pipeline + stage names created in 0012, scoped per user.
 
-SET @user  := _utf8mb4'00000000-0000-0000-0000-000000000002' COLLATE utf8mb4_general_ci;
-SET @admin := _utf8mb4'00000000-0000-0000-0000-000000000001' COLLATE utf8mb4_general_ci;
+SET @user  := _utf8mb4'00000000-0000-0000-0000-000000000002' COLLATE utf8mb4_unicode_ci;
+SET @admin := _utf8mb4'00000000-0000-0000-0000-000000000001' COLLATE utf8mb4_unicode_ci;
 
 -- Resolve the user's default pipeline + each stage by (pipeline_id, name).
 SELECT id INTO @pu FROM pipelines
