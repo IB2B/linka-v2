@@ -30,12 +30,7 @@ export async function FinalCta() {
             {t("body")}
           </p>
           <div className="flex flex-wrap justify-center gap-2 pt-1">
-            <Button
-              render={<Link href="/register" />}
-              nativeButton={false}
-              size="lg"
-              className="tracking-tight"
-            >
+            <Button render={<Link href="/register" />} nativeButton={false} size="lg">
               {t("ctaPrimary")} <ArrowUpRight />
             </Button>
             <Button
@@ -43,7 +38,6 @@ export async function FinalCta() {
               nativeButton={false}
               size="lg"
               variant="outline"
-              className="tracking-tight"
             >
               {t("ctaSecondary")}
             </Button>

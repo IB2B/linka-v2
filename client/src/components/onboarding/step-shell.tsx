@@ -30,8 +30,8 @@ export async function StepShell({ step, total = 3, title, description, children,
             </Link>
           )}
           <div className="flex items-center gap-2 text-sm font-bold">
-            <BrandLogo size={18} />
-            linka
+            <BrandLogo size={28} />
+            linka<span className="text-muted-foreground">.studio</span>
           </div>
         </div>
         <div className="flex justify-center">

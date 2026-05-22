@@ -91,15 +91,19 @@
       "signIn": "Anmelden", "getStarted": "Loslegen", "language": "Sprache"
     },
     "hero": {
-      "badge": "Verfügbar Juni 2026",
+      "badge": "Vertraut von schnell wachsenden Creators",
+      "badgeLink": "Mehr erfahren",
       "title1": "Hör auf, Beiträge zu schreiben.",
       "title2": "Bau dein Publikum auf.",
-      "body": "Linka lernt deine Stimme, erstellt markenkonforme Inhalte für jede Plattform und veröffentlicht zur richtigen Zeit — damit du dich aufs Bauen konzentrieren kannst.",
-      "ctaPrimary": "Kostenlos testen",
-      "ctaSecondary": "Preise ansehen",
-      "stat1": "2.400+ Creator",
-      "stat2": "184 Mio. ausgelieferte Impressionen",
-      "stat3": "7 Tage kostenlos testen"
+      "body": "Linka lernt deine Stimme, erstellt markenkonforme Inhalte für jede Plattform und veröffentlicht zur richtigen Zeit — ohne den Aufwand.",
+      "ctaPrimary": "Loslegen",
+      "ctaSecondary": "Demo buchen",
+      "stats": {
+        "posts": { "label": "Veröffentlichte Beiträge", "value": "184M" },
+        "reach": { "label": "Reichweite", "value": "12M+" },
+        "creators": { "label": "Aktive Creators", "value": "2.400+" },
+        "platforms": { "label": "Verbundene Plattformen", "value": "8" }
+      }
     },
     "socialProof": "Genutzt von Teams, die ausliefern bei",
     "features": { "eyebrow": "Funktionen", "title": "Ersetze sechs Tools. Behalte einen Workspace.", "sub": "Linka ist Autor, Designer, Planer und Analyst. Ein Abo, ein Kalender, alle Kanäle." },

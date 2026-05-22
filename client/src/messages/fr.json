@@ -91,15 +91,19 @@
       "signIn": "Connexion", "getStarted": "Commencer", "language": "Langue"
     },
     "hero": {
-      "badge": "Disponible juin 2026",
+      "badge": "Adopté par des créateurs en pleine croissance",
+      "badgeLink": "En savoir plus",
       "title1": "Arrêtez d'écrire des posts.",
       "title2": "Construisez votre audience.",
-      "body": "Linka apprend votre voix, génère du contenu cohérent sur chaque plateforme et publie au bon moment — pour que vous puissiez vous concentrer sur la création.",
-      "ctaPrimary": "Essai gratuit",
-      "ctaSecondary": "Voir les tarifs",
-      "stat1": "2 400+ créateurs",
-      "stat2": "184 M d'impressions diffusées",
-      "stat3": "Essai gratuit 7 jours"
+      "body": "Linka apprend votre voix, génère du contenu cohérent sur chaque plateforme et publie au bon moment — sans le travail répétitif.",
+      "ctaPrimary": "Commencer",
+      "ctaSecondary": "Réserver une démo",
+      "stats": {
+        "posts": { "label": "Posts publiés", "value": "184M" },
+        "reach": { "label": "Portée d'audience", "value": "12M+" },
+        "creators": { "label": "Créateurs actifs", "value": "2 400+" },
+        "platforms": { "label": "Plateformes connectées", "value": "8" }
+      }
     },
     "socialProof": "Utilisé par les équipes qui livrent chez",
     "features": { "eyebrow": "Fonctionnalités", "title": "Remplacez six outils. Gardez un seul workspace.", "sub": "Linka est l'auteur, le designer, le programmateur et l'analyste. Un abonnement, un calendrier, tous les canaux." },

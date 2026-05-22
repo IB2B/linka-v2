@@ -24,7 +24,7 @@ export function AuthShowcase() {
       />
 
       <div className="relative z-10 flex items-center gap-2 text-base font-semibold tracking-tight">
-        <BrandLogo size={22} className="text-zinc-900" />
+        <BrandLogo size={36} />
         linka<span className="text-zinc-500">.studio</span>
       </div>
 

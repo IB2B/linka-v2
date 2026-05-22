@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { RefreshCw } from "lucide-react";
+import { ArrowLeft, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
@@ -36,6 +37,13 @@ export function ThreadHeader({ conversation: c }: { conversation: Conversation }
   return (
     <>
       <div className="flex items-center gap-3 border-b px-4 py-3">
+        <Link
+          href="/dashboard/inbox"
+          aria-label="Back to conversations"
+          className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:hidden"
+        >
+          <ArrowLeft className="size-4" />
+        </Link>
         <InboxAvatar name={c.participantName} src={c.participantAvatar} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold">{c.participantName}</p>

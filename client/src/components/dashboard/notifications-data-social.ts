@@ -1,4 +1,15 @@
 import type { Notification } from "./notifications-data";
+import type { Platform } from "@/lib/zernio/zernio-account.types";
+
+const PLATFORM_KEYS: ReadonlySet<Platform> = new Set([
+  "linkedin", "facebook", "instagram", "twitter", "threads",
+  "tiktok", "pinterest", "bluesky", "reddit",
+]);
+
+function toPlatform(value: string): Platform | undefined {
+  const v = value.toLowerCase() === "x" ? "twitter" : value.toLowerCase();
+  return PLATFORM_KEYS.has(v as Platform) ? (v as Platform) : undefined;
+}
 
 export type SocialNotificationApiItem = {
   id: string;
@@ -29,5 +40,6 @@ export function buildSocialNotifications(
     href: `${prefix}/analytics/${s.postId}`,
     at: s.createdAt,
     seen: s.seenAt !== null,
+    platform: toPlatform(s.platform),
   }));
 }
