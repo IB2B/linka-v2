@@ -41,17 +41,21 @@ export function IdeaRow({ idea }: { idea: TrendIdea }) {
 
   return (
     <div className="flex items-start gap-3 rounded-lg border bg-card/40 p-3">
-      <div className="flex-1 space-y-1.5">
-        <p className="text-sm leading-snug">{idea.hook}</p>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+      <div className="min-w-0 flex-1 space-y-1.5">
+        <p className="break-words text-sm leading-snug">{idea.hook}</p>
+        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           {idea.angle ? <span className="rounded bg-muted px-1.5 py-0.5">{idea.angle}</span> : null}
           <span className="rounded bg-muted px-1.5 py-0.5">{platform}</span>
           <ScoreBar score={idea.score} />
         </div>
       </div>
-      <Button size="sm" variant="outline" disabled={pending} onClick={onGenerate}>
+      <Button
+        size="sm" variant="outline" disabled={pending} onClick={onGenerate}
+        aria-label="Generate"
+        className="shrink-0 px-2 sm:px-3"
+      >
         {pending ? <Spinner aria-hidden /> : <Sparkles className="size-3.5" />}
-        Generate
+        <span className="hidden sm:inline">Generate</span>
       </Button>
     </div>
   );

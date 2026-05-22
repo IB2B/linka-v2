@@ -91,15 +91,19 @@
       "signIn": "Accedi", "getStarted": "Inizia", "language": "Lingua"
     },
     "hero": {
-      "badge": "Disponibile giugno 2026",
+      "badge": "Scelto da creator in rapida crescita",
+      "badgeLink": "Scopri di più",
       "title1": "Smetti di scrivere post.",
       "title2": "Inizia a costruire il tuo pubblico.",
-      "body": "Linka impara la tua voce, genera contenuti in linea con il tuo brand su ogni piattaforma e pubblica al momento giusto — così puoi concentrarti sul costruire.",
-      "ctaPrimary": "Prova gratis",
-      "ctaSecondary": "Vedi prezzi",
-      "stat1": "2.400+ creator",
-      "stat2": "184 mln di impression generate",
-      "stat3": "Prova gratuita 7 giorni"
+      "body": "Linka impara la tua voce, genera contenuti in linea con il tuo brand su ogni piattaforma e pubblica al momento giusto — senza il lavoro ripetitivo.",
+      "ctaPrimary": "Inizia",
+      "ctaSecondary": "Prenota una demo",
+      "stats": {
+        "posts": { "label": "Post pubblicati", "value": "184M" },
+        "reach": { "label": "Pubblico raggiunto", "value": "12M+" },
+        "creators": { "label": "Creator attivi", "value": "2.400+" },
+        "platforms": { "label": "Piattaforme collegate", "value": "8" }
+      }
     },
     "socialProof": "Usato dai team che spediscono in",
     "features": { "eyebrow": "Funzionalità", "title": "Sostituisci sei strumenti. Tieni un solo workspace.", "sub": "Linka è scrittore, designer, scheduler e analista. Un abbonamento, un calendario, ogni canale." },

@@ -47,13 +47,13 @@ export function BillingDashboard({ overview, confirmError }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <div className="flex items-start justify-between gap-4 flex-wrap">
+    <div className="flex flex-col gap-6 p-4 sm:p-6">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:flex-wrap">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Billing</h1>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Billing</h1>
           <p className="text-sm text-muted-foreground mt-1.5">Manage your plan, payment methods, and invoices.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <BillingUpgradeButton tier={tier} />
           {overview.hasStripeCustomer && (
             <Button variant="outline" onClick={openPortal} disabled={portalPending} className="gap-2 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary">

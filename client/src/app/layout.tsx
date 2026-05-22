@@ -22,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "linka — posts that actually convert",
+  title: "linka.studio — posts that actually convert",
   description:
     "Linka writes, designs and schedules every social post in your voice — across LinkedIn, Instagram and X.",
 };

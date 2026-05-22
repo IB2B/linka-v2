@@ -43,7 +43,7 @@ export function PricingCard({ plan }: { plan: Plan }) {
         nativeButton={false}
         size="lg"
         variant={hi ? "default" : "outline"}
-        className="w-full tracking-tight"
+        className="w-full"
       >
         {plan.cta}
       </Button>

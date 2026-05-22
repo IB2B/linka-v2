@@ -66,11 +66,15 @@ export function ReplyComposer({ conversationId, accountId }: Props) {
           value={text} onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
           placeholder={t("placeholder")}
-          rows={1} className="max-h-32 min-h-9 resize-none"
+          rows={1} className="max-h-32 min-h-9 flex-1 min-w-0 resize-none"
         />
-        <Button type="button" onClick={send} disabled={!canSend} size="lg" className="self-stretch">
+        <Button
+          type="button" onClick={send} disabled={!canSend}
+          size="icon" aria-label={t("send")}
+          className="size-9 shrink-0 sm:h-10 sm:w-auto sm:px-4"
+        >
           {pending ? <Spinner aria-hidden /> : <Send aria-hidden className="size-4" />}
-          {t("send")}
+          <span className="hidden sm:inline">{t("send")}</span>
         </Button>
       </div>
     </div>

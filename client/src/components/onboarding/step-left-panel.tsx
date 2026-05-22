@@ -9,8 +9,8 @@ export function StepLeftPanel({ step }: Props) {
   return (
     <div className="relative flex h-full w-full flex-col justify-between overflow-hidden bg-zinc-950 p-10 text-white">
       <div className="flex items-center gap-3 text-xl font-bold tracking-tight">
-        <BrandLogo size={22} className="text-white" />
-        linka
+        <BrandLogo size={40} />
+        linka<span className="text-white/60">.studio</span>
       </div>
 
       <div className="space-y-6">
@@ -32,7 +32,7 @@ export function StepLeftPanel({ step }: Props) {
         </ul>
       </div>
 
-      <p className="text-xs text-white/30">© {new Date().getFullYear()} linka</p>
+      <p className="text-xs text-white/30">© {new Date().getFullYear()} linka.studio</p>
     </div>
   );
 }

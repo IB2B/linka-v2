@@ -10,9 +10,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { refreshTrendsAction } from "@/app/dashboard/trends/actions";
 import { SUGGESTED_TOPICS } from "@/lib/trends/suggested-topics";
 
-export function TopicPicker() {
+type Props = { topics?: string[] };
+
+export function TopicPicker({ topics }: Props) {
   const [topic, setTopic] = useState("");
   const [pending, start] = useTransition();
+  const chips = topics && topics.length > 0 ? topics : SUGGESTED_TOPICS;
 
   function refresh(value?: string) {
     const t = (value ?? topic).trim();
@@ -39,7 +42,7 @@ export function TopicPicker() {
         </Button>
       </div>
       <div className="flex flex-wrap gap-1.5">
-        {SUGGESTED_TOPICS.map((s) => (
+        {chips.map((s) => (
           <button
             key={s}
             type="button"

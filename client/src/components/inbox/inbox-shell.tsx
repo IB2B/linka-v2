@@ -1,5 +1,6 @@
 import { ConversationList } from "./conversation-list";
 import { InboxError } from "./inbox-error";
+import { cn } from "@/lib/utils";
 import { getConversations } from "@/lib/inbox/get-conversations";
 import { getAccounts } from "@/lib/zernio/get-accounts";
 
@@ -16,8 +17,8 @@ export async function InboxShell({ activeId, platform, children }: Props) {
   ]);
 
   return (
-    <div className="grid h-[calc(100vh-5.5rem)] grid-cols-1 overflow-hidden rounded-xl border bg-card lg:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className="hidden border-r lg:block">
+    <div className="grid h-[calc(100svh-5.5rem)] grid-cols-1 overflow-hidden rounded-xl border bg-card lg:grid-cols-[340px_minmax(0,1fr)]">
+      <aside className={cn("border-r lg:block", activeId ? "hidden" : "block")}>
         {result.ok ? (
           <ConversationList
             conversations={result.data.conversations}
@@ -38,7 +39,9 @@ export async function InboxShell({ activeId, platform, children }: Props) {
           />
         )}
       </aside>
-      <section className="flex h-full min-h-0 flex-col">{children}</section>
+      <section className={cn("h-full min-h-0 flex-col lg:flex", activeId ? "flex" : "hidden lg:flex")}>
+        {children}
+      </section>
     </div>
   );
 }

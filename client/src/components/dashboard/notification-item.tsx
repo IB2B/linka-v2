@@ -2,8 +2,10 @@ import Link from "next/link";
 import { AlertTriangle, Calendar, Check, Heart, LifeBuoy, MessageCircle, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { PlatformIcon } from "@/components/accounts/platform-icon";
 import type { Notification, NotificationKind } from "./notifications-data";
 import { NotificationPriorityPill } from "./notification-priority-pill";
+import { PLATFORM_TONES } from "./notification-platform-tone";
 
 const ICONS: Record<NotificationKind, LucideIcon> = {
   failed: AlertTriangle, upcoming: Calendar, posted: Calendar, ticket: LifeBuoy,
@@ -50,8 +52,8 @@ export function NotificationItem({ n, onClick, onMarkRead }: Props) {
       {unread && (
         <span aria-hidden className="absolute left-1 top-3.5 size-1.5 rounded-full bg-sky-500" />
       )}
-      <div className={cn("mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold", TONES[n.kind])}>
-        {n.avatarLabel ?? <Icon className="size-3.5" />}
+      <div className={cn("mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold", n.platform ? PLATFORM_TONES[n.platform] : TONES[n.kind])}>
+        {n.avatarLabel ?? (n.platform ? <PlatformIcon platform={n.platform} className="size-3.5" /> : <Icon className="size-3.5" />)}
       </div>
       <div className="min-w-0 flex-1 space-y-0.5">
         <div className="flex items-center gap-1.5">

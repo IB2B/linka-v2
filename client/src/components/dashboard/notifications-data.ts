@@ -1,3 +1,5 @@
+import type { Platform } from "@/lib/zernio/zernio-account.types";
+
 export type NotificationKind = "failed" | "upcoming" | "posted" | "ticket" | "likes" | "comments";
 
 export type NotificationPriority = "urgent" | "high" | "normal" | "low";
@@ -12,6 +14,7 @@ export type Notification = {
   seen?: boolean;
   priority?: NotificationPriority;
   avatarLabel?: string;
+  platform?: Platform;
 };
 
 export type NotificationApiItem = {

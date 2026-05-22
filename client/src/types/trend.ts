@@ -17,4 +17,8 @@ export type TrendIdea = {
   score: number;
 };
 
-export type TrendsPayload = { trends: Trend[]; ideas: TrendIdea[] };
+export type TrendsPayload = {
+  trends: Trend[];
+  ideas: TrendIdea[];
+  suggestedTopics: string[];
+};

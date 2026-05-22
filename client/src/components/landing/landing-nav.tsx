@@ -14,43 +14,37 @@ export async function LandingNav() {
     { href: "#faq", label: t("faq") },
   ];
   return (
-    <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between px-6 pt-6">
-      <Link href="/" className="flex items-center gap-2">
-        <BrandLogo size={16} className="text-[#0F1113]" />
-        <span className="text-sm font-semibold tracking-tight text-[#0F1113]">
-          linka<span className="text-[#A3A3A3]">.studio</span>
-        </span>
-      </Link>
-      <nav className="hidden items-center gap-7 md:flex">
-        {links.map((l) => (
-          <a
-            key={l.href}
-            href={l.href}
-            className="text-[13px] tracking-tight text-[#525252] transition hover:text-[#0F1113]"
+    <header className="relative z-20 border-b border-[#0F1113]/[0.06] bg-white/70 backdrop-blur">
+      <div className="mx-auto grid h-16 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-6">
+        <Link href="/" className="flex items-center gap-2">
+          <BrandLogo size={28} />
+          <span className="text-[15px] font-semibold tracking-tight text-[#0F1113]">
+            linka<span className="text-[#A3A3A3]">.studio</span>
+          </span>
+        </Link>
+        <nav className="hidden items-center gap-8 justify-self-center md:flex">
+          {links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-[14px] tracking-tight text-[#525252] transition hover:text-[#0F1113]"
+            >
+              {l.label}
+            </a>
+          ))}
+        </nav>
+        <div className="flex items-center gap-3 justify-self-end">
+          <LandingLanguageSwitch />
+          <Link
+            href="/login"
+            className="hidden text-[14px] tracking-tight text-[#0F1113] transition hover:text-[#525252] sm:inline"
           >
-            {l.label}
-          </a>
-        ))}
-      </nav>
-      <div className="flex items-center gap-1.5">
-        <LandingLanguageSwitch />
-        <Button
-          render={<Link href="/login" />}
-          nativeButton={false}
-          variant="ghost"
-          size="sm"
-          className="hidden tracking-tight sm:inline-flex"
-        >
-          {t("signIn")}
-        </Button>
-        <Button
-          render={<Link href="/register" />}
-          nativeButton={false}
-          size="sm"
-          className="tracking-tight"
-        >
-          {t("getStarted")}
-        </Button>
+            {t("signIn")}
+          </Link>
+          <Button render={<Link href="/register" />} nativeButton={false}>
+            {t("getStarted")}
+          </Button>
+        </div>
       </div>
     </header>
   );

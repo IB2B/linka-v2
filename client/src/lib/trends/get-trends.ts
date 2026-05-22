@@ -2,7 +2,7 @@ import { cookies, headers } from "next/headers";
 
 import type { TrendsPayload } from "@/types/trend";
 
-const EMPTY: TrendsPayload = { trends: [], ideas: [] };
+const EMPTY: TrendsPayload = { trends: [], ideas: [], suggestedTopics: [] };
 
 export async function getTrends(): Promise<TrendsPayload> {
   const [cookieStore, headerStore] = await Promise.all([cookies(), headers()]);

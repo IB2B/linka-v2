@@ -11,7 +11,7 @@ import { UpgradeWall } from "@/components/billing/upgrade-wall";
 export default async function TrendsPage() {
   const access = await checkPaidFeature("trends");
   if (!access.hasAccess) return <UpgradeWall feature="trends" />;
-  const [{ trends, ideas }, t] = await Promise.all([
+  const [{ trends, ideas, suggestedTopics }, t] = await Promise.all([
     getTrends(), getTranslations("trends"),
   ]);
 
@@ -21,7 +21,7 @@ export default async function TrendsPage() {
         <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <p className="text-sm text-muted-foreground">{t("description")}</p>
       </div>
-      <TopicPicker />
+      <TopicPicker topics={suggestedTopics} />
       <Separator className="my-2" />
       {trends.length === 0 ? <TrendsEmpty /> : <TrendsGrid trends={trends} ideas={ideas} />}
     </>

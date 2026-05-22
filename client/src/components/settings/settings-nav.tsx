@@ -26,7 +26,7 @@ type Props = { active: string; onSelect: (id: string) => void };
 export function SettingsNav({ active, onSelect }: Props) {
   const t = useTranslations("settings.sections");
   return (
-    <nav className="sticky top-6 flex flex-col gap-0.5">
+    <nav className="-mx-2 flex gap-1 overflow-x-auto px-2 pb-1 lg:sticky lg:top-6 lg:mx-0 lg:flex-col lg:gap-0.5 lg:overflow-visible lg:px-0 lg:pb-0">
       {SECTIONS.map(({ id, icon: Icon }) => {
         const isDanger = id === "danger";
         const isActive = active === id;
@@ -35,7 +35,7 @@ export function SettingsNav({ active, onSelect }: Props) {
             key={id}
             onClick={() => onSelect(id)}
             className={cn(
-              "flex cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm transition-colors",
+              "flex shrink-0 cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-sm transition-colors lg:shrink",
               isActive && isDanger && "bg-destructive/10 font-medium text-destructive",
               isActive && !isDanger && "bg-muted font-medium text-foreground",
               !isActive && isDanger && "text-destructive/70 hover:bg-destructive/5 hover:text-destructive",

@@ -11,8 +11,10 @@ export function TrendCard({ trend, ideas }: Props) {
     <article className="space-y-3 rounded-xl border bg-card p-4">
       <header className="space-y-1.5">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-sm font-semibold leading-snug">{trend.title}</h3>
-          <ScoreBar score={trend.score} />
+          <h3 className="min-w-0 flex-1 break-words text-sm font-semibold leading-snug">{trend.title}</h3>
+          <div className="shrink-0">
+            <ScoreBar score={trend.score} />
+          </div>
         </div>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           {trend.source ? <span>{trend.source}</span> : null}
