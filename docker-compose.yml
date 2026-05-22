@@ -1,6 +1,6 @@
 services:
   api:
-    build: .
+    build: ./server
     restart: unless-stopped
     ports:
       - "4000:4000"
