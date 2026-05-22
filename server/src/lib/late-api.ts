@@ -1,6 +1,3 @@
-const BASE = process.env.LATE_API_URL;
-if (!BASE) throw new Error("LATE_API_URL env var is required");
-
 export class LateApiError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
@@ -8,10 +5,12 @@ export class LateApiError extends Error {
 export async function lateFetch<T>(
   path: string, init: RequestInit = {},
 ): Promise<T> {
+  const base = process.env.LATE_API_URL;
+  if (!base) throw new LateApiError(500, "LATE_API_URL not configured");
   const key = process.env.LATE_API_KEY;
   if (!key) throw new LateApiError(500, "LATE_API_KEY not configured");
 
-  const res = await fetch(`${BASE}${path}`, {
+  const res = await fetch(`${base}${path}`, {
     ...init,
     headers: {
       "Content-Type": "application/json",
