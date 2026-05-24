@@ -25,6 +25,8 @@ export default async function AdminLayout({
     avatarUrl: user.avatarUrl,
     role: user.role,
     tier: user.tier,
+    postsUsed: user.postsUsed,
+    postsLimit: user.postsLimit,
     features: user.features,
   };
 
