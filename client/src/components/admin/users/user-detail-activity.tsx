@@ -6,9 +6,9 @@ import type { ActivityEvent } from "@/types/admin";
 export function UserDetailActivity({ events }: { events: ActivityEvent[] }) {
   if (events.length === 0) {
     return (
-      <p className="text-sm tracking-tight text-muted-foreground">
+      <div className="rounded-xl border border-dashed bg-muted/30 px-4 py-6 text-center text-sm tracking-tight text-muted-foreground">
         No activity recorded yet.
-      </p>
+      </div>
     );
   }
   return (

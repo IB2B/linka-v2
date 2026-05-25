@@ -1,28 +1,27 @@
-import { Card } from "@/components/ui/card";
 import type { AdminUserDetail } from "@/types/admin";
 
 const fmt = new Intl.NumberFormat("en-US");
 
-type Props = { stats: AdminUserDetail["stats"] };
+type Item = { label: string; value: number };
 
-export function UserDetailStats({ stats }: Props) {
-  const items = [
-    { label: "Generated", value: fmt.format(stats.generated) },
-    { label: "Published", value: fmt.format(stats.published) },
-    { label: "Failed", value: fmt.format(stats.failed) },
-    { label: "Last 30 days", value: fmt.format(stats.last30d) },
+export function UserDetailStats({ stats }: { stats: AdminUserDetail["stats"] }) {
+  const items: Item[] = [
+    { label: "Generated",    value: stats.generated },
+    { label: "Published",    value: stats.published },
+    { label: "Failed",       value: stats.failed },
+    { label: "Last 30 days", value: stats.last30d },
   ];
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-      {items.map((item) => (
-        <Card key={item.label} size="sm" className="flex flex-col gap-0.5 py-4">
-          <span className="text-xs font-medium tracking-tight text-muted-foreground">
-            {item.label}
+    <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-border ring-1 ring-foreground/10 sm:grid-cols-4">
+      {items.map((i) => (
+        <div key={i.label} className="flex flex-col gap-0.5 bg-card px-3 py-2.5">
+          <span className="text-[11px] tracking-tight text-muted-foreground">
+            {i.label}
           </span>
-          <span className="text-2xl font-semibold tabular-nums tracking-tight">
-            {item.value}
+          <span className="text-lg font-semibold tabular-nums tracking-tight">
+            {fmt.format(i.value)}
           </span>
-        </Card>
+        </div>
       ))}
     </div>
   );

@@ -41,7 +41,7 @@ export function UserQuickViewSheet({ user, onClose }: Props) {
   return (
     <Sheet open onOpenChange={(o) => !o && onClose()}>
       <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-md">
-        <SheetHeader className="border-b">
+        <SheetHeader className="gap-3 border-b">
           <div className="flex items-start gap-3">
             <InboxAvatar name={fullName} src={user.avatarUrl} />
             <div className="min-w-0 flex-1">
@@ -49,12 +49,15 @@ export function UserQuickViewSheet({ user, onClose }: Props) {
               <SheetDescription className="truncate">{user.email}</SheetDescription>
             </div>
           </div>
-          <Link
-            href={`/admin/users/${user.id}`}
-            className="mt-3 inline-flex w-fit items-center gap-1 text-xs font-medium tracking-tight text-muted-foreground hover:text-foreground"
+          <Button
+            variant="outline"
+            size="xs"
+            className="w-fit"
+            render={<Link href={`/admin/users/${user.id}`} />}
+            nativeButton={false}
           >
-            Open full page <ArrowUpRight className="size-3" />
-          </Link>
+            Open full page <ArrowUpRight data-icon="inline-end" />
+          </Button>
         </SheetHeader>
         <div className="px-4 pb-6">
           {loading && (
