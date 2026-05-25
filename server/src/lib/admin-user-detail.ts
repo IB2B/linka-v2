@@ -21,11 +21,11 @@ export async function fetchUserDetail(id: string, month?: string) {
 
   const [[c]] = await db.query<any[]>(
     `SELECT
-       (SELECT COUNT(*) FROM generated_content WHERE user_id = ? ${dateWhere}) AS generated,
-       (SELECT COUNT(*) FROM posting_history WHERE user_id = ? AND status='success' ${dateWhere}) AS published,
-       (SELECT COUNT(*) FROM posting_history WHERE user_id = ? AND status='failed' ${dateWhere}) AS failed,
+       (SELECT COUNT(*) FROM generated_content WHERE user_id = ? ${dateWhere}) AS \`generated\`,
+       (SELECT COUNT(*) FROM posting_history WHERE user_id = ? AND status='success' ${dateWhere}) AS \`published\`,
+       (SELECT COUNT(*) FROM posting_history WHERE user_id = ? AND status='failed' ${dateWhere}) AS \`failed\`,
        (SELECT COUNT(*) FROM generated_content WHERE user_id = ?
-          AND created_at >= NOW() - INTERVAL 30 DAY) AS last30d`,
+          AND created_at >= NOW() - INTERVAL 30 DAY) AS \`last30d\``,
     [id, ...dateParams, id, ...dateParams, id, ...dateParams, id],
   );
 
