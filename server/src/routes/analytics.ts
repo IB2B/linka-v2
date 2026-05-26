@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticate } from "../middleware/auth";
-import { requireProFeature } from "../middleware/require-feature";
+import { requireBusinessFeature } from "../middleware/require-feature";
 import { getPostAnalytics } from "../controllers/analytics.controller";
 import { getAnalyticsSummary } from "../controllers/analytics-summary.controller";
 import { getPostTimeseries } from "../controllers/analytics-timeseries.controller";
@@ -10,7 +10,7 @@ import { getImageRoi } from "../controllers/analytics-image-roi.controller";
 
 const router = Router();
 router.use(authenticate);
-router.use(requireProFeature);
+router.use(requireBusinessFeature);
 
 router.get("/summary", getAnalyticsSummary);
 router.get("/daily", getDailyEngagement);

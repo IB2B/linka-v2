@@ -1,32 +1,13 @@
-"use client";
-
-import { useState } from "react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Spinner } from "@/components/ui/spinner";
 import { PlanFeature } from "@/components/billing/plan-feature";
+import { PlanCardButton } from "@/components/billing/plan-card-button";
 import { cn } from "@/lib/utils";
-import { stripeService } from "@/lib/api/services";
-import { getErrorMessage } from "@/lib/api/http";
 import type { BillingPlan, PlanTier } from "@/types/billing-plan";
 
 type Props = { plan: BillingPlan; currentTier?: PlanTier };
 
 export function PlanCard({ plan, currentTier }: Props) {
-  const [pending, setPending] = useState(false);
   const isCurrent = currentTier === plan.id;
-
-  async function handleChoose() {
-    setPending(true);
-    try {
-      const { url } = await stripeService.checkout({ tier: plan.id });
-      window.location.href = url;
-    } catch (e) {
-      toast.error(getErrorMessage(e));
-      setPending(false);
-    }
-  }
 
   return (
     <Card
@@ -55,15 +36,7 @@ export function PlanCard({ plan, currentTier }: Props) {
         <ul className="space-y-2">
           {plan.features.map((f) => <PlanFeature key={f}>{f}</PlanFeature>)}
         </ul>
-        <Button
-          className="w-full gap-1.5"
-          variant={plan.highlighted ? "default" : "outline"}
-          disabled={isCurrent || pending}
-          onClick={handleChoose}
-        >
-          {pending && <Spinner size="xs" />}
-          {isCurrent ? "Current plan" : "Choose plan"}
-        </Button>
+        <PlanCardButton plan={plan} isCurrent={isCurrent} />
       </CardContent>
     </Card>
   );

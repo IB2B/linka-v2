@@ -1,12 +1,9 @@
 import { TierLegendDot } from "@/components/admin/subscriptions/tier-mix-bar";
 import { formatMoney } from "@/lib/admin/format-money";
+import { tierLabel } from "@/lib/billing/format";
 import type { SubsByTier } from "@/types/admin-subscription";
 
 const fmt = new Intl.NumberFormat("en-US");
-
-const LABEL: Record<string, string> = {
-  free: "Free", starter: "Starter", pro: "Pro", scale: "Scale",
-};
 
 export function TierLegend({ tiers, totalMrr }: { tiers: SubsByTier[]; totalMrr: number }) {
   if (tiers.length === 0) return null;
@@ -18,7 +15,7 @@ export function TierLegend({ tiers, totalMrr }: { tiers: SubsByTier[]; totalMrr:
           <div key={t.tier} className="flex items-center justify-between gap-3 text-sm">
             <div className="flex items-center gap-2">
               <TierLegendDot tier={t.tier} />
-              <span className="font-medium tracking-tight">{LABEL[t.tier] ?? t.tier}</span>
+              <span className="font-medium tracking-tight">{tierLabel(t.tier)}</span>
               <span className="text-xs tracking-tight text-muted-foreground">
                 {fmt.format(t.count)}
               </span>

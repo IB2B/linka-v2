@@ -2,7 +2,7 @@ import { CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { TIER_PRICE, TIER_LABEL, STATUS_LABEL } from "@/lib/billing/format";
+import { TIER_PRICE, STATUS_LABEL, tierLabel } from "@/lib/billing/format";
 
 type Props = {
   tier: string;
@@ -12,7 +12,9 @@ type Props = {
 };
 
 export function BillingCurrentPlanCard({ tier, status, postsThisMonth, postsLimit }: Props) {
-  const price = TIER_PRICE[tier] ?? 0;
+  const tierKey = tier.toLowerCase();
+  const isEnterprise = tierKey === "enterprise";
+  const price = TIER_PRICE[tierKey] ?? 0;
   const pct = postsLimit > 0 ? Math.min(100, Math.round((postsThisMonth / postsLimit) * 100)) : 0;
   const statusKey = status.toUpperCase();
 
@@ -21,7 +23,7 @@ export function BillingCurrentPlanCard({ tier, status, postsThisMonth, postsLimi
       <CardHeader className="pb-3">
         <CardDescription className="text-xs font-medium uppercase tracking-wider">Current plan</CardDescription>
         <div className="flex items-baseline justify-between gap-2 mt-1">
-          <CardTitle className="text-2xl font-semibold tracking-tight">{TIER_LABEL[tier] ?? tier}</CardTitle>
+          <CardTitle className="text-2xl font-semibold tracking-tight">{tierLabel(tier)}</CardTitle>
           <Badge variant="secondary" className={cn("gap-1",
             statusKey === "ACTIVE" ? "bg-green-500/15 text-green-600 border-green-500/30" :
             statusKey === "PAST_DUE" ? "bg-destructive/15 text-destructive border-destructive/30" :
@@ -34,8 +36,12 @@ export function BillingCurrentPlanCard({ tier, status, postsThisMonth, postsLimi
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-semibold tracking-tight tabular-nums">€{price}</span>
-          <span className="text-sm text-muted-foreground">/month</span>
+          <span className="text-3xl font-semibold tracking-tight tabular-nums">
+            {isEnterprise ? "Custom" : `€${price}`}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            {isEnterprise ? "pricing" : "/month"}
+          </span>
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-xs">

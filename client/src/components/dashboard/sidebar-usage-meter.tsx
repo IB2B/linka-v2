@@ -1,21 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { tierLabel } from "@/lib/billing/format";
 
 import type { DashboardUser } from "@/types/dashboard-user";
-
-const TIER_LABEL: Record<string, string> = {
-  free: "Free",
-  starter: "Starter",
-  pro: "Pro",
-  scale: "Scale",
-  professional: "Creator",
-  enterprise: "Enterprise",
-};
-
-function tierLabel(tier: string): string {
-  return TIER_LABEL[tier] ?? tier.charAt(0).toUpperCase() + tier.slice(1);
-}
 
 export function SidebarUsageMeter({ user }: { user: DashboardUser }) {
   const t = useTranslations("dashboard.sidebarMeter");

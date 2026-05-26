@@ -1,9 +1,9 @@
 import type { Response, NextFunction } from "express";
 import { db } from "../lib/db";
-import { hasProFeature } from "../lib/plan-features";
+import { hasBusinessFeature } from "../lib/plan-features";
 import { type AuthRequest } from "./auth";
 
-export async function requireProFeature(
+export async function requireBusinessFeature(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
@@ -12,8 +12,8 @@ export async function requireProFeature(
       [req.user!.id],
     );
     const tier = String(rows[0]?.plan_tier ?? "free").toLowerCase();
-    if (!hasProFeature(tier)) {
-      res.status(403).json({ error: "This feature requires the Pro plan." });
+    if (!hasBusinessFeature(tier)) {
+      res.status(403).json({ error: "This feature requires the Business plan." });
       return;
     }
     next();

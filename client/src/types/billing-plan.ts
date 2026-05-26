@@ -1,5 +1,7 @@
 export type PlanTier = "starter" | "pro" | "scale" | "enterprise";
 
+export type PlanCta = "checkout" | "contact";
+
 export type BillingPlan = {
   id: PlanTier;
   name: string;
@@ -7,6 +9,8 @@ export type BillingPlan = {
   cadence: string;
   description: string;
   features: readonly string[];
+  cta?: PlanCta;
+  contactHref?: string;
   highlighted?: boolean;
   badge?: string;
 };
