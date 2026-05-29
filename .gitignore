@@ -43,6 +43,12 @@ next-env.d.ts
 # server uploads (local-disk avatar storage)
 server/uploads/
 
+# database dumps / backups — NEVER commit, contains production data
+backups/
+*.sql
+*.sql.gz
+!server/migrations/*.sql
+
 # local tooling
 .claude/
 skills-lock.json
