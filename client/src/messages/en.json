@@ -87,7 +87,7 @@
   },
   "landing": {
     "nav": {
-      "features": "Features", "process": "Process", "pricing": "Pricing", "faq": "FAQ",
+      "features": "Features", "process": "Process", "tour": "Product", "pricing": "Pricing", "faq": "FAQ",
       "signIn": "Login", "getStarted": "Get started", "language": "Language"
     },
     "hero": {
@@ -105,12 +105,33 @@
         "platforms": { "label": "Platforms connected", "value": "8" }
       }
     },
-    "socialProof": "Used by teams shipping at",
+    "platforms": {
+      "eyebrow": "Publish natively to",
+      "note": "Official APIs. No browser extension, no copy-paste, no missed posts."
+    },
     "features": { "eyebrow": "Features", "title": "Replace six tools. Keep one workspace.", "sub": "Linka is the writer, the designer, the scheduler and the analyst. One subscription, one calendar, every channel." },
+    "tour": {
+      "eyebrow": "Product",
+      "title": "A closer look at how the magic happens.",
+      "sub": "Four pieces working together — voice, scheduling, inbox and trends — so you ship content that actually sounds like you."
+    },
     "process": { "eyebrow": "Process", "title": "From signup to first post in three minutes.", "stepLabel": "Step" },
+    "useCases": {
+      "eyebrow": "Built for",
+      "title": "Whoever you ship as.",
+      "sub": "Same engine, tuned to the way you work."
+    },
     "testimonials": { "eyebrow": "Customers", "title": "The work speaks. They speak too." },
+    "metrics": {
+      "eyebrow": "By the numbers",
+      "title": "Compounding output. Without the burnout."
+    },
     "comparison": { "eyebrow": "Compared", "title": "Linka vs. how you're doing it now." },
     "pricing": { "eyebrow": "Pricing", "title": "One coffee a day. A whole content team.", "sub": "7-day free trial on every paid plan. No card until day 7. Cancel any time." },
+    "integrations": {
+      "eyebrow": "Powered by",
+      "title": "Best-in-class models. Boring, reliable plumbing."
+    },
     "faq": { "eyebrow": "FAQ", "title": "Things people ask before signing." },
     "finalCta": {
       "badge": "Booking June 2026",
@@ -123,7 +144,7 @@
       "tagline": "AI-led social growth for founders who'd rather ship than post.",
       "product": "Product", "company": "Company", "legal": "Legal",
       "copyright": "© {year} linka — all rights reserved",
-      "designed": "Designed with ♥ from somewhere on Earth"
+      "developedBy": "Developed by"
     }
   },
   "onboarding": {

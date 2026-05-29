@@ -42,7 +42,17 @@ export async function LandingFooter() {
       <div className="border-t border-[#E5E5E5]">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-5 text-[12px] tracking-tight text-[#737373]">
           <span>{t("copyright", { year: new Date().getFullYear() })}</span>
-          <span>{t("designed")}</span>
+          <span>
+            {t("developedBy")}{" "}
+            <a
+              href="https://intelligentb2b.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-[#0F1113] transition hover:text-[#6D5FF9]"
+            >
+              intelligentb2b
+            </a>
+          </span>
         </div>
       </div>
     </footer>

@@ -9,6 +9,7 @@ export async function LandingNav() {
   const t = await getTranslations("landing.nav");
   const links = [
     { href: "#features", label: t("features") },
+    { href: "#tour", label: t("tour") },
     { href: "#process", label: t("process") },
     { href: "#pricing", label: t("pricing") },
     { href: "#faq", label: t("faq") },
