@@ -25,7 +25,9 @@ services:
       mysql:
         condition: service_healthy
     ports:
-      - "4000:4000"
+      # Elestio's reverse proxy forwards the public domain to host :3000,
+      # while the app listens on :4000 inside the container.
+      - "3000:4000"
     environment:
       DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3306/${MYSQL_DATABASE:-linka}
     env_file:
