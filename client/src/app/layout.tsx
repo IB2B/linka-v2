@@ -43,7 +43,7 @@ export default async function RootLayout({
       </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider defaultTheme="light" disableTransitionOnChange>
+          <ThemeProvider defaultTheme="dark" disableTransitionOnChange>
             <TooltipProvider>{children}</TooltipProvider>
             <Toaster position="top-right" richColors closeButton />
           </ThemeProvider>
