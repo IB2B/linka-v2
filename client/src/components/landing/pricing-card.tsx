@@ -43,7 +43,11 @@ export function PricingCard({ plan }: { plan: Plan }) {
         nativeButton={false}
         size="lg"
         variant={hi ? "default" : "outline"}
-        className="w-full"
+        className={`w-full ${
+          hi
+            ? ""
+            : "border-[#D4D4D4] text-[#0F1113] hover:!border-[#0F1113] hover:!bg-[#0F1113] hover:!text-white"
+        }`}
       >
         {plan.cta}
       </Button>

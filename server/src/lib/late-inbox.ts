@@ -38,10 +38,14 @@ type LatePage<T> = {
   nextCursor?: string | null;
 };
 
+function toLatePlatform(p: string): string {
+  return p === "x" ? "twitter" : p;
+}
+
 export async function listInboxConversations(userId: string, platform?: string) {
   const profileId = await getOrCreateLateProfile(userId);
   const qs = new URLSearchParams({ profileId, limit: "10" });
-  if (platform) qs.set("platform", platform);
+  if (platform) qs.set("platform", toLatePlatform(platform));
   const url = `/inbox/conversations?${qs.toString()}`;
   const r = await lateFetch<LatePage<RawConversation>>(url);
   const list = r.data ?? r.conversations ?? [];

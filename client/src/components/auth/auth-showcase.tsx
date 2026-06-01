@@ -12,30 +12,30 @@ export function AuthShowcase() {
     <>
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(60%_55%_at_30%_20%,#000_0%,transparent_80%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(60%_55%_at_30%_20%,#000_0%,transparent_80%)] dark:bg-[linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-32 -top-32 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(109,95,249,0.12),transparent_70%)]"
+        className="pointer-events-none absolute -left-32 -top-32 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(109,95,249,0.12),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(109,95,249,0.22),transparent_70%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-40 -right-32 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.04),transparent_70%)]"
+        className="pointer-events-none absolute -bottom-40 -right-32 size-[480px] rounded-full bg-[radial-gradient(circle,rgba(0,0,0,0.04),transparent_70%)] dark:bg-[radial-gradient(circle,rgba(16,185,129,0.12),transparent_70%)]"
       />
 
       <div className="relative z-10 flex items-center gap-2 text-base font-semibold tracking-tight">
         <BrandLogo size={36} />
-        linka<span className="text-zinc-500">.studio</span>
+        linka<span className="text-muted-foreground">.studio</span>
       </div>
 
       <div className="relative z-10 mt-auto space-y-8">
         <div className="space-y-3">
-          <h2 className="text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-zinc-900">
+          <h2 className="text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-foreground">
             Stop writing posts.
             <br />
-            <span className="text-zinc-500">Start building your audience.</span>
+            <span className="text-muted-foreground">Start building your audience.</span>
           </h2>
-          <p className="text-sm leading-relaxed text-zinc-600">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             Linka writes, designs and schedules every social post in your voice
             — so you stay top-of-mind without staying online.
           </p>
@@ -45,17 +45,20 @@ export function AuthShowcase() {
           {HIGHLIGHTS.map((h) => (
             <li
               key={h}
-              className="flex items-start gap-2.5 text-sm tracking-tight text-zinc-700"
+              className="flex items-start gap-2.5 text-sm tracking-tight text-foreground/85"
             >
-              <Check className="mt-0.5 size-3.5 shrink-0 text-emerald-600" strokeWidth={2.5} />
+              <Check
+                className="mt-0.5 size-3.5 shrink-0 text-emerald-600 dark:text-emerald-400"
+                strokeWidth={2.5}
+              />
               {h}
             </li>
           ))}
         </ul>
 
-        <div className="flex items-center gap-3 border-t border-zinc-300 pt-5 text-xs tracking-tight text-zinc-500">
-          <span className="font-medium text-zinc-900">2,400+ creators</span>
-          <span className="size-1 rounded-full bg-zinc-400" />
+        <div className="flex items-center gap-3 border-t border-border pt-5 text-xs tracking-tight text-muted-foreground">
+          <span className="font-medium text-foreground">2,400+ creators</span>
+          <span className="size-1 rounded-full bg-muted-foreground" />
           <span>184M impressions shipped</span>
         </div>
       </div>

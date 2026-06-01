@@ -11,7 +11,7 @@ export async function PlatformsStrip() {
       <p className="text-center text-[11px] font-medium uppercase tracking-[0.2em] text-[#A3A3A3]">
         {t("eyebrow")}
       </p>
-      <div className="mt-8 grid grid-cols-4 gap-3 md:grid-cols-8">
+      <div className="mt-8 grid grid-cols-3 gap-3 md:grid-cols-6">
         {PLATFORMS.map((p) => (
           <Card
             key={p.name}

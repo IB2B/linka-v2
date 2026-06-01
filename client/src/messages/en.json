@@ -144,7 +144,8 @@
       "tagline": "AI-led social growth for founders who'd rather ship than post.",
       "product": "Product", "company": "Company", "legal": "Legal",
       "copyright": "© {year} linka — all rights reserved",
-      "developedBy": "Developed by"
+      "developedBy": "Developed by",
+      "contactIntro": "We look forward to seeing you:"
     }
   },
   "onboarding": {
