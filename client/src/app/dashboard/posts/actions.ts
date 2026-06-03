@@ -55,6 +55,16 @@ export async function publishPostAction(
   return { success: true, publishedTo: j.publishedTo ?? [], failed: j.failed ?? [] };
 }
 
+export async function updatePostAction(id: string, content: string): Promise<Result> {
+  const res = await serverFetch(`/api/posts/${id}`, {
+    method: "PATCH", body: JSON.stringify({ content }),
+  });
+  if (!res.ok) return { error: await readError(res, "Failed to save.") };
+  revalidatePath(`/dashboard/posts/${id}`);
+  revalidatePath("/dashboard/posts");
+  return { success: true };
+}
+
 export async function regenerateTextAction(id: string): Promise<Result> {
   const res = await serverFetch(`/api/posts/${id}/regenerate-text`, { method: "POST" });
   if (!res.ok) return { error: await readError(res, "Failed to regenerate.") };

@@ -1,15 +1,18 @@
 "use client";
 
-import { Copy, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Copy, Pencil, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { useRegen } from "./regen-context";
+import { PostContentEditor } from "./post-content-editor";
 import { cn } from "@/lib/utils";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostDetailContent({ post }: { post: GeneratedPost }) {
   const { textPending } = useRegen();
+  const [editing, setEditing] = useState(false);
 
   async function onCopy() {
     try {
@@ -20,14 +23,26 @@ export function PostDetailContent({ post }: { post: GeneratedPost }) {
     }
   }
 
+  if (editing) {
+    return <PostContentEditor post={post} onClose={() => setEditing(false)} />;
+  }
+
   return (
     <div className="relative space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-medium text-muted-foreground">Content</h2>
-        <Button size="sm" variant="ghost" onClick={onCopy} disabled={textPending}>
-          <Copy className="size-3.5" />
-          Copy
-        </Button>
+        <div className="flex items-center gap-1">
+          {post.status !== "posted" && (
+            <Button size="sm" variant="ghost" onClick={() => setEditing(true)} disabled={textPending}>
+              <Pencil className="size-3.5" />
+              Edit
+            </Button>
+          )}
+          <Button size="sm" variant="ghost" onClick={onCopy} disabled={textPending}>
+            <Copy className="size-3.5" />
+            Copy
+          </Button>
+        </div>
       </div>
       <p className={cn(
         "text-sm leading-relaxed whitespace-pre-wrap text-foreground/90 transition-opacity",

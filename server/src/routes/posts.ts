@@ -6,6 +6,7 @@ import {
   remove,
   schedule,
   publish,
+  updateContent,
 } from "../controllers/posts.controller";
 import {
   regenerateText, regenerateImage,
@@ -41,6 +42,7 @@ router.post("/:id/regenerate-text", regenerateText);
 router.post("/:id/regenerate-image", regenerateImage);
 router.post("/:id/score", scoreById);
 router.post("/bulk-delete", bulkDelete);
+router.patch("/:id", updateContent);
 router.delete("/:id", remove);
 
 export default router;
