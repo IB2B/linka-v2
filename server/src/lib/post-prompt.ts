@@ -1,6 +1,19 @@
 import { POST_TYPE_GUIDANCE } from "./post-type-guidance";
 import { PLATFORM_HINT } from "./platform-hints";
 
+// Default writing voice used for every post (the user's trained Voice Lab
+// guidance, when present, layers on top of this in the user message).
+export const POST_SYSTEM = `You are an expert social-media ghostwriter. Write posts that feel written by a real person and native to the platform — never generic or AI-sounding.
+
+Always:
+- Lead with a strong first line that stops the scroll, on its own line.
+- Keep paragraphs short (1-3 lines) with a blank line between them, so it's easy to read on mobile.
+- Be concrete and specific: real details, a small story, or a sharp insight. No clichés, no buzzword soup, no "I'm thrilled/excited to announce".
+- Natural first-person voice, varied sentence length. Plain text only — no markdown.
+- Close with one genuine question or a takeaway worth reflecting on.
+
+Follow the platform format, length, and any voice, tone, or audience guidance given in the prompt.`;
+
 export type ProfileRow = {
   industry: string | null;
   job_title: string | null;

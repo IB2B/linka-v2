@@ -1,6 +1,6 @@
 import { db } from "../lib/db";
 import { getAnthropic } from "../lib/anthropic";
-import { buildPrompt, type ProfileRow, type NewsArticleInput } from "../lib/post-prompt";
+import { buildPrompt, POST_SYSTEM, type ProfileRow, type NewsArticleInput } from "../lib/post-prompt";
 
 export type GenerateInput = {
   userId: string;
@@ -19,7 +19,7 @@ export type GenerateResult = {
 };
 
 async function loadProfile(userId: string): Promise<ProfileRow> {
-  const [rows] = await db.query<ProfileRow[]>(
+  const [rows] = await db.query<any[]>(
     `SELECT industry, job_title, voice_dna
      FROM user_profiles WHERE user_id = ? LIMIT 1`,
     [userId],
@@ -30,8 +30,9 @@ async function loadProfile(userId: string): Promise<ProfileRow> {
 export async function generatePost(input: GenerateInput): Promise<GenerateResult> {
   const profile = await loadProfile(input.userId);
   const message = await getAnthropic().messages.create({
-    model: "claude-haiku-4-5-20251001",
-    max_tokens: 800,
+    model: "claude-sonnet-4-6",
+    max_tokens: 1000,
+    system: POST_SYSTEM,
     messages: [{ role: "user", content: buildPrompt(input, profile) }],
   });
   const block = message.content[0];
