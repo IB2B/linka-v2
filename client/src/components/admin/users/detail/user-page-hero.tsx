@@ -6,6 +6,7 @@ import { RoleBadge } from "@/components/admin/users/role-badge";
 import { StatusBadge } from "@/components/admin/users/status-badge";
 import { UserDetailActions } from "@/components/admin/users/detail/user-detail-actions";
 import { UserMonthPicker } from "@/components/admin/users/detail/user-month-picker";
+import { tierLabel } from "@/lib/billing/format";
 import type { AdminUserRow, AdminUserDetail } from "@/types/admin";
 
 const fmtDate = (s: string) =>
@@ -46,7 +47,7 @@ export function UserPageHero({ user, profile, month }: Props) {
             <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
               <RoleBadge role={user.role} />
               <StatusBadge status={user.status} />
-              <Badge variant="outline" className="capitalize">{user.planTier}</Badge>
+              <Badge variant="outline">{tierLabel(user.planTier)}</Badge>
               <span className="text-xs tracking-tight text-muted-foreground">
                 · joined {fmtDate(user.createdAt)}
               </span>

@@ -5,7 +5,7 @@ export async function fetchUserDetail(id: string, month?: string) {
   const [[u]] = await db.query<any[]>(
     `SELECT u.id, u.email, u.first_name, u.last_name, u.role, u.status, u.created_at,
             p.industry, p.bio, p.job_title, p.avatar_url,
-            p.company_type, p.company_size, p.funding_amount,
+            p.content_goal, p.brand_tone, p.target_audience,
             s.plan_tier, s.status AS sub_status,
             s.current_period_end, s.canceled_at
        FROM users u

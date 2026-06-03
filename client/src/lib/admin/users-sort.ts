@@ -1,8 +1,8 @@
-export type SortKey = "name" | "role" | "status" | "plan" | "posts" | "industry" | "joined";
+export type SortKey = "name" | "role" | "status" | "plan" | "posts" | "industry" | "joined" | "active";
 export type SortDir = "asc" | "desc";
 
 const KEYS = new Set<SortKey>([
-  "name", "role", "status", "plan", "posts", "industry", "joined",
+  "name", "role", "status", "plan", "posts", "industry", "joined", "active",
 ]);
 
 export function parseSort(v?: string): SortKey | undefined {

@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RefundAction } from "./refund-action";
+import { tierLabel } from "@/lib/billing/format";
 import type { AdminUserDetail } from "@/types/admin";
 
 const fmtDate = (s: string | null) =>
@@ -16,7 +17,7 @@ type Props = {
 export function UserDetailSubscription({ subscription, userId, email, eligibility }: Props) {
   const rows: { label: string; value: React.ReactNode }[] = subscription
     ? [
-        { label: "Plan", value: <span className="capitalize font-medium">{subscription.planTier}</span> },
+        { label: "Plan", value: <span className="font-medium">{tierLabel(subscription.planTier)}</span> },
         {
           label: "Status",
           value: (

@@ -5,6 +5,8 @@ import { InboxAvatar } from "@/components/inbox/inbox-avatar";
 import { RoleBadge } from "@/components/admin/users/role-badge";
 import { StatusBadge } from "@/components/admin/users/status-badge";
 import { UserRowActions } from "@/components/admin/users/user-row-actions";
+import { tierLabel } from "@/lib/billing/format";
+import { formatRelative } from "@/lib/admin/format-relative";
 import type { AdminUserRow } from "@/types/admin";
 
 const fmt = new Intl.NumberFormat("en-US");
@@ -45,10 +47,13 @@ export function UserRow({ user, onOpen }: Props) {
       </td>
       <td className="px-4 py-3"><RoleBadge role={user.role} /></td>
       <td className="px-4 py-3"><StatusBadge status={user.status} /></td>
-      <td className="px-4 py-3 text-sm capitalize tracking-tight text-muted-foreground">{user.planTier}</td>
+      <td className="px-4 py-3 text-sm tracking-tight text-muted-foreground">{tierLabel(user.planTier)}</td>
       <td className="px-4 py-3 text-sm tabular-nums tracking-tight">{fmt.format(user.postsCount)}</td>
       <td className="px-4 py-3 text-sm tracking-tight text-muted-foreground">{user.industry ?? "—"}</td>
       <td className="px-4 py-3 text-sm tabular-nums tracking-tight text-muted-foreground">{fmtDate(user.createdAt)}</td>
+      <td className="px-4 py-3 text-sm tabular-nums tracking-tight text-muted-foreground">
+        {user.lastActiveAt ? formatRelative(user.lastActiveAt) : "—"}
+      </td>
       <td className="px-4 py-3 text-right" onClick={(e) => e.stopPropagation()}>
         <UserRowActions user={user} />
       </td>

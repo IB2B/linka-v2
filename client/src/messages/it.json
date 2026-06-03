@@ -87,8 +87,14 @@
   },
   "landing": {
     "nav": {
-      "features": "Funzionalità", "process": "Processo", "pricing": "Prezzi", "faq": "FAQ",
-      "signIn": "Accedi", "getStarted": "Inizia", "language": "Lingua"
+      "features": "Funzionalità",
+      "process": "Processo",
+      "tour": "Prodotto",
+      "pricing": "Prezzi",
+      "faq": "FAQ",
+      "signIn": "Accedi",
+      "getStarted": "Inizia",
+      "language": "Lingua"
     },
     "hero": {
       "badge": "Scelto da creator in rapida crescita",
@@ -99,19 +105,423 @@
       "ctaPrimary": "Inizia",
       "ctaSecondary": "Prenota una demo",
       "stats": {
-        "posts": { "label": "Post pubblicati", "value": "184M" },
-        "reach": { "label": "Pubblico raggiunto", "value": "12M+" },
-        "creators": { "label": "Creator attivi", "value": "2.400+" },
-        "platforms": { "label": "Piattaforme collegate", "value": "8" }
+        "posts": {
+          "label": "Post pubblicati",
+          "value": "184M"
+        },
+        "reach": {
+          "label": "Pubblico raggiunto",
+          "value": "12M+"
+        },
+        "creators": {
+          "label": "Creator attivi",
+          "value": "2.400+"
+        },
+        "platforms": {
+          "label": "Piattaforme collegate",
+          "value": "8"
+        }
       }
     },
-    "socialProof": "Usato dai team che spediscono in",
-    "features": { "eyebrow": "Funzionalità", "title": "Sostituisci sei strumenti. Tieni un solo workspace.", "sub": "Linka è scrittore, designer, scheduler e analista. Un abbonamento, un calendario, ogni canale." },
-    "process": { "eyebrow": "Processo", "title": "Dall'iscrizione al primo post in tre minuti.", "stepLabel": "Passo" },
-    "testimonials": { "eyebrow": "Clienti", "title": "Il lavoro parla. Anche loro." },
-    "comparison": { "eyebrow": "Confronto", "title": "Linka vs. come lo fai ora." },
-    "pricing": { "eyebrow": "Prezzi", "title": "Un caffè al giorno. Un intero team di contenuti.", "sub": "Prova gratuita di 7 giorni su ogni piano a pagamento. Nessuna carta fino al giorno 7. Annulla quando vuoi." },
-    "faq": { "eyebrow": "FAQ", "title": "Le domande che la gente fa prima di iscriversi." },
+    "heroPreview": {
+      "title": "Analisi del pubblico",
+      "period": "ultimi 30 giorni",
+      "export": "Esporta",
+      "impressions": "Impressioni",
+      "engagementRate": "Tasso di engagement",
+      "newFollowers": "Nuovi follower",
+      "chartTitle": "Impressioni · ultimi 30 giorni",
+      "vsPrev": "+28% vs prec.",
+      "live": "In diretta"
+    },
+    "platforms": {
+      "eyebrow": "Pubblica in modo nativo su",
+      "note": "API ufficiali. Nessuna estensione del browser, nessun copia-incolla, nessun post mancato."
+    },
+    "features": {
+      "eyebrow": "Funzionalità",
+      "title": "Sostituisci sei strumenti. Tieni un solo workspace.",
+      "sub": "Linka è scrittore, designer, scheduler e analista. Un abbonamento, un calendario, ogni canale.",
+      "items": [
+        {
+          "tag": "Voice Lab",
+          "title": "Scrive con la tua voce",
+          "body": "Addestrata sui tuoi contenuti. Ogni hook, CTA e formato sembra scritto da te nel tuo giorno migliore — non da un'IA."
+        },
+        {
+          "tag": "Image Studio",
+          "title": "Genera le immagini",
+          "body": "Immagini e caroselli in linea con il brand, creati insieme al testo. Niente Canva, niente designer, niente schede extra."
+        },
+        {
+          "tag": "Calendario",
+          "title": "Programma ovunque",
+          "body": "Un solo calendario per LinkedIn, Instagram, X, TikTok, Pinterest e altri. I post escono nello slot migliore per ogni piattaforma."
+        },
+        {
+          "tag": "Radar trend",
+          "title": "Le tendenze, prima del picco",
+          "body": "Individua i temi di tendenza nella tua nicchia prima che diventino mainstream. Arriva primo, non in ritardo."
+        },
+        {
+          "tag": "Inbox",
+          "title": "Risposte in automatico",
+          "body": "Risposte redatte dall'IA a ogni commento e DM. Tu controlli, lei invia. Inbox a zero, ogni giorno."
+        },
+        {
+          "tag": "Analisi",
+          "title": "Dati che agiscono",
+          "body": "Impara quali hook, orari e formati portano risultati — poi scrive di più di ciò che funziona davvero."
+        },
+        {
+          "tag": "Riciclo intelligente",
+          "title": "Rilancia ciò che ha funzionato",
+          "body": "I tuoi post migliori ricevono nuovi angoli in automatico — così le tue idee migliori continuano a rendere."
+        },
+        {
+          "tag": "Pipeline",
+          "title": "Trasforma i post in lead",
+          "body": "Traccia DM e commenti in entrata come opportunità. Da un hook virale a una call chiusa senza cambiare CRM."
+        }
+      ]
+    },
+    "tour": {
+      "eyebrow": "Prodotto",
+      "title": "Uno sguardo più da vicino a come avviene la magia.",
+      "sub": "Quattro pezzi che lavorano insieme — voce, programmazione, inbox e tendenze — così pubblichi contenuti che sembrano davvero tuoi.",
+      "items": [
+        {
+          "tag": "Voice Lab",
+          "title": "Sempre con la tua voce.",
+          "body": "Linka studia i tuoi post, hook e CTA passati. Ogni bozza si legge come il tuo martedì migliore — mai come un'IA."
+        },
+        {
+          "tag": "Calendario",
+          "title": "Un calendario. Ogni piattaforma.",
+          "body": "LinkedIn, X, Instagram, TikTok e altri su un'unica griglia. Slot ottimali scelti per ogni canale."
+        },
+        {
+          "tag": "Inbox",
+          "title": "Risposte che si scrivono da sole.",
+          "body": "Ogni commento e DM riceve una risposta redatta dall'IA nel tuo tono. Tu controlli, lei invia."
+        },
+        {
+          "tag": "Radar",
+          "title": "Arriva primo, non in ritardo.",
+          "body": "Linka individua i temi di tendenza nella tua nicchia prima del picco — con angoli e hook pronti da pubblicare."
+        }
+      ],
+      "mocks": {
+        "voice": {
+          "pastLabel": "I tuoi post passati",
+          "samples": [
+            "Abbiamo spedito la v1 in 8 settimane. Ecco cosa abbiamo tagliato per arrivarci →",
+            "Founder: il vostro changelog è il vostro miglior marketing.",
+            "Opinione forte — 'lanciare' è un verbo, non un martedì."
+          ],
+          "trained": "Addestrata →",
+          "draftLabel": "Bozza Linka",
+          "draftText": "Sei mesi a costruire in pubblico. Tre lezioni che ci hanno evitato di spedire la cosa sbagliata →",
+          "match": "Corrisponde alla tua voce — 96%"
+        },
+        "calendar": {
+          "week": "Settimana del 9 giu",
+          "queued": "14 post in coda",
+          "note": "Slot ottimali per piattaforma — scelti automaticamente."
+        },
+        "inbox": {
+          "name": "Jordan M.",
+          "time": "2m",
+          "question": "Linka funziona con contenuti non in inglese? Sto valutando spagnolo + francese.",
+          "draftBadge": "Bozza IA · pronta da inviare",
+          "reply": "Ciao Jordan — sì, Linka scrive in modo nativo in oltre 12 lingue. Spagnolo e francese sono entrambi fluenti. Ti va una demo veloce?",
+          "send": "Invia",
+          "rewrite": "Riscrivi",
+          "skip": "Salta"
+        },
+        "radar": {
+          "heading": "Di tendenza nella tua nicchia",
+          "topics": [
+            "Workflow agentici",
+            "Marketing guidato dai founder",
+            "Thread build-in-public"
+          ]
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "Processo",
+      "title": "Dall'iscrizione al primo post in tre minuti.",
+      "stepLabel": "Passo",
+      "steps": [
+        {
+          "title": "Collega i tuoi account",
+          "body": "Collega LinkedIn, Instagram, X, TikTok e altri in pochi secondi. Linka legge i tuoi contenuti passati per imparare tono e stile."
+        },
+        {
+          "title": "Imposta il tuo obiettivo",
+          "body": "Far crescere i follower, ottenere iscrizioni o prenotare call. Adattiamo testo, formato e cadenza di pubblicazione a quell'obiettivo."
+        },
+        {
+          "title": "Approva e pubblica",
+          "body": "Svegliati con una settimana di bozze pronte. Approva, cambia una parola se vuoi, ed escono al momento ottimale."
+        }
+      ]
+    },
+    "useCases": {
+      "eyebrow": "Pensato per",
+      "title": "Chiunque tu sia quando pubblichi.",
+      "sub": "Lo stesso motore, calibrato sul tuo modo di lavorare.",
+      "items": [
+        {
+          "title": "Founder & SaaS solo",
+          "body": "Spedisci prodotto, spedisci post. Un solo flusso per entrambi.",
+          "bullets": [
+            "Hook presi dal tuo changelog",
+            "Thread build-in-public in automatico",
+            "Cattura lead su LinkedIn + X"
+          ]
+        },
+        {
+          "title": "Creator & coach",
+          "body": "Esserci ogni giorno senza esaurirti su Canva.",
+          "bullets": [
+            "Voce addestrata sui tuoi post migliori",
+            "Caroselli e reel in un clic",
+            "Inbox in automatico per i DM"
+          ]
+        },
+        {
+          "title": "Agenzie",
+          "body": "Gestisci più clienti senza assumere altri copywriter.",
+          "bullets": [
+            "Brand kit e voce per ogni workspace",
+            "Flussi di approvazione con posti per il team",
+            "Esportazioni white-label — PDF + CSV"
+          ]
+        },
+        {
+          "title": "Team marketing",
+          "body": "Un vero motore di contenuti. Non l'ennesimo strumento.",
+          "bullets": [
+            "Calendario su 8 piattaforme",
+            "Analisi che ottimizzano il post successivo",
+            "SSO, log di audit, accessi per ruolo"
+          ]
+        }
+      ]
+    },
+    "testimonials": {
+      "eyebrow": "Clienti",
+      "title": "Il lavoro parla. Anche loro.",
+      "items": [
+        {
+          "quote": "Ho disdetto la mia agenzia da 2,4k $/mese alla seconda settimana. Linka la batte su ogni metrica e non salta mai un post del lunedì.",
+          "name": "Maya R.",
+          "role": "Founder, Stitchwave",
+          "metric": "+184% di copertura"
+        },
+        {
+          "quote": "Azzecca la mia voce in modo impressionante. Tre dei miei ultimi cinque hook virali erano bozze di Linka che ho ritoccato appena.",
+          "name": "Devon K.",
+          "role": "SaaS solo, indie hacker",
+          "metric": "12,3k → 41k"
+        },
+        {
+          "quote": "L'Inbox in automatico è la funzione decisiva. Non scrivo una risposta a un commento da 6 settimane e le risposte sono aumentate.",
+          "name": "Priya S.",
+          "role": "Coach & creator",
+          "metric": "4,2x risposte"
+        }
+      ]
+    },
+    "metrics": {
+      "eyebrow": "I numeri",
+      "title": "Output che si accumula. Senza il burnout.",
+      "items": [
+        {
+          "label": "Post pubblicati",
+          "hint": "su 8 piattaforme negli ultimi 12 mesi"
+        },
+        {
+          "label": "Aumento medio di copertura",
+          "hint": "rispetto ai 3 mesi prima di usare Linka"
+        },
+        {
+          "label": "Tempo al primo post",
+          "hint": "dall'iscrizione → post live sul tuo canale"
+        },
+        {
+          "label": "Bozze mantenute",
+          "hint": "approvate con meno di 3 modifiche di parole"
+        }
+      ]
+    },
+    "comparison": {
+      "eyebrow": "Confronto",
+      "title": "Linka vs. come lo fai ora.",
+      "colAgency": "Agenzia",
+      "colDiy": "Fai-da-te",
+      "rows": [
+        {
+          "label": "Costo mensile",
+          "linka": "29 $",
+          "agency": "2.000 $+",
+          "diy": "0 $ + 20 h/sett."
+        },
+        {
+          "label": "Post IA al mese",
+          "linka": "100 (Creator)",
+          "agency": "3–5 manualmente",
+          "diy": "Se hai tempo"
+        },
+        {
+          "label": "Account collegati",
+          "linka": "Illimitati",
+          "agency": "Quelli che paghi",
+          "diy": "Manuale per ogni app"
+        },
+        {
+          "label": "Voce in linea col brand",
+          "linka": "Addestrata sui tuoi contenuti",
+          "agency": "Forse, col tempo",
+          "diy": "Sì — ed è il collo di bottiglia"
+        },
+        {
+          "label": "Generazione immagini",
+          "linka": "Inclusa",
+          "agency": "Addebitata a parte",
+          "diy": "Caos su Canva"
+        },
+        {
+          "label": "Analisi & DM",
+          "linka": "Tutto in un'unica dashboard",
+          "agency": "Strumenti separati",
+          "diy": "5 app diverse"
+        },
+        {
+          "label": "Programmazione automatica",
+          "linka": "Slot ottimali per piattaforma",
+          "agency": "Manuale",
+          "diy": "Manuale"
+        },
+        {
+          "label": "Risposte automatiche",
+          "linka": "Redige ogni commento e DM",
+          "agency": "Non è compito loro",
+          "diy": "Tu, a mezzanotte"
+        },
+        {
+          "label": "Tempo al primo post",
+          "linka": "Meno di 5 minuti",
+          "agency": "2–4 settimane",
+          "diy": "Domani, forse"
+        }
+      ]
+    },
+    "pricing": {
+      "eyebrow": "Prezzi",
+      "title": "Un caffè al giorno. Un intero team di contenuti.",
+      "sub": "Prova gratuita di 7 giorni su ogni piano a pagamento. Nessuna carta fino al giorno 7. Annulla quando vuoi.",
+      "recommended": "Consigliato",
+      "plans": [
+        {
+          "name": "Free",
+          "price": "0 $",
+          "period": "per sempre gratis",
+          "tagline": "Prova la magia. Senza carta.",
+          "cta": "Inizia gratis",
+          "features": [
+            "5 post IA / mese",
+            "2 immagini IA / mese",
+            "1 account collegato",
+            "Programmazione manuale",
+            "Cronologia post di 7 giorni"
+          ]
+        },
+        {
+          "name": "Creator",
+          "price": "29 $",
+          "period": "/mese",
+          "tagline": "Tutto ciò che serve a un creator solo per pubblicare con costanza.",
+          "cta": "Inizia la prova di 7 giorni",
+          "features": [
+            "30 post IA / mese",
+            "10 immagini IA / mese",
+            "3 account collegati",
+            "Addestramento della voce sul tuo stile",
+            "Programmazione automatica & calendario contenuti",
+            "Analisi di base"
+          ]
+        },
+        {
+          "name": "Business",
+          "price": "79 $",
+          "period": "/mese",
+          "tagline": "Per operatori multi-brand e piccoli team.",
+          "cta": "Inizia la prova di 7 giorni",
+          "features": [
+            "150 post IA / mese",
+            "40 immagini IA / mese",
+            "Account illimitati — tutte le 8 piattaforme",
+            "Inbox DM & risposte ai commenti",
+            "Programmazione automatica negli slot ottimali",
+            "Posti per il team (fino a 3) & approvazioni",
+            "Analisi avanzate",
+            "Supporto prioritario"
+          ]
+        },
+        {
+          "name": "Enterprise",
+          "price": "Su misura",
+          "period": "prezzo",
+          "tagline": "Per agenzie e grandi team con esigenze su misura.",
+          "cta": "Contatta le vendite",
+          "features": [
+            "Post & immagini illimitati",
+            "Posti team illimitati",
+            "SSO & accessi per ruolo",
+            "Log di audit & esportazione dati",
+            "Account manager dedicato",
+            "SLA & onboarding su misura"
+          ]
+        }
+      ]
+    },
+    "integrations": {
+      "eyebrow": "Con la potenza di",
+      "title": "Modelli ai vertici. Infrastruttura noiosa e affidabile."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Le domande che la gente fa prima di iscriversi.",
+      "items": [
+        {
+          "q": "Suonerà davvero come me?",
+          "a": "Sì. Linka si addestra sui tuoi post esistenti, sulla bio e sugli esempi di scrittura che fornisci all'inizio. La maggior parte degli utenti modifica meno di 3 parole per bozza."
+        },
+        {
+          "q": "Quali piattaforme supportate?",
+          "a": "LinkedIn, Instagram (feed, reel, caroselli), X, TikTok, Pinterest, Threads, YouTube Shorts e Pagine Facebook."
+        },
+        {
+          "q": "Devo installare qualcosa?",
+          "a": "No. Collega una volta via OAuth e i post si pubblicano tramite API ufficiali — pubblicazione automatica completa, nessuna estensione, nessun passaggio manuale."
+        },
+        {
+          "q": "E se una bozza non mi piace?",
+          "a": "Rigenerala, modificala al volo o salta del tutto. Il modello migliora a ogni approvazione e rifiuto nel tempo."
+        },
+        {
+          "q": "Posso annullare quando voglio?",
+          "a": "Sì — un clic dalla fatturazione. Mantieni l'accesso fino a fine periodo e i tuoi dati restano esportabili per 30 giorni dopo."
+        },
+        {
+          "q": "C'è una prova gratuita?",
+          "a": "Ogni piano a pagamento include una prova gratuita di 7 giorni. La carta non viene addebitata fino al giorno 8 e puoi annullare in qualsiasi momento prima."
+        }
+      ]
+    },
     "finalCta": {
       "badge": "Prenotazioni giugno 2026",
       "title": "Smetti di postare. Inizia a spedire.",
@@ -121,9 +531,11 @@
     },
     "footer": {
       "tagline": "Crescita social guidata dall'IA per founder che preferiscono spedire che postare.",
-      "product": "Prodotto", "company": "Azienda", "legal": "Legale",
+      "product": "Prodotto",
+      "company": "Azienda",
+      "legal": "Legale",
       "copyright": "© {year} linka — tutti i diritti riservati",
-      "designed": "Disegnato con ♥ da qualche parte sulla Terra",
+      "developedBy": "Sviluppato da",
       "contactIntro": "Non vediamo l'ora di sentirti:"
     }
   },
@@ -133,8 +545,8 @@
       "description": "Tradurremo il resto dell'onboarding per te."
     },
     "company": {
-      "title": "Parlaci della tua azienda",
-      "description": "Ci aiuta ad adattare i contenuti al tuo pubblico e al tuo settore."
+      "title": "Imposta il tuo profilo di contenuti",
+      "description": "Così Linka scrive ogni post nella tua voce — per il pubblico, la nicchia e l'obiettivo giusti."
     },
     "connect": {
       "title": "Collega i tuoi account",

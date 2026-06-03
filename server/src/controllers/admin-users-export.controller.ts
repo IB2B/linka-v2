@@ -10,6 +10,13 @@ function esc(v: string | number | null): string {
   return safe;
 }
 
+const TIER_LABEL: Record<string, string> = {
+  free: "Free", starter: "Free", pro: "Creator",
+  scale: "Business", professional: "Business", enterprise: "Enterprise",
+};
+const planLabel = (t: string | null): string =>
+  TIER_LABEL[(t ?? "free").toLowerCase()] ?? (t ?? "");
+
 export async function exportAdminUsers(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
@@ -23,7 +30,7 @@ export async function exportAdminUsers(
       "Plan", "Posts", "Last active", "Joined"];
     const rows = users.map((u) => [
       esc(u.id), esc(u.email), esc(u.firstName), esc(u.lastName),
-      esc(u.role), esc(u.status), esc(u.planTier), esc(u.postsCount),
+      esc(u.role), esc(u.status), esc(planLabel(u.planTier)), esc(u.postsCount),
       esc(u.lastActiveAt), esc(u.createdAt),
     ].join(","));
 

@@ -29,6 +29,10 @@ router.post("/checkout", authenticate, async (req: AuthRequest, res, next) => {
       success_url: `${base}/dashboard/billing?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/dashboard/billing`,
     });
+    // Committing to a plan means onboarding is done — mark it now so the
+    // /dashboard return isn't bounced back to onboarding by the layout gate
+    // before the async webhook/confirm has a chance to run.
+    await db.query("UPDATE users SET onboarding_completed=1 WHERE id=?", [user.id]);
     res.json({ url: session.url });
   } catch (e) { next(e); }
 });

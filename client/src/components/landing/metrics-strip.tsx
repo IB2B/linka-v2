@@ -2,10 +2,11 @@ import { getTranslations } from "next-intl/server";
 
 import { Card } from "@/components/ui/card";
 import { MetricTile } from "./metric-tile";
-import { METRICS } from "./metrics-data";
+import { METRIC_VALUES } from "./metrics-data";
 
 export async function MetricsStrip() {
   const t = await getTranslations("landing.metrics");
+  const items = t.raw("items") as { label: string; hint: string }[];
   return (
     <section className="relative z-10 mx-auto w-full max-w-6xl px-6 py-20">
       <Card className="gap-0 overflow-hidden border-0 bg-[#0F1113] p-0 ring-1 ring-white/[0.06]">
@@ -27,8 +28,8 @@ export async function MetricsStrip() {
             </h2>
           </div>
           <div className="relative mt-12 grid gap-px overflow-hidden rounded-xl bg-white/[0.06] ring-1 ring-white/[0.08] sm:grid-cols-2 lg:grid-cols-4">
-            {METRICS.map((m) => (
-              <MetricTile key={m.label} metric={m} />
+            {items.map((m, i) => (
+              <MetricTile key={m.label} metric={{ value: METRIC_VALUES[i], label: m.label, hint: m.hint }} />
             ))}
           </div>
         </div>

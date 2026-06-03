@@ -87,8 +87,14 @@
   },
   "landing": {
     "nav": {
-      "features": "Features", "process": "Process", "tour": "Product", "pricing": "Pricing", "faq": "FAQ",
-      "signIn": "Login", "getStarted": "Get started", "language": "Language"
+      "features": "Features",
+      "process": "Process",
+      "tour": "Product",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "signIn": "Login",
+      "getStarted": "Get started",
+      "language": "Language"
     },
     "hero": {
       "badge": "Trusted by fast-growing creators worldwide",
@@ -99,40 +105,423 @@
       "ctaPrimary": "Get started",
       "ctaSecondary": "Book a demo",
       "stats": {
-        "posts": { "label": "Posts shipped", "value": "184M" },
-        "reach": { "label": "Audience reach", "value": "12M+" },
-        "creators": { "label": "Active creators", "value": "2,400+" },
-        "platforms": { "label": "Platforms connected", "value": "8" }
+        "posts": {
+          "label": "Posts shipped",
+          "value": "184M"
+        },
+        "reach": {
+          "label": "Audience reach",
+          "value": "12M+"
+        },
+        "creators": {
+          "label": "Active creators",
+          "value": "2,400+"
+        },
+        "platforms": {
+          "label": "Platforms connected",
+          "value": "8"
+        }
       }
+    },
+    "heroPreview": {
+      "title": "Audience analytics",
+      "period": "last 30 days",
+      "export": "Export",
+      "impressions": "Impressions",
+      "engagementRate": "Engagement rate",
+      "newFollowers": "New followers",
+      "chartTitle": "Impressions · last 30 days",
+      "vsPrev": "+28% vs prev",
+      "live": "Live"
     },
     "platforms": {
       "eyebrow": "Publish natively to",
       "note": "Official APIs. No browser extension, no copy-paste, no missed posts."
     },
-    "features": { "eyebrow": "Features", "title": "Replace six tools. Keep one workspace.", "sub": "Linka is the writer, the designer, the scheduler and the analyst. One subscription, one calendar, every channel." },
+    "features": {
+      "eyebrow": "Features",
+      "title": "Replace six tools. Keep one workspace.",
+      "sub": "Linka is the writer, the designer, the scheduler and the analyst. One subscription, one calendar, every channel.",
+      "items": [
+        {
+          "tag": "Voice Lab",
+          "title": "Writes in your voice",
+          "body": "Trained on your content. Every hook, CTA and format sounds like you wrote it on your best day — not like AI."
+        },
+        {
+          "tag": "Image Studio",
+          "title": "Generates the visuals",
+          "body": "On-brand images and carousels created alongside the copy. No Canva, no designer, no extra tab."
+        },
+        {
+          "tag": "Calendar",
+          "title": "Schedules everywhere",
+          "body": "One calendar for LinkedIn, Instagram, X, TikTok, Pinterest and more. Posts go out at the best slot per platform."
+        },
+        {
+          "tag": "Trend Radar",
+          "title": "Trends, before they peak",
+          "body": "Surfaces trending topics in your niche before they go mainstream. Be first, not late."
+        },
+        {
+          "tag": "Inbox",
+          "title": "Replies on autopilot",
+          "body": "AI-drafted replies to every comment and DM. You review, it sends. Inbox zero, every day."
+        },
+        {
+          "tag": "Analytics",
+          "title": "Insights that act",
+          "body": "Learns which hooks, times and formats drive results — then writes more of what actually works."
+        },
+        {
+          "tag": "Smart Recycler",
+          "title": "Resurfaces what worked",
+          "body": "Your top posts get fresh angles automatically — so your best ideas keep paying you back."
+        },
+        {
+          "tag": "Pipeline",
+          "title": "Turns posts into leads",
+          "body": "Track inbound DMs and comments as deals. From a viral hook to a closed call without a CRM swap."
+        }
+      ]
+    },
     "tour": {
       "eyebrow": "Product",
       "title": "A closer look at how the magic happens.",
-      "sub": "Four pieces working together — voice, scheduling, inbox and trends — so you ship content that actually sounds like you."
+      "sub": "Four pieces working together — voice, scheduling, inbox and trends — so you ship content that actually sounds like you.",
+      "items": [
+        {
+          "tag": "Voice Lab",
+          "title": "Sounds like you. Always.",
+          "body": "Linka studies your past posts, hooks and CTAs. Every draft reads like your best Tuesday — never like AI."
+        },
+        {
+          "tag": "Calendar",
+          "title": "One calendar. Every platform.",
+          "body": "LinkedIn, X, Instagram, TikTok and more on a single grid. Optimal slots picked per channel."
+        },
+        {
+          "tag": "Inbox",
+          "title": "Replies that draft themselves.",
+          "body": "Every comment and DM gets an AI-drafted reply in your tone. You review, it sends."
+        },
+        {
+          "tag": "Radar",
+          "title": "Be first, not late.",
+          "body": "Linka surfaces trending topics in your niche before they peak — with hook angles ready to ship."
+        }
+      ],
+      "mocks": {
+        "voice": {
+          "pastLabel": "Your past posts",
+          "samples": [
+            "We shipped v1 in 8 weeks. Here's what we cut to get there →",
+            "Founders: your changelog is your best marketing.",
+            "Hot take — 'launching' is a verb, not a Tuesday."
+          ],
+          "trained": "Trained →",
+          "draftLabel": "Linka draft",
+          "draftText": "Six months of building in public. Three lessons that saved us from shipping the wrong thing →",
+          "match": "Matches your voice — 96%"
+        },
+        "calendar": {
+          "week": "Week of Jun 9",
+          "queued": "14 posts queued",
+          "note": "Optimal slots per platform — picked automatically."
+        },
+        "inbox": {
+          "name": "Jordan M.",
+          "time": "2m",
+          "question": "Does Linka work for non-English content? Looking at Spanish + French.",
+          "draftBadge": "AI draft · ready to send",
+          "reply": "Hey Jordan — yes, Linka writes natively in 12+ languages. Spanish and French are both fluent. Happy to do a quick demo?",
+          "send": "Send",
+          "rewrite": "Rewrite",
+          "skip": "Skip"
+        },
+        "radar": {
+          "heading": "Trending in your niche",
+          "topics": [
+            "Agentic workflows",
+            "Founder-led marketing",
+            "Build-in-public threads"
+          ]
+        }
+      }
     },
-    "process": { "eyebrow": "Process", "title": "From signup to first post in three minutes.", "stepLabel": "Step" },
+    "process": {
+      "eyebrow": "Process",
+      "title": "From signup to first post in three minutes.",
+      "stepLabel": "Step",
+      "steps": [
+        {
+          "title": "Connect your accounts",
+          "body": "Link LinkedIn, Instagram, X, TikTok and more in seconds. Linka reads your past content to learn your tone and style."
+        },
+        {
+          "title": "Set your goal",
+          "body": "Grow followers, drive signups, or book calls. We tune the copy, format and posting cadence to hit that goal."
+        },
+        {
+          "title": "Approve and publish",
+          "body": "Wake up to a week of ready-to-ship drafts. Approve, tweak a word if you like, and they go out at the optimal time."
+        }
+      ]
+    },
     "useCases": {
       "eyebrow": "Built for",
       "title": "Whoever you ship as.",
-      "sub": "Same engine, tuned to the way you work."
+      "sub": "Same engine, tuned to the way you work.",
+      "items": [
+        {
+          "title": "Founders & solo SaaS",
+          "body": "Ship product, ship posts. One workflow for both.",
+          "bullets": [
+            "Hooks pulled from your changelog",
+            "Build-in-public threads on autopilot",
+            "Lead capture across LinkedIn + X"
+          ]
+        },
+        {
+          "title": "Creators & coaches",
+          "body": "Show up daily without burning out on Canva.",
+          "bullets": [
+            "Voice trained on your best posts",
+            "Carousels and reels in one click",
+            "Inbox autopilot for DMs"
+          ]
+        },
+        {
+          "title": "Agencies",
+          "body": "Run more clients without hiring more writers.",
+          "bullets": [
+            "Brand kits and voice per workspace",
+            "Approval flows with team seats",
+            "White-label exports — PDF + CSV"
+          ]
+        },
+        {
+          "title": "Marketing teams",
+          "body": "A real content engine. Not another tool.",
+          "bullets": [
+            "Calendar across 8 platforms",
+            "Analytics that tune the next post",
+            "SSO, audit logs, role-based access"
+          ]
+        }
+      ]
     },
-    "testimonials": { "eyebrow": "Customers", "title": "The work speaks. They speak too." },
+    "testimonials": {
+      "eyebrow": "Customers",
+      "title": "The work speaks. They speak too.",
+      "items": [
+        {
+          "quote": "I cancelled my $2.4k/mo agency in week two. Linka outperforms them on every metric and never misses a Monday post.",
+          "name": "Maya R.",
+          "role": "Founder, Stitchwave",
+          "metric": "+184% reach"
+        },
+        {
+          "quote": "It nails my voice scary-well. Three of my last five viral hooks were Linka drafts I barely edited.",
+          "name": "Devon K.",
+          "role": "Solo SaaS, indie hacker",
+          "metric": "12.3k → 41k"
+        },
+        {
+          "quote": "The Inbox Autopilot is the killer feature. I haven't typed a comment reply in 6 weeks and replies are up.",
+          "name": "Priya S.",
+          "role": "Coach & creator",
+          "metric": "4.2x replies"
+        }
+      ]
+    },
     "metrics": {
       "eyebrow": "By the numbers",
-      "title": "Compounding output. Without the burnout."
+      "title": "Compounding output. Without the burnout.",
+      "items": [
+        {
+          "label": "Posts shipped",
+          "hint": "across 8 platforms in the last 12 months"
+        },
+        {
+          "label": "Avg. reach lift",
+          "hint": "vs. the 3 months before users joined Linka"
+        },
+        {
+          "label": "Time to first post",
+          "hint": "from signup → live post on your channel"
+        },
+        {
+          "label": "Drafts kept",
+          "hint": "approved with fewer than 3 word edits"
+        }
+      ]
     },
-    "comparison": { "eyebrow": "Compared", "title": "Linka vs. how you're doing it now." },
-    "pricing": { "eyebrow": "Pricing", "title": "One coffee a day. A whole content team.", "sub": "7-day free trial on every paid plan. No card until day 7. Cancel any time." },
+    "comparison": {
+      "eyebrow": "Compared",
+      "title": "Linka vs. how you're doing it now.",
+      "colAgency": "Agency",
+      "colDiy": "DIY",
+      "rows": [
+        {
+          "label": "Monthly cost",
+          "linka": "$29",
+          "agency": "$2,000+",
+          "diy": "$0 + 20 h/week"
+        },
+        {
+          "label": "AI posts per month",
+          "linka": "100 (Creator)",
+          "agency": "3–5 manually",
+          "diy": "If you have time"
+        },
+        {
+          "label": "Connected accounts",
+          "linka": "Unlimited",
+          "agency": "What you pay for",
+          "diy": "Manual per app"
+        },
+        {
+          "label": "On-brand voice",
+          "linka": "Trained on your content",
+          "agency": "Eventually, maybe",
+          "diy": "Yes — that's the bottleneck"
+        },
+        {
+          "label": "Image generation",
+          "linka": "Included",
+          "agency": "Charged separately",
+          "diy": "Canva chaos"
+        },
+        {
+          "label": "Analytics & DMs",
+          "linka": "All in one dashboard",
+          "agency": "Separate tools",
+          "diy": "5 different apps"
+        },
+        {
+          "label": "Auto-scheduling",
+          "linka": "Optimal slots per platform",
+          "agency": "Manual",
+          "diy": "Manual"
+        },
+        {
+          "label": "Reply automation",
+          "linka": "Drafts every comment & DM",
+          "agency": "Not their job",
+          "diy": "You, at midnight"
+        },
+        {
+          "label": "Time to first post",
+          "linka": "Under 5 minutes",
+          "agency": "2–4 weeks",
+          "diy": "Tomorrow, probably"
+        }
+      ]
+    },
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "One coffee a day. A whole content team.",
+      "sub": "7-day free trial on every paid plan. No card until day 7. Cancel any time.",
+      "recommended": "Recommended",
+      "plans": [
+        {
+          "name": "Free",
+          "price": "$0",
+          "period": "free forever",
+          "tagline": "Try the magic. No card needed.",
+          "cta": "Start free",
+          "features": [
+            "5 AI posts / month",
+            "2 AI images / month",
+            "1 connected account",
+            "Manual scheduling",
+            "7-day post history"
+          ]
+        },
+        {
+          "name": "Creator",
+          "price": "$29",
+          "period": "/month",
+          "tagline": "Everything a solo creator needs to ship consistently.",
+          "cta": "Start 7-day trial",
+          "features": [
+            "30 AI posts / month",
+            "10 AI images / month",
+            "3 connected accounts",
+            "Voice training on your writing style",
+            "Auto-scheduling & content calendar",
+            "Basic analytics"
+          ]
+        },
+        {
+          "name": "Business",
+          "price": "$79",
+          "period": "/month",
+          "tagline": "For multi-brand operators and small teams.",
+          "cta": "Start 7-day trial",
+          "features": [
+            "150 AI posts / month",
+            "40 AI images / month",
+            "Unlimited accounts — all 8 platforms",
+            "DM inbox & comment replies",
+            "Optimal-slot auto-scheduling",
+            "Team seats (up to 3) & approvals",
+            "Advanced analytics",
+            "Priority support"
+          ]
+        },
+        {
+          "name": "Enterprise",
+          "price": "Custom",
+          "period": "pricing",
+          "tagline": "For agencies and large teams with custom needs.",
+          "cta": "Contact sales",
+          "features": [
+            "Unlimited posts & images",
+            "Unlimited team seats",
+            "SSO & role-based access",
+            "Audit logs & data export",
+            "Dedicated account manager",
+            "Custom SLA & onboarding"
+          ]
+        }
+      ]
+    },
     "integrations": {
       "eyebrow": "Powered by",
       "title": "Best-in-class models. Boring, reliable plumbing."
     },
-    "faq": { "eyebrow": "FAQ", "title": "Things people ask before signing." },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Things people ask before signing.",
+      "items": [
+        {
+          "q": "Will it actually sound like me?",
+          "a": "Yes. Linka trains on your existing posts, bio, and writing samples you provide at setup. Most users edit fewer than 3 words per draft."
+        },
+        {
+          "q": "Which platforms do you support?",
+          "a": "LinkedIn, Instagram (feed, reels, carousels), X, TikTok, Pinterest, Threads, YouTube Shorts and Facebook Pages."
+        },
+        {
+          "q": "Do I need to install anything?",
+          "a": "No. Connect once via OAuth and posts publish through official APIs — full auto-publish, no browser extension, no manual steps."
+        },
+        {
+          "q": "What if I don't like a draft?",
+          "a": "Regenerate it, edit it inline, or skip it entirely. The model improves with every approve and reject over time."
+        },
+        {
+          "q": "Can I cancel any time?",
+          "a": "Yes — one click from billing. You keep access until the end of the period and your data stays exportable for 30 days after."
+        },
+        {
+          "q": "Is there a free trial?",
+          "a": "Every paid plan includes a 7-day free trial. Your card is not charged until day 8 and you can cancel any time before that."
+        }
+      ]
+    },
     "finalCta": {
       "badge": "Booking June 2026",
       "title": "Stop posting. Start shipping.",
@@ -142,7 +531,9 @@
     },
     "footer": {
       "tagline": "AI-led social growth for founders who'd rather ship than post.",
-      "product": "Product", "company": "Company", "legal": "Legal",
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal",
       "copyright": "© {year} linka — all rights reserved",
       "developedBy": "Developed by",
       "contactIntro": "We look forward to seeing you:"
@@ -154,8 +545,8 @@
       "description": "We'll translate the rest of onboarding for you."
     },
     "company": {
-      "title": "Tell us about your company",
-      "description": "This helps us tailor content to your audience and industry."
+      "title": "Set up your content profile",
+      "description": "So Linka writes every post in your voice — for the right audience, niche and goal."
     },
     "connect": {
       "title": "Connect your accounts",

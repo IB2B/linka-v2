@@ -176,6 +176,40 @@ a[href] {
   cursor: pointer;
 }
 
+/* Hero analytics preview — animated chart draw-in + fade-rise (motion-safe). */
+@keyframes hp-draw {
+  from {
+    stroke-dashoffset: 1400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes hp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hp-line {
+  stroke-dasharray: 1400;
+}
+.hp-rise {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hp-line {
+    animation: hp-draw 1.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hp-rise {
+    animation: hp-rise 0.7s ease both;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

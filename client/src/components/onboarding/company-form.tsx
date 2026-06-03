@@ -6,22 +6,27 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { cn } from "@/lib/utils";
+import { PillGroup } from "./pill-group";
 import { saveCompanyAction, skipStepAction } from "@/app/onboarding/actions";
-import { COMPANY_TYPES, COMPANY_SIZES, FUNDING_AMOUNTS, INDUSTRIES } from "./company-data";
+import { NICHES, CONTENT_GOALS, BRAND_TONES, AUDIENCES } from "./company-data";
 
 export function CompanyForm() {
   const router = useRouter();
-  const [type, setType] = useState("");
-  const [size, setSize] = useState("");
-  const [funding, setFunding] = useState("");
-  const [industry, setIndustry] = useState("");
+  const [niche, setNiche] = useState("");
+  const [goal, setGoal] = useState("");
+  const [tone, setTone] = useState("");
+  const [audience, setAudience] = useState("");
   const [pending, setPending] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setPending(true);
-    const r = await saveCompanyAction({ companyType: type, companySize: size, fundingAmount: funding, industry });
+    const r = await saveCompanyAction({
+      industry: niche || undefined,
+      contentGoal: goal || undefined,
+      brandTone: tone || undefined,
+      targetAudience: audience || undefined,
+    });
     setPending(false);
     if (r.error) { toast.error(r.error); return; }
     router.push("/onboarding/connect");
@@ -35,51 +40,18 @@ export function CompanyForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div className="space-y-2">
-        <p className="text-sm font-medium">What kind of company are you?</p>
-        <div className="flex flex-wrap gap-2">
-          {COMPANY_TYPES.map((t) => (
-            <button key={t} type="button" onClick={() => setType(t === type ? "" : t)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs transition-colors",
-                type === t
-                  ? "border-foreground bg-foreground text-background"
-                  : "border-border text-muted-foreground hover:border-foreground hover:text-foreground",
-              )}>
-              {t}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Industry</p>
-        <Select value={industry} onValueChange={setIndustry}>
-          <SelectTrigger className="w-full"><SelectValue placeholder="Select your industry" /></SelectTrigger>
+        <p className="text-sm font-medium">What do you post about?</p>
+        <Select value={niche} onValueChange={(v) => setNiche(v ?? "")}>
+          <SelectTrigger className="w-full"><SelectValue placeholder="Pick your niche" /></SelectTrigger>
           <SelectContent>
-            {INDUSTRIES.map((i) => <SelectItem key={i} value={i}>{i}</SelectItem>)}
+            {NICHES.map((n) => <SelectItem key={n} value={n}>{n}</SelectItem>)}
           </SelectContent>
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <p className="text-sm font-medium">How large is your company?</p>
-        <Select value={size} onValueChange={setSize}>
-          <SelectTrigger className="w-full"><SelectValue placeholder="Select company size" /></SelectTrigger>
-          <SelectContent>
-            {COMPANY_SIZES.map((s) => <SelectItem key={s} value={s}>{s} employees</SelectItem>)}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-sm font-medium">How much have you raised so far?</p>
-        <Select value={funding} onValueChange={setFunding}>
-          <SelectTrigger className="w-full"><SelectValue placeholder="Select funding amount" /></SelectTrigger>
-          <SelectContent>
-            {FUNDING_AMOUNTS.map((f) => <SelectItem key={f} value={f}>{f}</SelectItem>)}
-          </SelectContent>
-        </Select>
-      </div>
+      <PillGroup label="What's your main goal?" options={CONTENT_GOALS} value={goal} onChange={setGoal} />
+      <PillGroup label="What tone fits your brand?" options={BRAND_TONES} value={tone} onChange={setTone} />
+      <PillGroup label="Who are you creating for?" options={AUDIENCES} value={audience} onChange={setAudience} />
 
       <div className="flex items-center justify-end gap-3">
         <button type="button" onClick={handleSkip} disabled={pending}

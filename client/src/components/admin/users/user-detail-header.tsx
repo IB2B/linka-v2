@@ -2,6 +2,7 @@ import { InboxAvatar } from "@/components/inbox/inbox-avatar";
 import { Badge } from "@/components/ui/badge";
 import { RoleBadge } from "@/components/admin/users/role-badge";
 import { StatusBadge } from "@/components/admin/users/status-badge";
+import { tierLabel } from "@/lib/billing/format";
 import type { AdminUserRow } from "@/types/admin";
 
 function fmtDate(s: string): string {
@@ -19,7 +20,7 @@ export function UserDetailHeader({ user }: { user: AdminUserRow }) {
         <div className="mt-1 flex flex-wrap items-center gap-1.5">
           <RoleBadge role={user.role} />
           <StatusBadge status={user.status} />
-          <Badge variant="outline" className="capitalize">{user.planTier}</Badge>
+          <Badge variant="outline">{tierLabel(user.planTier)}</Badge>
           <span className="text-xs tracking-tight text-muted-foreground">
             · joined {fmtDate(user.createdAt)}
           </span>

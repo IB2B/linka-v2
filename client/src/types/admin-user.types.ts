@@ -58,9 +58,9 @@ export type AdminUserDetail = {
     industry: string | null;
     bio: string | null;
     jobTitle: string | null;
-    companyType: string | null;
-    companySize: string | null;
-    fundingAmount: string | null;
+    contentGoal: string | null;
+    brandTone: string | null;
+    targetAudience: string | null;
   };
   subscription: {
     planTier: string;

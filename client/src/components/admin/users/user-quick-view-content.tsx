@@ -3,6 +3,7 @@ import { UserDetailStats } from "@/components/admin/users/detail/user-detail-sta
 import { UserDetailActivity } from "@/components/admin/users/user-detail-activity";
 import { RoleBadge } from "@/components/admin/users/role-badge";
 import { StatusBadge } from "@/components/admin/users/status-badge";
+import { tierLabel } from "@/lib/billing/format";
 import type { AdminUserDetail } from "@/types/admin";
 
 const ACTIVITY_LIMIT = 6;
@@ -14,8 +15,8 @@ export function UserQuickViewContent({ detail }: { detail: AdminUserDetail }) {
       <div className="flex items-center gap-2">
         <RoleBadge role={detail.user.role} />
         <StatusBadge status={detail.user.status} />
-        <span className="text-xs capitalize tracking-tight text-muted-foreground">
-          {detail.user.planTier}
+        <span className="text-xs tracking-tight text-muted-foreground">
+          {tierLabel(detail.user.planTier)}
         </span>
       </div>
       <UserDetailStats stats={detail.stats} />
