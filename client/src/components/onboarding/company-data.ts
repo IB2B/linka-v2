@@ -1,4 +1,5 @@
-export const INDUSTRIES = [
+// What the brand posts about — drives topic relevance in generated content.
+export const NICHES = [
   "SaaS / Software",
   "Design & Creative",
   "Marketing & Advertising",
@@ -7,35 +8,41 @@ export const INDUSTRIES = [
   "Healthcare & MedTech",
   "Education & EdTech",
   "Consulting & Advisory",
+  "Coaching & Personal Brand",
   "Real Estate",
-  "Legal",
-  "Manufacturing",
   "Media & Entertainment",
   "Non-Profit",
   "Other",
 ] as const;
 
-export const COMPANY_TYPES = [
-  "Bootstrapped Tech Startup",
-  "Software & Design Agency",
-  "Freelancer & Solopreneur",
-  "eCommerce Business",
-  "Small Consulting & Advisory Firm",
-  "University",
-  "Tech Enterprise",
-  "Pre-Seed & Seed Startup",
-  "VC Firm",
-  "Other",
+// What success looks like — tunes calls-to-action and post angles.
+export const CONTENT_GOALS = [
+  "Grow my audience",
+  "Generate leads",
+  "Book calls & demos",
+  "Drive sales",
+  "Build authority",
+  "Drive website traffic",
 ] as const;
 
-export const COMPANY_SIZES = [
-  "1–5", "6–20", "21–50", "51–200", "201–500", "500+",
+// How posts should sound.
+export const BRAND_TONES = [
+  "Professional",
+  "Friendly & casual",
+  "Bold & punchy",
+  "Inspirational",
+  "Educational",
+  "Witty & playful",
 ] as const;
 
-export const FUNDING_AMOUNTS = [
-  "No funding",
-  "Less than $3m",
-  "Less than $10m",
-  "$10m – $50m",
-  "$50m+",
+// Who the posts are for.
+export const AUDIENCES = [
+  "Founders & operators",
+  "Marketers",
+  "Developers & makers",
+  "Designers & creatives",
+  "Small business owners",
+  "Coaches & creators",
+  "Investors",
+  "General consumers",
 ] as const;

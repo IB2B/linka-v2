@@ -19,8 +19,8 @@ function shape(d: any) {
     },
     profile: {
       industry: u.industry ?? null, bio: u.bio ?? null, jobTitle: u.job_title ?? null,
-      companyType: u.company_type ?? null, companySize: u.company_size ?? null,
-      fundingAmount: u.funding_amount ?? null,
+      contentGoal: u.content_goal ?? null, brandTone: u.brand_tone ?? null,
+      targetAudience: u.target_audience ?? null,
     },
     subscription: u.plan_tier
       ? {

@@ -1,4 +1,4 @@
-export type SortKey = "name" | "role" | "status" | "plan" | "posts" | "industry" | "joined";
+export type SortKey = "name" | "role" | "status" | "plan" | "posts" | "industry" | "joined" | "active";
 export type SortDir = "asc" | "desc";
 
 const SORT_SQL: Record<SortKey, string> = {
@@ -9,6 +9,7 @@ const SORT_SQL: Record<SortKey, string> = {
   posts:    "COALESCE(g.posts_count, 0)",
   industry: "COALESCE(p.industry, '')",
   joined:   "u.created_at",
+  active:   "GREATEST(COALESCE(g.last_gen, '1000-01-01'), COALESCE(ph.last_post, '1000-01-01'))",
 };
 
 const SORT_KEYS = new Set<SortKey>(Object.keys(SORT_SQL) as SortKey[]);

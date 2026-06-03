@@ -2,13 +2,13 @@ import { Router } from "express";
 import { db } from "../lib/db";
 import { stripe } from "../lib/stripe";
 import { getCustomerOverview } from "../lib/billing-overview";
+import { getMonthlyUsage } from "../lib/posts-monthly-usage";
 import { ensureCustomerSubscription, upsertSubscription } from "../lib/subscriptions";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 
 const router = Router();
 router.use(authenticate);
 
-const POSTS_LIMIT: Record<string, number> = { starter: 10, pro: 100, scale: 500, enterprise: 2000 };
 const EMPTY = {
   paymentMethods: [], defaultPaymentMethodId: null, invoices: [], upcoming: null,
 };
@@ -28,7 +28,10 @@ router.get("/overview", async (req: AuthRequest, res, next) => {
         sub = reload[0];
       }
     }
-    const overview = customerId ? await getCustomerOverview(customerId) : EMPTY;
+    const [overview, usage] = await Promise.all([
+      customerId ? getCustomerOverview(customerId) : Promise.resolve(EMPTY),
+      getMonthlyUsage(req.user!.id),
+    ]);
 
     res.json({
       tier: (sub?.plan_tier ?? "free").toUpperCase(),
@@ -37,8 +40,8 @@ router.get("/overview", async (req: AuthRequest, res, next) => {
       ...overview,
       currentPeriodEnd: sub?.current_period_end ? new Date(sub.current_period_end).getTime() : null,
       cancelAtPeriodEnd: !!sub?.cancel_at_period_end,
-      postsThisMonth: 0,
-      postsLimit: POSTS_LIMIT[sub?.plan_tier ?? "starter"] ?? 10,
+      postsThisMonth: usage.used,
+      postsLimit: usage.limit,
     });
   } catch (e) { next(e); }
 });

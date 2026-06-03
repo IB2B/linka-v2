@@ -45,6 +45,7 @@ export function UsersTable({ users, sort, dir, params }: Props) {
                 <SortableTh label="Posts" sortKey="posts" {...headerProps} />
                 <SortableTh label="Industry" sortKey="industry" {...headerProps} />
                 <SortableTh label="Joined" sortKey="joined" {...headerProps} />
+                <SortableTh label="Last active" sortKey="active" {...headerProps} />
                 <th className="px-4 py-3" />
               </tr>
             </thead>

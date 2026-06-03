@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   Card,
   CardHeader,
@@ -6,11 +8,12 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import type { TourCard } from "./product-tour-data";
 
-export function ProductTourCard({ card }: { card: TourCard }) {
-  const colSpan = card.span === "lg" ? "lg:col-span-7" : "lg:col-span-5";
-  const Mock = card.Mock;
+type Item = { tag: string; title: string; body: string };
+type Props = { span: "lg" | "md"; item: Item; mock: ReactNode };
+
+export function ProductTourCard({ span, item, mock }: Props) {
+  const colSpan = span === "lg" ? "lg:col-span-7" : "lg:col-span-5";
   return (
     <Card
       className={`relative gap-5 overflow-hidden bg-white p-2 text-[#0F1113] ring-[#E5E5E5] transition hover:shadow-[0_30px_60px_-30px_rgba(15,17,19,0.18)] ${colSpan}`}
@@ -22,18 +25,16 @@ export function ProductTourCard({ card }: { card: TourCard }) {
       <CardHeader className="px-4 pt-3">
         <Badge variant="outline" className="w-fit gap-1.5 border-[#6D5FF9]/20 bg-[#6D5FF9]/8 text-[10.5px] font-medium uppercase tracking-[0.14em] text-[#6D5FF9]">
           <span className="size-1 rounded-full bg-[#6D5FF9]" />
-          {card.tag}
+          {item.tag}
         </Badge>
         <CardTitle className="mt-3 text-[20px] font-semibold leading-[1.15] tracking-[-0.015em] text-[#0F1113] md:text-[22px]">
-          {card.title}
+          {item.title}
         </CardTitle>
         <CardDescription className="max-w-md text-[13.5px] leading-[1.6] tracking-tight text-[#525252]">
-          {card.body}
+          {item.body}
         </CardDescription>
       </CardHeader>
-      <CardContent className="relative">
-        <Mock />
-      </CardContent>
+      <CardContent className="relative">{mock}</CardContent>
     </Card>
   );
 }

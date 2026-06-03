@@ -4,6 +4,7 @@ import { ArrowRight, UserPlus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { InboxAvatar } from "@/components/inbox/inbox-avatar";
 import { formatRelative } from "@/lib/admin/format-relative";
+import { tierLabel } from "@/lib/billing/format";
 import type { AdminUserRow } from "@/types/admin";
 
 export function OverviewRecentUsers({ users }: { users: AdminUserRow[] }) {
@@ -37,7 +38,7 @@ export function OverviewRecentUsers({ users }: { users: AdminUserRow[] }) {
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-medium tracking-tight">{name}</div>
                   <div className="truncate text-xs tracking-tight text-muted-foreground">
-                    {u.email} · {u.planTier}
+                    {u.email} · {tierLabel(u.planTier)}
                   </div>
                 </div>
                 <span

@@ -37,13 +37,13 @@ export async function saveProfileAction(data: {
 }
 
 export async function saveCompanyAction(data: {
-  companyType?: string;
-  companySize?: string;
-  fundingAmount?: string;
   industry?: string;
+  contentGoal?: string;
+  brandTone?: string;
+  targetAudience?: string;
 }): Promise<Result> {
   const res = await call("/api/users/me/profile", "PATCH", data);
-  if (!res.ok) return { error: "Failed to save company info." };
+  if (!res.ok) return { error: "Failed to save your brand info." };
   return advance({ step: 2 });
 }
 
