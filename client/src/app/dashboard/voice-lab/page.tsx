@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/dashboard/page-header";
@@ -7,6 +6,7 @@ import { AddSamplesDialog } from "@/components/voice-lab/add-samples-dialog";
 import { SamplesList } from "@/components/voice-lab/samples-list";
 import { VoiceDnaCard } from "@/components/voice-lab/voice-dna-card";
 import { TipsCard } from "@/components/voice-lab/tips-card";
+import { VoiceLabEmpty } from "@/components/voice-lab/voice-lab-empty";
 import { AnalyzeAllButton } from "@/components/voice-lab/analyze-all-button";
 import { getVoiceLabData } from "@/lib/voice-lab/get-data";
 
@@ -27,17 +27,19 @@ export default async function VoiceLabPage() {
         </div>
       </div>
       <Separator className="my-2" />
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="xl:col-span-2">
-          <Suspense>
+      {samples.length === 0 ? (
+        <VoiceLabEmpty limits={limits} />
+      ) : (
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+          <div className="xl:col-span-2">
             <SamplesList samples={samples} />
-          </Suspense>
+          </div>
+          <aside className="space-y-6">
+            <VoiceDnaCard profile={profile} />
+            <TipsCard />
+          </aside>
         </div>
-        <aside className="space-y-6">
-          <VoiceDnaCard profile={profile} />
-          <TipsCard />
-        </aside>
-      </div>
+      )}
     </>
   );
 }
