@@ -1,20 +1,37 @@
 import { getAnthropic } from "./anthropic";
 
-const SYSTEM = `You turn a social post into ONE vivid image-generation prompt.
-Return ONLY the prompt text — no preamble, no quotes, no explanation.`;
+// The visual tells that make an image read as generic "AI slop". Banned hard.
+const AI_TELLS = `glowing orbs or spheres, neon glow, god rays, light beams,
+lens flares, swirling energy, abstract "data" particles, glassmorphism, frosted
+translucent 3D blobs, dark navy/teal gradients with a central glow, glossy
+plastic 3D renders, hyper-symmetry, hyper-saturated colors, holograms, circuit
+patterns, generic futuristic/sci-fi tech aesthetics`;
+
+const SYSTEM = `You write ONE image-generation prompt for a social post. The
+result must look CREATIVE, CLEAN, and HUMAN-MADE — like work from a real art
+director, photographer, or graphic designer — NOT a generic AI render. Return
+ONLY the prompt text — no preamble, quotes, or notes.`;
 
 function userPrompt(postContent: string, platform: string): string {
-  return `Read this ${platform} post and design one image that visually represents its specific subject — the concrete topic, idea, or metaphor at the heart of the post.
+  return `Read this ${platform} post, find its core idea and mood, then pick the
+ONE aesthetic below that best fits and write a vivid prompt in that style:
+
+A) Authentic editorial photography — a real, believable scene or still life shot
+   on a real camera: natural directional light, genuine materials and texture,
+   shallow but realistic depth, subtle film grain, slightly off-center framing.
+B) Minimalist graphic-design poster — bold restrained palette, confident shapes,
+   strong negative space, a print/risograph/matte-paper feel. Designed, not 3D.
+C) Tactile fine-art still life — real objects, hands, paper, or materials
+   arranged with intention; documentary realism, imperfect and human.
 
 Post:
 "${postContent.slice(0, 1500)}"
 
-Write an image-generation prompt that:
-- Depicts the actual thing the post is about — a concrete scene, object, or visual metaphor tied to that subject. Not a generic stand-in.
-- AVOIDS overused stock clichés unless the post is literally about them: a person staring at a screen, handshakes, faceless people in suits, a laptop next to coffee, lightbulbs for "ideas", or rising arrows.
-- Has one strong focal point, editorial and modern, photoreal or clean illustration, tasteful color and lighting.
-- Contains NO text, letters, numbers, logos, watermarks, or UI elements.
-- Uses a 16:9 composition.
+Rules:
+- Make it feel intentional and restrained — think Kinfolk, Monocle, Stripe, or
+  Linear editorial art. Embrace asymmetry, real texture, and imperfection.
+- NEVER use any of these AI clichés: ${AI_TELLS}.
+- NO text, letters, numbers, logos, watermarks, or UI. 16:9 composition.
 
 Return just the prompt.`;
 }

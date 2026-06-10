@@ -3,7 +3,8 @@ import { db } from "../lib/db";
 export async function setImageGenerating(id: string, userId: string): Promise<void> {
   await db.query(
     `UPDATE generated_content
-     SET image_status = 'generating', image_url = NULL, image_error = NULL
+     SET image_status = 'generating', image_started_at = NOW(),
+         image_url = NULL, image_error = NULL
      WHERE id = ? AND user_id = ?`, [id, userId],
   );
 }

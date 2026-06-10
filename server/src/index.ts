@@ -33,7 +33,7 @@ import { mountAdminRoutes } from "./routes/admin-index";
 import { proxyImage } from "./controllers/image-proxy.controller";
 import { authenticate } from "./middleware/auth";
 import { errorHandler } from "./middleware/error";
-import { reapStuckImageJobs } from "./lib/image-reaper";
+import { resumeStuckImageJobs } from "./lib/image-reaper";
 import { startSocialEngagementPoller } from "./lib/social-engagement-poller";
 
 const app = express();
@@ -77,6 +77,6 @@ Sentry.setupExpressErrorHandler(app);
 app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`[server] listening on :${PORT}`);
-  reapStuckImageJobs().catch((e) => console.error("[image-reaper]", e));
+  resumeStuckImageJobs().catch((e) => console.error("[image-reaper]", e));
   startSocialEngagementPoller();
 });

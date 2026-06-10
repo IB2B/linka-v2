@@ -27,7 +27,9 @@ export async function generateOpenAIImage(
   const size: Size = opts.size ?? (isGptImage ? "1536x1024" : "1792x1024");
 
   const body: Record<string, unknown> = { model, prompt: opts.prompt, n: 1, size };
-  if (!isGptImage) {
+  if (isGptImage) {
+    body.quality = process.env.IMAGE_QUALITY ?? "high";
+  } else {
     body.quality = "standard";
     body.response_format = "url";
   }

@@ -7,6 +7,7 @@ const ALLOWED_IMAGE_HOSTS = new Set([
   "api.openai.com",
   "cdn.openai.com",
   "imagine.imagineapi.dev",
+  ...(process.env.EXTRA_IMAGE_HOSTS?.split(",").map((h) => h.trim()).filter(Boolean) ?? []),
 ]);
 
 const IMAGES_DIR = join(process.cwd(), "uploads", "images");
@@ -35,7 +36,10 @@ export async function persistGeneratedImage(
 ): Promise<string> {
   const bytes = await bytesFromSource(source);
   await mkdir(IMAGES_DIR, { recursive: true });
-  const filename = `${contentId}.png`;
+  // Version the filename per generation so regenerated images get a fresh URL —
+  // the static cache serves /uploads with maxAge, and a fixed name would make
+  // the browser keep showing the stale cached copy.
+  const filename = `${contentId}-${Date.now()}.png`;
   await writeFile(join(IMAGES_DIR, filename), bytes);
   return `${PUBLIC_PREFIX}/${filename}`;
 }
