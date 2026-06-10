@@ -6,6 +6,7 @@ import { Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { analyzeAction } from "@/app/dashboard/voice-lab/actions";
 
 type Props = { disabled: boolean; sampleCount: number };
@@ -28,7 +29,7 @@ export function AnalyzeAllButton({ disabled, sampleCount }: Props) {
   }
 
   const isDisabled = disabled || pending;
-  return (
+  const button = (
     <div className="relative inline-flex isolate rounded-[8px]">
       {!isDisabled && (
         <span
@@ -52,5 +53,13 @@ export function AnalyzeAllButton({ disabled, sampleCount }: Props) {
         Analyze {sampleCount > 0 ? `${sampleCount} samples` : "all"}
       </Button>
     </div>
+  );
+
+  if (!disabled) return button;
+  return (
+    <Tooltip>
+      <TooltipTrigger render={<span className="inline-flex" />}>{button}</TooltipTrigger>
+      <TooltipContent>Add at least 2 samples to analyze</TooltipContent>
+    </Tooltip>
   );
 }

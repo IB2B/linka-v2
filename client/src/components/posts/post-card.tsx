@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CalendarClock } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -30,7 +31,10 @@ export function PostCard({ post }: { post: GeneratedPost }) {
       : null;
   return (
     <Card className="group/post flex flex-col overflow-hidden p-0 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:ring-foreground/20">
-      <div className="flex min-h-[140px] flex-1 flex-row">
+      <Link
+        href={`/dashboard/posts/${post.id}`}
+        className="flex min-h-[140px] flex-1 flex-row"
+      >
         <div className="relative w-32 shrink-0 sm:w-36">
           <PostCardMedia post={post} />
         </div>
@@ -61,7 +65,7 @@ export function PostCard({ post }: { post: GeneratedPost }) {
             </div>
           ) : null}
         </div>
-      </div>
+      </Link>
       <div className="border-t bg-muted/40 px-2.5 py-1.5">
         <PostActions post={post} />
       </div>

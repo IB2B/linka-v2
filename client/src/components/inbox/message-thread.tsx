@@ -15,7 +15,7 @@ export function MessageThread({ messages }: { messages: Message[] }) {
     return aT - bT;
   });
   return (
-    <div className="min-h-0 flex-1 space-y-3 overflow-y-auto p-4">
+    <div className="scrollbar-thin min-h-0 flex-1 space-y-3 overflow-y-auto p-4">
       {ordered.map((m) => <MessageBubble key={m.id} message={m} />)}
     </div>
   );

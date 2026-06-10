@@ -18,7 +18,7 @@ export async function InboxShell({ activeId, platform, children }: Props) {
 
   return (
     <div className="grid h-[calc(100svh-5.5rem)] grid-cols-1 overflow-hidden rounded-xl border bg-card lg:grid-cols-[340px_minmax(0,1fr)]">
-      <aside className={cn("border-r lg:block", activeId ? "hidden" : "block")}>
+      <aside className={cn("h-full min-h-0 overflow-hidden border-r lg:block", activeId ? "hidden" : "block")}>
         {result.ok ? (
           <ConversationList
             conversations={result.data.conversations}

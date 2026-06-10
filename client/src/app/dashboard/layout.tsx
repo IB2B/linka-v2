@@ -47,7 +47,7 @@ export default async function DashboardLayout({
             features={user.features}
           />
         </header>
-        <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>
+        <div className="scrollbar-thin flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
