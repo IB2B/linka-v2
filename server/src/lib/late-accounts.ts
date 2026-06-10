@@ -56,10 +56,6 @@ export async function resolvePlatformAccounts(
     const pid = ownerProfileId(a);
     return !pid || pid === profileId;
   });
-  console.log(
-    "\n=== [late.accounts] raw ===\n",
-    JSON.stringify(owned, null, 2), "\n=========================",
-  );
   const wanted = platforms.length ? platforms : owned.map((a) => a.platform);
   return wanted
     .map((p) => owned.find((a) => matches(a.platform, p)))
