@@ -13,7 +13,7 @@ type RegenCtx = {
   textPending: boolean;
   imagePending: boolean;
   runText: () => void;
-  runImage: () => void;
+  runImage: (prompt?: string) => void;
 };
 
 const Ctx = createContext<RegenCtx | null>(null);
@@ -39,10 +39,10 @@ export function RegenProvider({
     });
   }
 
-  function runImage() {
+  function runImage(prompt?: string) {
     setImageOptimistic(true);
     (async () => {
-      const res = await regenerateImageAction(postId);
+      const res = await regenerateImageAction(postId, prompt);
       if (res.error) { toast.error(res.error); setImageOptimistic(false); return; }
       toast.success("Image queued.");
       router.refresh();

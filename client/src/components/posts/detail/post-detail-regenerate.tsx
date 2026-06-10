@@ -31,7 +31,7 @@ export function PostDetailRegenerate() {
           <FileText className="size-4" />
           Regenerate text
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={runImage} className="whitespace-nowrap">
+        <DropdownMenuItem onClick={() => runImage()} className="whitespace-nowrap">
           <ImageIcon className="size-4" />
           Regenerate image
         </DropdownMenuItem>

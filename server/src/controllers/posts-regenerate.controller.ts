@@ -35,6 +35,10 @@ export async function regenerateImage(
   try {
     const id = req.params.id as string;
     const userId = req.user!.id;
+    const customPrompt =
+      typeof req.body?.imagePrompt === "string" && req.body.imagePrompt.trim()
+        ? (req.body.imagePrompt as string).trim()
+        : undefined;
     const post = await posts.findById(id, userId);
     if (!post) { res.status(404).json({ error: "Not found" }); return; }
     const limit = checkImageRateLimit(userId);
@@ -44,7 +48,7 @@ export async function regenerateImage(
     if (post.imageUrl) await deleteGeneratedImage(post.imageUrl);
     await setImageGenerating(id, userId);
     void generateImageForPostInBackground(
-      id, userId, post.content, post.platform ?? "linkedin",
+      id, userId, post.content, post.platform ?? "linkedin", customPrompt,
     );
     res.json({ ok: true });
   } catch (e) { next(e); }

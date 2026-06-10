@@ -6,19 +6,22 @@ import { setImageGenerating, setImageCompleted, setImageFailed }
   from "../models/generated-content-image.model";
 
 export async function generateImageForPostInBackground(
-  contentId: string, userId: string, postContent: string, platform = "linkedin",
+  contentId: string, userId: string, postContent: string,
+  platform = "linkedin", customPrompt?: string,
 ): Promise<void> {
   console.log(`[image-gen] start ${contentId}`);
   try {
     await setImageGenerating(contentId, userId);
 
-    let prompt: string;
-    try {
-      prompt = await buildImagePrompt(postContent, platform);
-      console.log(`[image-gen] prompt ok ${contentId}: ${prompt.slice(0, 80)}…`);
-    } catch (err) {
-      console.error(`[image-gen] prompt FAILED ${contentId}:`, err);
-      prompt = postContent.slice(0, 200);
+    let prompt = customPrompt?.trim() ?? "";
+    if (!prompt) {
+      try {
+        prompt = await buildImagePrompt(postContent, platform);
+        console.log(`[image-gen] prompt ok ${contentId}: ${prompt.slice(0, 80)}…`);
+      } catch (err) {
+        console.error(`[image-gen] prompt FAILED ${contentId}:`, err);
+        prompt = postContent.slice(0, 200);
+      }
     }
 
     const { url: source, model: imageModel } = await generatePostImage(prompt);

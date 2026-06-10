@@ -72,8 +72,13 @@ export async function regenerateTextAction(id: string): Promise<Result> {
   return { success: true };
 }
 
-export async function regenerateImageAction(id: string): Promise<Result> {
-  const res = await serverFetch(`/api/posts/${id}/regenerate-image`, { method: "POST" });
+export async function regenerateImageAction(
+  id: string, imagePrompt?: string,
+): Promise<Result> {
+  const res = await serverFetch(`/api/posts/${id}/regenerate-image`, {
+    method: "POST",
+    body: imagePrompt ? JSON.stringify({ imagePrompt }) : undefined,
+  });
   if (!res.ok) return { error: await readError(res, "Failed to regenerate image.") };
   revalidatePath(`/dashboard/posts/${id}`);
   return { success: true };
