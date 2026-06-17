@@ -4,6 +4,7 @@ import { db } from "../lib/db";
 import { stripe, PRICE_IDS } from "../lib/stripe";
 import { confirmCheckoutSession } from "../lib/stripe-session-confirm";
 import { handleStripeEvent } from "../lib/stripe-webhook-handler";
+import { getOrCreateStripeCustomer } from "../lib/stripe-customer";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 
 const router = Router();
@@ -14,25 +15,21 @@ router.post("/checkout", authenticate, async (req: AuthRequest, res, next) => {
     const priceId = PRICE_IDS[tier];
     if (!priceId) { res.status(400).json({ error: "Invalid tier" }); return; }
 
-    const [users] = await db.query<any[]>(
-      "SELECT id, email FROM users WHERE id = ?", [req.user!.id]);
-    const user = users[0];
-    if (!user) { res.status(404).json({ error: "User not found" }); return; }
-
+    const customerId = await getOrCreateStripeCustomer(req.user!.id);
     const base = process.env.NEXT_PUBLIC_APP_URL;
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
-      customer_email: user.email,
-      metadata: { user_id: user.id, tier },
-      subscription_data: { metadata: { user_id: user.id, tier } },
+      customer: customerId,
+      metadata: { user_id: req.user!.id, tier },
+      subscription_data: { metadata: { user_id: req.user!.id, tier } },
       success_url: `${base}/dashboard/billing?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/dashboard/billing`,
     });
     // Committing to a plan means onboarding is done — mark it now so the
     // /dashboard return isn't bounced back to onboarding by the layout gate
     // before the async webhook/confirm has a chance to run.
-    await db.query("UPDATE users SET onboarding_completed=1 WHERE id=?", [user.id]);
+    await db.query("UPDATE users SET onboarding_completed=1 WHERE id=?", [req.user!.id]);
     res.json({ url: session.url });
   } catch (e) { next(e); }
 });
