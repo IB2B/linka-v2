@@ -3,7 +3,8 @@ import { db } from "../lib/db";
 import { stripe } from "../lib/stripe";
 import { getCustomerOverview } from "../lib/billing-overview";
 import { getMonthlyUsage } from "../lib/posts-monthly-usage";
-import { ensureCustomerSubscription, upsertSubscription } from "../lib/subscriptions";
+import { ensureCustomerSubscription } from "../lib/subscriptions";
+import { reconcileSubscription } from "../lib/subscription-sync";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 
 const router = Router();
@@ -18,20 +19,15 @@ router.get("/overview", async (req: AuthRequest, res, next) => {
     const [subs] = await db.query<any[]>("SELECT * FROM subscriptions WHERE user_id = ?", [req.user!.id]);
     let sub = subs[0];
     const customerId = sub?.stripe_customer_id ?? null;
-    const ACTIVE_STATUSES = ["active", "past_due", "trialing"];
-    if (customerId && !sub?.current_period_end && ACTIVE_STATUSES.includes(sub?.status ?? "")) {
-      const list = await stripe.subscriptions.list({ customer: customerId, status: "active", limit: 1 });
-      const fresh = list.data[0];
-      if (fresh) {
-        await upsertSubscription(req.user!.id, fresh, sub?.plan_tier);
-        const [reload] = await db.query<any[]>("SELECT * FROM subscriptions WHERE user_id = ?", [req.user!.id]);
-        sub = reload[0];
-      }
-    }
-    const [overview, usage] = await Promise.all([
+
+    // Reconcile against Stripe on every load so portal-side changes
+    // (cancellation, plan switch) show up even if their webhook never landed.
+    const [reconciled, overview, usage] = await Promise.all([
+      customerId ? reconcileSubscription(req.user!.id, customerId, sub?.plan_tier) : Promise.resolve(undefined),
       customerId ? getCustomerOverview(customerId) : Promise.resolve(EMPTY),
       getMonthlyUsage(req.user!.id),
     ]);
+    if (reconciled) sub = reconciled;
 
     res.json({
       tier: (sub?.plan_tier ?? "free").toUpperCase(),
