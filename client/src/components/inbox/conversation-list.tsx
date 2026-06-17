@@ -6,22 +6,27 @@ import { Input } from "@/components/ui/input";
 import { ConversationRow } from "./conversation-row";
 import { PlatformFilter } from "./platform-filter";
 import { ConnectedAccountsStack } from "./connected-accounts-stack";
+import { LinkedinConnectButton } from "./linkedin-connect-button";
 import { useInboxUnread } from "@/components/dashboard/inbox-unread-badge";
 import type { Conversation } from "@/lib/inbox/inbox.types";
-import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
+import type { ZernioAccount, Platform } from "@/lib/zernio/zernio-account.types";
 
 type Props = {
   conversations: Conversation[];
   activeId: string | null;
   platform: string;
   accounts: ZernioAccount[];
+  linkedinConnected: boolean;
 };
 
-export function ConversationList({ conversations, activeId, platform, accounts }: Props) {
+export function ConversationList({ conversations, activeId, platform, accounts, linkedinConnected }: Props) {
   const [query, setQuery] = useState("");
   const { ids: unreadIds } = useInboxUnread();
   const hrefSuffix = platform ? `?platform=${platform}` : "";
-  const connected = accounts.filter((a) => a.connected).map((a) => a.platform);
+  const connected = [
+    ...accounts.filter((a) => a.connected).map((a) => a.platform),
+    ...(linkedinConnected ? (["linkedin"] as Platform[]) : []),
+  ];
 
   const filtered = query.trim()
     ? conversations.filter((c) =>
@@ -37,7 +42,10 @@ export function ConversationList({ conversations, activeId, platform, accounts }
         <div className="flex items-center justify-between gap-2 px-4 py-3">
           <h2 className="text-sm font-semibold">Conversations</h2>
 
-          <ConnectedAccountsStack accounts={accounts} />
+          <div className="flex items-center gap-2">
+            <LinkedinConnectButton connected={linkedinConnected} />
+            <ConnectedAccountsStack accounts={accounts} />
+          </div>
         </div>
         <div className="px-3 pb-2">
           <div className="relative">

@@ -2,6 +2,7 @@ import { ConversationList } from "./conversation-list";
 import { InboxError } from "./inbox-error";
 import { cn } from "@/lib/utils";
 import { getConversations } from "@/lib/inbox/get-conversations";
+import { getLinkedinStatus } from "@/lib/inbox/linkedin-status";
 import { getAccounts } from "@/lib/zernio/get-accounts";
 
 type Props = {
@@ -11,9 +12,10 @@ type Props = {
 };
 
 export async function InboxShell({ activeId, platform, children }: Props) {
-  const [result, accounts] = await Promise.all([
+  const [result, accounts, linkedin] = await Promise.all([
     getConversations(platform || undefined),
     getAccounts(),
+    getLinkedinStatus(),
   ]);
 
   return (
@@ -25,6 +27,7 @@ export async function InboxShell({ activeId, platform, children }: Props) {
             activeId={activeId}
             platform={platform}
             accounts={accounts}
+            linkedinConnected={linkedin.connected}
           />
         ) : (
           <InboxError

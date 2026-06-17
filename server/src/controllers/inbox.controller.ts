@@ -2,12 +2,10 @@ import type { Response } from "express";
 import { z } from "zod";
 
 import type { AuthRequest } from "../middleware/auth";
-import {
-  listInboxConversations, listInboxMessages, sendInboxMessage,
-} from "../lib/late-inbox";
-import type { RawConversation } from "../lib/late-inbox";
 import { INBOX_DM_PLATFORMS } from "../lib/inbox-platforms";
-import { userOwnsAccount } from "../lib/inbox-account-guard";
+import {
+  providerConversations, providerMessages, providerSend, providerCanAccess,
+} from "../lib/inbox-provider";
 import { mapConversation, mapMessage } from "./inbox.helpers";
 
 export async function getConversations(req: AuthRequest, res: Response) {
@@ -16,10 +14,8 @@ export async function getConversations(req: AuthRequest, res: Response) {
     res.json({ conversations: [], unsupported: true, platform });
     return;
   }
-  const dm = (raw: RawConversation[]) => raw.filter((c) => INBOX_DM_PLATFORMS.has(c.platform));
-  const data = await listInboxConversations(req.user!.id, platform);
-  const raw = data.conversations ?? [];
-  res.json({ conversations: dm(raw).map(mapConversation) });
+  const raw = await providerConversations(req.user!.id, platform);
+  res.json({ conversations: raw.map(mapConversation) });
 }
 
 export async function getMessages(req: AuthRequest, res: Response) {
@@ -27,8 +23,10 @@ export async function getMessages(req: AuthRequest, res: Response) {
   const cursor = typeof req.query.cursor === "string" ? req.query.cursor : undefined;
   const accountId = typeof req.query.accountId === "string" ? req.query.accountId : "";
   if (!accountId) { res.status(400).json({ error: "accountId is required" }); return; }
-  if (!(await userOwnsAccount(req.user!.id, accountId))) { res.status(403).json({ error: "Account not accessible." }); return; }
-  const data = await listInboxMessages(id, accountId, cursor);
+  if (!(await providerCanAccess(req.user!.id, accountId))) {
+    res.status(403).json({ error: "Account not accessible." }); return;
+  }
+  const data = await providerMessages(req.user!.id, accountId, id, cursor);
   res.json({ messages: (data.messages ?? []).map(mapMessage), nextCursor: data.nextCursor ?? null });
 }
 
@@ -44,10 +42,11 @@ export async function postReply(req: AuthRequest, res: Response) {
   if (!parsed.data.text && !parsed.data.mediaUrl) {
     res.status(400).json({ error: "Message or attachment is required." }); return;
   }
-  if (!(await userOwnsAccount(req.user!.id, parsed.data.accountId))) {
+  if (!(await providerCanAccess(req.user!.id, parsed.data.accountId))) {
     res.status(403).json({ error: "Account not accessible." }); return;
   }
   const id = String(req.params.id);
-  const sent = await sendInboxMessage(id, parsed.data.accountId, parsed.data.text, parsed.data.mediaUrl);
+  const sent = await providerSend(
+    req.user!.id, parsed.data.accountId, id, parsed.data.text, parsed.data.mediaUrl);
   res.status(201).json({ id: sent.id ?? null });
 }
