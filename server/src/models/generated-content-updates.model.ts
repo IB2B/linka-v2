@@ -30,6 +30,18 @@ export function setContent(id: string, userId: string, content: string) {
     [content, id, userId]);
 }
 
+export function setScore(
+  id: string, userId: string,
+  score: number, reasons: string[], suggestions: string[],
+) {
+  return run(
+    `UPDATE generated_content
+     SET virality_score=?, virality_reasons=?, virality_suggestions=?
+     WHERE id=? AND user_id=?`,
+    [score, JSON.stringify(reasons), JSON.stringify(suggestions), id, userId],
+  );
+}
+
 export function deleteById(id: string, userId: string) {
   return run("DELETE FROM generated_content WHERE id=? AND user_id=?",
     [id, userId]);

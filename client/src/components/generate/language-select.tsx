@@ -13,9 +13,10 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  className?: string;
 };
 
-export function LanguageSelect({ value, onChange, disabled }: Props) {
+export function LanguageSelect({ value, onChange, disabled, className }: Props) {
   return (
     <Select
       name="language"
@@ -23,7 +24,7 @@ export function LanguageSelect({ value, onChange, disabled }: Props) {
       onValueChange={(v) => onChange(String(v))}
       disabled={disabled}
     >
-      <SelectTrigger id="language" className="w-full">
+      <SelectTrigger id="language" className={className ?? "w-full"}>
         <SelectValue>
           {(v: string) => LANGUAGES.find((l) => l.value === v)?.label ?? v}
         </SelectValue>

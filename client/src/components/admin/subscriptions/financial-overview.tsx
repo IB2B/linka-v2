@@ -20,7 +20,7 @@ export function FinancialOverview({ summary }: { summary: AdminSubsSummary }) {
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             Monthly recurring revenue
           </span>
-          <span className="text-5xl font-semibold tabular-nums tracking-tight">
+          <span className="font-display text-5xl font-semibold tabular-nums tracking-tight">
             {formatMoney(summary.mrr, cur)}
           </span>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm tracking-tight text-muted-foreground">

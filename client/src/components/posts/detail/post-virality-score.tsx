@@ -10,8 +10,10 @@ import { ViralityMeter } from "./virality-meter";
 import { RainbowScoreButton } from "./rainbow-score-button";
 import type { PostScore } from "@/types/post-score";
 
-export function PostViralityScore({ postId }: { postId: string }) {
-  const [score, setScore] = useState<PostScore | null>(null);
+type Props = { postId: string; initial?: PostScore | null };
+
+export function PostViralityScore({ postId, initial = null }: Props) {
+  const [score, setScore] = useState<PostScore | null>(initial);
   const [pending, start] = useTransition();
 
   function run() {

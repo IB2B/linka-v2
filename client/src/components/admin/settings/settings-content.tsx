@@ -1,25 +1,37 @@
 import { AdminProfileForm } from "@/components/admin/settings/admin-profile-form";
 import { EmailTestForm } from "@/components/admin/settings/email-test-form";
 import { IntegrationsList } from "@/components/admin/settings/integrations-list";
+import { PlatformForm } from "@/components/admin/settings/platform-form";
 import { SettingsSection } from "@/components/admin/settings/settings-section";
-import type { IntegrationStatus } from "@/types/admin";
+import type { IntegrationStatus, PlatformSettings } from "@/types/admin-settings.types";
 import type { Me } from "@/lib/auth/me";
 
 type Props = {
   section: string;
   integrations: IntegrationStatus[];
+  checkedAt: string | null;
+  platform: PlatformSettings;
   me: Me;
 };
 
-export function SettingsContent({ section, integrations, me }: Props) {
+export function SettingsContent({ section, integrations, checkedAt, platform, me }: Props) {
   switch (section) {
+    case "platform":
+      return (
+        <SettingsSection
+          title="Platform"
+          description="Controls that affect every client: sign-ups, maintenance, and announcements."
+        >
+          <PlatformForm initial={platform} />
+        </SettingsSection>
+      );
     case "integrations":
       return (
         <SettingsSection
           title="Integrations"
-          description="Health check for third-party services. Keys live in server .env, never surfaced here."
+          description="Live health of third-party services. Keys live in server .env, never surfaced here."
         >
-          <IntegrationsList integrations={integrations} />
+          <IntegrationsList integrations={integrations} checkedAt={checkedAt} />
         </SettingsSection>
       );
     case "email":

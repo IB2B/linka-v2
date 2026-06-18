@@ -6,12 +6,28 @@ export function mapStage(r: any) {
   return { id: r.id, name: r.name, position: r.position, outcome: r.outcome };
 }
 
+function toYmd(v: any): string | null {
+  if (!v) return null;
+  if (v instanceof Date) {
+    const m = String(v.getMonth() + 1).padStart(2, "0");
+    const d = String(v.getDate()).padStart(2, "0");
+    return `${v.getFullYear()}-${m}-${d}`;
+  }
+  return String(v).slice(0, 10);
+}
+
 export function mapOpp(r: any) {
   return {
     id: r.id, pipelineId: r.pipeline_id, stageId: r.stage_id,
     title: r.title,
     contactName: r.contact_name, contactHandle: r.contact_handle,
+    contactEmail: r.contact_email ?? null,
+    contactPhone: r.contact_phone ?? null,
+    companyName: r.company_name ?? null,
     sourcePlatform: r.source_platform,
+    valueAmount: r.value_amount != null ? Number(r.value_amount) : null,
+    valueCurrency: r.value_currency ?? null,
+    expectedClose: toYmd(r.expected_close),
     status: r.status, notes: r.notes,
     conversationId: r.conversation_id,
     socialUrl: r.social_url ?? null,
@@ -30,7 +46,13 @@ const COL_MAP: Record<string, string> = {
   title: "title",
   contactName: "contact_name",
   contactHandle: "contact_handle",
+  contactEmail: "contact_email",
+  contactPhone: "contact_phone",
+  companyName: "company_name",
   sourcePlatform: "source_platform",
+  valueAmount: "value_amount",
+  valueCurrency: "value_currency",
+  expectedClose: "expected_close",
   notes: "notes",
   socialUrl: "social_url",
   facebookUrl: "facebook_url",

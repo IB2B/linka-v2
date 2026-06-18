@@ -14,7 +14,8 @@ export async function create(req: AuthRequest, res: Response) {
   if (!stage) { res.status(404).json({ error: "Stage not found." }); return; }
   const id = randomUUID();
   const {
-    title, contactName, contactHandle, sourcePlatform, notes,
+    title, contactName, contactHandle, contactEmail, contactPhone, companyName,
+    sourcePlatform, notes, valueAmount, valueCurrency, expectedClose,
     socialUrl, facebookUrl, instagramUrl, xUrl, tiktokUrl, threadsUrl,
   } = parsed.data;
   await db.query(
@@ -25,12 +26,15 @@ export async function create(req: AuthRequest, res: Response) {
   await db.query(
     `INSERT INTO opportunities
        (id, user_id, pipeline_id, stage_id, title, contact_name, contact_handle,
-        source_platform, status, notes, social_url, facebook_url, instagram_url,
-        x_url, tiktok_url, threads_url, position, last_activity_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(3))`,
+        contact_email, contact_phone, company_name, source_platform, status, notes,
+        value_amount, value_currency, expected_close, social_url, facebook_url,
+        instagram_url, x_url, tiktok_url, threads_url, position, last_activity_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW(3))`,
     [id, req.user!.id, stage.pipeline_id, stage.id, title,
-     contactName ?? null, contactHandle ?? null, sourcePlatform ?? null,
-     stage.outcome, notes ?? null,
+     contactName ?? null, contactHandle ?? null, contactEmail ?? null,
+     contactPhone ?? null, companyName ?? null,
+     sourcePlatform ?? null, stage.outcome, notes ?? null,
+     valueAmount ?? null, valueCurrency ?? null, expectedClose ?? null,
      socialUrl ?? null, facebookUrl ?? null, instagramUrl ?? null,
      xUrl ?? null, tiktokUrl ?? null, threadsUrl ?? null],
   );

@@ -94,6 +94,7 @@
       "faq": "FAQ",
       "signIn": "Accedi",
       "getStarted": "Inizia",
+      "dashboard": "Dashboard",
       "language": "Lingua"
     },
     "hero": {
@@ -582,6 +583,7 @@
       "postGenerated": "Post generato",
       "postsGenerated": "{count} post generati",
       "surprisePost": "un post a sorpresa",
+      "surpriseFailed": "Impossibile scegliere un argomento. Riprova.",
       "upgrade": "Aggiorna piano"
     }
   },

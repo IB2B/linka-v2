@@ -28,7 +28,7 @@ export function SidebarUser({ user }: SidebarUserProps) {
             render={<SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent" />}
           >
             <SidebarUserPreview user={user} />
-            <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
+            <ChevronsUpDown className="ml-auto size-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
           </DropdownMenuTrigger>
           <SidebarUserMenu
             user={user} isMobile={isMobile} pending={pending}

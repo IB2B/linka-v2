@@ -24,7 +24,7 @@ export function KpiPill({ label, value, icon: Icon, tone = "default" }: Props) {
         <div className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
           {label}
         </div>
-        <div className="text-lg font-semibold tabular-nums tracking-tight">
+        <div className="font-display text-lg font-semibold tabular-nums tracking-tight">
           {value}
         </div>
       </div>

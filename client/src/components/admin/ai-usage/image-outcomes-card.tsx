@@ -36,7 +36,7 @@ export function ImageOutcomesCard({ rows }: { rows: Row[] }) {
       ) : (
         <div className="space-y-4 px-5 py-4">
           <div className="flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-semibold tabular-nums tracking-tight text-emerald-600 dark:text-emerald-400">
+            <span className="font-display text-3xl font-semibold tabular-nums tracking-tight text-emerald-600 dark:text-emerald-400">
               {successPct}%
             </span>
             <span className="text-[11px] uppercase tracking-wider text-muted-foreground">

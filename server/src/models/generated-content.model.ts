@@ -4,13 +4,13 @@ import type { GeneratedPost } from "../types/post";
 import { POST_COLS, type PostRow, rowToPost } from "./generated-content-row";
 
 export {
-  setSchedule, markPosted, setContent, deleteById,
+  setSchedule, markPosted, setContent, setScore, deleteById,
 } from "./generated-content-updates.model";
 
 type InsertInput = {
   userId: string; prompt: string | null; content: string;
   platform: string | null; imageUrl?: string | null;
-  imageStatus?: "pending" | "skipped";
+  imageStatus?: "pending" | "skipped" | "completed";
   tokensInput?: number | null; tokensOutput?: number | null;
   model?: string | null;
 };

@@ -16,9 +16,7 @@ export async function getUserMe(userId: string) {
        WHERE u.id = ?`, [userId],
     ),
     db.query<any[]>(
-      `SELECT COUNT(*) AS n FROM generated_content
-         WHERE user_id = ?
-           AND created_at >= DATE_FORMAT(NOW(), '%Y-%m-01 00:00:00')`,
+      "SELECT COUNT(*) AS n FROM generated_content WHERE user_id = ?",
       [userId],
     ),
   ]);

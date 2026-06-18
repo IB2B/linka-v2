@@ -94,6 +94,7 @@
       "faq": "FAQ",
       "signIn": "Connexion",
       "getStarted": "Commencer",
+      "dashboard": "Tableau de bord",
       "language": "Langue"
     },
     "hero": {
@@ -582,6 +583,7 @@
       "postGenerated": "Publication générée",
       "postsGenerated": "{count} publications générées",
       "surprisePost": "une publication surprise",
+      "surpriseFailed": "Impossible de choisir un sujet. Réessayez.",
       "upgrade": "Mettre à niveau"
     }
   },

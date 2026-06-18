@@ -9,6 +9,7 @@ import { emailVerificationEmail } from "../lib/email/templates/email-verificatio
 import { generateCode, storeCode } from "../lib/email-verification";
 import { COOKIE_OPTS } from "../lib/cookie-opts";
 import { rateLimitMw } from "../middleware/rate-limit-mw";
+import { getPlatformSettings } from "../lib/platform-settings";
 import { registerSchema, loginSchema } from "./auth-schemas";
 
 const router = Router();
@@ -25,6 +26,11 @@ router.post("/register", registerIpLimit, async (req, res, next) => {
     const parsed = registerSchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: parsed.error.issues[0].message }); return; }
     const { firstName, lastName, email, password } = parsed.data;
+
+    const platform = await getPlatformSettings();
+    if (!platform.signupsEnabled) {
+      res.status(403).json({ error: "New sign-ups are currently disabled." }); return;
+    }
 
     const [existing] = await db.query<any[]>("SELECT id FROM users WHERE email = ?", [email]);
     if (existing.length) { res.status(400).json({ error: "Email already in use." }); return; }

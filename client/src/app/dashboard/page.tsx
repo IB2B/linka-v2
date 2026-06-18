@@ -14,9 +14,15 @@ import { countPosts, recentPosts, upcomingPosts } from "@/lib/dashboard/build-ov
 import { buildStats } from "@/lib/dashboard/build-stats";
 import { fetchMe } from "@/lib/auth/me";
 
-export default async function UserDashboardPage() {
+const RANGES = new Set([30, 60, 90]);
+
+type Props = { searchParams: Promise<{ days?: string }> };
+
+export default async function UserDashboardPage({ searchParams }: Props) {
+  const { days: rawDays } = await searchParams;
+  const days = RANGES.has(Number(rawDays)) ? Number(rawDays) : 30;
   const [posts, billing, engagement, me, t] = await Promise.all([
-    getPosts(), getBillingOverview(), getEngagementSeries(30), fetchMe(),
+    getPosts(), getBillingOverview(), getEngagementSeries(days), fetchMe(),
     getTranslations("dashboard"),
   ]);
   const counts = countPosts(posts);
@@ -30,7 +36,7 @@ export default async function UserDashboardPage() {
     <div className="flex flex-col gap-6">
       <PageHeader title={greeting} description={t("subtitle")} />
       <StatGrid stats={stats} />
-      <EngagementCard data={engagement} />
+      <EngagementCard data={engagement} days={days} />
       <div className="grid gap-4 lg:grid-cols-3">
         <UpcomingPosts posts={upcomingPosts(posts)} />
         <StatusBreakdownCard counts={counts} />

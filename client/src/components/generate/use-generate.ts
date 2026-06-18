@@ -4,11 +4,13 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
-import { generatePostAction } from "@/app/dashboard/generate/actions";
+import { generatePost, suggestTopics } from "@/lib/api/generate-client";
 import { RANDOM_TYPES } from "@/lib/content/post-type-utils";
 import type { NewsArticle, PostSettings, PostType } from "@/types/content";
 
-export type GenOpts = { type?: PostType; topic?: string; article?: NewsArticle; label: string };
+export type GenOpts = {
+  type?: PostType; topic?: string; article?: NewsArticle; surprise?: boolean; label: string;
+};
 
 export function useGenerate(postType: PostType, settings: PostSettings) {
   const router = useRouter();
@@ -20,8 +22,14 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
     const type = opts.type ?? postType;
     setGeneratingFor(opts.label);
     start(async () => {
-      const res = await generatePostAction({
-        postType: type, topic: opts.topic, newsArticle: opts.article,
+      let topic = opts.topic;
+      if (opts.surprise && !topic && !opts.article) {
+        const s = await suggestTopics(type, 1, true);
+        topic = s.data?.[0]?.topic;
+        if (!topic) { setGeneratingFor(null); toast.error(s.error ?? t("surpriseFailed")); return; }
+      }
+      const res = await generatePost({
+        postType: type, topic, newsArticle: opts.article,
         platforms: settings.platforms, language: settings.language, withImage: settings.withImage,
       });
       setGeneratingFor(null);
@@ -37,13 +45,14 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
       if (posts.length === 0) return;
       toast.success(posts.length === 1 ? t("postGenerated") : t("postsGenerated", { count: posts.length }));
       router.push(posts.length === 1 ? `/dashboard/posts/${posts[0].contentId}` : "/dashboard/posts");
+      router.refresh();
     });
   }
 
   function randomGenerate(onType: (t: PostType) => void) {
     const type = RANDOM_TYPES[Math.floor(Math.random() * RANDOM_TYPES.length)];
     onType(type);
-    generate({ type, label: t("surprisePost") });
+    generate({ type, surprise: true, label: t("surprisePost") });
   }
 
   return { generate, randomGenerate, pending, generatingFor };

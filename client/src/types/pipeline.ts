@@ -23,7 +23,13 @@ export type Opportunity = {
   title: string;
   contactName: string | null;
   contactHandle: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  companyName: string | null;
   sourcePlatform: OpportunityPlatform | null;
+  valueAmount: number | null;
+  valueCurrency: string | null;
+  expectedClose: string | null;
   status: OpportunityStatus;
   notes: string | null;
   conversationId: string | null;

@@ -6,6 +6,7 @@ import { PlatformIcon } from "@/components/accounts/platform-icon";
 import { PostActions } from "./post-actions";
 import { PostCardMedia } from "./post-card-media";
 import { PostStatusBadge } from "./post-status-badge";
+import { PostScoreBadge } from "./post-score-badge";
 import { formatPostDate } from "@/lib/posts/format-date";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
 import type { GeneratedPost } from "@/types/post";
@@ -47,6 +48,9 @@ export function PostCard({ post }: { post: GeneratedPost }) {
                   <PlatformIcon platform={platform} className="size-3" />
                   {platform}
                 </span>
+              ) : null}
+              {post.viralityScore != null ? (
+                <PostScoreBadge score={post.viralityScore} />
               ) : null}
             </div>
             <span className="shrink-0 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">

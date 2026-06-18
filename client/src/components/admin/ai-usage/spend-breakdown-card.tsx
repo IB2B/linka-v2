@@ -61,7 +61,7 @@ export function SpendBreakdownCard({ kpis }: { kpis: AiUsageOverview["kpis"] }) 
         <span className="font-medium uppercase tracking-wider text-muted-foreground">
           Total estimated
         </span>
-        <span className="font-heading text-base font-semibold tabular-nums">
+        <span className="font-display text-base font-semibold tabular-nums">
           {fmtCost(total)}
         </span>
       </div>
