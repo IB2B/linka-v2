@@ -1,0 +1,42 @@
+import type {
+  GenerateInput, GenerationResult, GenerationBatchError,
+  PostType, TopicSuggestion,
+} from "@/types/content";
+
+// Browser fetches (not server actions) so an in-flight generation never blocks
+// client-side navigation. Same-origin: the /api/* proxy carries the cookie.
+type Result<T> = { data?: T; error?: string; code?: string };
+type GenerationBatch = { posts: GenerationResult[]; errors?: GenerationBatchError[] };
+
+function post(path: string, body: object): Promise<Response> {
+  return fetch(path, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+export async function generatePost(input: GenerateInput): Promise<Result<GenerationBatch>> {
+  const res = await post("/api/content/generate", {
+    postType: input.postType, topic: input.topic, newsArticle: input.newsArticle,
+    platforms: input.platforms, language: input.language, withImage: input.withImage,
+  });
+  const json = (await res.json().catch(() => ({}))) as {
+    posts?: { platform: string; id: string; content: string }[];
+    errors?: GenerationBatchError[]; error?: string; code?: string;
+  };
+  if (!res.ok) return { error: json.error ?? "Generation failed.", code: json.code };
+  const posts = (json.posts ?? []).map((p) => ({ platform: p.platform, contentId: p.id, content: p.content }));
+  return { data: { posts, errors: json.errors } };
+}
+
+export async function suggestTopics(
+  postType: PostType, count = 5, refresh = false,
+): Promise<Result<TopicSuggestion[]>> {
+  const res = await post("/api/content/suggest-topics", { postType, count, refresh });
+  const json = (await res.json().catch(() => ({}))) as {
+    suggestions?: TopicSuggestion[]; error?: string;
+  };
+  if (!res.ok) return { error: json.error ?? "Failed to get suggestions." };
+  return { data: json.suggestions ?? [] };
+}

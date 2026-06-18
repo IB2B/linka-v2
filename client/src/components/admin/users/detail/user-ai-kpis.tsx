@@ -13,7 +13,7 @@ function KpiCell({ label, value, sub }: Cell) {
   return (
     <div className="flex flex-col gap-1 px-5 py-4">
       <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{label}</span>
-      <span className="font-heading text-2xl font-semibold tabular-nums tracking-tight">{value}</span>
+      <span className="font-display text-2xl font-semibold tabular-nums tracking-tight">{value}</span>
       {sub && <span className="text-[11px] tracking-tight text-muted-foreground">{sub}</span>}
     </div>
   );

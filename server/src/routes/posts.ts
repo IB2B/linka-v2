@@ -11,6 +11,10 @@ import {
 import {
   regenerateText, regenerateImage,
 } from "../controllers/posts-regenerate.controller";
+import { createManual } from "../controllers/posts-create.controller";
+import {
+  postImageUpload, uploadPostImage,
+} from "../controllers/posts-image-upload.controller";
 import { scoreById } from "../controllers/posts-score.controller";
 import { bulkDelete } from "../controllers/posts-bulk.controller";
 import { listPublishedPlatforms }
@@ -28,6 +32,8 @@ const router = Router();
 router.use(authenticate);
 
 router.get("/", list);
+router.post("/", createManual);
+router.post("/upload-image", postImageUpload, uploadPostImage);
 router.get("/notifications", listNotifications);
 router.get("/published-platforms", listPublishedPlatforms);
 router.get("/:id", getOne);

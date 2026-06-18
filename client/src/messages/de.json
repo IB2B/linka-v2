@@ -94,6 +94,7 @@
       "faq": "FAQ",
       "signIn": "Anmelden",
       "getStarted": "Loslegen",
+      "dashboard": "Dashboard",
       "language": "Sprache"
     },
     "hero": {
@@ -582,6 +583,7 @@
       "postGenerated": "Beitrag erstellt",
       "postsGenerated": "{count} Beiträge erstellt",
       "surprisePost": "ein Überraschungs-Beitrag",
+      "surpriseFailed": "Thema konnte nicht gewählt werden. Bitte erneut versuchen.",
       "upgrade": "Upgrade"
     }
   },

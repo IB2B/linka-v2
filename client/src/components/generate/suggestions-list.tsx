@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SuggestionItem } from "./suggestion-item";
-import { suggestTopicsAction } from "@/app/dashboard/generate/actions";
+import { suggestTopics } from "@/lib/api/generate-client";
 import type { PostType, TopicSuggestion } from "@/types/content";
 
 type Props = {
@@ -22,7 +22,7 @@ export function SuggestionsList({ postType, pending, onSelect }: Props) {
 
   function load(refresh = false) {
     start(async () => {
-      const res = await suggestTopicsAction(postType, 5, refresh);
+      const res = await suggestTopics(postType, 5, refresh);
       if (res.error) toast.error(res.error);
       else setItems(res.data ?? []);
     });

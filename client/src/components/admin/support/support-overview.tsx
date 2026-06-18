@@ -21,7 +21,7 @@ export function SupportOverview({ summary }: { summary: SupportSummary }) {
             <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
               {s.label}
             </span>
-            <span className={`font-heading text-3xl font-semibold tabular-nums tracking-tight ${s.tone ?? ""}`}>
+            <span className={`font-display text-3xl font-semibold tabular-nums tracking-tight ${s.tone ?? ""}`}>
               {fmt.format(s.value)}
             </span>
           </div>

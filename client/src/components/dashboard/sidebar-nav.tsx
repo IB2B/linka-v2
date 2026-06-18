@@ -46,7 +46,7 @@ export function SidebarNav({ role, tier, features }: SidebarNavProps) {
                       render={
                         <Link href={item.href}>
                           <Icon />
-                          <span>{label}</span>
+                          <span className="group-data-[collapsible=icon]:hidden">{label}</span>
                         </Link>
                       }
                     />

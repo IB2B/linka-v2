@@ -23,7 +23,7 @@ export function ContentOverview({ summary }: { summary: AdminContentSummary }) {
           <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
             Posts this month
           </span>
-          <span className="text-5xl font-semibold tabular-nums tracking-tight">
+          <span className="font-display text-5xl font-semibold tabular-nums tracking-tight">
             {fmt.format(summary.thisMonth)}
           </span>
           <div className="text-sm tracking-tight text-muted-foreground">

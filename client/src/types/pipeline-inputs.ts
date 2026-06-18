@@ -10,7 +10,13 @@ export type CreateOppInput = {
   stageId: string;
   contactName?: string | null;
   contactHandle?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  companyName?: string | null;
   sourcePlatform?: OpportunityPlatform | null;
+  valueAmount?: number | null;
+  valueCurrency?: string | null;
+  expectedClose?: string | null;
   notes?: string | null;
   socialUrl?: string | null;
   facebookUrl?: string | null;
@@ -24,7 +30,13 @@ export type UpdateOppInput = Partial<{
   title: string;
   contactName: string | null;
   contactHandle: string | null;
+  contactEmail: string | null;
+  contactPhone: string | null;
+  companyName: string | null;
   sourcePlatform: OpportunityPlatform | null;
+  valueAmount: number | null;
+  valueCurrency: string | null;
+  expectedClose: string | null;
   notes: string | null;
   socialUrl: string | null;
   facebookUrl: string | null;

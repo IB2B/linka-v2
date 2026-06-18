@@ -29,7 +29,7 @@ export function ScheduleTimeList({
         </h3>
         <ScheduleFormatToggle value={format} onChange={onFormatChange} />
       </div>
-      <div className="flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto pr-1">
+      <div className="scrollbar-thin flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto pr-1">
         {slots.map((slot) => {
           const when = combineDateTime(date, slot);
           const disabled = when.getTime() <= now;

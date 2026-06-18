@@ -16,7 +16,7 @@ export function KpiGrid({ items }: { items: KpiItem[] }) {
             {s.label}
           </span>
           <div className="flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-semibold tabular-nums tracking-tight">
+            <span className="font-display text-3xl font-semibold tabular-nums tracking-tight">
               {s.value}
             </span>
             {s.delta && <DeltaBadge curr={s.delta.curr} prev={s.delta.prev} />}

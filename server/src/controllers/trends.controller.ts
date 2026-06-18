@@ -3,6 +3,7 @@ import type { AuthRequest } from "../middleware/auth";
 import { listTrendsWithIdeas } from "../lib/trends-read";
 import { refreshTrends } from "../services/trends.service";
 import { suggestTrendTopics } from "../lib/trend-topic-suggestions";
+import { toTrendLocale } from "../lib/trend-query-i18n";
 
 function mapTrend(t: { id: string; title: string; url: string | null;
   source: string | null; summary: string | null; score: number; fetched_at: Date }) {
@@ -33,7 +34,8 @@ export async function getTrends(req: AuthRequest, res: Response, next: NextFunct
 export async function postRefresh(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const topic = typeof req.body?.topic === "string" ? req.body.topic.slice(0, 120) : undefined;
-    const count = await refreshTrends(req.user!.id, topic);
+    const locale = toTrendLocale(req.body?.language);
+    const count = await refreshTrends(req.user!.id, topic, locale);
     res.json({ refreshed: count });
   } catch (e) { next(e); }
 }

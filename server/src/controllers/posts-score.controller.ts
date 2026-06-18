@@ -24,6 +24,7 @@ export async function scoreById(
       return;
     }
     const result = await scorePost(post.content, post.platform ?? "linkedin");
+    await posts.setScore(id, userId, result.score, result.reasons, result.suggestions);
     res.json(result);
   } catch (e) { next(e); }
 }

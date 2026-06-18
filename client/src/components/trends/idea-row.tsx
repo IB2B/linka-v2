@@ -6,33 +6,26 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { generatePostAction } from "@/app/dashboard/generate/actions";
+import { generatePost } from "@/lib/api/generate-client";
 import type { TrendIdea } from "@/types/trend";
-import { ScoreBar } from "./score-bar";
-
-const ALLOWED = ["linkedin", "twitter", "threads", "instagram", "facebook"] as const;
-type Platform = (typeof ALLOWED)[number];
-function normalize(v: string | null): Platform {
-  if (!v) return "linkedin";
-  const lower = v.toLowerCase();
-  if (lower === "x") return "twitter";
-  return (ALLOWED as readonly string[]).includes(lower)
-    ? (lower as Platform)
-    : "linkedin";
-}
+import { normalizePlatform } from "./idea-platform";
+import { IdeaPlatformPill } from "./idea-platform-pill";
+import { ScoreBadge } from "./score-badge";
+import { useGenSettings } from "./gen-settings-context";
 
 export function IdeaRow({ idea }: { idea: TrendIdea }) {
+  const { language, withImage } = useGenSettings();
   const [pending, start] = useTransition();
-  const platform = normalize(idea.platform);
+  const platform = normalizePlatform(idea.platform);
 
   function onGenerate() {
     start(async () => {
-      const res = await generatePostAction({
+      const res = await generatePost({
         postType: "news_commentary",
         topic: idea.hook,
-        platform,
-        language: "en",
-        withImage: true,
+        platforms: [platform],
+        language,
+        withImage,
       });
       if (res.error) toast.error(res.error);
       else toast.success("Post generated. Check Posts to review.");
@@ -40,18 +33,22 @@ export function IdeaRow({ idea }: { idea: TrendIdea }) {
   }
 
   return (
-    <div className="flex items-start gap-3 rounded-lg border bg-card/40 p-3">
-      <div className="min-w-0 flex-1 space-y-1.5">
+    <div className="flex items-start gap-3 rounded-lg border bg-card/40 p-3 transition-colors hover:border-foreground/15 hover:bg-card">
+      <div className="min-w-0 flex-1 space-y-2">
         <p className="break-words text-sm leading-snug">{idea.hook}</p>
-        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-          {idea.angle ? <span className="rounded bg-muted px-1.5 py-0.5">{idea.angle}</span> : null}
-          <span className="rounded bg-muted px-1.5 py-0.5">{platform}</span>
-          <ScoreBar score={idea.score} />
+        <div className="flex flex-wrap items-center gap-1.5">
+          <IdeaPlatformPill platform={platform} />
+          {idea.angle ? (
+            <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+              {idea.angle}
+            </span>
+          ) : null}
+          <ScoreBadge score={idea.score} label="Viral potential" />
         </div>
       </div>
       <Button
         size="sm" variant="outline" disabled={pending} onClick={onGenerate}
-        aria-label="Generate"
+        aria-label="Generate post"
         className="shrink-0 px-2 sm:px-3"
       >
         {pending ? <Spinner aria-hidden /> : <Sparkles className="size-3.5" />}

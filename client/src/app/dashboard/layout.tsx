@@ -6,8 +6,10 @@ import {
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { HeaderActions } from "@/components/dashboard/header-actions";
 import { NavBreadcrumb } from "@/components/dashboard/nav-breadcrumb";
+import { PlatformBanner } from "@/components/dashboard/platform-banner";
 import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/auth/require-role";
+import { getPlatformNotice } from "@/lib/platform/get-platform";
 import type { DashboardUser } from "@/types/dashboard-user";
 
 export default async function DashboardLayout({
@@ -15,7 +17,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = await requireRole("USER");
+  const [{ user }, notice] = await Promise.all([requireRole("USER"), getPlatformNotice()]);
   if (!user.emailVerified) redirect("/verify-email");
   if (!user.onboardingCompleted) redirect("/onboarding");
 
@@ -36,6 +38,7 @@ export default async function DashboardLayout({
     <SidebarProvider className="h-svh overflow-hidden">
       <AppSidebar user={dashboardUser} />
       <SidebarInset className="min-h-0 overflow-hidden">
+        <PlatformBanner notice={notice} />
         <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <SidebarTrigger />
           <div className="h-4 w-px bg-border" aria-hidden />

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { getPost } from "@/lib/posts/get-post";
+import { postScoreFrom } from "@/lib/posts/post-score-initial";
 import { RegenProvider } from "@/components/posts/detail/regen-context";
 import { PostPlatformsProvider } from "@/components/posts/platforms-context";
 import { PlatformPicker } from "@/components/posts/platform-picker";
@@ -36,7 +37,7 @@ export default async function PostDetailPage({ params }: Props) {
               <PostDetailContent post={post} />
             </div>
             <div className="flex flex-col gap-4">
-              <PostViralityScore postId={post.id} />
+              <PostViralityScore postId={post.id} initial={postScoreFrom(post)} />
               <PostDetailMetrics postId={post.id} />
               <PostDetailMeta post={post} />
             </div>

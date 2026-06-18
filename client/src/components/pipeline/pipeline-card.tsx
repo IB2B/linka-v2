@@ -4,6 +4,7 @@ import type { Opportunity } from "@/types/pipeline";
 import { PipelinePlatformPill } from "./pipeline-platform-pill";
 import { PipelineCardMenu } from "./pipeline-card-menu";
 import { formatAge } from "./format-age";
+import { formatMoney } from "./format-money";
 
 type Props = {
   opp: Opportunity;
@@ -51,10 +52,15 @@ export function PipelineCard({
         </div>
       ) : null}
       <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5">
+        <div className="flex min-w-0 items-center gap-1.5">
           {opp.sourcePlatform ? <PipelinePlatformPill platform={opp.sourcePlatform} /> : null}
+          {opp.valueAmount != null ? (
+            <span className="truncate rounded-md bg-foreground/5 px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-foreground">
+              {formatMoney(opp.valueAmount, opp.valueCurrency)}
+            </span>
+          ) : null}
         </div>
-        <span className="text-[10px] text-muted-foreground" suppressHydrationWarning>
+        <span className="shrink-0 text-[10px] text-muted-foreground" suppressHydrationWarning>
           {formatAge(opp.lastActivityAt ?? opp.createdAt)}
         </span>
       </div>

@@ -94,6 +94,7 @@
       "faq": "FAQ",
       "signIn": "Login",
       "getStarted": "Get started",
+      "dashboard": "Dashboard",
       "language": "Language"
     },
     "hero": {
@@ -570,6 +571,19 @@
     "postNow": "Post now",
     "view": "View",
     "delete": "Delete",
+    "compose": {
+      "trigger": "Write post",
+      "newPost": "New post",
+      "generateOption": "Generate with AI",
+      "manualOption": "Write it yourself",
+      "title": "Compose a post",
+      "placeholder": "What's on your mind?",
+      "addImage": "Add image",
+      "removeImage": "Remove image",
+      "platformsLabel": "Post to",
+      "noContent": "Write something to post.",
+      "noPlatform": "Pick at least one platform."
+    },
     "toast": { "deleted": "Post deleted.", "noPlatform": "Post has no target platform." },
     "status": {
       "all": "All", "draft": "Draft", "scheduled": "Scheduled", "posted": "Posted", "failed": "Failed"
@@ -582,6 +596,7 @@
       "postGenerated": "Post generated",
       "postsGenerated": "{count} posts generated",
       "surprisePost": "a surprise post",
+      "surpriseFailed": "Couldn't pick a topic. Try again.",
       "upgrade": "Upgrade"
     }
   },

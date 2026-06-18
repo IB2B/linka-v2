@@ -51,7 +51,7 @@ export function OverviewSubscriptions({ stats }: { stats: AdminStats }) {
       </div>
       <div>
         <div className="flex items-baseline justify-between">
-          <span className="font-heading text-3xl font-semibold tabular-nums tracking-tight">
+          <span className="font-display text-3xl font-semibold tabular-nums tracking-tight">
             {fmt.format(data.paying)}
           </span>
           <span className="text-xs tabular-nums tracking-tight text-muted-foreground">

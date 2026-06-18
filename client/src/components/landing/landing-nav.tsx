@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
-import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
-import { LandingLanguageSwitch } from "./landing-language-switch";
+import { LandingNavActions } from "./landing-nav-actions";
 
 export async function LandingNav() {
   const t = await getTranslations("landing.nav");
@@ -34,18 +33,7 @@ export async function LandingNav() {
             </a>
           ))}
         </nav>
-        <div className="flex items-center gap-3 justify-self-end">
-          <LandingLanguageSwitch />
-          <Link
-            href="/login"
-            className="hidden text-[14px] tracking-tight text-[#0F1113] transition hover:text-[#525252] sm:inline"
-          >
-            {t("signIn")}
-          </Link>
-          <Button render={<Link href="/register" />} nativeButton={false}>
-            {t("getStarted")}
-          </Button>
-        </div>
+        <LandingNavActions />
       </div>
     </header>
   );

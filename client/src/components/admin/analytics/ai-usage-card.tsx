@@ -36,7 +36,7 @@ export function AiUsageCard({ ai, days }: { ai: AiUsage; days: number }) {
             <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
               {s.label}
             </span>
-            <span className="font-heading text-2xl font-semibold tabular-nums tracking-tight">
+            <span className="font-display text-2xl font-semibold tabular-nums tracking-tight">
               {s.value}
             </span>
             {s.hint ? (

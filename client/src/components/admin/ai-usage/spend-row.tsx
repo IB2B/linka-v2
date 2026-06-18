@@ -22,7 +22,7 @@ export function SpendRow({ icon, label, count, cost, segments }: Props) {
             {count}
           </span>
         </div>
-        <span className="font-heading text-base font-semibold tabular-nums tracking-tight">
+        <span className="font-display text-base font-semibold tabular-nums tracking-tight">
           {cost}
         </span>
       </div>

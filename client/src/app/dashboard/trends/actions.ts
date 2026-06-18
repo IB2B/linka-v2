@@ -2,17 +2,18 @@
 
 import { revalidatePath } from "next/cache";
 import { cookies, headers } from "next/headers";
+import { getLocale } from "next-intl/server";
 
 type Result = { success: true; refreshed: number } | { error: string };
 
 export async function refreshTrendsAction(topic?: string): Promise<Result> {
-  const [cookieStore, hdrs] = await Promise.all([cookies(), headers()]);
+  const [cookieStore, hdrs, language] = await Promise.all([cookies(), headers(), getLocale()]);
   const host = hdrs.get("host");
   const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const res = await fetch(`${proto}://${host}/api/trends/refresh`, {
     method: "POST",
     headers: { "Content-Type": "application/json", cookie: cookieStore.toString() },
-    body: JSON.stringify({ topic }),
+    body: JSON.stringify({ topic, language }),
     cache: "no-store",
   });
   if (!res.ok) {

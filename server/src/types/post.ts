@@ -18,4 +18,7 @@ export type GeneratedPost = {
   postedAt: string | null;
   createdAt: string;
   latePostId: string | null;
+  viralityScore: number | null;
+  viralityReasons: string[] | null;
+  viralitySuggestions: string[] | null;
 };

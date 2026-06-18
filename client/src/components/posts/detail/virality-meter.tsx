@@ -1,13 +1,8 @@
 import { cn } from "@/lib/utils";
-
-function tone(score: number): { ring: string; text: string; label: string } {
-  if (score >= 75) return { ring: "stroke-emerald-500", text: "text-emerald-500", label: "Strong" };
-  if (score >= 50) return { ring: "stroke-amber-500", text: "text-amber-500", label: "Decent" };
-  return { ring: "stroke-rose-500", text: "text-rose-500", label: "Weak" };
-}
+import { scoreTone } from "@/lib/posts/score-tone";
 
 export function ViralityMeter({ score }: { score: number }) {
-  const t = tone(score);
+  const t = scoreTone(score);
   const radius = 28;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;

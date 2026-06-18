@@ -34,7 +34,7 @@ export function AnalyticsHero({ data }: { data: AnalyticsOverview }) {
               {s.label}
             </span>
             <div className="flex items-baseline gap-2">
-              <span className="font-heading text-3xl font-semibold tabular-nums tracking-tight">
+              <span className="font-display text-3xl font-semibold tabular-nums tracking-tight">
                 {s.value}
               </span>
               <DeltaBadge curr={s.delta.curr} prev={s.delta.prev} />

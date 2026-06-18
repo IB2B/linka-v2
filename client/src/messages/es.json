@@ -94,6 +94,7 @@
       "faq": "FAQ",
       "signIn": "Iniciar sesión",
       "getStarted": "Empezar",
+      "dashboard": "Panel",
       "language": "Idioma"
     },
     "hero": {
@@ -582,6 +583,7 @@
       "postGenerated": "Publicación generada",
       "postsGenerated": "{count} publicaciones generadas",
       "surprisePost": "una publicación sorpresa",
+      "surpriseFailed": "No se pudo elegir un tema. Inténtalo de nuevo.",
       "upgrade": "Actualizar plan"
     }
   },

@@ -1,5 +1,6 @@
 import { lateFetch } from "./late-api";
 import { getOrCreateLateProfile } from "./late-profile";
+import { fetchAllLatePages, type LatePage } from "./late-paginate";
 
 export type RawConversation = {
   _id?: string;
@@ -30,26 +31,19 @@ export type RawMessage = {
   createdAt?: string;
 };
 
-type LatePage<T> = {
-  data?: T[];
-  conversations?: T[];
-  messages?: T[];
-  pagination?: { nextCursor?: string | null };
-  nextCursor?: string | null;
-};
-
 function toLatePlatform(p: string): string {
   return p === "x" ? "twitter" : p;
 }
 
 export async function listInboxConversations(userId: string, platform?: string) {
   const profileId = await getOrCreateLateProfile(userId);
-  const qs = new URLSearchParams({ profileId, limit: "10" });
-  if (platform) qs.set("platform", toLatePlatform(platform));
-  const url = `/inbox/conversations?${qs.toString()}`;
-  const r = await lateFetch<LatePage<RawConversation>>(url);
-  const list = r.data ?? r.conversations ?? [];
-  return { conversations: list };
+  const conversations = await fetchAllLatePages<RawConversation>((cursor) => {
+    const qs = new URLSearchParams({ profileId, limit: "100" });
+    if (platform) qs.set("platform", toLatePlatform(platform));
+    if (cursor) qs.set("cursor", cursor);
+    return `/inbox/conversations?${qs.toString()}`;
+  });
+  return { conversations };
 }
 
 export async function listInboxMessages(

@@ -2,28 +2,26 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-const OPTIONS: { days: number; label: string }[] = [
-  { days: 7, label: "7 days" },
-  { days: 30, label: "30 days" },
-  { days: 90, label: "90 days" },
-];
+const DEFAULT_OPTIONS = [7, 30, 90];
 
-export function RangeTabs({ days, basePath = "/admin/analytics" }: { days: number; basePath?: string }) {
+type Props = { days: number; basePath?: string; options?: number[] };
+
+export function RangeTabs({ days, basePath = "/admin/analytics", options = DEFAULT_OPTIONS }: Props) {
   return (
     <div className="inline-flex rounded-lg border bg-card p-0.5">
-      {OPTIONS.map((o) => (
+      {options.map((d) => (
         <Link
-          key={o.days}
-          href={`${basePath}?days=${o.days}`}
+          key={d}
+          href={`${basePath}?days=${d}`}
           scroll={false}
           className={cn(
             "rounded-md px-3 py-1 text-xs font-medium tracking-tight transition",
-            days === o.days
+            days === d
               ? "bg-foreground text-background"
               : "text-muted-foreground hover:text-foreground",
           )}
         >
-          {o.label}
+          {d} days
         </Link>
       ))}
     </div>
