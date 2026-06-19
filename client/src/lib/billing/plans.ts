@@ -4,8 +4,7 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
   {
     id: "starter",
     name: "Free",
-    price: "€0",
-    cadence: "free forever",
+    priceKind: "free",
     description: "Try the magic. No card needed.",
     features: [
       "5 AI posts / month",
@@ -18,8 +17,7 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
   {
     id: "pro",
     name: "Creator",
-    price: "€29",
-    cadence: "/month",
+    priceKind: "paid",
     description: "Everything a solo creator needs to ship consistently.",
     features: [
       "30 AI posts / month",
@@ -33,8 +31,7 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
   {
     id: "scale",
     name: "Business",
-    price: "€79",
-    cadence: "/month",
+    priceKind: "paid",
     description: "For multi-brand operators and small teams.",
     features: [
       "150 AI posts / month",
@@ -52,8 +49,7 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
   {
     id: "enterprise",
     name: "Enterprise",
-    price: "Custom",
-    cadence: "pricing",
+    priceKind: "custom",
     description: "For agencies and large teams with custom needs.",
     cta: "contact",
     contactHref: "mailto:sales@linka.studio",

@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { RoleSubMenu } from "./role-sub-menu";
+import { ProtectedActions } from "./protected-actions";
 import { DeleteUserDialog } from "./detail/delete-user-dialog";
 import { useUserRowActions } from "./use-user-row-actions";
 import type { AdminUserRow } from "@/types/admin";
@@ -35,11 +36,13 @@ export function UserRowActions({ user }: { user: AdminUserRow }) {
             <DropdownMenuItem onClick={() => copy(user.id, "User ID")}><Copy />Copy user ID</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <RoleSubMenu onSetRole={setRole} />
           <DropdownMenuItem onClick={sendReset}><KeyRound />Send password reset</DropdownMenuItem>
-          <DropdownMenuItem onClick={toggleStatus}>{suspended ? <Play /> : <Pause />}{suspended ? "Reactivate" : "Suspend"}</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive" onClick={() => setDeleteOpen(true)}><Trash2 />Delete user</DropdownMenuItem>
+          <ProtectedActions role={user.role}>
+            <RoleSubMenu onSetRole={setRole} />
+            <DropdownMenuItem onClick={toggleStatus}>{suspended ? <Play /> : <Pause />}{suspended ? "Reactivate" : "Suspend"}</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={() => setDeleteOpen(true)}><Trash2 />Delete user</DropdownMenuItem>
+          </ProtectedActions>
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteUserDialog

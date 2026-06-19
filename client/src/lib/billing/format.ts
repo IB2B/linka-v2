@@ -1,7 +1,3 @@
-export const TIER_PRICE: Record<string, number> = {
-  free: 0, starter: 0, pro: 29, scale: 79, professional: 79, enterprise: 0,
-};
-
 export const TIER_LABEL: Record<string, string> = {
   free: "Free", starter: "Free", pro: "Creator",
   scale: "Business", professional: "Business", enterprise: "Enterprise",

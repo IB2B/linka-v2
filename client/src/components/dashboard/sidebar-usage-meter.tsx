@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { tierLabel } from "@/lib/billing/format";
+import { SegmentedMeter } from "@/components/segmented-meter";
 
 import type { DashboardUser } from "@/types/dashboard-user";
 
@@ -19,12 +20,7 @@ export function SidebarUsageMeter({ user }: { user: DashboardUser }) {
           {user.postsUsed}/{user.postsLimit}
         </p>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-        <div
-          className="h-full rounded-full bg-primary transition-all"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+      <SegmentedMeter pct={pct} segments={22} />
       <p className="text-xs text-muted-foreground">
         {t("postsRemaining", { count: remaining })}
       </p>

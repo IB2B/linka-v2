@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { getConversations } from "@/lib/inbox/get-conversations";
 import { getLinkedinStatus } from "@/lib/inbox/linkedin-status";
 import { getAccounts } from "@/lib/zernio/get-accounts";
+import { inboxErrorCopy } from "@/lib/inbox/inbox-error-copy";
 
 type Props = {
   activeId: string | null;
@@ -17,6 +18,7 @@ export async function InboxShell({ activeId, platform, children }: Props) {
     getAccounts(),
     getLinkedinStatus(),
   ]);
+  const err = result.ok ? null : inboxErrorCopy(result.status, result.error);
 
   return (
     <div className="grid h-[calc(100svh-5.5rem)] grid-cols-1 overflow-hidden rounded-xl border bg-card lg:grid-cols-[340px_minmax(0,1fr)]">
@@ -29,18 +31,9 @@ export async function InboxShell({ activeId, platform, children }: Props) {
             accounts={accounts}
             linkedinConnected={linkedin.connected}
           />
-        ) : (
-          <InboxError
-            message={result.status === 402 ? "Inbox add-on required" : "Couldn't load conversations"}
-            hint={
-              result.status === 402
-                ? "Enable the Inbox add-on on your Late workspace to manage DMs here."
-                : result.error === "service_unavailable"
-                  ? "Our messaging provider is temporarily unavailable. Please try again in a few minutes."
-                  : result.error
-            }
-          />
-        )}
+        ) : err ? (
+          <InboxError message={err.message} hint={err.hint} />
+        ) : null}
       </aside>
       <section className={cn("h-full min-h-0 flex-col lg:flex", activeId ? "flex" : "hidden lg:flex")}>
         {children}

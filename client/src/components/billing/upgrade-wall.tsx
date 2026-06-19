@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlanFeature } from "./plan-feature";
 import { UpgradeWallCta } from "./upgrade-wall-cta";
 import { BILLING_PLANS } from "@/lib/billing/plans";
+import { getPlanPrices } from "@/lib/billing/get-plan-prices";
+import { planPriceDisplay } from "@/lib/billing/plan-price-display";
 import type { PaidFeature } from "@/lib/billing/plan-features";
 
 const FEATURE_META: Record<PaidFeature, { title: string; description: string }> = {
@@ -23,9 +25,10 @@ const FEATURE_META: Record<PaidFeature, { title: string; description: string }> 
   },
 };
 
-export function UpgradeWall({ feature }: { feature: PaidFeature }) {
+export async function UpgradeWall({ feature }: { feature: PaidFeature }) {
   const meta = FEATURE_META[feature];
   const creator = BILLING_PLANS.find((p) => p.id === "pro")!;
+  const { price, cadence } = planPriceDisplay(creator, await getPlanPrices());
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-8 px-4 py-16">
@@ -45,8 +48,8 @@ export function UpgradeWall({ feature }: { feature: PaidFeature }) {
             </span>
           </CardTitle>
           <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-bold">{creator.price}</span>
-            <span className="text-sm text-muted-foreground">{creator.cadence}</span>
+            <span className="text-3xl font-bold">{price}</span>
+            <span className="text-sm text-muted-foreground">{cadence}</span>
           </div>
           <p className="text-sm text-muted-foreground">{creator.description}</p>
         </CardHeader>

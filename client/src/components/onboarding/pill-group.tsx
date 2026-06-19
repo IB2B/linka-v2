@@ -22,8 +22,8 @@ export function PillGroup({ label, options, value, onChange }: Props) {
             className={cn(
               "rounded-full border px-3 py-1 text-xs transition-colors",
               value === o
-                ? "border-foreground bg-foreground text-background"
-                : "border-border text-muted-foreground hover:border-foreground hover:text-foreground",
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border text-muted-foreground hover:border-primary hover:text-primary",
             )}
           >
             {o}

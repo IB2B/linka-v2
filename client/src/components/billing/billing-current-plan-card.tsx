@@ -2,19 +2,30 @@ import { CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { TIER_PRICE, STATUS_LABEL, tierLabel } from "@/lib/billing/format";
+import { SegmentedMeter } from "@/components/segmented-meter";
+import { STATUS_LABEL, tierLabel, formatMoney } from "@/lib/billing/format";
 
 type Props = {
   tier: string;
   status: string;
   postsThisMonth: number;
   postsLimit: number;
+  planAmount: number | null;
+  planCurrency: string | null;
+  planInterval: string | null;
 };
 
-export function BillingCurrentPlanCard({ tier, status, postsThisMonth, postsLimit }: Props) {
+export function BillingCurrentPlanCard(
+  { tier, status, postsThisMonth, postsLimit, planAmount, planCurrency, planInterval }: Props,
+) {
   const tierKey = tier.toLowerCase();
   const isEnterprise = tierKey === "enterprise";
-  const price = TIER_PRICE[tierKey] ?? 0;
+  // Show what Stripe actually bills. No hardcoded fallback — if the amount is
+  // somehow missing we show a dash rather than a number that could be wrong.
+  const priceLabel = planAmount != null
+    ? formatMoney(planAmount, planCurrency ?? "eur")
+    : "—";
+  const cadence = planInterval ? `/${planInterval}` : "/month";
   const pct = postsLimit > 0 ? Math.min(100, Math.round((postsThisMonth / postsLimit) * 100)) : 0;
   const statusKey = status.toUpperCase();
 
@@ -37,22 +48,18 @@ export function BillingCurrentPlanCard({ tier, status, postsThisMonth, postsLimi
       <CardContent className="space-y-3">
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-semibold tracking-tight tabular-nums">
-            {isEnterprise ? "Custom" : `€${price}`}
+            {isEnterprise ? "Custom" : priceLabel}
           </span>
           <span className="text-sm text-muted-foreground">
-            {isEnterprise ? "pricing" : "/month"}
+            {isEnterprise ? "pricing" : cadence}
           </span>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted-foreground">Posts used</span>
-            <span className="tabular-nums font-medium">{postsThisMonth} / {postsLimit < 0 ? "∞" : postsLimit}</span>
+            <span className="tabular-nums font-medium">{postsThisMonth} / {postsLimit < 0 || postsLimit >= 10000 ? "∞" : postsLimit}</span>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-            <div className={cn("h-full rounded-full transition-all",
-              pct >= 100 ? "bg-destructive" : pct >= 80 ? "bg-yellow-500" : "bg-primary"
-            )} style={{ width: `${pct}%` }} />
-          </div>
+          <SegmentedMeter pct={pct} />
         </div>
       </CardContent>
     </Card>

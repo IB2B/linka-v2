@@ -18,6 +18,17 @@ async function lateDmConversations(userId: string, platform?: string): Promise<R
     (c) => INBOX_DM_PLATFORMS.has(c.platform) && c.platform !== "linkedin");
 }
 
+async function safeList(
+  label: string, fn: () => Promise<RawConversation[]>,
+): Promise<RawConversation[]> {
+  try {
+    return await fn();
+  } catch (e) {
+    console.error(`[inbox] ${label} conversations unavailable:`, e);
+    return [];
+  }
+}
+
 export async function providerConversations(
   userId: string, platform?: string,
 ): Promise<RawConversation[]> {
@@ -25,10 +36,14 @@ export async function providerConversations(
     return (await hasLinkedinAccount(userId)) ? listUnipileConversations(userId) : [];
   }
   if (platform) return lateDmConversations(userId, platform);
-  const [late, hasLi] = await Promise.all([
-    lateDmConversations(userId), hasLinkedinAccount(userId),
+  // Combined view: load each provider independently so one outage (Late profile
+  // quota, Unipile downtime, etc.) shows the rest instead of blanking the inbox.
+  const hasLi = await hasLinkedinAccount(userId);
+  const [late, linkedin] = await Promise.all([
+    safeList("Late", () => lateDmConversations(userId)),
+    hasLi ? safeList("LinkedIn", () => listUnipileConversations(userId))
+          : Promise.resolve([] as RawConversation[]),
   ]);
-  const linkedin = hasLi ? await listUnipileConversations(userId) : [];
   return [...linkedin, ...late];
 }
 

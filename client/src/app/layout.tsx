@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, IBM_Plex_Mono, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
@@ -38,10 +39,12 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${plexMono.variable} ${geistMono.variable} h-full antialiased tracking-tight`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }} />
-      </head>
       <body suppressHydrationWarning className="min-h-full flex flex-col">
+        <Script
+          id="theme-bootstrap"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }}
+        />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark" disableTransitionOnChange>
             <TooltipProvider>{children}</TooltipProvider>

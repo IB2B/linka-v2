@@ -1,8 +1,9 @@
 import { db } from "./db";
 import { postsLimitFor } from "./plan-features";
+import { countPostsThisMonth } from "./posts-month-count";
 
 export async function getUserMe(userId: string) {
-  const [userResult, usageResult] = await Promise.all([
+  const [userResult, postsUsed] = await Promise.all([
     db.query<any[]>(
       `SELECT u.id, u.email, u.role, u.first_name, u.last_name,
               u.onboarding_completed, u.email_verified_at,
@@ -15,10 +16,7 @@ export async function getUserMe(userId: string) {
          LEFT JOIN subscriptions s ON s.user_id = u.id
        WHERE u.id = ?`, [userId],
     ),
-    db.query<any[]>(
-      "SELECT COUNT(*) AS n FROM generated_content WHERE user_id = ?",
-      [userId],
-    ),
+    countPostsThisMonth(userId),
   ]);
   const u = userResult[0][0];
   if (!u) return null;
@@ -33,7 +31,7 @@ export async function getUserMe(userId: string) {
     tier,
     onboardingCompleted: u.onboarding_completed === 1,
     emailVerified: u.email_verified_at !== null,
-    postsUsed: Number(usageResult[0][0]?.n ?? 0),
+    postsUsed,
     postsLimit: postsLimitFor(tier),
     features: { recycler: u.recycler_enabled === 1 },
   };

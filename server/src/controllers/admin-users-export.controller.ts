@@ -27,10 +27,12 @@ export async function exportAdminUsers(
     const { users } = await listAdminUsers({ q, role, status, limit: 10000, offset: 0 });
 
     const headers = ["ID", "Email", "First name", "Last name", "Role", "Status",
-      "Plan", "Posts", "Last active", "Joined"];
+      "Plan", "Posts this month", "MRR", "Currency", "Last active", "Joined"];
     const rows = users.map((u) => [
       esc(u.id), esc(u.email), esc(u.firstName), esc(u.lastName),
-      esc(u.role), esc(u.status), esc(planLabel(u.planTier)), esc(u.postsCount),
+      esc(u.role), esc(u.status), esc(planLabel(u.planTier)), esc(u.postsThisMonth),
+      esc(u.mrr != null ? (u.mrr / 100).toFixed(2) : ""),
+      esc(u.mrrCurrency ? u.mrrCurrency.toUpperCase() : ""),
       esc(u.lastActiveAt), esc(u.createdAt),
     ].join(","));
 

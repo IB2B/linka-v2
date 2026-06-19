@@ -2,12 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlanFeature } from "@/components/billing/plan-feature";
 import { PlanCardButton } from "@/components/billing/plan-card-button";
 import { cn } from "@/lib/utils";
+import { planPriceDisplay } from "@/lib/billing/plan-price-display";
 import type { BillingPlan, PlanTier } from "@/types/billing-plan";
+import type { PlanPrices } from "@/types/plan-prices";
 
-type Props = { plan: BillingPlan; currentTier?: PlanTier };
+type Props = { plan: BillingPlan; currentTier?: PlanTier; prices: PlanPrices };
 
-export function PlanCard({ plan, currentTier }: Props) {
+export function PlanCard({ plan, currentTier, prices }: Props) {
   const isCurrent = currentTier === plan.id;
+  const { price, cadence } = planPriceDisplay(plan, prices);
 
   return (
     <Card
@@ -27,8 +30,8 @@ export function PlanCard({ plan, currentTier }: Props) {
           )}
         </CardTitle>
         <div className="flex items-baseline gap-1">
-          <span className="text-3xl font-semibold">{plan.price}</span>
-          <span className="text-sm text-muted-foreground">{plan.cadence}</span>
+          <span className="text-3xl font-semibold">{price}</span>
+          <span className="text-sm text-muted-foreground">{cadence}</span>
         </div>
         <p className="text-sm text-muted-foreground">{plan.description}</p>
       </CardHeader>

@@ -1,48 +1,39 @@
 import type Stripe from "stripe";
 import { stripe } from "./stripe";
+import { mapInvoices, mapPaymentMethods } from "./billing-overview-map";
+import { resolveUpcoming, type Upcoming } from "./billing-upcoming";
 
 export type CustomerOverview = {
   paymentMethods: object[];
   defaultPaymentMethodId: string | null;
   invoices: object[];
-  upcoming: { amountDue: number; currency: string; nextPaymentAttempt: number | null } | null;
+  upcoming: Upcoming;
+  // The subscription's actual recurring price — source of truth for what the
+  // user pays, so the plan card matches the next charge and invoices.
+  planAmount: number | null;
+  planCurrency: string | null;
+  planInterval: string | null;
 };
 
 export async function getCustomerOverview(customerId: string): Promise<CustomerOverview> {
-  const [customer, pms, invList] = await Promise.all([
+  const [customer, pms, invList, subList] = await Promise.all([
     stripe.customers.retrieve(customerId) as Promise<Stripe.Customer>,
     stripe.customers.listPaymentMethods(customerId, { type: "card" }),
     stripe.invoices.list({ customer: customerId, limit: 10 }),
+    stripe.subscriptions.list({ customer: customerId, status: "all", limit: 1 }),
   ]);
   const defaultPmId = typeof customer.invoice_settings?.default_payment_method === "string"
     ? customer.invoice_settings.default_payment_method : null;
+  const sub = subList.data[0] ?? null;
+  const price = sub?.items.data[0]?.price ?? null;
 
-  const paymentMethods = pms.data.map((pm) => ({
-    id: pm.id, brand: pm.card!.brand, last4: pm.card!.last4,
-    expMonth: pm.card!.exp_month, expYear: pm.card!.exp_year,
-    funding: pm.card!.funding, isDefault: pm.id === defaultPmId,
-  }));
-  const invoices = invList.data.map((inv) => ({
-    id: inv.id, number: inv.number, status: inv.status, amountPaid: inv.amount_paid,
-    amountDue: inv.amount_due, currency: inv.currency, created: inv.created * 1000,
-    hostedInvoiceUrl: inv.hosted_invoice_url ?? null,
-    invoicePdf: inv.invoice_pdf ?? null, description: inv.description ?? null,
-  }));
-
-  let upcoming: CustomerOverview["upcoming"] = null;
-  try {
-    const up = await stripe.invoices.createPreview({ customer: customerId });
-    upcoming = { amountDue: up.amount_due, currency: up.currency, nextPaymentAttempt: up.next_payment_attempt ? up.next_payment_attempt * 1000 : null };
-  } catch {
-    const subs = await stripe.subscriptions.list({ customer: customerId, status: "active", limit: 1 });
-    const s = subs.data[0];
-    const item = s?.items.data[0];
-    if (s && item) {
-      const amt = item.price.unit_amount ?? 0;
-      const end = item.current_period_end;
-      upcoming = { amountDue: amt, currency: s.currency, nextPaymentAttempt: end ? end * 1000 : null };
-    }
-  }
-
-  return { paymentMethods, defaultPaymentMethodId: defaultPmId, invoices, upcoming };
+  return {
+    paymentMethods: mapPaymentMethods(pms.data, defaultPmId),
+    defaultPaymentMethodId: defaultPmId,
+    invoices: mapInvoices(invList.data),
+    upcoming: await resolveUpcoming(customerId, sub),
+    planAmount: price?.unit_amount ?? null,
+    planCurrency: sub?.currency ?? null,
+    planInterval: price?.recurring?.interval ?? null,
+  };
 }
