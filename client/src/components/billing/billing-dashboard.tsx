@@ -35,7 +35,7 @@ export function BillingDashboard({ overview, confirmError }: Props) {
     }
   }
 
-  const { tier, status, paymentMethods, invoices, upcoming, currentPeriodEnd, cancelAtPeriodEnd, postsThisMonth, postsLimit } = overview;
+  const { tier, status, paymentMethods, invoices, upcoming, currentPeriodEnd, cancelAtPeriodEnd, postsThisMonth, postsLimit, planAmount, planCurrency, planInterval } = overview;
   const isFree = tier === "FREE" || tier === "STARTER";
 
   if (isFree) {
@@ -65,9 +65,9 @@ export function BillingDashboard({ overview, confirmError }: Props) {
       </div>
       <BillingStatusBanners status={status} cancelAtPeriodEnd={cancelAtPeriodEnd} currentPeriodEnd={currentPeriodEnd} onPortal={openPortal} portalPending={portalPending} />
       <div className="grid gap-4 lg:grid-cols-3">
-        <BillingCurrentPlanCard tier={tier} status={status} postsThisMonth={postsThisMonth} postsLimit={postsLimit} />
+        <BillingCurrentPlanCard tier={tier} status={status} postsThisMonth={postsThisMonth} postsLimit={postsLimit} planAmount={planAmount} planCurrency={planCurrency} planInterval={planInterval} />
         <BillingPaymentMethods paymentMethods={paymentMethods} onPortal={openPortal} portalPending={portalPending} />
-        <BillingNextCharge tier={tier} upcoming={upcoming} currentPeriodEnd={currentPeriodEnd} hasPaid={!isFree} cancelAtPeriodEnd={cancelAtPeriodEnd} />
+        <BillingNextCharge upcoming={upcoming} currentPeriodEnd={currentPeriodEnd} hasPaid={!isFree} cancelAtPeriodEnd={cancelAtPeriodEnd} />
       </div>
       <BillingInvoices invoices={invoices} />
     </div>

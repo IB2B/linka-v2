@@ -13,7 +13,10 @@ export type AdminUserRow = {
   planTier: string;
   avatarUrl: string | null;
   industry: string | null;
-  postsCount: number;
+  postsThisMonth: number;
+  postsLimit: number;
+  mrr: number | null;
+  mrrCurrency: string | null;
   lastActiveAt: string | null;
 };
 

@@ -12,6 +12,7 @@ router.use(authenticate);
 
 const EMPTY = {
   paymentMethods: [], defaultPaymentMethodId: null, invoices: [], upcoming: null,
+  planAmount: null, planCurrency: null, planInterval: null,
 };
 
 router.get("/overview", async (req: AuthRequest, res, next) => {

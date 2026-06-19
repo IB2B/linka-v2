@@ -6,6 +6,7 @@ import { INBOX_DM_PLATFORMS } from "../lib/inbox-platforms";
 import {
   providerConversations, providerMessages, providerSend, providerCanAccess,
 } from "../lib/inbox-provider";
+import { UnipileApiError } from "../lib/unipile-api";
 import { mapConversation, mapMessage } from "./inbox.helpers";
 
 export async function getConversations(req: AuthRequest, res: Response) {
@@ -14,8 +15,17 @@ export async function getConversations(req: AuthRequest, res: Response) {
     res.json({ conversations: [], unsupported: true, platform });
     return;
   }
-  const raw = await providerConversations(req.user!.id, platform);
-  res.json({ conversations: raw.map(mapConversation) });
+  try {
+    const raw = await providerConversations(req.user!.id, platform);
+    res.json({ conversations: raw.map(mapConversation) });
+  } catch (e) {
+    // Don't leak the raw provider response to the client; map to a clean code.
+    if (e instanceof UnipileApiError) {
+      res.status(502).json({ error: "linkedin_unavailable" });
+      return;
+    }
+    throw e;
+  }
 }
 
 export async function getMessages(req: AuthRequest, res: Response) {

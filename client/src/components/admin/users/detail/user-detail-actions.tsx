@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { RoleSubMenu } from "@/components/admin/users/role-sub-menu";
+import { ProtectedActions } from "@/components/admin/users/protected-actions";
 import { DeleteUserDialog } from "./delete-user-dialog";
 import { setUserRoleAction, setUserStatusAction, deleteUserAction } from "@/app/admin/users/actions";
 import type { AdminUserRow } from "@/types/admin";
@@ -50,19 +51,15 @@ export function UserDetailActions({ user }: { user: AdminUserRow }) {
         <DropdownMenuContent align="end" className="w-52">
           <DropdownMenuGroup>
             <DropdownMenuLabel>Quick actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => toast.message("Password reset link sent.")}>
-              <KeyRound />Send password reset
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={toggleStatus}>
-              {suspended ? <Play /> : <Pause />}{suspended ? "Reactivate" : "Suspend"}
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => toast.message("Password reset link sent.")}><KeyRound />Send password reset</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <RoleSubMenu onSetRole={setRole} />
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive" onClick={() => setDeleteOpen(true)}>
-            <Trash2 />Delete user
-          </DropdownMenuItem>
+          <ProtectedActions role={user.role}>
+            <RoleSubMenu onSetRole={setRole} />
+            <DropdownMenuItem onClick={toggleStatus}>{suspended ? <Play /> : <Pause />}{suspended ? "Reactivate" : "Suspend"}</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive" onClick={() => setDeleteOpen(true)}><Trash2 />Delete user</DropdownMenuItem>
+          </ProtectedActions>
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteUserDialog

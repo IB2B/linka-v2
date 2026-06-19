@@ -1,22 +1,17 @@
 import { Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { TIER_PRICE, formatMoney, formatDate } from "@/lib/billing/format";
+import { formatMoney, formatDate } from "@/lib/billing/format";
 
 type Props = {
-  tier: string;
   upcoming: { amountDue: number; currency: string; nextPaymentAttempt: number | null } | null;
   currentPeriodEnd: number | null;
   hasPaid: boolean;
   cancelAtPeriodEnd: boolean;
 };
 
-export function BillingNextCharge({ tier, upcoming, currentPeriodEnd, hasPaid, cancelAtPeriodEnd }: Props) {
+export function BillingNextCharge({ upcoming, currentPeriodEnd, hasPaid, cancelAtPeriodEnd }: Props) {
   const renewalMs = upcoming?.nextPaymentAttempt ?? currentPeriodEnd ?? null;
-  const fallbackPrice = TIER_PRICE[tier] ?? 0;
-  const willCharge = hasPaid && !cancelAtPeriodEnd;
-  const priceLabel = upcoming
-    ? formatMoney(upcoming.amountDue, upcoming.currency)
-    : willCharge ? formatMoney(fallbackPrice * 100, "eur") : "—";
+  const priceLabel = upcoming ? formatMoney(upcoming.amountDue, upcoming.currency) : "—";
   const label = cancelAtPeriodEnd ? "Subscription ends" : "Next charge";
   const description = !hasPaid
     ? "You're on the free plan. Upgrade to unlock more posts and premium features."

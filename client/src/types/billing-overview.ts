@@ -27,6 +27,9 @@ export interface BillingOverview {
     description: string | null;
   }>;
   upcoming: { amountDue: number; currency: string; nextPaymentAttempt: number | null } | null;
+  planAmount: number | null;
+  planCurrency: string | null;
+  planInterval: string | null;
   currentPeriodEnd: number | null;
   cancelAtPeriodEnd: boolean;
 }

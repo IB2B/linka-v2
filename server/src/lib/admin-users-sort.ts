@@ -6,7 +6,7 @@ const SORT_SQL: Record<SortKey, string> = {
   role:     "u.role",
   status:   "u.status",
   plan:     "COALESCE(s.plan_tier, 'free')",
-  posts:    "COALESCE(g.posts_count, 0)",
+  posts:    "COALESCE(g.posts_month, 0)",
   industry: "COALESCE(p.industry, '')",
   joined:   "u.created_at",
   active:   "GREATEST(COALESCE(g.last_gen, '1000-01-01'), COALESCE(ph.last_post, '1000-01-01'))",
