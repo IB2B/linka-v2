@@ -22,7 +22,7 @@ export function RecentPostsTable({
           <div className="space-y-1.5">
             <CardTitle>Recent activity</CardTitle>
             <CardDescription>
-              Your last {posts.length} posts in this window.
+              Your last {posts.length} posted in this window.
             </CardDescription>
           </div>
           <Button
@@ -37,7 +37,7 @@ export function RecentPostsTable({
       </CardHeader>
       {posts.length === 0 ? (
         <p className="px-6 pb-6 text-sm text-muted-foreground">
-          No posts in this window yet.
+          No posted posts in this window yet.
         </p>
       ) : (
         <PostsAnalyticsTable posts={posts} metrics={metrics} />

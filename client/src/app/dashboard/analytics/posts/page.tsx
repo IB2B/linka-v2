@@ -15,13 +15,13 @@ export default async function AllPostsAnalyticsPage() {
   const access = await checkPaidFeature("analytics");
   if (!access.hasAccess) return <UpgradeWall feature="analytics" />;
   const [posts, metrics] = await Promise.all([getPosts(), getAnalyticsSummary()]);
-  const sorted = [...posts].sort(
-    (a, b) => +new Date(b.createdAt) - +new Date(a.createdAt),
-  );
+  const posted = posts
+    .filter((p) => p.status === "posted")
+    .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt));
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <PageHeader title="All posts" description="Every post with its analytics, newest first." />
+        <PageHeader title="Posted posts" description="Every published post with its analytics, newest first." />
         <Button render={<Link href="/dashboard/analytics" />} nativeButton={false}
           variant="ghost" size="sm">
           <ArrowLeft className="size-4" /> Back to analytics
@@ -30,13 +30,13 @@ export default async function AllPostsAnalyticsPage() {
       <Separator className="my-2" />
       <Card className="overflow-hidden">
         <CardHeader>
-          <CardTitle>All posts</CardTitle>
-          <CardDescription>{posts.length} posts total.</CardDescription>
+          <CardTitle>Posted posts</CardTitle>
+          <CardDescription>{posted.length} posted total.</CardDescription>
         </CardHeader>
-        {posts.length === 0 ? (
-          <p className="px-6 pb-6 text-sm text-muted-foreground">No posts yet.</p>
+        {posted.length === 0 ? (
+          <p className="px-6 pb-6 text-sm text-muted-foreground">No posted posts yet.</p>
         ) : (
-          <PostsAnalyticsTable posts={sorted} metrics={metrics} />
+          <PostsAnalyticsTable posts={posted} metrics={metrics} />
         )}
       </Card>
     </>

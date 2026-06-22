@@ -64,7 +64,8 @@ export function computeAnalytics(
     },
     byStatus, byPlatform, daily,
     insights: computeInsights(inRange, daily, byPlatform),
-    recent: [...inRange]
+    recent: inRange
+      .filter((p) => p.status === "posted")
       .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt))
       .slice(0, RECENT_LIMIT),
   };
