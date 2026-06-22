@@ -16,6 +16,7 @@ export type PlatformBreakdown = {
   metrics: PostMetrics;
   error?: string | null;
   accountId?: string | null;
+  url?: string | null;
 };
 
 export type PostAnalyticsResult =

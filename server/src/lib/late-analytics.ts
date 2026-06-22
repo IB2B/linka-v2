@@ -1,6 +1,7 @@
 import { lateFetch, LateApiError } from "./late-api";
 import { toPlatforms, aggregateFromPlatforms } from "./late-analytics-map";
 import { enrichPendingFromComments } from "./late-analytics-enrich";
+import { fetchPlatformUrls } from "./late-posts";
 import { getCached, setCached } from "./late-analytics-cache";
 import * as snapshots from "../models/post-metric-snapshot.model";
 import type { PostAnalyticsResult } from "../types/analytics";
@@ -28,12 +29,14 @@ async function fetchFresh(
     const rawPlatforms = allowed
       ? rawAll.filter((p) => allowed.includes(p.platform))
       : rawAll;
-    const platforms = await enrichPendingFromComments(latePostId, rawPlatforms);
-    const totals = aggregateFromPlatforms(platforms);
+    const enriched = await enrichPendingFromComments(latePostId, rawPlatforms);
     const noSyncedPlatforms = rawPlatforms
       .filter((p) => p.status !== "failed")
       .every((p) => p.status === "pending");
     if (rawPlatforms.length > 0 && noSyncedPlatforms) return { state: "syncing" };
+    const urls = await fetchPlatformUrls(latePostId);
+    const platforms = enriched.map((p) => ({ ...p, url: urls.get(p.platform) ?? p.url ?? null }));
+    const totals = aggregateFromPlatforms(platforms);
     return { state: "ok", totals, platforms, lastUpdated: pickLastUpdated(r.lastUpdated) };
   } catch (e) {
     if (e instanceof LateApiError) {

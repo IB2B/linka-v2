@@ -54,3 +54,20 @@ export function publishedPlatforms(p: LatePostPlatform[]): LatePostPlatform[] {
 export function failedPlatforms(p: LatePostPlatform[]): LatePostPlatform[] {
   return p.filter((x) => typeof x.status === "string" && FAILURE.test(x.status));
 }
+
+// Live permalink per platform from the post endpoint (the reliable source of
+// platformPostUrl). Best-effort: returns an empty map if the call fails.
+export async function fetchPlatformUrls(
+  latePostId: string,
+): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  try {
+    const post = await fetchLatePost(latePostId);
+    if (post.state !== "ok") return map;
+    for (const p of post.platforms) {
+      const url = p.platformPostUrl ?? p.url;
+      if (url) map.set(p.platform, url);
+    }
+  } catch { /* best-effort; no link is fine */ }
+  return map;
+}

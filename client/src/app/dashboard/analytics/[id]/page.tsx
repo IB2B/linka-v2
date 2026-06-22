@@ -23,6 +23,11 @@ export default async function PostAnalyticsPage({
   const data = await loadPostDetail(id, !!t);
   const lastUpdated = data.analytics?.state === "ok"
     ? data.analytics.lastUpdated : null;
+  const links = data.analytics?.state === "ok"
+    ? data.analytics.platforms
+        .filter((p) => p.url)
+        .map((p) => ({ platform: p.platform, url: p.url! }))
+    : [];
 
   return (
     <div className="space-y-6">
@@ -41,6 +46,7 @@ export default async function PostAnalyticsPage({
             ? data.post.scheduledPlatforms
             : data.post.platform ? [data.post.platform] : []
         }
+        links={links}
       />
 
       <AnalyticsToolbar lastUpdated={lastUpdated} postId={id} />

@@ -61,12 +61,15 @@ export function toPlatforms(raw: unknown): PlatformBreakdown[] {
       r.status === "failed" ? "failed"
       : r.syncStatus === "pending" || r.syncStatus === "unavailable" ? "pending"
       : "ok";
+    const url = [r.platformPostUrl, r.postUrl, r.url, r.permalink]
+      .find((v) => typeof v === "string" && v);
     return {
       platform: String(r.platform ?? "unknown"),
       status,
       metrics: toMetrics(r.analytics),
       error: typeof r.errorMessage === "string" ? r.errorMessage : null,
       accountId: typeof r.accountId === "string" ? r.accountId : null,
+      url: (url as string) ?? null,
     };
   });
 }

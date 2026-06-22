@@ -1,3 +1,5 @@
+import { ExternalLink } from "lucide-react";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PostStatusBadge } from "@/components/posts/post-status-badge";
@@ -6,9 +8,11 @@ import { formatPostDate } from "@/lib/posts/format-date";
 import type { GeneratedPost } from "@/types/post";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
 
+export type PostLink = { platform: string; url: string };
+
 export function PostHeroCard({
-  post, platforms = post.platform ? [post.platform] : [],
-}: { post: GeneratedPost; platforms?: string[] }) {
+  post, platforms = post.platform ? [post.platform] : [], links = [],
+}: { post: GeneratedPost; platforms?: string[]; links?: PostLink[] }) {
   const date = post.postedAt ?? post.scheduledFor ?? post.createdAt;
   const dateLabel = post.postedAt
     ? `Posted ${formatPostDate(post.postedAt)}`
@@ -39,6 +43,20 @@ export function PostHeroCard({
             <PostStatusBadge status={post.status} />
             <span className="text-xs text-muted-foreground">{dateLabel}</span>
           </div>
+          {links.length > 0 ? (
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              {links.map((l) => (
+                <a
+                  key={l.platform} href={l.url}
+                  target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                >
+                  <ExternalLink className="size-3" />
+                  View on <span className="capitalize">{l.platform}</span>
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
       </CardContent>
     </Card>
