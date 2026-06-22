@@ -5,8 +5,6 @@ import { revalidatePath } from "next/cache";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
-type StatusResult = { status: "connected" | "verify" } | { error: string };
-
 async function api(path: string, init: RequestInit = {}): Promise<Response> {
   const cookieStore = await cookies();
   return fetch(`${API_BASE}/api/linkedin${path}`, {
@@ -16,23 +14,22 @@ async function api(path: string, init: RequestInit = {}): Promise<Response> {
   });
 }
 
-export async function linkedinLoginAction(
-  email: string, password: string, country: string,
-): Promise<StatusResult> {
-  const res = await api("/login", { method: "POST", body: JSON.stringify({ email, password, country }) });
+export async function connectLinkedinAction(): Promise<{ url: string } | { error: string }> {
+  const res = await api("/connect", { method: "POST" });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) return { error: body.error ?? "Could not connect LinkedIn." };
-  return { status: body.status as "connected" | "verify" };
+  if (!res.ok || !body.url) {
+    if (body.error === "linkedin_not_configured")
+      return { error: "LinkedIn messaging isn't set up yet — try again later." };
+    return { error: body.error ?? "Could not start LinkedIn connect." };
+  }
+  return { url: body.url as string };
 }
 
-export async function linkedinVerifyAction(
-  email: string, code: string, country: string,
-): Promise<StatusResult> {
-  const res = await api("/verify", { method: "POST", body: JSON.stringify({ email, code, country }) });
+export async function syncLinkedinAction(): Promise<{ connected: boolean }> {
+  const res = await api("/sync", { method: "POST" });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) return { error: body.error ?? "Verification failed." };
-  revalidatePath("/dashboard/inbox");
-  return { status: body.status as "connected" | "verify" };
+  if (res.ok && body.connected) revalidatePath("/dashboard/inbox");
+  return { connected: !!body.connected };
 }
 
 export async function disconnectLinkedinAction(): Promise<{ success: true } | { error: string }> {

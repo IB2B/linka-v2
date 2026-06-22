@@ -4,14 +4,14 @@ import {
 import { INBOX_DM_PLATFORMS } from "./inbox-platforms";
 import { userOwnsAccount } from "./inbox-account-guard";
 import {
-  LINKUP_ACCOUNT_ID, listLinkupConversations, listLinkupMessages, sendLinkupMessage,
-} from "./linkup-inbox";
-import { hasLinkupAccount } from "./linkup-account";
+  LINKEDIN_DM_ACCOUNT_ID, listUnipileConversations, listUnipileMessages, sendUnipileMessage,
+} from "./unipile-inbox";
+import { hasLinkedinAccount } from "./unipile-account";
 
-const isLinkedin = (accountId: string) => accountId === LINKUP_ACCOUNT_ID;
+const isLinkedin = (accountId: string) => accountId === LINKEDIN_DM_ACCOUNT_ID;
 
 // Late doesn't serve LinkedIn DMs, so strip linkedin from its results and source
-// those from Linkup instead.
+// those from Unipile instead.
 async function lateDmConversations(userId: string, platform?: string): Promise<RawConversation[]> {
   const data = await listInboxConversations(userId, platform);
   return (data.conversations ?? []).filter(
@@ -29,34 +29,34 @@ async function safeList(
   }
 }
 
-async function linkupConversations(userId: string): Promise<RawConversation[]> {
-  return (await hasLinkupAccount(userId)) ? listLinkupConversations(userId) : [];
+async function linkedinConversations(userId: string): Promise<RawConversation[]> {
+  return (await hasLinkedinAccount(userId)) ? listUnipileConversations(userId) : [];
 }
 
 // Every path is wrapped in safeList so a single provider outage (Late timeout,
-// Linkup downtime, an empty/missing account) degrades to partial/empty results
+// Unipile downtime, an empty/missing account) degrades to partial/empty results
 // instead of 500-ing and blanking the whole inbox.
 export async function providerConversations(
   userId: string, platform?: string,
 ): Promise<RawConversation[]> {
-  if (platform === "linkedin") return safeList("LinkedIn", () => linkupConversations(userId));
+  if (platform === "linkedin") return safeList("LinkedIn", () => linkedinConversations(userId));
   if (platform) return safeList("Late", () => lateDmConversations(userId, platform));
   const [late, linkedin] = await Promise.all([
     safeList("Late", () => lateDmConversations(userId)),
-    safeList("LinkedIn", () => linkupConversations(userId)),
+    safeList("LinkedIn", () => linkedinConversations(userId)),
   ]);
   return [...linkedin, ...late];
 }
 
 export async function providerCanAccess(userId: string, accountId: string): Promise<boolean> {
-  return isLinkedin(accountId) ? hasLinkupAccount(userId) : userOwnsAccount(userId, accountId);
+  return isLinkedin(accountId) ? hasLinkedinAccount(userId) : userOwnsAccount(userId, accountId);
 }
 
 export async function providerMessages(
   userId: string, accountId: string, conversationId: string, cursor?: string,
 ) {
   return isLinkedin(accountId)
-    ? listLinkupMessages(userId, conversationId, cursor)
+    ? listUnipileMessages(userId, conversationId, cursor)
     : listInboxMessages(conversationId, accountId, cursor);
 }
 
@@ -64,6 +64,6 @@ export async function providerSend(
   userId: string, accountId: string, conversationId: string, text: string, mediaUrl?: string,
 ) {
   return isLinkedin(accountId)
-    ? sendLinkupMessage(userId, conversationId, text, mediaUrl)
+    ? sendUnipileMessage(userId, conversationId, text, mediaUrl)
     : sendInboxMessage(conversationId, accountId, text, mediaUrl);
 }
