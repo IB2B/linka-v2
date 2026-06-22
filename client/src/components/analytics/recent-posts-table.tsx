@@ -1,6 +1,10 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
 import {
   Card, CardDescription, CardHeader, CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { RecentPostsRow } from "./recent-posts-row";
 import type { GeneratedPost } from "@/types/post";
 import type { PostMetrics } from "@/types/analytics";
@@ -14,10 +18,22 @@ export function RecentPostsTable({
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <CardTitle>Recent activity</CardTitle>
-        <CardDescription>
-          Your last {posts.length} posts in this window.
-        </CardDescription>
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1.5">
+            <CardTitle>Recent activity</CardTitle>
+            <CardDescription>
+              Your last {posts.length} posts in this window.
+            </CardDescription>
+          </div>
+          <Button
+            render={<Link href="/dashboard/posts" />}
+            nativeButton={false}
+            variant="ghost"
+            size="sm"
+          >
+            View all <ArrowRight className="size-4" />
+          </Button>
+        </div>
       </CardHeader>
       {posts.length === 0 ? (
         <p className="px-6 pb-6 text-sm text-muted-foreground">
