@@ -24,25 +24,26 @@ async function safeList(
   try {
     return await fn();
   } catch (e) {
-    console.error(`[inbox] ${label} conversations unavailable:`, e);
+    console.warn(`[inbox] ${label} conversations unavailable:`, e instanceof Error ? e.message : e);
     return [];
   }
 }
 
+async function linkedinConversations(userId: string): Promise<RawConversation[]> {
+  return (await hasLinkedinAccount(userId)) ? listUnipileConversations(userId) : [];
+}
+
+// Every path is wrapped in safeList so a single provider outage (Late timeout,
+// Unipile downtime, an empty/missing account) degrades to partial/empty results
+// instead of 500-ing and blanking the whole inbox.
 export async function providerConversations(
   userId: string, platform?: string,
 ): Promise<RawConversation[]> {
-  if (platform === "linkedin") {
-    return (await hasLinkedinAccount(userId)) ? listUnipileConversations(userId) : [];
-  }
-  if (platform) return lateDmConversations(userId, platform);
-  // Combined view: load each provider independently so one outage (Late profile
-  // quota, Unipile downtime, etc.) shows the rest instead of blanking the inbox.
-  const hasLi = await hasLinkedinAccount(userId);
+  if (platform === "linkedin") return safeList("LinkedIn", () => linkedinConversations(userId));
+  if (platform) return safeList("Late", () => lateDmConversations(userId, platform));
   const [late, linkedin] = await Promise.all([
     safeList("Late", () => lateDmConversations(userId)),
-    hasLi ? safeList("LinkedIn", () => listUnipileConversations(userId))
-          : Promise.resolve([] as RawConversation[]),
+    safeList("LinkedIn", () => linkedinConversations(userId)),
   ]);
   return [...linkedin, ...late];
 }

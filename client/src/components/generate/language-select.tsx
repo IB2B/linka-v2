@@ -20,7 +20,7 @@ export function LanguageSelect({ value, onChange, disabled, className }: Props) 
   return (
     <Select
       name="language"
-      value={value}
+      value={value ?? LANGUAGES[0].value}
       onValueChange={(v) => onChange(String(v))}
       disabled={disabled}
     >

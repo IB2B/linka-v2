@@ -48,8 +48,7 @@ function fallbackAvatar(platform: string, username: string): string | null {
   return `https://unavatar.io/${slug}/${encodeURIComponent(handle)}?fallback=false`;
 }
 
-export async function listAccounts(req: AuthRequest, res: Response) {
-  const profileId = await getOrCreateLateProfile(req.user!.id);
+async function buildAccounts(profileId: string) {
   const data = await lateFetch<{ accounts: RawAccount[] }>(
     `/accounts?profileId=${encodeURIComponent(profileId)}&limit=100`,
   );
@@ -57,17 +56,23 @@ export async function listAccounts(req: AuthRequest, res: Response) {
     const pid = profileIdOf(a);
     return !pid || pid === profileId;
   });
-  const accounts = await Promise.all(filtered.map(async (a) => {
+  return Promise.all(filtered.map(async (a) => {
     const username = a.username ?? a.displayName ?? a.name ?? "";
     let avatar = normalizeAvatarUrl(pickAvatar(a));
-    if (!avatar && a.platform === "pinterest") {
-      avatar = await fetchPinterestAvatar(username);
-    }
-    if (!avatar && a.platform === "reddit") {
-      avatar = await fetchRedditAvatar(username);
-    }
+    if (!avatar && a.platform === "pinterest") avatar = await fetchPinterestAvatar(username);
+    if (!avatar && a.platform === "reddit") avatar = await fetchRedditAvatar(username);
     if (!avatar) avatar = fallbackAvatar(a.platform, username);
     return { id: a._id, platform: a.platform, username, avatar_url: avatar };
   }));
-  res.json({ accounts });
+}
+
+export async function listAccounts(req: AuthRequest, res: Response) {
+  try {
+    const profileId = await getOrCreateLateProfile(req.user!.id);
+    res.json({ accounts: await buildAccounts(profileId) });
+  } catch (e) {
+    // Late profile-limit / outage: show none rather than 500 the page.
+    console.warn("[accounts] Late unavailable:", e instanceof Error ? e.message : e);
+    res.json({ accounts: [] });
+  }
 }

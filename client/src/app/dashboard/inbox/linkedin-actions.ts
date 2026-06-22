@@ -17,7 +17,11 @@ async function api(path: string, init: RequestInit = {}): Promise<Response> {
 export async function connectLinkedinAction(): Promise<{ url: string } | { error: string }> {
   const res = await api("/connect", { method: "POST" });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok || !body.url) return { error: body.error ?? "Could not start LinkedIn connect." };
+  if (!res.ok || !body.url) {
+    if (body.error === "linkedin_not_configured")
+      return { error: "LinkedIn messaging isn't set up yet — try again later." };
+    return { error: body.error ?? "Could not start LinkedIn connect." };
+  }
   return { url: body.url as string };
 }
 

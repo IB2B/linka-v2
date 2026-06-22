@@ -15,6 +15,7 @@ export type PlatformBreakdown = {
   status: "ok" | "pending" | "failed";
   metrics: PostMetrics;
   error?: string | null;
+  url?: string | null;
 };
 
 export type PostAnalyticsResult =

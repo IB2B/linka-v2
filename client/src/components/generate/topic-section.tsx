@@ -18,10 +18,11 @@ type Props = {
   postType: PostType;
   initialNews: NewsArticle[];
   pending: boolean;
+  language: string;
   onGenerate: (opts: GenerateOpts) => void;
 };
 
-export function TopicSection({ postType, initialNews, pending, onGenerate }: Props) {
+export function TopicSection({ postType, initialNews, pending, language, onGenerate }: Props) {
   const meta = getPostTypeMeta(postType);
   const isNews = postType === "news_commentary";
   return (
@@ -48,7 +49,7 @@ export function TopicSection({ postType, initialNews, pending, onGenerate }: Pro
           <NewsPicker articles={initialNews} pending={pending}
             onSelect={(article) => onGenerate({ article, label: article.title })} />
         ) : (
-          <TopicChooser postType={postType} pending={pending}
+          <TopicChooser postType={postType} pending={pending} language={language}
             onGenerate={(topic) => onGenerate({ topic, label: topic })} />
         )}
       </CardContent>

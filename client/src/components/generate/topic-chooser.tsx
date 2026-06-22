@@ -12,10 +12,11 @@ import type { PostType, TopicMode } from "@/types/content";
 type Props = {
   postType: PostType;
   pending: boolean;
+  language: string;
   onGenerate: (topic: string) => void;
 };
 
-export function TopicChooser({ postType, pending, onGenerate }: Props) {
+export function TopicChooser({ postType, pending, language, onGenerate }: Props) {
   const [mode, setMode] = useState<TopicMode>("ai");
   return (
     <div className="space-y-4">
@@ -33,6 +34,7 @@ export function TopicChooser({ postType, pending, onGenerate }: Props) {
         <SuggestionsList
           postType={postType}
           pending={pending}
+          language={language}
           onSelect={onGenerate}
         />
       ) : (

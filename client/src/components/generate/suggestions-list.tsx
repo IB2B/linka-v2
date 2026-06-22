@@ -13,16 +13,17 @@ import type { PostType, TopicSuggestion } from "@/types/content";
 type Props = {
   postType: PostType;
   pending: boolean;
+  language: string;
   onSelect: (topic: string) => void;
 };
 
-export function SuggestionsList({ postType, pending, onSelect }: Props) {
+export function SuggestionsList({ postType, pending, language, onSelect }: Props) {
   const [items, setItems] = useState<TopicSuggestion[]>([]);
   const [loading, start] = useTransition();
 
   function load(refresh = false) {
     start(async () => {
-      const res = await suggestTopics(postType, 5, refresh);
+      const res = await suggestTopics(postType, 5, refresh, language);
       if (res.error) toast.error(res.error);
       else setItems(res.data ?? []);
     });
@@ -32,7 +33,7 @@ export function SuggestionsList({ postType, pending, onSelect }: Props) {
     setItems([]);
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postType]);
+  }, [postType, language]);
 
   return (
     <div className="space-y-3">

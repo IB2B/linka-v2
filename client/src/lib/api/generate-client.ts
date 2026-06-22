@@ -31,9 +31,9 @@ export async function generatePost(input: GenerateInput): Promise<Result<Generat
 }
 
 export async function suggestTopics(
-  postType: PostType, count = 5, refresh = false,
+  postType: PostType, count = 5, refresh = false, language?: string,
 ): Promise<Result<TopicSuggestion[]>> {
-  const res = await post("/api/content/suggest-topics", { postType, count, refresh });
+  const res = await post("/api/content/suggest-topics", { postType, count, refresh, language });
   const json = (await res.json().catch(() => ({}))) as {
     suggestions?: TopicSuggestion[]; error?: string;
   };

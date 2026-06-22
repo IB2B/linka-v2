@@ -7,16 +7,21 @@ import type { PostType } from "@/types/content";
 type Props = {
   postType: PostType;
   pending: boolean;
+  language: string;
   onChangeType: (t: PostType) => void;
+  onLanguageChange: (value: string) => void;
   onRandom: () => void;
   onNext: () => void;
 };
 
-export function GenerateStepOne({ postType, pending, onChangeType, onRandom, onNext }: Props) {
+export function GenerateStepOne({
+  postType, pending, language, onChangeType, onLanguageChange, onRandom, onNext,
+}: Props) {
   return (
     <div className="space-y-6">
       <PostTypeGrid value={postType} onChange={onChangeType} disabled={pending} />
-      <RandomCard disabled={pending} onClick={onRandom} />
+      <RandomCard disabled={pending} language={language}
+        onLanguageChange={onLanguageChange} onClick={onRandom} />
       <div className="flex justify-end">
         <Button onClick={onNext} disabled={pending}>
           Next: Settings <ArrowRight className="size-4" />

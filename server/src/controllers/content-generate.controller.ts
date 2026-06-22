@@ -4,6 +4,7 @@ import type { AuthRequest } from "../middleware/auth";
 import { POST_TYPES } from "../lib/post-type-guidance";
 import { getMonthlyUsage } from "../lib/posts-monthly-usage";
 import { generateForPlatform } from "../lib/content-generate-one";
+import { rememberLanguage } from "../lib/remember-language";
 
 const PLATFORMS = ["linkedin", "twitter", "facebook", "instagram", "threads"] as const;
 
@@ -50,6 +51,7 @@ export async function generate(
       });
       return;
     }
+    void rememberLanguage(userId, input.language).catch(() => {});
     const settled = await Promise.allSettled(
       input.platforms.map((p) => generateForPlatform(userId, input, p)),
     );

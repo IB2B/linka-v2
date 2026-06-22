@@ -58,6 +58,10 @@ export async function updateWorkProfileAction(formData: FormData): Promise<Actio
   });
 }
 
+export async function setPostLanguageAction(language: string): Promise<ActionResult> {
+  return send("/api/users/me/profile", "PATCH", { preferredLanguage: language });
+}
+
 export async function logoutAllDevicesAction(): Promise<ActionResult> {
   const res = await apiFetch("/api/auth/logout-all", { method: "POST" });
   await forwardSetCookies(res);

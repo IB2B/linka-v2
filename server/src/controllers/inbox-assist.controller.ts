@@ -2,8 +2,7 @@ import type { Response } from "express";
 
 import type { AuthRequest } from "../middleware/auth";
 import { assistReply } from "../services/inbox-assist.service";
-import { listInboxMessages } from "../lib/late-inbox";
-import { userOwnsAccount } from "../lib/inbox-account-guard";
+import { providerCanAccess, providerMessages } from "../lib/inbox-provider";
 import { rateLimit } from "../lib/rate-limit";
 
 const ASSIST_WINDOW = 60 * 60 * 1000;
@@ -19,8 +18,8 @@ export async function assist(req: AuthRequest, res: Response) {
   const id = String(req.params.id);
   const accountId = typeof req.query.accountId === "string" ? req.query.accountId : "";
   if (!accountId) { res.status(400).json({ error: "accountId is required" }); return; }
-  if (!(await userOwnsAccount(req.user!.id, accountId))) { res.status(403).json({ error: "Account not accessible." }); return; }
-  const data = await listInboxMessages(id, accountId);
+  if (!(await providerCanAccess(req.user!.id, accountId))) { res.status(403).json({ error: "Account not accessible." }); return; }
+  const data = await providerMessages(req.user!.id, accountId, id);
   const thread: Msg[] = (data.messages ?? []).map((m) => ({
     direction: m.direction === "outgoing" ? "outgoing" : "incoming",
     text: m.text ?? m.body ?? "[Attachment]",

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Separator } from "@/components/ui/separator";
 import { PageHeader } from "@/components/dashboard/page-header";
@@ -9,9 +9,10 @@ import { fetchMe } from "@/lib/auth/me";
 import { getAccounts } from "@/lib/zernio/get-accounts";
 
 export default async function SettingsPage() {
-  const [me, accounts, t] = await Promise.all([
-    fetchMe(), getAccounts(), getTranslations("settings"),
+  const [me, accounts, locale, t] = await Promise.all([
+    fetchMe(), getAccounts(), getLocale(), getTranslations("settings"),
   ]);
+  const preferredLanguage = me?.preferredLanguage ?? locale ?? "en";
 
   return (
     <>
@@ -28,6 +29,7 @@ export default async function SettingsPage() {
         jobTitle={me?.jobTitle ?? ""}
         industry={me?.industry ?? ""}
         headline={me?.bio ?? ""}
+        preferredLanguage={preferredLanguage}
         accounts={accounts}
       />
     </>

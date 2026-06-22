@@ -29,12 +29,12 @@ export function PreferencesForm() {
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <label className="flex items-center gap-2 text-sm font-medium" htmlFor="language">
+          <label className="flex items-center gap-2 text-sm font-medium" htmlFor="ui-language">
             {t("language")}
             {pending ? <Spinner size="xs" /> : null}
           </label>
           <select
-            id="language" className={SELECT_CLS}
+            id="ui-language" className={SELECT_CLS}
             value={locale} disabled={pending}
             onChange={(e) => onLocaleChange(e.target.value)}
           >

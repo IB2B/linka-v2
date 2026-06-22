@@ -10,6 +10,12 @@ function config(): { base: string; key: string } {
   return { base: `https://${dsn}`, key };
 }
 
+// True only when both Unipile secrets are present. Lets callers degrade to a
+// clean "not configured" response instead of throwing a raw 500.
+export function unipileConfigured(): boolean {
+  return Boolean(process.env.UNIPILE_DSN && process.env.UNIPILE_API_KEY);
+}
+
 // The hosted-auth request needs the bare DSN base as `api_url`.
 export function unipileBaseUrl(): string {
   return config().base;

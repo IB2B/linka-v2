@@ -20,10 +20,11 @@ type Props = {
   jobTitle: string;
   industry: string;
   headline: string;
+  preferredLanguage: string;
   accounts: ZernioAccount[];
 };
 
-export function SettingsShell({ accounts, ...profile }: Props) {
+export function SettingsShell({ accounts, preferredLanguage, ...profile }: Props) {
   const [active, setActive] = useState("profile");
 
   return (
@@ -32,7 +33,7 @@ export function SettingsShell({ accounts, ...profile }: Props) {
       <div className="min-w-0 pb-24">
         {active === "profile" && <ProfileSection {...profile} />}
         {active === "security" && <PasswordSection />}
-        {active === "preferences" && <PreferencesSection />}
+        {active === "preferences" && <PreferencesSection postLanguage={preferredLanguage} />}
         {active === "notifications" && <NotificationsSection />}
         {active === "accounts" && <ConnectedAccountsSection accounts={accounts} />}
         {active === "services" && <ServicesSection />}

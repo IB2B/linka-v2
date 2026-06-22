@@ -9,7 +9,7 @@ import type { GeneratedPost } from "@/types/post";
 import type { PostMetrics } from "@/types/analytics";
 
 const COLS: Array<keyof PostMetrics> =
-  ["views", "likes", "comments", "shares"];
+  ["impressions", "reach", "likes", "comments", "shares"];
 
 export function RecentPostsRow({
   post, metrics,
