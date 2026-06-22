@@ -64,9 +64,12 @@ export function computeAnalytics(
     },
     byStatus, byPlatform, daily,
     insights: computeInsights(inRange, daily, byPlatform),
-    recent: inRange
+    // Latest posted content overall — NOT windowed, so it always reflects real
+    // activity even when the last posts predate the selected date range.
+    recent: allPosts
       .filter((p) => p.status === "posted")
-      .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt))
+      .sort((a, b) =>
+        +new Date(b.postedAt ?? b.createdAt) - +new Date(a.postedAt ?? a.createdAt))
       .slice(0, RECENT_LIMIT),
   };
 }
