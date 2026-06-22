@@ -29,20 +29,21 @@ async function safeList(
   }
 }
 
+async function linkupConversations(userId: string): Promise<RawConversation[]> {
+  return (await hasLinkupAccount(userId)) ? listLinkupConversations(userId) : [];
+}
+
+// Every path is wrapped in safeList so a single provider outage (Late timeout,
+// Linkup downtime, an empty/missing account) degrades to partial/empty results
+// instead of 500-ing and blanking the whole inbox.
 export async function providerConversations(
   userId: string, platform?: string,
 ): Promise<RawConversation[]> {
-  if (platform === "linkedin") {
-    return (await hasLinkupAccount(userId)) ? listLinkupConversations(userId) : [];
-  }
-  if (platform) return lateDmConversations(userId, platform);
-  // Combined view: load each provider independently so one outage (Late profile
-  // quota, Linkup downtime, etc.) shows the rest instead of blanking the inbox.
-  const hasLi = await hasLinkupAccount(userId);
+  if (platform === "linkedin") return safeList("LinkedIn", () => linkupConversations(userId));
+  if (platform) return safeList("Late", () => lateDmConversations(userId, platform));
   const [late, linkedin] = await Promise.all([
     safeList("Late", () => lateDmConversations(userId)),
-    hasLi ? safeList("LinkedIn", () => listLinkupConversations(userId))
-          : Promise.resolve([] as RawConversation[]),
+    safeList("LinkedIn", () => linkupConversations(userId)),
   ]);
   return [...linkedin, ...late];
 }
