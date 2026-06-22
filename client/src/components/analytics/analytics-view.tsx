@@ -55,7 +55,7 @@ export function AnalyticsView({ data, metrics, platformMetrics, imageRoi, engage
         <CadenceCard points={cadencePoints} insight={cadenceInsight} />
       </div>
       <UnderperformersCard posts={underperformers} />
-      <RecentPostsTable posts={data.recent} metrics={metrics} />
+      <RecentPostsTable posts={data.recent.slice(0, 4)} metrics={metrics} />
     </div>
   );
 }
