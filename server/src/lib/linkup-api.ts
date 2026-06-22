@@ -20,7 +20,10 @@ export async function linkupFetch<T>(
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new LinkupApiError(res.status, `Linkup API ${res.status}: ${text}`);
+    // Surface Linkup's own `message` rather than the raw JSON envelope.
+    let detail = text;
+    try { const j = JSON.parse(text); if (j?.message) detail = String(j.message); } catch { /* keep text */ }
+    throw new LinkupApiError(res.status, detail || `Request failed (${res.status})`);
   }
   return res.json() as Promise<T>;
 }

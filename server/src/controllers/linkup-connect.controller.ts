@@ -8,7 +8,17 @@ const COUNTRY = z.string().trim().toUpperCase().default("US");
 const loginSchema = z.object({ email: z.string().email(), password: z.string().min(1), country: COUNTRY });
 const verifySchema = z.object({ email: z.string().email(), code: z.string().trim().min(3), country: COUNTRY });
 
-const msg = (e: unknown) => (e instanceof Error ? e.message : "LinkedIn connection failed.");
+// Turn Linkup's raw API errors into something a person can act on.
+function msg(e: unknown): string {
+  const raw = (e instanceof Error ? e.message : "").toLowerCase();
+  if (/password|username|credential|invalid login/.test(raw))
+    return "Incorrect LinkedIn email or password.";
+  if (/captcha|challenge|checkpoint/.test(raw))
+    return "LinkedIn asked for an extra security check — try again shortly.";
+  if (/rate|too many|429/.test(raw))
+    return "Too many attempts. Wait a few minutes and try again.";
+  return e instanceof Error && e.message ? e.message : "Couldn't connect to LinkedIn.";
+}
 
 export async function linkedinStatus(req: AuthRequest, res: Response) {
   const acc = await getLinkupAccount(req.user!.id);
