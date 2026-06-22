@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { createHostedAuthLink, syncConnectedAccount } from "../lib/unipile-auth";
+import { unipileConfigured } from "../lib/unipile-api";
 import {
   getLinkedinAccount, saveLinkedinAccount, deleteLinkedinAccount,
 } from "../lib/unipile-account";
@@ -11,11 +12,16 @@ export async function linkedinStatus(req: AuthRequest, res: Response) {
 }
 
 export async function connectLinkedin(req: AuthRequest, res: Response) {
+  if (!unipileConfigured()) {
+    res.status(503).json({ error: "linkedin_not_configured" });
+    return;
+  }
   const url = await createHostedAuthLink(req.user!.id);
   res.json({ url });
 }
 
 export async function syncLinkedin(req: AuthRequest, res: Response) {
+  if (!unipileConfigured()) { res.json({ connected: false }); return; }
   const connected = await syncConnectedAccount(req.user!.id);
   res.json({ connected });
 }
