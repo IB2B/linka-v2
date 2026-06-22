@@ -30,6 +30,8 @@ export function GenerateForm({ initialNews, defaultLanguage }: Props) {
 
       {step === 1 && (
         <GenerateStepOne postType={postType} pending={pending}
+          language={settings.language}
+          onLanguageChange={(l) => setSettings((s) => ({ ...s, language: l }))}
           onChangeType={setPostType} onRandom={() => randomGenerate(setPostType)}
           onNext={() => setStep(2)} />
       )}
