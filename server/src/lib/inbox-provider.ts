@@ -24,7 +24,7 @@ async function safeList(
   try {
     return await fn();
   } catch (e) {
-    console.error(`[inbox] ${label} conversations unavailable:`, e);
+    console.warn(`[inbox] ${label} conversations unavailable:`, e instanceof Error ? e.message : e);
     return [];
   }
 }
