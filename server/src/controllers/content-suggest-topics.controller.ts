@@ -9,6 +9,7 @@ const schema = z.object({
   postType: z.enum(POST_TYPES as [string, ...string[]]),
   count: z.number().int().min(1).max(10).default(5),
   refresh: z.boolean().optional(),
+  language: z.string().trim().min(2).max(8).optional(),
 });
 
 export async function suggestTopics(
@@ -20,9 +21,9 @@ export async function suggestTopics(
       res.status(400).json({ error: parsed.error.issues[0].message });
       return;
     }
-    const { postType, count, refresh } = parsed.data;
+    const { postType, count, refresh, language } = parsed.data;
     const userId = req.user!.id;
-    const cacheKey = `${userId}-${postType}`;
+    const cacheKey = `${userId}-${postType}-${language ?? "auto"}`;
 
     const cached = refresh ? null : getCached(cacheKey);
     if (cached) {
@@ -34,7 +35,7 @@ export async function suggestTopics(
       return;
     }
 
-    const topics = await generateTopics(userId, postType, count);
+    const topics = await generateTopics(userId, postType, count, language);
     setCached(cacheKey, topics);
     res.json({
       postType,

@@ -7,7 +7,7 @@ export async function getUserMe(userId: string) {
     db.query<any[]>(
       `SELECT u.id, u.email, u.role, u.first_name, u.last_name,
               u.onboarding_completed, u.email_verified_at,
-              p.avatar_url, p.industry, p.bio, p.job_title,
+              p.avatar_url, p.industry, p.bio, p.job_title, p.preferred_language,
               r.enabled AS recycler_enabled,
               s.plan_tier
        FROM users u
@@ -28,6 +28,7 @@ export async function getUserMe(userId: string) {
     industry: u.industry ?? null,
     bio: u.bio ?? null,
     jobTitle: u.job_title ?? null,
+    preferredLanguage: u.preferred_language ?? null,
     tier,
     onboardingCompleted: u.onboarding_completed === 1,
     emailVerified: u.email_verified_at !== null,

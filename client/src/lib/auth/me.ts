@@ -17,6 +17,7 @@ export type Me = {
   industry: string | null;
   bio: string | null;
   jobTitle: string | null;
+  preferredLanguage: string | null;
   tier: UserTier;
   emailVerified: boolean;
   onboardingCompleted: boolean;

@@ -12,15 +12,15 @@ import { useGenerate } from "./use-generate";
 import { Button } from "@/components/ui/button";
 import type { NewsArticle, PostSettings, PostType } from "@/types/content";
 
-type Props = { initialNews: NewsArticle[] };
+type Props = { initialNews: NewsArticle[]; defaultLanguage: string };
 type Step = 1 | 2 | 3;
 
-const DEFAULT_SETTINGS: PostSettings = { platforms: ["linkedin"], language: "en", withImage: true };
-
-export function GenerateForm({ initialNews }: Props) {
+export function GenerateForm({ initialNews, defaultLanguage }: Props) {
   const [step, setStep] = useState<Step>(1);
   const [postType, setPostType] = useState<PostType>("news_commentary");
-  const [settings, setSettings] = useState<PostSettings>(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState<PostSettings>({
+    platforms: ["linkedin"], language: defaultLanguage, withImage: true,
+  });
   const { generate, randomGenerate, pending, generatingFor } =
     useGenerate(postType, settings);
 
@@ -45,7 +45,7 @@ export function GenerateForm({ initialNews }: Props) {
             <ArrowLeft className="size-4" /> Back to settings
           </Button>
           <TopicSection postType={postType} initialNews={initialNews} pending={pending}
-            onGenerate={(opts) => generate(opts)} />
+            language={settings.language} onGenerate={(opts) => generate(opts)} />
         </div>
       )}
 

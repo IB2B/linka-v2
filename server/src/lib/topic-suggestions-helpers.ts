@@ -6,16 +6,20 @@ export function buildPrompt(
   jobTitle: string,
   industry: string,
   usedTopics: string[],
+  language?: string,
 ): string {
   const guidance = POST_TYPE_GUIDANCE[postType] ?? "relevant professional topics";
   const avoid = usedTopics.length
     ? `AVOID (already used): ${usedTopics.slice(0, 5).join(", ")}\n`
     : "";
+  const lang = language && language !== "en"
+    ? `Write the topics in language code "${language}".\n`
+    : "";
   return `${count + 3} topic ideas for a ${jobTitle} (${industry}) LinkedIn post.
 
 TYPE: ${postType.replace(/_/g, " ")}
 FOCUS: ${guidance}
-${avoid}Return ONLY a JSON array of short topic strings (5-10 words each). No descriptions.
+${avoid}${lang}Return ONLY a JSON array of short topic strings (5-10 words each). No descriptions.
 Example: ["Topic one here", "Topic two here"]`;
 }
 

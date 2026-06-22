@@ -24,7 +24,7 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
     start(async () => {
       let topic = opts.topic;
       if (opts.surprise && !topic && !opts.article) {
-        const s = await suggestTopics(type, 1, true);
+        const s = await suggestTopics(type, 1, true, settings.language);
         topic = s.data?.[0]?.topic;
         if (!topic) { setGeneratingFor(null); toast.error(s.error ?? t("surpriseFailed")); return; }
       }
