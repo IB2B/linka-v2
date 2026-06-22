@@ -18,7 +18,8 @@ export function PostsAnalyticsTable({
             <th className="px-4 py-2 font-medium">Post</th>
             <th className="px-4 py-2 font-medium">Platform</th>
             <th className="px-4 py-2 font-medium">Status</th>
-            <th className="px-4 py-2 text-right font-medium">Views</th>
+            <th className="px-4 py-2 text-right font-medium">Impressions</th>
+            <th className="px-4 py-2 text-right font-medium">Reach</th>
             <th className="px-4 py-2 text-right font-medium">Likes</th>
             <th className="px-4 py-2 text-right font-medium">Comments</th>
             <th className="px-4 py-2 text-right font-medium">Shares</th>
