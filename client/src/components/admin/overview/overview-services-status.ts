@@ -9,19 +9,19 @@ export function serviceDot(i: IntegrationStatus): string {
   return "bg-zinc-400";
 }
 
-export type HealthSummary = { label: string; tone: string };
+export type HealthSummary = { label: string; tone: string; dot: string };
 
 export function summarise(items: IntegrationStatus[]): HealthSummary {
   const down = items.filter((i) => i.configured && i.reachable === false).length;
   const missing = items.filter((i) => !i.configured).length;
   if (down > 0) {
     return { label: `${down} service${down > 1 ? "s" : ""} down`,
-      tone: "text-rose-600 dark:text-rose-400" };
+      tone: "text-rose-600 dark:text-rose-400", dot: "bg-rose-500" };
   }
   if (missing > 0) {
     return { label: `${missing} not configured`,
-      tone: "text-amber-600 dark:text-amber-400" };
+      tone: "text-amber-600 dark:text-amber-400", dot: "bg-amber-500" };
   }
   return { label: "All systems operational",
-    tone: "text-emerald-600 dark:text-emerald-400" };
+    tone: "text-emerald-600 dark:text-emerald-400", dot: "bg-emerald-500" };
 }
