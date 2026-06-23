@@ -1,9 +1,13 @@
+import { Suspense } from "react";
+
 import { PageHeader } from "@/components/dashboard/page-header";
 import { OverviewHero } from "@/components/admin/overview/overview-hero";
 import { OverviewTrend } from "@/components/admin/overview/overview-trend";
 import { OverviewSubscriptions } from "@/components/admin/overview/overview-subscriptions";
 import { OverviewRevenue } from "@/components/admin/overview/overview-revenue";
 import { OverviewRecentUsers } from "@/components/admin/overview/overview-recent-users";
+import { OverviewServicesSection } from "@/components/admin/overview/overview-services-section";
+import { OverviewServicesSkeleton } from "@/components/admin/overview/overview-services";
 import { getAdminStats } from "@/lib/admin/get-stats";
 import { getAdminSeries } from "@/lib/admin/get-series";
 import { getAdminUsers } from "@/lib/admin/get-users";
@@ -23,6 +27,9 @@ export default async function AdminOverviewPage() {
       {stats ? (
         <div className="space-y-6">
           <OverviewHero stats={stats} />
+          <Suspense fallback={<OverviewServicesSkeleton />}>
+            <OverviewServicesSection />
+          </Suspense>
           <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
             <OverviewTrend series={series} />
             <OverviewSubscriptions stats={stats} />
