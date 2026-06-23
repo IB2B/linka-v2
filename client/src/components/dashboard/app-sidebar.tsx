@@ -9,6 +9,7 @@ import { SidebarBrand } from "@/components/dashboard/sidebar-brand";
 import { SidebarCompose } from "@/components/dashboard/sidebar-compose";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { SidebarUpgrade } from "@/components/dashboard/sidebar-upgrade";
+import { SidebarServiceHealth } from "@/components/dashboard/sidebar-service-health";
 import { SidebarUser } from "@/components/dashboard/sidebar-user";
 import type { AppSidebarProps } from "@/types/app-sidebar-props";
 
@@ -24,6 +25,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       </SidebarContent>
       <SidebarFooter>
         <SidebarUpgrade user={user} />
+        <SidebarServiceHealth role={user.role} />
         <SidebarUser user={user} />
       </SidebarFooter>
       <SidebarRail />
