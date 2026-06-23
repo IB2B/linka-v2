@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { ImageIcon, AlertTriangle, Sparkles } from "lucide-react";
 import { useRegen } from "./regen-context";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostDetailImage({ post }: { post: GeneratedPost }) {
   const { imagePending } = useRegen();
+  const [missing, setMissing] = useState(false);
   if (post.imageStatus === "skipped" && !imagePending) return null;
 
   const inflight =
@@ -28,13 +30,23 @@ export function PostDetailImage({ post }: { post: GeneratedPost }) {
     );
   }
 
-  if (post.imageUrl) {
+  if (post.imageUrl && !missing) {
     return (
       <a href={post.imageUrl} target="_blank" rel="noreferrer"
         className="block overflow-hidden rounded-lg border bg-muted">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={post.imageUrl} alt="" className="w-full object-contain" />
+        <img src={post.imageUrl} alt="" className="w-full object-contain"
+          onError={() => setMissing(true)} />
       </a>
+    );
+  }
+
+  if (post.imageUrl && missing) {
+    return (
+      <div className="flex aspect-video w-full flex-col items-center justify-center gap-2 rounded-lg border bg-muted text-muted-foreground">
+        <ImageIcon className="size-6" />
+        <span className="text-sm font-medium">Image unavailable</span>
+      </div>
     );
   }
 

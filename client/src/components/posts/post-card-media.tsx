@@ -1,6 +1,7 @@
 import { ImageIcon } from "lucide-react";
 
 import { PlatformIcon } from "@/components/accounts/platform-icon";
+import { FallbackImage } from "@/components/media/fallback-image";
 import { PostImagePlaceholder } from "./post-image-placeholder";
 import { getPlatformGradient } from "./platform-gradient";
 import type { GeneratedPost } from "@/types/post";
@@ -24,10 +25,10 @@ export function PostCardMedia({ post }: { post: GeneratedPost }) {
   return (
     <div className="relative size-full overflow-hidden bg-muted">
       {hasImage ? (
-        <img
+        <FallbackImage
           src={post.imageUrl ?? ""}
-          alt=""
           className="size-full object-cover transition-transform duration-500 group-hover/post:scale-[1.04]"
+          fallback={<PostImagePlaceholder />}
         />
       ) : isLoading ? (
         <div className="relative size-full">

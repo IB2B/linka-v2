@@ -32,6 +32,13 @@ services:
       DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD}@mysql:3306/${MYSQL_DATABASE:-linka}
     env_file:
       - .env
+    volumes:
+      # User-generated files (AI images, avatars, post/inbox/support uploads)
+      # are written to /app/uploads. Without this volume they live on the
+      # container's ephemeral layer and are wiped on every redeploy — which
+      # left every stored image 404ing in production.
+      - uploads_data:/app/uploads
 
 volumes:
   mysql_data:
+  uploads_data:

@@ -1,4 +1,5 @@
 import { ImageIcon } from "lucide-react";
+import { FallbackImage } from "@/components/media/fallback-image";
 import { PostImagePlaceholder } from "./post-image-placeholder";
 import type { ImageStatus } from "@/types/post";
 
@@ -8,8 +9,11 @@ export function PostImage({ url, status }: Props) {
   if (url) {
     return (
       <div className="size-full overflow-hidden bg-muted">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={url} alt="" className="size-full object-cover" />
+        <FallbackImage
+          src={url}
+          className="size-full object-cover"
+          fallback={<PostImagePlaceholder />}
+        />
       </div>
     );
   }
