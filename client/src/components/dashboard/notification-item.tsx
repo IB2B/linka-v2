@@ -1,25 +1,12 @@
 import Link from "next/link";
-import { AlertTriangle, Calendar, Check, Heart, LifeBuoy, MessageCircle, type LucideIcon } from "lucide-react";
+import { Check } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { PlatformIcon } from "@/components/accounts/platform-icon";
-import type { Notification, NotificationKind } from "./notifications-data";
+import type { Notification } from "./notifications-data";
+import { KIND_ICONS, KIND_TONES } from "./notification-kind-style";
 import { NotificationPriorityPill } from "./notification-priority-pill";
 import { PLATFORM_TONES } from "./notification-platform-tone";
-
-const ICONS: Record<NotificationKind, LucideIcon> = {
-  failed: AlertTriangle, upcoming: Calendar, posted: Calendar, ticket: LifeBuoy,
-  likes: Heart, comments: MessageCircle,
-};
-
-const TONES: Record<NotificationKind, string> = {
-  failed: "bg-destructive/10 text-destructive",
-  upcoming: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
-  posted: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
-  ticket: "bg-sky-500/10 text-sky-700 dark:text-sky-400",
-  likes: "bg-rose-500/10 text-rose-700 dark:text-rose-400",
-  comments: "bg-indigo-500/10 text-indigo-700 dark:text-indigo-400",
-};
 
 function timeAgo(iso: string): string {
   const ms = Date.now() - new Date(iso).getTime();
@@ -38,7 +25,7 @@ type Props = {
 };
 
 export function NotificationItem({ n, onClick, onMarkRead }: Props) {
-  const Icon = ICONS[n.kind];
+  const Icon = KIND_ICONS[n.kind];
   const unread = n.seen !== true;
   return (
     <Link
@@ -52,7 +39,7 @@ export function NotificationItem({ n, onClick, onMarkRead }: Props) {
       {unread && (
         <span aria-hidden className="absolute left-1 top-3.5 size-1.5 rounded-full bg-sky-500" />
       )}
-      <div className={cn("mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold", n.platform ? PLATFORM_TONES[n.platform] : TONES[n.kind])}>
+      <div className={cn("mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold", n.platform ? PLATFORM_TONES[n.platform] : KIND_TONES[n.kind])}>
         {n.avatarLabel ?? (n.platform ? <PlatformIcon platform={n.platform} className="size-3.5" /> : <Icon className="size-3.5" />)}
       </div>
       <div className="min-w-0 flex-1 space-y-0.5">
