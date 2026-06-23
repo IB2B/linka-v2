@@ -39,6 +39,7 @@ import { authenticate } from "./middleware/auth";
 import { errorHandler } from "./middleware/error";
 import { resumeStuckImageJobs } from "./lib/image-reaper";
 import { startSocialEngagementPoller } from "./lib/social-engagement-poller";
+import { startScheduledPostsPoller } from "./lib/scheduled-posts-poller";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -87,4 +88,5 @@ app.listen(PORT, () => {
   console.log(`[server] listening on :${PORT}`);
   resumeStuckImageJobs().catch((e) => console.error("[image-reaper]", e));
   startSocialEngagementPoller();
+  startScheduledPostsPoller();
 });
