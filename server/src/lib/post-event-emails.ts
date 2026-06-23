@@ -19,6 +19,22 @@ export function sendPostPublishedEmail(
   }));
 }
 
+export function sendPostsGeneratedEmail(
+  userId: string, posts: { id: string }[],
+): Promise<void> {
+  const n = posts.length;
+  const one = n === 1;
+  const url = one
+    ? `${appUrl()}/dashboard/posts/${posts[0].id}`
+    : `${appUrl()}/dashboard/posts`;
+  return notifyUserIfEnabled(userId, "notif_generated", (name) => ({
+    subject: `Your ${n} AI post${one ? "" : "s"} ${one ? "is" : "are"} ready`,
+    html: `<p>Hi ${escapeHtml(name)},</p>
+<p>We just finished generating <strong>${n}</strong> new post${one ? "" : "s"} for you.</p>
+<p><a href="${url}">Review and schedule →</a></p>`,
+  }));
+}
+
 export function sendPostFailedEmail(
   userId: string, postId: string, excerpt: string, failedOn: string[],
 ): Promise<void> {

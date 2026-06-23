@@ -6,6 +6,7 @@ import { NotificationRow } from "./notification-row";
 import { NOTIF_PREFS, type NotifPrefId, type NotifPrefs } from "./notification-prefs.types";
 
 const DEFAULT: NotifPrefs = {
+  notifGenerated: true,
   notifPublished: true,
   notifFailed: true,
   notifLimit: true,

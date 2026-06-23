@@ -8,19 +8,22 @@ type Row = RowDataPacket & {
   notif_published: 0 | 1;
   notif_failed: 0 | 1;
   notif_limit: 0 | 1;
+  notif_generated: 0 | 1;
 };
 
 const PATCH = z.object({
   notifPublished: z.boolean().optional(),
   notifFailed: z.boolean().optional(),
   notifLimit: z.boolean().optional(),
+  notifGenerated: z.boolean().optional(),
 });
 
 export async function getNotificationPrefs(
   req: AuthRequest, res: Response,
 ): Promise<void> {
   const [rows] = await db.query<Row[]>(
-    "SELECT notif_published, notif_failed, notif_limit FROM users WHERE id = ?",
+    `SELECT notif_published, notif_failed, notif_limit, notif_generated
+     FROM users WHERE id = ?`,
     [req.user!.id],
   );
   const r = rows[0];
@@ -29,6 +32,7 @@ export async function getNotificationPrefs(
     notifPublished: !!r.notif_published,
     notifFailed: !!r.notif_failed,
     notifLimit: !!r.notif_limit,
+    notifGenerated: !!r.notif_generated,
   });
 }
 
@@ -36,6 +40,7 @@ const COLS: Record<keyof z.infer<typeof PATCH>, string> = {
   notifPublished: "notif_published",
   notifFailed: "notif_failed",
   notifLimit: "notif_limit",
+  notifGenerated: "notif_generated",
 };
 
 export async function patchNotificationPrefs(

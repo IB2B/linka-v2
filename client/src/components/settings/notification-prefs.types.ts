@@ -1,10 +1,13 @@
-export type NotifPrefId = "notifPublished" | "notifFailed" | "notifLimit";
+export type NotifPrefId =
+  | "notifGenerated" | "notifPublished" | "notifFailed" | "notifLimit";
 
 export type NotifPrefs = Record<NotifPrefId, boolean>;
 
 type Item = { id: NotifPrefId; label: string; description: string };
 
 export const NOTIF_PREFS: readonly Item[] = [
+  { id: "notifGenerated", label: "Post generated",
+    description: "When your AI-generated posts are ready to review." },
   { id: "notifPublished", label: "Post published",
     description: "When a scheduled post goes live." },
   { id: "notifFailed", label: "Post failed",
