@@ -5,6 +5,7 @@ import { POST_TYPES } from "../lib/post-type-guidance";
 import { getMonthlyUsage } from "../lib/posts-monthly-usage";
 import { generateForPlatform } from "../lib/content-generate-one";
 import { rememberLanguage } from "../lib/remember-language";
+import { sendPostsGeneratedEmail } from "../lib/post-event-emails";
 
 const PLATFORMS = ["linkedin", "twitter", "facebook", "instagram", "threads"] as const;
 
@@ -65,5 +66,9 @@ export async function generate(
       }
     });
     res.json(out);
+    if (out.posts.length > 0) {
+      sendPostsGeneratedEmail(userId, out.posts)
+        .catch((e) => console.error("[notify-generated]", e));
+    }
   } catch (e) { next(e); }
 }

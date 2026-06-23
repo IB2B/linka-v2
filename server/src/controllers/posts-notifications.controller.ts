@@ -6,7 +6,7 @@ import type { AuthRequest } from "../middleware/auth";
 interface Row extends RowDataPacket {
   id: string;
   content: string;
-  status: "failed" | "scheduled";
+  status: "failed" | "scheduled" | "draft";
   scheduled_for: Date | null;
   posted_at: Date | null;
   created_at: Date;
@@ -21,6 +21,7 @@ const QUERY = `
       OR (status = 'scheduled' AND scheduled_for IS NOT NULL
           AND scheduled_for >= NOW()
           AND scheduled_for <= DATE_ADD(NOW(), INTERVAL 1 DAY))
+      OR (status = 'draft' AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY))
     )
   ORDER BY COALESCE(scheduled_for, posted_at, created_at) DESC
   LIMIT 12`;

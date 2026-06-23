@@ -1,0 +1,2 @@
+ALTER TABLE users
+  ADD COLUMN notif_generated BOOLEAN NOT NULL DEFAULT TRUE;

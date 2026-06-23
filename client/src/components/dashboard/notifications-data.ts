@@ -1,6 +1,7 @@
 import type { Platform } from "@/lib/zernio/zernio-account.types";
 
-export type NotificationKind = "failed" | "upcoming" | "posted" | "ticket" | "likes" | "comments";
+export type NotificationKind =
+  | "failed" | "upcoming" | "posted" | "ticket" | "likes" | "comments" | "generated";
 
 export type NotificationPriority = "urgent" | "high" | "normal" | "low";
 
@@ -20,7 +21,7 @@ export type Notification = {
 export type NotificationApiItem = {
   id: string;
   content: string;
-  status: "failed" | "scheduled";
+  status: "failed" | "scheduled" | "draft";
   scheduledFor: string | null;
   postedAt: string | null;
   createdAt: string;
@@ -41,6 +42,9 @@ export function buildNotifications(
     } else if (p.status === "scheduled" && p.scheduledFor) {
       out.push({ id: `up-${p.id}`, kind: "upcoming", title: "Going live within 24h",
         body: preview(p.content), href: `${prefix}/posts/${p.id}`, at: p.scheduledFor });
+    } else if (p.status === "draft") {
+      out.push({ id: `gen-${p.id}`, kind: "generated", title: "Post ready to review",
+        body: preview(p.content), href: `${prefix}/posts/${p.id}`, at: p.createdAt });
     }
   }
   return out.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
