@@ -1,17 +1,22 @@
 import { db } from "./db";
 import { postsLimitFor } from "./plan-features";
+import { effectiveTier } from "./comp-accounts";
 import { notifyUserIfEnabled } from "./notify-user";
 import { currentPeriodKey, tryClaimNotification } from "./notification-log";
 import { escapeHtml } from "./email/escape";
 import type { RowDataPacket } from "mysql2";
 
-type UsageRow = RowDataPacket & { n: number; tier: string | null };
+type UsageRow = RowDataPacket & {
+  n: number; tier: string | null; email: string | null; verified: Date | null;
+};
 
 async function loadUsage(userId: string) {
   const [rows] = await db.query<UsageRow[]>(
     `SELECT (SELECT COUNT(*) FROM generated_content
               WHERE user_id = u.id
                 AND created_at >= DATE_FORMAT(NOW(), '%Y-%m-01 00:00:00')) AS n,
+            u.email AS email,
+            u.email_verified_at AS verified,
             s.plan_tier AS tier
      FROM users u
        LEFT JOIN subscriptions s ON s.user_id = u.id
@@ -40,7 +45,7 @@ function buildEmail(pct: number, used: number, limit: number) {
 export async function checkAndNotifyUsageLimit(userId: string): Promise<void> {
   const u = await loadUsage(userId);
   if (!u) return;
-  const limit = postsLimitFor(u.tier);
+  const limit = postsLimitFor(effectiveTier(u.email, u.tier, u.verified != null));
   if (limit <= 0) return;
   const pct = Math.floor((u.n / limit) * 100);
   const period = currentPeriodKey();

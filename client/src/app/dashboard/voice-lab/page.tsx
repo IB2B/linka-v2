@@ -20,7 +20,7 @@ export default async function VoiceLabPage() {
         <PageHeader title={t("title")} description={t("description")} />
         <div className="flex flex-wrap items-center gap-2">
           <AnalyzeAllButton
-            disabled={samples.length < 2}
+            disabled={samples.length < 1}
             sampleCount={samples.length}
           />
           <AddSamplesDialog limits={limits} />

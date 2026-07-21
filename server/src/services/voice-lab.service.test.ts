@@ -58,9 +58,16 @@ describe("addSample", () => {
 });
 
 describe("runAnalysis", () => {
-  it("needs at least 2 samples (400)", async () => {
-    vi.mocked(s.listByUser).mockResolvedValue([smp()]);
+  it("needs at least 1 sample (400)", async () => {
+    vi.mocked(s.listByUser).mockResolvedValue([]);
     await expect(runAnalysis("u1")).rejects.toMatchObject({ status: 400 });
+  });
+  it("analyzes a single sample", async () => {
+    vi.mocked(s.listByUser).mockResolvedValue([smp("a")]);
+    vi.mocked(analyzeVoice).mockResolvedValue({} as never);
+    vi.mocked(profile.saveVoiceDna).mockResolvedValue({ version: 1 } as never);
+    expect(await runAnalysis("u1")).toEqual({ version: 1, sampleCount: 1 });
+    expect(s.markProcessed).toHaveBeenCalledWith("u1", ["a"]);
   });
   it("analyzes, saves DNA, and marks samples processed", async () => {
     vi.mocked(s.listByUser).mockResolvedValue([smp("a"), smp("b")]);

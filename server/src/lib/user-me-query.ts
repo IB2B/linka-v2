@@ -1,5 +1,6 @@
 import { db } from "./db";
 import { postsLimitFor } from "./plan-features";
+import { effectiveTier } from "./comp-accounts";
 import { countPostsThisMonth } from "./posts-month-count";
 
 export async function getUserMe(userId: string) {
@@ -20,7 +21,8 @@ export async function getUserMe(userId: string) {
   ]);
   const u = userResult[0][0];
   if (!u) return null;
-  const tier = String(u.plan_tier ?? "free").toLowerCase();
+  const emailVerified = u.email_verified_at != null;
+  const tier = effectiveTier(u.email, u.plan_tier, emailVerified);
   return {
     id: u.id, email: u.email, role: u.role,
     firstName: u.first_name, lastName: u.last_name,
@@ -31,7 +33,7 @@ export async function getUserMe(userId: string) {
     preferredLanguage: u.preferred_language ?? null,
     tier,
     onboardingCompleted: u.onboarding_completed === 1,
-    emailVerified: u.email_verified_at !== null,
+    emailVerified,
     postsUsed,
     postsLimit: postsLimitFor(tier),
     features: { recycler: u.recycler_enabled === 1 },

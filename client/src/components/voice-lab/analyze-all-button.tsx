@@ -50,7 +50,7 @@ export function AnalyzeAllButton({ disabled, sampleCount }: Props) {
         className="relative z-10 m-[2px] h-6 rounded-[6px] border-transparent bg-background hover:bg-background dark:bg-background dark:hover:bg-background"
       >
         {pending ? <Spinner aria-hidden /> : <Sparkles className="size-4" />}
-        Analyze {sampleCount > 0 ? `${sampleCount} samples` : "all"}
+        Analyze {sampleCount > 0 ? `${sampleCount} ${sampleCount === 1 ? "sample" : "samples"}` : "all"}
       </Button>
     </div>
   );
@@ -59,7 +59,7 @@ export function AnalyzeAllButton({ disabled, sampleCount }: Props) {
   return (
     <Tooltip>
       <TooltipTrigger render={<span className="inline-flex" />}>{button}</TooltipTrigger>
-      <TooltipContent>Add at least 2 samples to analyze</TooltipContent>
+      <TooltipContent>Add at least 1 sample to analyze</TooltipContent>
     </Tooltip>
   );
 }
