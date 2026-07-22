@@ -19,7 +19,7 @@ export function VoiceDnaCard({ profile }: { profile: VoiceProfile | null }) {
             <Brain className="size-4" /> Voice DNA
           </CardTitle>
           <CardDescription>
-            Add at least 2 samples and run analysis to generate your profile.
+            Add a sample and run analysis to generate your profile.
           </CardDescription>
         </CardHeader>
       </Card>

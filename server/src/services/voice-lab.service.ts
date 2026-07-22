@@ -2,6 +2,7 @@ import { db } from "../lib/db";
 import * as samples from "../models/writing-sample.model";
 import * as profile from "../models/voice-profile.model";
 import { analyzeVoice } from "../lib/voice-analysis";
+import { effectiveTier } from "../lib/comp-accounts";
 import { SAMPLE_LIMITS, type SampleSource, type WritingSample } from "../types/voice-lab";
 
 function fail(status: number, message: string): never {
@@ -12,9 +13,13 @@ export async function getLimits(userId: string): Promise<{
   current: number; limit: number; canAddMore: boolean;
 }> {
   const [rows] = await db.query<any[]>(
-    "SELECT plan_tier FROM subscriptions WHERE user_id = ?", [userId],
+    `SELECT u.email, u.email_verified_at, s.plan_tier FROM users u
+       LEFT JOIN subscriptions s ON s.user_id = u.id
+     WHERE u.id = ?`, [userId],
   );
-  const tier = String(rows[0]?.plan_tier ?? "free").toLowerCase();
+  const tier = effectiveTier(
+    rows[0]?.email, rows[0]?.plan_tier, rows[0]?.email_verified_at != null,
+  );
   const limit = SAMPLE_LIMITS[tier] ?? SAMPLE_LIMITS.free;
   const current = await samples.countByUser(userId);
   return { current, limit, canAddMore: current < limit };
@@ -35,7 +40,7 @@ export async function runAnalysis(
   const list = sampleIds?.length
     ? await samples.getByIds(userId, sampleIds)
     : await samples.listByUser(userId);
-  if (list.length < 2) fail(400, "Need at least 2 samples to analyze.");
+  if (list.length < 1) fail(400, "Need at least 1 sample to analyze.");
   const dna = await analyzeVoice(list);
   const { version } = await profile.saveVoiceDna(userId, dna, list.length);
   await samples.markProcessed(userId, list.map((s) => s.id));
