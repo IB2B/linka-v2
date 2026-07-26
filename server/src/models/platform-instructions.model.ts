@@ -50,6 +50,18 @@ export async function getForPlatform(
   return rows[0] ? hydrate(rows[0]) : null;
 }
 
+// The user's image/video design direction (colours, text colours, fonts, mood)
+// for this platform — threaded into the image and video generation prompts.
+export async function getVisualStyle(
+  userId: string, platform: string,
+): Promise<string | null> {
+  const [rows] = await db.query<any[]>(
+    `SELECT visual_style FROM user_platform_instructions
+     WHERE user_id = ? AND platform = ? LIMIT 1`, [userId, platform],
+  );
+  return rows[0]?.visual_style ?? null;
+}
+
 export async function upsert(
   userId: string, platform: string, input: InstructionsInput,
 ): Promise<void> {
