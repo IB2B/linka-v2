@@ -1,4 +1,4 @@
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, Play } from "lucide-react";
 
 import { PlatformIcon } from "@/components/accounts/platform-icon";
 import { FallbackImage } from "@/components/media/fallback-image";
@@ -18,9 +18,14 @@ function asPlatform(p: string | null): Platform | null {
 
 export function PostCardMedia({ post }: { post: GeneratedPost }) {
   const platform = asPlatform(post.platform);
-  const isLoading =
-    post.imageStatus === "pending" || post.imageStatus === "generating";
+  const videoLoading =
+    post.videoStatus === "pending" || post.videoStatus === "generating";
+  const isLoading = videoLoading
+    || post.imageStatus === "pending" || post.imageStatus === "generating";
   const hasImage = !!post.imageUrl;
+  const label = videoLoading
+    ? (post.videoStatus === "pending" ? "Video queued…" : "Rendering video…")
+    : (post.imageStatus === "pending" ? "Image queued…" : "Generating image…");
 
   return (
     <div className="relative size-full overflow-hidden bg-muted">
@@ -34,11 +39,17 @@ export function PostCardMedia({ post }: { post: GeneratedPost }) {
         <div className="relative size-full">
           <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           <div className="flex size-full flex-col items-center justify-center gap-2">
-            <ImageIcon className="size-5 text-muted-foreground/50" />
+            {videoLoading
+              ? <Play className="size-5 text-muted-foreground/50" />
+              : <ImageIcon className="size-5 text-muted-foreground/50" />}
             <span className="text-xs font-medium text-muted-foreground">
-              {post.imageStatus === "pending" ? "Image queued…" : "Generating image…"}
+              {label}
             </span>
           </div>
+        </div>
+      ) : post.videoUrl ? (
+        <div className="flex size-full items-center justify-center bg-black/80">
+          <Play className="size-8 text-white/70" />
         </div>
       ) : post.imageStatus === "failed" ? (
         <PostImagePlaceholder />

@@ -9,9 +9,10 @@ import { PostedPlatforms } from "@/components/posts/posted-platforms";
 import { PostDetailToolbar } from "@/components/posts/detail/post-detail-toolbar";
 import { PostDetailHeader } from "@/components/posts/detail/post-detail-header";
 import { PostDetailImage } from "@/components/posts/detail/post-detail-image";
+import { PostDetailVideo } from "@/components/posts/detail/post-detail-video";
 import { PostDetailContent } from "@/components/posts/detail/post-detail-content";
 import { PostDetailMeta } from "@/components/posts/detail/post-detail-meta";
-import { PostDetailImagePoll } from "@/components/posts/detail/post-detail-image-poll";
+import { PostDetailMediaPoll } from "@/components/posts/detail/post-detail-media-poll";
 import { PostViralityScore } from "@/components/posts/detail/post-virality-score";
 import { PostDetailMetrics } from "@/components/posts/detail/post-detail-metrics";
 
@@ -33,7 +34,10 @@ export default async function PostDetailPage({ params }: Props) {
           <PostDetailHeader post={post} />
           <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
             <div className="flex flex-col gap-6">
-              <PostDetailImage post={post} />
+              {/* One media slot: a video post shows its clip, not the poster. */}
+              {post.videoStatus === "skipped"
+                ? <PostDetailImage post={post} />
+                : <PostDetailVideo post={post} />}
               <PostDetailContent post={post} />
             </div>
             <div className="flex flex-col gap-4">
@@ -42,7 +46,10 @@ export default async function PostDetailPage({ params }: Props) {
               <PostDetailMeta post={post} />
             </div>
           </div>
-          <PostDetailImagePoll status={post.imageStatus} />
+          <PostDetailMediaPoll
+            imageStatus={post.imageStatus}
+            videoStatus={post.videoStatus}
+          />
         </div>
       </PostPlatformsProvider>
     </RegenProvider>
