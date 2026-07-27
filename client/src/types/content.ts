@@ -11,7 +11,9 @@ export type PostType =
 
 export type TopicMode = "ai" | "manual";
 
-export type MediaKind = "none" | "image" | "video";
+// "video" = b-roll clip animated from a generated still.
+// "avatar" = a presenter speaking the post to camera (HeyGen).
+export type MediaKind = "none" | "image" | "video" | "avatar";
 
 export type TopicSuggestion = {
   topic: string;

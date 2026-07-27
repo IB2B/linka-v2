@@ -1,6 +1,6 @@
 "use client";
 
-import { Ban, ImageIcon, Video } from "lucide-react";
+import { Ban, ImageIcon, UserRound, Video } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import type { MediaKind } from "@/types/content";
@@ -16,7 +16,11 @@ type Option = {
 const OPTIONS: Option[] = [
   { value: "none", label: "Text only", hint: "No media attached", Icon: Ban },
   { value: "image", label: "AI image", hint: "Generate a still", Icon: ImageIcon },
-  { value: "video", label: "AI video", hint: "Generate a clip", Icon: Video, badge: "New" },
+  { value: "video", label: "AI video", hint: "Generate a clip", Icon: Video },
+  {
+    value: "avatar", label: "Avatar video", hint: "A presenter says it to camera",
+    Icon: UserRound, badge: "New",
+  },
 ];
 
 type Props = {
@@ -27,7 +31,11 @@ type Props = {
 
 export function MediaTypeSelect({ value, onChange, disabled }: Props) {
   return (
-    <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label="AI media">
+    <div
+      className="grid grid-cols-2 gap-2 sm:grid-cols-4"
+      role="radiogroup"
+      aria-label="AI media"
+    >
       {OPTIONS.map(({ value: v, label, hint, Icon, badge }) => (
         <button
           key={v}
