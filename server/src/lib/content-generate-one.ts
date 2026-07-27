@@ -3,12 +3,16 @@ import { generateImageForPostInBackground }
   from "../services/image-generation.service";
 import { generateVideoForPostInBackground }
   from "../services/video-generation.service";
+import { generateAvatarVideoInBackground }
+  from "../services/avatar-video.service";
 import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import { checkVideoRateLimit } from "../lib/video-rate-limiter";
 import * as posts from "../models/generated-content.model";
 import { checkAndNotifyUsageLimit } from "./check-usage-limit";
 
-export type MediaKind = "none" | "image" | "video";
+// "video" = b-roll clip animated from a seed image; "avatar" = HeyGen presenter
+// speaking the post to camera.
+export type MediaKind = "none" | "image" | "video" | "avatar";
 
 type Input = {
   postType: string;
@@ -26,22 +30,27 @@ export async function generateForPlatform(
     topic: input.topic, newsArticle: input.newsArticle,
     platform: platform as never, language: input.language,
   });
-  const wantsVideo = input.media === "video" && checkVideoRateLimit(userId).allowed;
-  const wantsImage =
-    !wantsVideo && input.media === "image" && checkImageRateLimit(userId).allowed;
-  // Video also produces a poster image, so image_status is pending in both cases.
+  const videoAllowed = checkVideoRateLimit(userId).allowed;
+  const wantsVideo = input.media === "video" && videoAllowed;
+  const wantsAvatar = input.media === "avatar" && videoAllowed;
+  const wantsImage = !wantsVideo && !wantsAvatar
+    && input.media === "image" && checkImageRateLimit(userId).allowed;
+  // B-roll video also produces a poster image, so image_status is pending there.
+  // Avatar video ships with HeyGen's own thumbnail — no image job.
   const stored = await posts.insertOne({
     userId,
     prompt: input.topic ?? input.newsArticle?.title ?? null,
     content: result.content,
     platform,
     imageStatus: wantsImage || wantsVideo ? "pending" : "skipped",
-    videoStatus: wantsVideo ? "pending" : "skipped",
+    videoStatus: wantsVideo || wantsAvatar ? "pending" : "skipped",
     tokensInput: result.tokensInput,
     tokensOutput: result.tokensOutput,
     model: result.model,
   });
-  if (wantsVideo) {
+  if (wantsAvatar) {
+    void generateAvatarVideoInBackground(stored.id, userId, result.content, platform);
+  } else if (wantsVideo) {
     void generateVideoForPostInBackground(stored.id, userId, result.content, platform);
   } else if (wantsImage) {
     void generateImageForPostInBackground(stored.id, userId, result.content, platform);

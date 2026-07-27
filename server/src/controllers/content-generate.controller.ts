@@ -22,7 +22,7 @@ const schema = z.object({
   newsArticle: articleSchema.optional(),
   platforms: z.array(z.enum(PLATFORMS)).min(1).max(PLATFORMS.length).default(["linkedin"]),
   language: z.string().trim().min(2).max(8).default("en"),
-  media: z.enum(["none", "image", "video"]).optional(),
+  media: z.enum(["none", "image", "video", "avatar"]).optional(),
   withImage: z.boolean().default(false),
 }).refine((d) => Boolean(d.topic || d.newsArticle), {
   message: "Provide a topic or a news article.",

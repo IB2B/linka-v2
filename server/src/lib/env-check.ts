@@ -8,6 +8,7 @@ const RECOMMENDED = [
   "SMTP_HOST",
   "SMTP_USER",
   "SMTP_PASS",
+  "HEYGEN_API_KEY",
 ];
 
 function missing(keys: string[]): string[] {
