@@ -1,4 +1,5 @@
 import { buildAvatarScript } from "../lib/avatar-script";
+import { HeygenError } from "../lib/heygen-api";
 import { createAvatarVideo } from "../lib/heygen-video";
 import { incrementVideoCount } from "../lib/video-rate-limiter";
 import { setVideoCompleted, setVideoFailed, setVideoGenerating }
@@ -31,10 +32,21 @@ export async function generateAvatarVideoInBackground(
     incrementVideoCount(userId);
     console.log(`[avatar-video] done ${contentId}`);
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown avatar error";
     console.error(`[avatar-video] FATAL ${contentId}:`, err);
-    await setVideoFailed(contentId, userId, message).catch(() => {});
+    await setVideoFailed(contentId, userId, userMessage(err)).catch(() => {});
   }
+}
+
+// video_error is rendered in the UI, so never leak the provider's name or raw
+// status codes to the person who just clicked "generate".
+function userMessage(err: unknown): string {
+  if (err instanceof HeygenError) {
+    if (err.status === 402) return "Video credits ran out. Top up to keep generating.";
+    if (err.status === 429) return "Too many videos at once — try again in a minute.";
+    if (err.status === 401) return "Video service not configured. Contact support.";
+    return "The video service could not render this. Try again.";
+  }
+  return err instanceof Error ? err.message : "Unknown avatar error";
 }
 
 // Falls back to a house presenter so the feature works before a user has picked
