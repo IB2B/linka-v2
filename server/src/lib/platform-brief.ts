@@ -16,10 +16,6 @@ export function buildBrief(row: PlatformInstructionsRow | null): string {
   add("Tone of voice", row.tone);
   add("Visual style", row.visual_style);
   add("Extra notes", row.extra_notes);
-  const links = (row.competitor_links ?? []).filter(Boolean);
-  if (links.length) {
-    parts.push(`Accounts they admire and want to emulate: ${links.join(", ")}`);
-  }
   if (!parts.length) return "";
   return `\nUser's brand brief for this platform — follow it closely:\n- ${parts.join("\n- ")}`;
 }

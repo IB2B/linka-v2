@@ -1,6 +1,6 @@
 import { db } from "./db";
 import { postsLimitFor } from "./plan-features";
-import { effectiveTier } from "./comp-accounts";
+import { effectiveTier, isCompEmail } from "./comp-accounts";
 import { countPostsThisMonth } from "./posts-month-count";
 
 export async function getUserMe(userId: string) {
@@ -32,6 +32,7 @@ export async function getUserMe(userId: string) {
     jobTitle: u.job_title ?? null,
     preferredLanguage: u.preferred_language ?? null,
     tier,
+    isComp: emailVerified && isCompEmail(u.email),
     onboardingCompleted: u.onboarding_completed === 1,
     emailVerified,
     postsUsed,

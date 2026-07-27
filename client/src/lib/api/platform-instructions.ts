@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
-import type { PlatformInstructions } from "@/lib/content/platform-instructions.types";
+import type {
+  BrandKit, PlatformInstructions,
+} from "@/lib/content/platform-instructions.types";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
@@ -13,7 +15,7 @@ type Row = {
   tone: string | null;
   visual_style: string | null;
   extra_notes: string | null;
-  competitor_links: string[] | null;
+  brand_kit: BrandKit | null;
 };
 
 function toCamel(r: Row): PlatformInstructions {
@@ -27,7 +29,7 @@ function toCamel(r: Row): PlatformInstructions {
     tone: r.tone ?? "",
     visualStyle: r.visual_style ?? "",
     extraNotes: r.extra_notes ?? "",
-    competitorLinks: r.competitor_links ?? [],
+    brandKit: r.brand_kit ?? {},
   };
 }
 

@@ -12,6 +12,26 @@ function str(fd: FormData, key: string): string {
   return String(fd.get(key) ?? "").trim();
 }
 
+function hex(fd: FormData, key: string): string | undefined {
+  const v = str(fd, key);
+  return /^#[0-9a-fA-F]{6}$/.test(v) ? v : undefined;
+}
+
+function font(fd: FormData, key: string): string | undefined {
+  const v = str(fd, key);
+  return v ? v.slice(0, 60) : undefined;
+}
+
+function readBrandKit(fd: FormData): Record<string, string> {
+  const kit: Record<string, string | undefined> = {
+    primary: hex(fd, "bkPrimary"), secondary: hex(fd, "bkSecondary"),
+    accent: hex(fd, "bkAccent"), background: hex(fd, "bkBackground"),
+    text: hex(fd, "bkText"),
+    headingFont: font(fd, "bkHeadingFont"), bodyFont: font(fd, "bkBodyFont"),
+  };
+  return Object.fromEntries(Object.entries(kit).filter(([, v]) => v)) as Record<string, string>;
+}
+
 export async function savePlatformInstructionsAction(
   platform: string,
   formData: FormData,
@@ -27,8 +47,7 @@ export async function savePlatformInstructionsAction(
     tone: str(formData, "tone"),
     visualStyle: str(formData, "visualStyle"),
     extraNotes: str(formData, "extraNotes"),
-    competitorLinks: formData.getAll("competitorLinks")
-      .map((v) => String(v).trim()).filter(Boolean).slice(0, 5),
+    brandKit: readBrandKit(formData),
   };
   const res = await fetch(`${API_BASE}/api/users/me/platform-instructions/${platform}`, {
     method: "PATCH",

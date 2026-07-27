@@ -1,6 +1,7 @@
 export type PostStatus = "draft" | "scheduled" | "posted" | "failed";
 export type ImageStatus =
   | "pending" | "generating" | "completed" | "failed" | "skipped";
+export type VideoStatus = ImageStatus;
 
 export type GeneratedPost = {
   id: string;
@@ -11,6 +12,9 @@ export type GeneratedPost = {
   imageStatus: ImageStatus;
   imagePrompt: string | null;
   imageError: string | null;
+  videoUrl: string | null;
+  videoStatus: VideoStatus;
+  videoError: string | null;
   platform: string | null;
   scheduledPlatforms: string[] | null;
   status: PostStatus;

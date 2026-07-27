@@ -11,6 +11,8 @@ export type PostType =
 
 export type TopicMode = "ai" | "manual";
 
+export type MediaKind = "none" | "image" | "video";
+
 export type TopicSuggestion = {
   topic: string;
   reasoning?: string;
@@ -43,11 +45,13 @@ export type GenerateInput = {
   newsArticle?: NewsArticle;
   platforms?: string[];
   language?: string;
+  media?: MediaKind;
+  // Legacy flag still sent by the trends flow; generate page uses `media`.
   withImage?: boolean;
 };
 
 export type PostSettings = {
   platforms: string[];
   language: string;
-  withImage: boolean;
+  media: MediaKind;
 };

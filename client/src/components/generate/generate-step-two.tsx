@@ -13,7 +13,7 @@ type Props = {
 
 export function GenerateStepTwo({ settings, pending, onChange, onBack, onNext }: Props) {
   return (
-    <div className="mx-auto max-w-sm space-y-6">
+    <div className="mx-auto max-w-xl space-y-6">
       <PostSettingsPanel value={settings} onChange={onChange} disabled={pending} />
       <div className="flex items-center justify-between">
         <Button variant="ghost" onClick={onBack}>

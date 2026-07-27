@@ -1,10 +1,11 @@
 import type { RowDataPacket } from "mysql2";
-import type { GeneratedPost, ImageStatus, PostStatus } from "../types/post";
+import type { GeneratedPost, ImageStatus, PostStatus, VideoStatus } from "../types/post";
 import { stripMarkdown } from "../lib/strip-markdown";
 
 export const POST_COLS =
   `id, user_id, prompt, content, image_url, image_status, image_prompt,
-   image_error, platform, scheduled_platforms, status, scheduled_for,
+   image_error, video_url, video_status, video_error,
+   platform, scheduled_platforms, status, scheduled_for,
    posted_at, created_at, late_post_id,
    virality_score, virality_reasons, virality_suggestions`;
 
@@ -17,6 +18,9 @@ export interface PostRow extends RowDataPacket {
   image_status: ImageStatus;
   image_prompt: string | null;
   image_error: string | null;
+  video_url: string | null;
+  video_status: VideoStatus;
+  video_error: string | null;
   platform: string | null;
   scheduled_platforms: string | string[] | null;
   status: PostStatus;
@@ -41,6 +45,7 @@ export function rowToPost(r: PostRow): GeneratedPost {
     id: r.id, userId: r.user_id, prompt: r.prompt, content: stripMarkdown(r.content),
     imageUrl: r.image_url, imageStatus: r.image_status,
     imagePrompt: r.image_prompt, imageError: r.image_error,
+    videoUrl: r.video_url, videoStatus: r.video_status, videoError: r.video_error,
     platform: r.platform,
     scheduledPlatforms: parseStrArray(r.scheduled_platforms),
     status: r.status,

@@ -1,3 +1,13 @@
+export type BrandKit = {
+  primary?: string;
+  secondary?: string;
+  accent?: string;
+  background?: string;
+  text?: string;
+  headingFont?: string;
+  bodyFont?: string;
+};
+
 export type PlatformInstructions = {
   platform: string;
   whoIAm: string;
@@ -8,7 +18,7 @@ export type PlatformInstructions = {
   tone: string;
   visualStyle: string;
   extraNotes: string;
-  competitorLinks: string[];
+  brandKit: BrandKit;
 };
 
 export const EMPTY_INSTRUCTIONS: Omit<PlatformInstructions, "platform"> = {
@@ -20,5 +30,5 @@ export const EMPTY_INSTRUCTIONS: Omit<PlatformInstructions, "platform"> = {
   tone: "",
   visualStyle: "",
   extraNotes: "",
-  competitorLinks: [],
+  brandKit: {},
 };

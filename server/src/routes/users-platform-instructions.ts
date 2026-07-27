@@ -6,10 +6,17 @@ import { listForUser, upsert } from "../models/platform-instructions.model";
 const PLATFORMS = ["linkedin", "twitter", "facebook", "instagram", "threads"];
 
 const text = z.string().trim().max(2000).optional();
+const hex = z.string().trim().regex(/^#[0-9a-fA-F]{6}$/).optional();
+const font = z.string().trim().max(60).optional();
+const brandKit = z.object({
+  primary: hex, secondary: hex, accent: hex, background: hex, text: hex,
+  headingFont: font, bodyFont: font,
+}).optional();
+
 const schema = z.object({
   whoIAm: text, whatIDo: text, goals: text, interests: text,
   postTypes: text, tone: text, visualStyle: text, extraNotes: text,
-  competitorLinks: z.array(z.string().trim().min(1).max(500)).max(5).optional(),
+  brandKit,
 });
 
 export async function listInstructions(req: AuthRequest, res: Response): Promise<void> {

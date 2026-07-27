@@ -1,16 +1,21 @@
 import { generatePost } from "../services/post-generation.service";
 import { generateImageForPostInBackground }
   from "../services/image-generation.service";
+import { generateVideoForPostInBackground }
+  from "../services/video-generation.service";
 import { checkImageRateLimit } from "../lib/image-rate-limiter";
+import { checkVideoRateLimit } from "../lib/video-rate-limiter";
 import * as posts from "../models/generated-content.model";
 import { checkAndNotifyUsageLimit } from "./check-usage-limit";
+
+export type MediaKind = "none" | "image" | "video";
 
 type Input = {
   postType: string;
   topic?: string;
   newsArticle?: { title: string; url?: string; source?: string; summary?: string };
   language: string;
-  withImage: boolean;
+  media: MediaKind;
 };
 
 export async function generateForPlatform(
@@ -21,21 +26,25 @@ export async function generateForPlatform(
     topic: input.topic, newsArticle: input.newsArticle,
     platform: platform as never, language: input.language,
   });
-  const wantsImage = input.withImage && checkImageRateLimit(userId).allowed;
+  const wantsVideo = input.media === "video" && checkVideoRateLimit(userId).allowed;
+  const wantsImage =
+    !wantsVideo && input.media === "image" && checkImageRateLimit(userId).allowed;
+  // Video also produces a poster image, so image_status is pending in both cases.
   const stored = await posts.insertOne({
     userId,
     prompt: input.topic ?? input.newsArticle?.title ?? null,
     content: result.content,
     platform,
-    imageStatus: wantsImage ? "pending" : "skipped",
+    imageStatus: wantsImage || wantsVideo ? "pending" : "skipped",
+    videoStatus: wantsVideo ? "pending" : "skipped",
     tokensInput: result.tokensInput,
     tokensOutput: result.tokensOutput,
     model: result.model,
   });
-  if (wantsImage) {
-    void generateImageForPostInBackground(
-      stored.id, userId, result.content, platform,
-    );
+  if (wantsVideo) {
+    void generateVideoForPostInBackground(stored.id, userId, result.content, platform);
+  } else if (wantsImage) {
+    void generateImageForPostInBackground(stored.id, userId, result.content, platform);
   }
   checkAndNotifyUsageLimit(userId).catch((e) =>
     console.error("[usage-limit]", e));

@@ -22,6 +22,7 @@ const schema = z.object({
   newsArticle: articleSchema.optional(),
   platforms: z.array(z.enum(PLATFORMS)).min(1).max(PLATFORMS.length).default(["linkedin"]),
   language: z.string().trim().min(2).max(8).default("en"),
+  media: z.enum(["none", "image", "video"]).optional(),
   withImage: z.boolean().default(false),
 }).refine((d) => Boolean(d.topic || d.newsArticle), {
   message: "Provide a topic or a news article.",
@@ -42,6 +43,8 @@ export async function generate(
       return;
     }
     const input = parsed.data;
+    // Frontend sends `media`; fall back to the legacy `withImage` flag.
+    const media = input.media ?? (input.withImage ? "image" : "none");
     const userId = req.user!.id;
     const usage = await getMonthlyUsage(userId);
     const remaining = usage.limit - usage.used;
@@ -54,7 +57,7 @@ export async function generate(
     }
     void rememberLanguage(userId, input.language).catch(() => {});
     const settled = await Promise.allSettled(
-      input.platforms.map((p) => generateForPlatform(userId, input, p)),
+      input.platforms.map((p) => generateForPlatform(userId, { ...input, media }, p)),
     );
     const out: Out = { posts: [] };
     settled.forEach((t, i) => {
