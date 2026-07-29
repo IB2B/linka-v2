@@ -1,0 +1,35 @@
+import { MAX_REFERENCE_ACCOUNTS } from "@/lib/content/platform-instructions.types";
+import type { BrandKit } from "@/lib/content/platform-instructions.types";
+
+export function str(fd: FormData, key: string): string {
+  return String(fd.get(key) ?? "").trim();
+}
+
+function hex(fd: FormData, key: string): string | undefined {
+  const v = str(fd, key);
+  return /^#[0-9a-fA-F]{6}$/.test(v) ? v : undefined;
+}
+
+function font(fd: FormData, key: string): string | undefined {
+  const v = str(fd, key);
+  return v ? v.slice(0, 60) : undefined;
+}
+
+export function readBrandKit(fd: FormData): BrandKit {
+  const kit: Record<string, string | undefined> = {
+    primary: hex(fd, "bkPrimary"), secondary: hex(fd, "bkSecondary"),
+    accent: hex(fd, "bkAccent"), background: hex(fd, "bkBackground"),
+    text: hex(fd, "bkText"),
+    headingFont: font(fd, "bkHeadingFont"), bodyFont: font(fd, "bkBodyFont"),
+  };
+  return Object.fromEntries(Object.entries(kit).filter(([, v]) => v)) as BrandKit;
+}
+
+// The field repeats one input per account, so read every value under the key.
+export function readReferenceAccounts(fd: FormData): string[] {
+  return fd
+    .getAll("referenceAccounts")
+    .map((v) => String(v).trim().slice(0, 200))
+    .filter(Boolean)
+    .slice(0, MAX_REFERENCE_ACCOUNTS);
+}

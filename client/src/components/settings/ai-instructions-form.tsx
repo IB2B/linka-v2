@@ -7,6 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { BrandKitField } from "./brand-kit-field";
+import { ReferenceAccountsField } from "./reference-accounts-field";
 import { INSTRUCTION_FIELDS } from "./ai-instruction-fields";
 import { savePlatformInstructionsAction } from "@/app/dashboard/settings/ai-instructions-actions";
 import type { PlatformInstructions } from "@/lib/content/platform-instructions.types";
@@ -38,6 +39,11 @@ export function AiInstructionsForm({ platform, data }: Props) {
             placeholder={f.placeholder}
           />
           {f.name === "visualStyle" && <BrandKitField kit={data.brandKit} />}
+          {f.name === "postTypes" && (
+            <div className="pt-2">
+              <ReferenceAccountsField accounts={data.referenceAccounts} />
+            </div>
+          )}
         </div>
       ))}
       <div className="flex justify-end">

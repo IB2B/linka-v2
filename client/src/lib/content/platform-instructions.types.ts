@@ -19,7 +19,10 @@ export type PlatformInstructions = {
   visualStyle: string;
   extraNotes: string;
   brandKit: BrandKit;
+  referenceAccounts: string[];
 };
+
+export const MAX_REFERENCE_ACCOUNTS = 5;
 
 export const EMPTY_INSTRUCTIONS: Omit<PlatformInstructions, "platform"> = {
   whoIAm: "",
@@ -31,4 +34,5 @@ export const EMPTY_INSTRUCTIONS: Omit<PlatformInstructions, "platform"> = {
   visualStyle: "",
   extraNotes: "",
   brandKit: {},
+  referenceAccounts: [],
 };

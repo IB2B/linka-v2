@@ -16,6 +16,13 @@ export function buildBrief(row: PlatformInstructionsRow | null): string {
   add("Tone of voice", row.tone);
   add("Visual style", row.visual_style);
   add("Extra notes", row.extra_notes);
+  const refs = (row.reference_accounts ?? []).filter(Boolean);
+  if (refs.length) {
+    parts.push(
+      "Accounts whose posting they admire and want to emulate (match their " +
+        `structure, hooks and energy — never copy their words): ${refs.join(", ")}`,
+    );
+  }
   if (!parts.length) return "";
   return `\nUser's brand brief for this platform — follow it closely:\n- ${parts.join("\n- ")}`;
 }

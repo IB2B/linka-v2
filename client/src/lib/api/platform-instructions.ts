@@ -16,6 +16,7 @@ type Row = {
   visual_style: string | null;
   extra_notes: string | null;
   brand_kit: BrandKit | null;
+  reference_accounts: string[] | null;
 };
 
 function toCamel(r: Row): PlatformInstructions {
@@ -30,6 +31,7 @@ function toCamel(r: Row): PlatformInstructions {
     visualStyle: r.visual_style ?? "",
     extraNotes: r.extra_notes ?? "",
     brandKit: r.brand_kit ?? {},
+    referenceAccounts: r.reference_accounts ?? [],
   };
 }
 

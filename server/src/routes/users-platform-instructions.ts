@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { listForUser, upsert } from "../models/platform-instructions.model";
+import { MAX_REFERENCE_ACCOUNTS } from "../lib/reference-accounts";
 
 const PLATFORMS = ["linkedin", "twitter", "facebook", "instagram", "threads"];
 
@@ -13,10 +14,15 @@ const brandKit = z.object({
   headingFont: font, bodyFont: font,
 }).optional();
 
+const referenceAccounts = z
+  .array(z.string().trim().min(1).max(200))
+  .max(MAX_REFERENCE_ACCOUNTS, `Up to ${MAX_REFERENCE_ACCOUNTS} accounts.`)
+  .optional();
+
 const schema = z.object({
   whoIAm: text, whatIDo: text, goals: text, interests: text,
   postTypes: text, tone: text, visualStyle: text, extraNotes: text,
-  brandKit,
+  brandKit, referenceAccounts,
 });
 
 export async function listInstructions(req: AuthRequest, res: Response): Promise<void> {

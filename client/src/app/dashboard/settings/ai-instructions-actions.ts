@@ -3,34 +3,13 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { forwardSetCookies } from "@/lib/server-actions/forward-set-cookie";
+import {
+  readBrandKit, readReferenceAccounts, str,
+} from "./ai-instructions-form-data";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
 type ActionResult = { error?: string; success?: boolean };
-
-function str(fd: FormData, key: string): string {
-  return String(fd.get(key) ?? "").trim();
-}
-
-function hex(fd: FormData, key: string): string | undefined {
-  const v = str(fd, key);
-  return /^#[0-9a-fA-F]{6}$/.test(v) ? v : undefined;
-}
-
-function font(fd: FormData, key: string): string | undefined {
-  const v = str(fd, key);
-  return v ? v.slice(0, 60) : undefined;
-}
-
-function readBrandKit(fd: FormData): Record<string, string> {
-  const kit: Record<string, string | undefined> = {
-    primary: hex(fd, "bkPrimary"), secondary: hex(fd, "bkSecondary"),
-    accent: hex(fd, "bkAccent"), background: hex(fd, "bkBackground"),
-    text: hex(fd, "bkText"),
-    headingFont: font(fd, "bkHeadingFont"), bodyFont: font(fd, "bkBodyFont"),
-  };
-  return Object.fromEntries(Object.entries(kit).filter(([, v]) => v)) as Record<string, string>;
-}
 
 export async function savePlatformInstructionsAction(
   platform: string,
@@ -48,6 +27,7 @@ export async function savePlatformInstructionsAction(
     visualStyle: str(formData, "visualStyle"),
     extraNotes: str(formData, "extraNotes"),
     brandKit: readBrandKit(formData),
+    referenceAccounts: readReferenceAccounts(formData),
   };
   const res = await fetch(`${API_BASE}/api/users/me/platform-instructions/${platform}`, {
     method: "PATCH",
