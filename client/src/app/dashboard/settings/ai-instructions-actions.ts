@@ -3,9 +3,7 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { forwardSetCookies } from "@/lib/server-actions/forward-set-cookie";
-import {
-  readBrandKit, readReferenceAccounts, str,
-} from "./ai-instructions-form-data";
+import { buildInstructionsBody } from "./ai-instructions-form-data";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
 
@@ -17,18 +15,7 @@ export async function savePlatformInstructionsAction(
 ): Promise<ActionResult> {
   const cookieStore = await cookies();
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
-  const body = {
-    whoIAm: str(formData, "whoIAm"),
-    whatIDo: str(formData, "whatIDo"),
-    goals: str(formData, "goals"),
-    interests: str(formData, "interests"),
-    postTypes: str(formData, "postTypes"),
-    tone: str(formData, "tone"),
-    visualStyle: str(formData, "visualStyle"),
-    extraNotes: str(formData, "extraNotes"),
-    brandKit: readBrandKit(formData),
-    referenceAccounts: readReferenceAccounts(formData),
-  };
+  const body = buildInstructionsBody(formData);
   const res = await fetch(`${API_BASE}/api/users/me/platform-instructions/${platform}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", cookie },

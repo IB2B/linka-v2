@@ -1,7 +1,24 @@
 import { MAX_REFERENCE_ACCOUNTS } from "@/lib/content/platform-instructions.types";
 import type { BrandKit } from "@/lib/content/platform-instructions.types";
 
-export function str(fd: FormData, key: string): string {
+const TEXT_KEYS = [
+  "whoIAm", "whatIDo", "goals", "interests",
+  "postTypes", "tone", "visualStyle", "extraNotes",
+];
+
+// Each form submits only its own scope (shared brief vs one platform), so the
+// body carries exactly the keys that were on screen.
+export function buildInstructionsBody(fd: FormData): Record<string, unknown> {
+  const body: Record<string, unknown> = {};
+  for (const key of TEXT_KEYS) if (fd.has(key)) body[key] = str(fd, key);
+  if (fd.has("bkPrimary")) body.brandKit = readBrandKit(fd);
+  if (fd.has("referenceAccounts")) {
+    body.referenceAccounts = readReferenceAccounts(fd);
+  }
+  return body;
+}
+
+function str(fd: FormData, key: string): string {
   return String(fd.get(key) ?? "").trim();
 }
 
@@ -15,7 +32,7 @@ function font(fd: FormData, key: string): string | undefined {
   return v ? v.slice(0, 60) : undefined;
 }
 
-export function readBrandKit(fd: FormData): BrandKit {
+function readBrandKit(fd: FormData): BrandKit {
   const kit: Record<string, string | undefined> = {
     primary: hex(fd, "bkPrimary"), secondary: hex(fd, "bkSecondary"),
     accent: hex(fd, "bkAccent"), background: hex(fd, "bkBackground"),
@@ -26,7 +43,7 @@ export function readBrandKit(fd: FormData): BrandKit {
 }
 
 // The field repeats one input per account, so read every value under the key.
-export function readReferenceAccounts(fd: FormData): string[] {
+function readReferenceAccounts(fd: FormData): string[] {
   return fd
     .getAll("referenceAccounts")
     .map((v) => String(v).trim().slice(0, 200))

@@ -24,6 +24,9 @@ export type PlatformInstructions = {
 
 export const MAX_REFERENCE_ACCOUNTS = 5;
 
+// Pseudo-platform holding the brief the user writes once for every platform.
+export const GLOBAL_PLATFORM = "global";
+
 export const EMPTY_INSTRUCTIONS: Omit<PlatformInstructions, "platform"> = {
   whoIAm: "",
   whatIDo: "",

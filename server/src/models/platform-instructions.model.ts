@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import { db } from "../lib/db";
 import { parseBrandKit, paletteLine } from "../lib/brand-kit";
 import { parseReferenceAccounts } from "../lib/reference-accounts";
+import { GLOBAL_PLATFORM, mergeInstructions } from "../lib/instructions-merge";
 import type {
   PlatformInstructionsRow, InstructionsInput,
 } from "./platform-instructions.types";
@@ -26,27 +27,29 @@ export async function listForUser(userId: string): Promise<PlatformInstructionsR
   return rows.map(hydrate);
 }
 
+// The user's shared brief with this platform's answers layered on top.
 export async function getForPlatform(
   userId: string, platform: string,
 ): Promise<PlatformInstructionsRow | null> {
   const [rows] = await db.query<any[]>(
     `SELECT ${COLS} FROM user_platform_instructions
-     WHERE user_id = ? AND platform = ? LIMIT 1`, [userId, platform],
+     WHERE user_id = ? AND platform IN (?, ?)`,
+    [userId, GLOBAL_PLATFORM, platform],
   );
-  return rows[0] ? hydrate(rows[0]) : null;
+  const byPlatform = new Map(rows.map((r) => [r.platform, hydrate(r)]));
+  return mergeInstructions(
+    byPlatform.get(GLOBAL_PLATFORM) ?? null,
+    byPlatform.get(platform) ?? null,
+  );
 }
 
 // Composed image/video design direction: mood text plus the exact hex palette.
 export async function getVisualStyle(
   userId: string, platform: string,
 ): Promise<string | null> {
-  const [rows] = await db.query<any[]>(
-    `SELECT visual_style, brand_kit FROM user_platform_instructions
-     WHERE user_id = ? AND platform = ? LIMIT 1`, [userId, platform],
-  );
-  const r = rows[0];
-  if (!r) return null;
-  const composed = [r.visual_style?.trim(), paletteLine(parseBrandKit(r.brand_kit))]
+  const row = await getForPlatform(userId, platform);
+  if (!row) return null;
+  const composed = [row.visual_style?.trim(), paletteLine(row.brand_kit)]
     .filter(Boolean).join(" ");
   return composed || null;
 }

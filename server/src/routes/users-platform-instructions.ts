@@ -3,8 +3,11 @@ import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { listForUser, upsert } from "../models/platform-instructions.model";
 import { MAX_REFERENCE_ACCOUNTS } from "../lib/reference-accounts";
+import { GLOBAL_PLATFORM } from "../lib/instructions-merge";
 
-const PLATFORMS = ["linkedin", "twitter", "facebook", "instagram", "threads"];
+const PLATFORMS = [
+  GLOBAL_PLATFORM, "linkedin", "twitter", "facebook", "instagram", "threads",
+];
 
 const text = z.string().trim().max(2000).optional();
 const hex = z.string().trim().regex(/^#[0-9a-fA-F]{6}$/).optional();
