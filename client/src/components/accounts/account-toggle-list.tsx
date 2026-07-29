@@ -10,22 +10,20 @@ export function AccountToggleList({ accounts }: { accounts: ZernioAccount[] }) {
     useAccountToggle();
 
   return (
-    <>
-      <div className="max-w-xl divide-y overflow-hidden rounded-xl border bg-card">
-        {accounts.map((account) => (
-          <AccountToggleRow
-            key={account.platform}
-            account={account}
-            pending={busy === account.platform}
-            onToggle={(next) => toggle(account, next)}
-          />
-        ))}
-      </div>
+    <div className="flex max-w-2xl flex-col gap-2">
+      {accounts.map((account) => (
+        <AccountToggleRow
+          key={account.platform}
+          account={account}
+          pending={busy === account.platform}
+          onToggle={(next) => toggle(account, next)}
+        />
+      ))}
       <AccountDisconnectConfirm
         account={confirming}
         onOpenChange={(open) => !open && setConfirming(null)}
         onConfirm={confirmDisconnect}
       />
-    </>
+    </div>
   );
 }
