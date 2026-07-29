@@ -7,7 +7,6 @@ import { getLocale, getMessages } from "next-intl/server";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { THEME_BOOTSTRAP_SCRIPT } from "@/components/theme/theme-script";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-sans", subsets: ["latin"] });
@@ -42,8 +41,8 @@ export default async function RootLayout({
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         <Script
           id="theme-bootstrap"
+          src="/theme-bootstrap.js"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP_SCRIPT }}
         />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider defaultTheme="dark" disableTransitionOnChange>
