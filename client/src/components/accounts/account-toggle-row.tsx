@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { FeatureToggle } from "@/components/settings/feature-toggle";
 import { AccountRowIcon } from "./account-row-icon";
+import { AccountConnectedLine } from "./account-connected-line";
 import { NEW_PLATFORMS } from "./new-platforms";
 import { PLATFORMS } from "@/lib/zernio/platforms";
 import { PLATFORM_CONTENT } from "@/lib/zernio/platform-content";
@@ -33,10 +34,11 @@ export function AccountToggleRow({ account, pending, onToggle }: Props) {
         </div>
         <p className="truncate border-l-2 border-primary/70 pl-2 text-xs text-muted-foreground">
           {description}
-          {account.connected && (
-            <span className="text-foreground/70"> · @{account.username}</span>
-          )}
         </p>
+        <AccountConnectedLine
+          connected={account.connected}
+          username={account.username}
+        />
       </div>
       {pending ? (
         <Spinner size="xs" className="mr-3" />

@@ -11,7 +11,7 @@ export function AccountToggleList({ accounts }: { accounts: ZernioAccount[] }) {
 
   return (
     <>
-      <div className="grid max-w-4xl gap-2.5 sm:grid-cols-2">
+      <div className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-3">
         {accounts.map((account) => (
           <AccountToggleRow
             key={account.platform}
