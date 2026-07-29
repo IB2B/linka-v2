@@ -10,7 +10,7 @@ export function AccountToggleList({ accounts }: { accounts: ZernioAccount[] }) {
     useAccountToggle();
 
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex max-w-2xl flex-col gap-2">
       {accounts.map((account) => (
         <AccountToggleRow
           key={account.platform}

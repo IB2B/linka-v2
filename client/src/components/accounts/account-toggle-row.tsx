@@ -20,23 +20,23 @@ export function AccountToggleRow({ account, pending, onToggle }: Props) {
   const { description } = PLATFORM_CONTENT[account.platform];
 
   return (
-    <div className="flex items-start justify-between gap-4 rounded-xl border bg-card p-4 shadow-xs transition-colors hover:border-foreground/15">
-      <div className="min-w-0 space-y-1.5">
+    <div className="flex items-center justify-between gap-4 rounded-lg border bg-card px-3.5 py-3 transition-colors hover:border-foreground/15">
+      <div className="min-w-0 space-y-1">
         <div className="flex items-center gap-2">
-          <AccountRowIcon platform={account.platform} connected={account.connected} />
+          <AccountRowIcon platform={account.platform} />
           <p className="text-sm font-medium">{meta.label}</p>
           {NEW_PLATFORMS.has(account.platform) && (
-            <Badge className="border-transparent bg-primary/10 px-1.5 py-0 text-[10px] font-semibold uppercase tracking-wide text-primary">
+            <Badge className="border-transparent bg-primary/15 px-1.5 py-0 text-[10px] font-semibold uppercase text-primary">
               New
             </Badge>
           )}
         </div>
-        <p className="border-l-2 border-primary/70 pl-2.5 text-xs leading-relaxed text-muted-foreground">
+        <p className="truncate border-l-2 border-primary/70 pl-2 text-xs text-muted-foreground">
           {account.connected ? `Connected as @${account.username}` : description}
         </p>
       </div>
       {pending ? (
-        <Spinner size="xs" className="mt-1 mr-3" />
+        <Spinner size="xs" className="mr-3" />
       ) : (
         <FeatureToggle
           ariaLabel={`${meta.label} connection`}
