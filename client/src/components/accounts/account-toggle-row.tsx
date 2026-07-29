@@ -32,7 +32,10 @@ export function AccountToggleRow({ account, pending, onToggle }: Props) {
           )}
         </div>
         <p className="truncate border-l-2 border-primary/70 pl-2 text-xs text-muted-foreground">
-          {account.connected ? `Connected as @${account.username}` : description}
+          {description}
+          {account.connected && (
+            <span className="text-foreground/70"> · @{account.username}</span>
+          )}
         </p>
       </div>
       {pending ? (
