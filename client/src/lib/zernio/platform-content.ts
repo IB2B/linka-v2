@@ -9,6 +9,7 @@ export const PLATFORM_CONTENT: Record<Platform, PlatformContent> = {
   twitter: { category: "Microblog", description: "Send short updates and replies on X." },
   threads: { category: "Microblog", description: "Post text-first updates on Threads." },
   tiktok: { category: "Short video", description: "Schedule short-form videos to TikTok." },
+  youtube: { category: "Video", description: "Publish Shorts and long-form videos to YouTube." },
   pinterest: { category: "Visual discovery", description: "Pin images and ideas to your boards." },
   bluesky: { category: "Microblog", description: "Post to the decentralized Bluesky network." },
   reddit: { category: "Community", description: "Cross-post to your favorite subreddits." },

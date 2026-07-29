@@ -6,4 +6,6 @@ export const NEW_PLATFORMS: ReadonlySet<Platform> = new Set<Platform>([
   "bluesky",
   "reddit",
   "threads",
+  "tiktok",
+  "youtube",
 ]);

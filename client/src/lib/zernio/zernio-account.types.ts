@@ -5,6 +5,7 @@ export type Platform =
   | "twitter"
   | "threads"
   | "tiktok"
+  | "youtube"
   | "pinterest"
   | "bluesky"
   | "reddit";

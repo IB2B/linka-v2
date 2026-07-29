@@ -2,9 +2,11 @@ import { PlatformIcon } from "./platform-icon";
 import { PLATFORMS } from "@/lib/zernio/platforms";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
 
-// X and Threads are pure black, which disappears on a dark background — those
-// two follow the text colour instead of their brand hex.
-const MONOCHROME: ReadonlySet<Platform> = new Set<Platform>(["twitter", "threads"]);
+// X, Threads and TikTok are pure black, which disappears on a dark background —
+// those follow the text colour instead of their brand hex.
+const MONOCHROME: ReadonlySet<Platform> = new Set<Platform>([
+  "twitter", "threads", "tiktok",
+]);
 
 export function AccountRowIcon({ platform }: { platform: Platform }) {
   const meta = PLATFORMS.find((p) => p.slug === platform)!;
