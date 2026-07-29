@@ -1,5 +1,5 @@
 import { SettingsSection } from "./settings-section";
-import { AccountGrid } from "@/components/accounts/account-grid";
+import { AccountToggleList } from "@/components/accounts/account-toggle-list";
 import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
 
 type Props = { accounts: ZernioAccount[] };
@@ -8,9 +8,9 @@ export function ConnectedAccountsSection({ accounts }: Props) {
   return (
     <SettingsSection
       title="Connected Accounts"
-      description="Manage your LinkedIn, Facebook, Instagram, X, and Threads connections."
+      description="Flip a platform on to connect it. Connected accounts are ready to post to."
     >
-      <AccountGrid accounts={accounts} />
+      <AccountToggleList accounts={accounts} />
     </SettingsSection>
   );
 }

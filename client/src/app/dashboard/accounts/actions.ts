@@ -15,3 +15,12 @@ export async function disconnectAction(accountId: string) {
   await disconnectAccount(accountId);
   redirect("/dashboard/accounts");
 }
+
+// Same disconnect without the redirect, for callers that stay on the page
+// (Settings keeps the open tab and refreshes in place).
+export async function disconnectInPlaceAction(
+  accountId: string,
+): Promise<{ success: boolean }> {
+  await disconnectAccount(accountId);
+  return { success: true };
+}
