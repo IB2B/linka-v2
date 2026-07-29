@@ -7,9 +7,18 @@ type Props = {
   onChange: (next: boolean) => void;
   disabled?: boolean;
   ariaLabel: string;
+  // "success" reads as live/connected rather than as a brand accent.
+  tone?: "primary" | "success";
 };
 
-export function FeatureToggle({ checked, onChange, disabled, ariaLabel }: Props) {
+const ON_CLASS = {
+  primary: "bg-primary border-primary",
+  success: "bg-emerald-500 border-emerald-500",
+} as const;
+
+export function FeatureToggle({
+  checked, onChange, disabled, ariaLabel, tone = "primary",
+}: Props) {
   return (
     <button
       type="button"
@@ -22,7 +31,7 @@ export function FeatureToggle({ checked, onChange, disabled, ariaLabel }: Props)
         "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         "disabled:cursor-not-allowed disabled:opacity-50",
-        checked ? "bg-primary border-primary" : "bg-muted border-border",
+        checked ? ON_CLASS[tone] : "bg-muted border-border",
       )}
     >
       <span

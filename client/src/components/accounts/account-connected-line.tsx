@@ -9,7 +9,7 @@ export function AccountConnectedLine({
     return <p className="text-[11px] text-muted-foreground/70">Not connected</p>;
   }
   return (
-    <p className="flex items-center gap-1 text-[11px] text-primary">
+    <p className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400">
       <CheckCircle2 className="size-3 shrink-0" aria-hidden />
       <span className="truncate font-medium">@{username}</span>
     </p>

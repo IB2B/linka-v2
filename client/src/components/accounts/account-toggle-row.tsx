@@ -27,12 +27,12 @@ export function AccountToggleRow({ account, pending, onToggle }: Props) {
           <AccountRowIcon platform={account.platform} />
           <p className="text-sm font-medium">{meta.label}</p>
           {NEW_PLATFORMS.has(account.platform) && (
-            <Badge className="border-transparent bg-primary/15 px-1.5 py-0 text-[10px] font-semibold uppercase text-primary">
+            <Badge className="border-transparent bg-amber-500/15 px-1.5 py-0 text-[10px] font-semibold uppercase text-amber-600 dark:text-amber-400">
               New
             </Badge>
           )}
         </div>
-        <p className="truncate border-l-2 border-primary/70 pl-2 text-xs text-muted-foreground">
+        <p className="truncate border-l-2 border-muted-foreground/25 pl-2 text-xs text-muted-foreground">
           {description}
         </p>
         <AccountConnectedLine
@@ -44,6 +44,7 @@ export function AccountToggleRow({ account, pending, onToggle }: Props) {
         <Spinner size="xs" className="mr-3" />
       ) : (
         <FeatureToggle
+          tone="success"
           ariaLabel={`${meta.label} connection`}
           checked={account.connected}
           onChange={onToggle}
