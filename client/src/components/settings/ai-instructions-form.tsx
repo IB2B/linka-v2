@@ -39,13 +39,9 @@ export function AiInstructionsForm({ platform, data }: Props) {
             placeholder={f.placeholder}
           />
           {f.name === "visualStyle" && <BrandKitField kit={data.brandKit} />}
-          {f.name === "postTypes" && (
-            <div className="pt-2">
-              <ReferenceAccountsField accounts={data.referenceAccounts} />
-            </div>
-          )}
         </div>
       ))}
+      <ReferenceAccountsField accounts={data.referenceAccounts} />
       <div className="flex justify-end">
         <Button type="submit" size="sm" disabled={pending} className="gap-1.5 min-w-24">
           {pending && <Spinner size="xs" />}
