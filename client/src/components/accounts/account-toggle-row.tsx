@@ -21,18 +21,20 @@ export function AccountToggleRow({ account, pending, onToggle }: Props) {
   const { description } = PLATFORM_CONTENT[account.platform];
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border bg-card px-3.5 py-3 transition-colors hover:border-foreground/15">
+    <div className="flex items-center justify-between gap-4 rounded-lg border bg-card px-3.5 py-3 text-card-foreground transition-colors hover:border-foreground/15">
       <div className="min-w-0 space-y-1">
         <div className="flex items-center gap-2">
           <AccountRowIcon platform={account.platform} />
-          <p className="text-sm font-medium">{meta.label}</p>
+          <p className="text-sm font-semibold tracking-tight text-card-foreground">
+            {meta.label}
+          </p>
           {NEW_PLATFORMS.has(account.platform) && (
             <Badge className="border-transparent bg-amber-500/15 px-1.5 py-0 text-[10px] font-semibold uppercase text-amber-600 dark:text-amber-400">
               New
             </Badge>
           )}
         </div>
-        <p className="truncate border-l-2 border-muted-foreground/25 pl-2 text-xs text-muted-foreground">
+        <p className="truncate border-l-2 border-muted-foreground/25 pl-2 text-xs text-muted-foreground/90">
           {description}
         </p>
         <AccountConnectedLine
