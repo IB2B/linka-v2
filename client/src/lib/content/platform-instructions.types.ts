@@ -1,3 +1,6 @@
+export type LogoPlacement =
+  | "top_left" | "top_right" | "bottom_left" | "bottom_right";
+
 export type BrandKit = {
   primary?: string;
   secondary?: string;
@@ -6,7 +9,17 @@ export type BrandKit = {
   text?: string;
   headingFont?: string;
   bodyFont?: string;
+  logoUrl?: string;
+  logoOnImages?: boolean;
+  logoPlacement?: LogoPlacement;
 };
+
+export const LOGO_PLACEMENTS: { value: LogoPlacement; label: string }[] = [
+  { value: "bottom_right", label: "Bottom right" },
+  { value: "bottom_left", label: "Bottom left" },
+  { value: "top_right", label: "Top right" },
+  { value: "top_left", label: "Top left" },
+];
 
 export type PlatformInstructions = {
   platform: string;
@@ -19,10 +32,7 @@ export type PlatformInstructions = {
   visualStyle: string;
   extraNotes: string;
   brandKit: BrandKit;
-  referenceAccounts: string[];
 };
-
-export const MAX_REFERENCE_ACCOUNTS = 5;
 
 // Pseudo-platform holding the brief the user writes once for every platform.
 export const GLOBAL_PLATFORM = "global";
@@ -37,5 +47,4 @@ export const EMPTY_INSTRUCTIONS: Omit<PlatformInstructions, "platform"> = {
   visualStyle: "",
   extraNotes: "",
   brandKit: {},
-  referenceAccounts: [],
 };

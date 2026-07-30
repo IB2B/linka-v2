@@ -1,4 +1,3 @@
-import { MAX_REFERENCE_ACCOUNTS } from "@/lib/content/platform-instructions.types";
 import type { BrandKit } from "@/lib/content/platform-instructions.types";
 
 const TEXT_KEYS = [
@@ -12,9 +11,6 @@ export function buildInstructionsBody(fd: FormData): Record<string, unknown> {
   const body: Record<string, unknown> = {};
   for (const key of TEXT_KEYS) if (fd.has(key)) body[key] = str(fd, key);
   if (fd.has("bkPrimary")) body.brandKit = readBrandKit(fd);
-  if (fd.has("referenceAccounts")) {
-    body.referenceAccounts = readReferenceAccounts(fd);
-  }
   return body;
 }
 
@@ -38,15 +34,14 @@ function readBrandKit(fd: FormData): BrandKit {
     accent: hex(fd, "bkAccent"), background: hex(fd, "bkBackground"),
     text: hex(fd, "bkText"),
     headingFont: font(fd, "bkHeadingFont"), bodyFont: font(fd, "bkBodyFont"),
+    logoUrl: str(fd, "bkLogoUrl") || undefined,
+    logoPlacement: str(fd, "bkLogoPlacement") || undefined,
   };
-  return Object.fromEntries(Object.entries(kit).filter(([, v]) => v)) as BrandKit;
-}
-
-// The field repeats one input per account, so read every value under the key.
-function readReferenceAccounts(fd: FormData): string[] {
-  return fd
-    .getAll("referenceAccounts")
-    .map((v) => String(v).trim().slice(0, 200))
-    .filter(Boolean)
-    .slice(0, MAX_REFERENCE_ACCOUNTS);
+  return {
+    ...Object.fromEntries(Object.entries(kit).filter(([, v]) => v)),
+    // Sent unconditionally: an unchecked box submits nothing, and dropping the
+    // key would leave the old value in place so the toggle could never be
+    // turned back off.
+    logoOnImages: fd.get("bkLogoOnImages") === "on",
+  } as BrandKit;
 }

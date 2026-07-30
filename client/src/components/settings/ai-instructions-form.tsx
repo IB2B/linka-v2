@@ -2,7 +2,6 @@
 
 import { InstructionTextarea } from "./instruction-textarea";
 import { InstructionsSaveRow } from "./instructions-save-row";
-import { ReferenceAccountsField } from "./reference-accounts-field";
 import { PLATFORM_FIELDS } from "./ai-instruction-fields";
 import { useInstructionsSave } from "./use-instructions-save";
 import type { PlatformInstructions } from "@/lib/content/platform-instructions.types";
@@ -21,7 +20,6 @@ export function AiInstructionsForm({ platform, data }: Props) {
           defaultValue={data[f.name as keyof PlatformInstructions] as string}
         />
       ))}
-      <ReferenceAccountsField accounts={data.referenceAccounts} />
       <InstructionsSaveRow pending={pending} />
     </form>
   );

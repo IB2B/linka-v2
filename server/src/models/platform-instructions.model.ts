@@ -1,7 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { db } from "../lib/db";
 import { parseBrandKit, paletteLine } from "../lib/brand-kit";
-import { parseReferenceAccounts } from "../lib/reference-accounts";
 import { GLOBAL_PLATFORM, mergeInstructions } from "../lib/instructions-merge";
 import type {
   PlatformInstructionsRow, InstructionsInput,
@@ -10,14 +9,10 @@ import type {
 export type { PlatformInstructionsRow, InstructionsInput };
 
 const COLS = `platform, who_i_am, what_i_do, goals, interests, post_types,
-              tone, visual_style, brand_kit, reference_accounts, extra_notes`;
+              tone, visual_style, brand_kit, extra_notes`;
 
 function hydrate(r: any): PlatformInstructionsRow {
-  return {
-    ...r,
-    brand_kit: parseBrandKit(r.brand_kit),
-    reference_accounts: parseReferenceAccounts(r.reference_accounts),
-  };
+  return { ...r, brand_kit: parseBrandKit(r.brand_kit) };
 }
 
 export async function listForUser(userId: string): Promise<PlatformInstructionsRow[]> {
@@ -58,21 +53,19 @@ export async function upsert(
   userId: string, platform: string, input: InstructionsInput,
 ): Promise<void> {
   const kit = input.brandKit ? JSON.stringify(input.brandKit) : null;
-  const refs = input.referenceAccounts?.length
-    ? JSON.stringify(input.referenceAccounts) : null;
   await db.query(
     `INSERT INTO user_platform_instructions
        (id, user_id, platform, who_i_am, what_i_do, goals, interests,
-        post_types, tone, visual_style, brand_kit, reference_accounts, extra_notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        post_types, tone, visual_style, brand_kit, extra_notes)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON DUPLICATE KEY UPDATE
        who_i_am=VALUES(who_i_am), what_i_do=VALUES(what_i_do), goals=VALUES(goals),
        interests=VALUES(interests), post_types=VALUES(post_types), tone=VALUES(tone),
        visual_style=VALUES(visual_style), brand_kit=VALUES(brand_kit),
-       reference_accounts=VALUES(reference_accounts), extra_notes=VALUES(extra_notes)`,
+       extra_notes=VALUES(extra_notes)`,
     [randomUUID(), userId, platform,
      input.whoIAm ?? null, input.whatIDo ?? null, input.goals ?? null,
      input.interests ?? null, input.postTypes ?? null, input.tone ?? null,
-     input.visualStyle ?? null, kit, refs, input.extraNotes ?? null],
+     input.visualStyle ?? null, kit, input.extraNotes ?? null],
   );
 }

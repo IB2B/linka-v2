@@ -10,7 +10,6 @@ export type PlatformInstructionsRow = {
   tone: string | null;
   visual_style: string | null;
   brand_kit: BrandKit | null;
-  reference_accounts: string[] | null;
   extra_notes: string | null;
 };
 
@@ -24,5 +23,4 @@ export type InstructionsInput = {
   visualStyle?: string;
   extraNotes?: string;
   brandKit?: BrandKit;
-  referenceAccounts?: string[];
 };

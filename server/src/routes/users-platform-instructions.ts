@@ -2,7 +2,6 @@ import { z } from "zod";
 import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { listForUser, upsert } from "../models/platform-instructions.model";
-import { MAX_REFERENCE_ACCOUNTS } from "../lib/reference-accounts";
 import { GLOBAL_PLATFORM } from "../lib/instructions-merge";
 
 const PLATFORMS = [
@@ -12,20 +11,22 @@ const PLATFORMS = [
 const text = z.string().trim().max(2000).optional();
 const hex = z.string().trim().regex(/^#[0-9a-fA-F]{6}$/).optional();
 const font = z.string().trim().max(60).optional();
+// Constrained to a path this server issued — the value is read straight back
+// off disk when stamping images, so a free-form string would be a file read.
+const logoUrl = z.string().trim().regex(/^\/uploads\/logos\/[\w.-]+$/).optional();
 const brandKit = z.object({
   primary: hex, secondary: hex, accent: hex, background: hex, text: hex,
   headingFont: font, bodyFont: font,
+  logoUrl,
+  logoOnImages: z.boolean().optional(),
+  logoPlacement: z
+    .enum(["top_left", "top_right", "bottom_left", "bottom_right"]).optional(),
 }).optional();
-
-const referenceAccounts = z
-  .array(z.string().trim().min(1).max(200))
-  .max(MAX_REFERENCE_ACCOUNTS, `Up to ${MAX_REFERENCE_ACCOUNTS} accounts.`)
-  .optional();
 
 const schema = z.object({
   whoIAm: text, whatIDo: text, goals: text, interests: text,
   postTypes: text, tone: text, visualStyle: text, extraNotes: text,
-  brandKit, referenceAccounts,
+  brandKit,
 });
 
 export async function listInstructions(req: AuthRequest, res: Response): Promise<void> {
