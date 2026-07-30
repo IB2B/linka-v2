@@ -64,3 +64,9 @@ export async function finishOnboardingAction(): Promise<Result> {
   if (r.ok) revalidatePath("/dashboard");
   return r;
 }
+
+// Comp accounts already have enterprise access, so the plan step is skipped.
+export async function completeForCompAction(): Promise<void> {
+  await advance({ step: 4, completed: true });
+  revalidatePath("/dashboard");
+}

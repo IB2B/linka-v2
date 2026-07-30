@@ -27,6 +27,11 @@ export function PostDetailMeta({ post }: { post: GeneratedPost }) {
         <PostDetailMetaRow label="Image status">
           <span className="capitalize">{post.imageStatus}</span>
         </PostDetailMetaRow>
+        {post.videoStatus !== "skipped" ? (
+          <PostDetailMetaRow label="Video status">
+            <span className="capitalize">{post.videoStatus}</span>
+          </PostDetailMetaRow>
+        ) : null}
       </dl>
     </div>
   );

@@ -4,6 +4,7 @@ import { incrementImageCount } from "../lib/image-rate-limiter";
 import { persistGeneratedImage } from "../lib/image-storage";
 import { setImageGenerating, setImageCompleted, setImageFailed }
   from "../models/generated-content-image.model";
+import { getVisualStyle } from "../models/platform-instructions.model";
 
 export async function generateImageForPostInBackground(
   contentId: string, userId: string, postContent: string,
@@ -16,7 +17,8 @@ export async function generateImageForPostInBackground(
     let prompt = customPrompt?.trim() ?? "";
     if (!prompt) {
       try {
-        prompt = await buildImagePrompt(postContent, platform);
+        const visualStyle = await getVisualStyle(userId, platform).catch(() => null);
+        prompt = await buildImagePrompt(postContent, platform, visualStyle ?? undefined);
         console.log(`[image-gen] prompt ok ${contentId}: ${prompt.slice(0, 80)}…`);
       } catch (err) {
         console.error(`[image-gen] prompt FAILED ${contentId}:`, err);

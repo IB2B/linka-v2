@@ -8,9 +8,12 @@ viewer instantly senses the theme, and read as a real photograph taken by a huma
 — never a 3D/CGI render, stock photo, clip-art symbol, infographic, or arty
 filler. Output ONLY the final prompt text, nothing else.`;
 
-function userPrompt(postContent: string, platform: string): string {
+function userPrompt(postContent: string, platform: string, visualStyle?: string): string {
+  const brand = visualStyle?.trim()
+    ? `\n\nUser's brand visual direction — honour it for the colour palette, text colours, typography feel and overall mood (this overrides the restrained-palette guidance below, but keep it a real photograph): "${visualStyle.trim().slice(0, 500)}".`
+    : "";
   return `Post (${platform}):
-"${postContent.slice(0, 1500)}"
+"${postContent.slice(0, 1500)}"${brand}
 
 First work out (silently) the post's ONE core idea and the human emotion or
 tension beneath it. Then imagine the single most striking photograph a great
@@ -41,13 +44,13 @@ Return only the prompt.`;
 }
 
 export async function buildImagePrompt(
-  postContent: string, platform = "linkedin",
+  postContent: string, platform = "linkedin", visualStyle?: string,
 ): Promise<string> {
   const res = await getAnthropic().messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 500,
     system: SYSTEM,
-    messages: [{ role: "user", content: userPrompt(postContent, platform) }],
+    messages: [{ role: "user", content: userPrompt(postContent, platform, visualStyle) }],
   });
   const block = res.content[0];
   if (block.type !== "text") throw new Error("No prompt returned");

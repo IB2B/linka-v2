@@ -5,6 +5,7 @@
     "sections": {
       "profile": "Profil",
       "security": "Sicherheit",
+      "aiInstructions": "KI-Anweisungen",
       "preferences": "Einstellungen",
       "features": "Funktionen",
       "notifications": "Benachrichtigungen",

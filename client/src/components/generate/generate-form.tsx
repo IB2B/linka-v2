@@ -19,7 +19,7 @@ export function GenerateForm({ initialNews, defaultLanguage }: Props) {
   const [step, setStep] = useState<Step>(1);
   const [postType, setPostType] = useState<PostType>("news_commentary");
   const [settings, setSettings] = useState<PostSettings>({
-    platforms: ["linkedin"], language: defaultLanguage, withImage: true,
+    platforms: ["linkedin"], language: defaultLanguage, media: "image",
   });
   const { generate, randomGenerate, pending, generatingFor } =
     useGenerate(postType, settings);

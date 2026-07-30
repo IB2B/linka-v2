@@ -33,6 +33,7 @@ import feedbackRouter from "./routes/feedback";
 import servicesRouter from "./routes/services";
 import socialNotificationsRouter from "./routes/social-notifications";
 import platformRouter from "./routes/platform";
+import avatarRouter from "./routes/avatar";
 import { mountAdminRoutes } from "./routes/admin-index";
 import { proxyImage } from "./controllers/image-proxy.controller";
 import { authenticate } from "./middleware/auth";
@@ -80,6 +81,7 @@ app.use("/api/feedback", feedbackRouter);
 app.use("/api/services", servicesRouter);
 app.use("/api/social/notifications", socialNotificationsRouter);
 app.use("/api/platform", platformRouter);
+app.use("/api/avatar", avatarRouter);
 mountAdminRoutes(app);
 
 Sentry.setupExpressErrorHandler(app);

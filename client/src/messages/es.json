@@ -5,6 +5,7 @@
     "sections": {
       "profile": "Perfil",
       "security": "Seguridad",
+      "aiInstructions": "Instrucciones de IA",
       "preferences": "Preferencias",
       "features": "Funcionalidades",
       "notifications": "Notificaciones",

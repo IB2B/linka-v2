@@ -11,6 +11,7 @@ type InsertInput = {
   userId: string; prompt: string | null; content: string;
   platform: string | null; imageUrl?: string | null;
   imageStatus?: "pending" | "skipped" | "completed";
+  videoStatus?: "pending" | "skipped" | "completed";
   tokensInput?: number | null; tokensOutput?: number | null;
   model?: string | null;
 };
@@ -20,11 +21,12 @@ export async function insertOne(i: InsertInput): Promise<GeneratedPost> {
   await db.query(
     `INSERT INTO generated_content
        (id, user_id, prompt, content, tokens_input, tokens_output,
-        model, platform, image_url, image_status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        model, platform, image_url, image_status, video_status)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [id, i.userId, i.prompt, i.content,
      i.tokensInput ?? null, i.tokensOutput ?? null, i.model ?? null,
-     i.platform, i.imageUrl ?? null, i.imageStatus ?? "skipped"],
+     i.platform, i.imageUrl ?? null, i.imageStatus ?? "skipped",
+     i.videoStatus ?? "skipped"],
   );
   const post = await findById(id, i.userId);
   if (!post) throw new Error("Insert failed");

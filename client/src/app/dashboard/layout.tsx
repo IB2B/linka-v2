@@ -39,7 +39,7 @@ export default async function DashboardLayout({
       <AppSidebar user={dashboardUser} />
       <SidebarInset className="min-h-0 overflow-hidden">
         <PlatformBanner notice={notice} />
-        <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 pl-4 pr-5 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <SidebarTrigger />
           <div className="h-4 w-px bg-border" aria-hidden />
           <NavBreadcrumb />

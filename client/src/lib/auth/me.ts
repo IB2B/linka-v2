@@ -19,6 +19,7 @@ export type Me = {
   jobTitle: string | null;
   preferredLanguage: string | null;
   tier: UserTier;
+  isComp: boolean;
   emailVerified: boolean;
   onboardingCompleted: boolean;
   postsUsed: number;

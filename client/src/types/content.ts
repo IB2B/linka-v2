@@ -11,6 +11,10 @@ export type PostType =
 
 export type TopicMode = "ai" | "manual";
 
+// "video" = b-roll clip animated from a generated still.
+// "avatar" = a presenter speaking the post to camera (HeyGen).
+export type MediaKind = "none" | "image" | "video" | "avatar";
+
 export type TopicSuggestion = {
   topic: string;
   reasoning?: string;
@@ -43,11 +47,13 @@ export type GenerateInput = {
   newsArticle?: NewsArticle;
   platforms?: string[];
   language?: string;
+  media?: MediaKind;
+  // Legacy flag still sent by the trends flow; generate page uses `media`.
   withImage?: boolean;
 };
 
 export type PostSettings = {
   platforms: string[];
   language: string;
-  withImage: boolean;
+  media: MediaKind;
 };

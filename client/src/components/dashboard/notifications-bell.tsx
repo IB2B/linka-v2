@@ -7,6 +7,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { NotificationBadge } from "./notification-badge";
 import { NotificationsGroups } from "./notifications-groups";
 import { NotificationsEmpty } from "./notifications-empty";
 import { useNotifications } from "./use-notifications";
@@ -30,11 +31,7 @@ export function NotificationsBell({ prefix, role }: Props) {
             aria-label={unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications"}
           >
             <Bell />
-            {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-sky-500 px-1 text-[9px] font-semibold leading-none text-white ring-2 ring-background">
-                {unreadCount > 9 ? "9+" : unreadCount}
-              </span>
-            )}
+            <NotificationBadge count={unreadCount} />
           </Button>
         }
       />

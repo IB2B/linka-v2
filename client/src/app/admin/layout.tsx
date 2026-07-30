@@ -34,7 +34,7 @@ export default async function AdminLayout({
     <SidebarProvider>
       <AppSidebar user={dashboardUser} />
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 pl-4 pr-5 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <SidebarTrigger />
           <div className="h-4 w-px bg-border" aria-hidden />
           <span className="text-sm font-medium text-muted-foreground">

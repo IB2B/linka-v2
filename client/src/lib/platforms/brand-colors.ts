@@ -7,6 +7,7 @@ export const PLATFORM_BRAND_COLORS: Record<Platform, string> = {
   twitter: "#000000",
   threads: "#000000",
   tiktok: "#000000",
+  youtube: "#FF0000",
   pinterest: "#E60023",
   bluesky: "#0085FF",
   reddit: "#FF4500",

@@ -18,6 +18,7 @@ export type ProfileRow = {
   industry: string | null;
   job_title: string | null;
   voice_dna: any;
+  brief?: string;
 };
 
 export type NewsArticleInput = {
@@ -60,7 +61,7 @@ export function buildPrompt(input: PromptInput, profile: ProfileRow): string {
     : `Pick a sharp angle from: ${guidance}.`;
   return `Write a single ${platform} post for a ${role}.
 Style: ${input.postType.replace(/_/g, " ")}. ${subject}${article}
-${voice}
+${voice}${profile.brief ?? ""}
 
 ${lang}Format: ${platformHint} Plain text only — never use markdown syntax (no **, *, _, #, >, \`, or [text](url)). Open with a hook line. End with a question or call to reflect.`;
 }

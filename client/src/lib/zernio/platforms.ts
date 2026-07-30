@@ -20,6 +20,8 @@ export const PLATFORMS: PlatformMeta[] = [
     inboxCapability: "dms" },
   { slug: "twitter", label: "X", color: "#000000", inboxCapability: "dms" },
   { slug: "threads", label: "Threads", color: "#000000", inboxCapability: "comments-only" },
+  { slug: "tiktok", label: "TikTok", color: "#000000", inboxCapability: "none" },
+  { slug: "youtube", label: "YouTube", color: "#FF0000", inboxCapability: "comments-only" },
   { slug: "pinterest", label: "Pinterest", color: "#E60023", inboxCapability: "none" },
   { slug: "bluesky", label: "Bluesky", color: "#1185FE", inboxCapability: "dms" },
   { slug: "reddit", label: "Reddit", color: "#FF4500", inboxCapability: "dms" },

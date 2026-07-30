@@ -13,6 +13,11 @@ async function buildBody(post: GeneratedPost, platforms: PlatformEntry[]) {
   const body: Record<string, unknown> = {
     content: stripMarkdown(post.content), platforms,
   };
+  // Video takes precedence over the poster image when both are present.
+  if (post.videoStatus === "completed" && /^https:\/\//i.test(post.videoUrl ?? "")) {
+    body.mediaItems = [{ type: "video", url: post.videoUrl }];
+    return body;
+  }
   const url = await resolvePublicImageUrl(post.imageUrl);
   if (url) body.mediaItems = [{ type: "image", url }];
   return body;

@@ -17,9 +17,12 @@ function post(path: string, body: object): Promise<Response> {
 }
 
 export async function generatePost(input: GenerateInput): Promise<Result<GenerationBatch>> {
+  // Unify both callers: generate page sends `media`, trends sends `withImage`.
+  const media = input.media ?? (input.withImage ? "image" : "none");
   const res = await post("/api/content/generate", {
     postType: input.postType, topic: input.topic, newsArticle: input.newsArticle,
-    platforms: input.platforms, language: input.language, withImage: input.withImage,
+    platforms: input.platforms, language: input.language,
+    media, withImage: media === "image",
   });
   const json = (await res.json().catch(() => ({}))) as {
     posts?: { platform: string; id: string; content: string }[];

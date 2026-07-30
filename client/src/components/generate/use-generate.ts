@@ -30,7 +30,7 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
       }
       const res = await generatePost({
         postType: type, topic, newsArticle: opts.article,
-        platforms: settings.platforms, language: settings.language, withImage: settings.withImage,
+        platforms: settings.platforms, language: settings.language, media: settings.media,
       });
       setGeneratingFor(null);
       if (res.error) {
