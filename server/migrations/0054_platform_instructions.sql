@@ -19,4 +19,7 @@ CREATE TABLE IF NOT EXISTS user_platform_instructions (
   updated_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
   UNIQUE KEY uq_user_platform (user_id, platform),
   CONSTRAINT fk_upi_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- No explicit charset: the FK needs user_id to collate exactly like users.id, so
+-- inherit the database default like every other table. Forcing utf8mb4 here took
+-- the *server* collation instead and broke the FK on older databases.
+) ENGINE=InnoDB;
