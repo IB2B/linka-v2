@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
+import { initialSelection } from "./match-platform";
 
 type Ctx = {
   connected: Platform[];
@@ -13,7 +14,9 @@ type Ctx = {
 
 const PostPlatformsContext = createContext<Ctx | null>(null);
 
-export function PostPlatformsProvider({ children }: { children: ReactNode }) {
+type Props = { children: ReactNode; postPlatform: string | null };
+
+export function PostPlatformsProvider({ children, postPlatform }: Props) {
   const [connected, setConnected] = useState<Platform[]>([]);
   const [selected, setSelected] = useState<Platform[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,10 +27,12 @@ export function PostPlatformsProvider({ children }: { children: ReactNode }) {
       .then((d: { accounts: { platform: Platform }[] }) => {
         const list = (d.accounts ?? []).map((a) => a.platform);
         setConnected(list);
-        setSelected(list[0] ? [list[0]] : []);
+        // Used to arm whichever account the API listed first, so a LinkedIn post
+        // opened with Facebook selected and one click sent LinkedIn copy there.
+        setSelected(initialSelection(postPlatform, list));
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [postPlatform]);
 
   function toggle(p: Platform) {
     setSelected((prev) =>

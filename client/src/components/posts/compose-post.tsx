@@ -22,7 +22,7 @@ export function ComposePost({ children }: Props) {
     <>
       {children(open)}
       {mounted ? (
-        <PostPlatformsProvider>
+        <PostPlatformsProvider postPlatform={null}>
           <ComposeDialog
             open={composeOpen}
             onOpenChange={setComposeOpen}

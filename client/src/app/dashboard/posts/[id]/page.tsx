@@ -27,7 +27,7 @@ export default async function PostDetailPage({ params }: Props) {
 
   return (
     <RegenProvider postId={post.id}>
-      <PostPlatformsProvider>
+      <PostPlatformsProvider postPlatform={post.platform}>
         <div className="mx-auto flex w-full max-w-5xl flex-col gap-5">
           <PostDetailToolbar post={post} />
           {isPosted ? <PostedPlatforms post={post} /> : <PlatformPicker />}
