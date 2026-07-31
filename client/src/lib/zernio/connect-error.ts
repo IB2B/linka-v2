@@ -4,6 +4,9 @@
 export function connectErrorMessage(err: unknown): string {
   const message = err instanceof Error ? err.message : "";
   const status = /Social API (\d{3})/.exec(message)?.[1];
+  if (/at capacity/i.test(message)) {
+    return "Connecting accounts is at capacity. Support has been notified.";
+  }
   if (/profile not found/i.test(message)) {
     return "Your posting profile was rebuilt — press connect once more.";
   }

@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import * as Sentry from "@sentry/node";
 import { LateApiError } from "../lib/late-api";
+import { ProfileLimitError } from "../lib/late-profile-limit";
 
 // A blanket 500 with the message stripped is why "fine locally, broken in prod"
 // costs a log dive: the browser is told nothing it can act on. Upstream 4xx are
@@ -9,6 +10,12 @@ import { LateApiError } from "../lib/late-api";
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction): void {
   if (err instanceof Error) Sentry.captureException(err);
   console.error(err);
+
+  // Its message is written for the user; the plan details stay in the log.
+  if (err instanceof ProfileLimitError) {
+    res.status(503).json({ error: err.message });
+    return;
+  }
 
   if (err instanceof LateApiError && err.status >= 400 && err.status < 500) {
     res.status(err.status).json({ error: err.message.slice(0, 300) });
