@@ -22,3 +22,12 @@ export async function getOrCreateLateProfile(userId: string): Promise<string> {
   );
   return profileId;
 }
+
+// Drops a profile id the provider no longer recognises and mints a fresh one, so
+// a stale row heals on the next click instead of failing every connect forever.
+export async function resetLateProfile(userId: string): Promise<string> {
+  await db.query(
+    "UPDATE users SET late_profile_id = NULL WHERE id = ?", [userId],
+  );
+  return getOrCreateLateProfile(userId);
+}

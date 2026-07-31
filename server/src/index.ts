@@ -38,6 +38,7 @@ import { mountAdminRoutes } from "./routes/admin-index";
 import { proxyImage } from "./controllers/image-proxy.controller";
 import { authenticate } from "./middleware/auth";
 import { errorHandler } from "./middleware/error";
+import { healthReport } from "./lib/health-report";
 import { resumeStuckImageJobs } from "./lib/image-reaper";
 import { startSocialEngagementPoller } from "./lib/social-engagement-poller";
 import { startScheduledPostsPoller } from "./lib/scheduled-posts-poller";
@@ -54,7 +55,7 @@ app.use("/uploads", express.static(join(process.cwd(), "uploads"), {
   setHeaders: (res) => res.setHeader("X-Content-Type-Options", "nosniff"),
 }));
 
-app.get("/api/health", (_req, res) => { res.json({ ok: true }); });
+app.get("/api/health", (_req, res) => { res.json(healthReport()); });
 app.get("/api/image-proxy", authenticate, proxyImage);
 app.use("/api/auth", authRouter);
 app.use("/api/auth", authLogoutRouter);

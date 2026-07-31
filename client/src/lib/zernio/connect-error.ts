@@ -4,6 +4,9 @@
 export function connectErrorMessage(err: unknown): string {
   const message = err instanceof Error ? err.message : "";
   const status = /Social API (\d{3})/.exec(message)?.[1];
+  if (/profile not found/i.test(message)) {
+    return "Your posting profile was rebuilt — press connect once more.";
+  }
   if (status === "401") return "Your session expired. Sign in again.";
   if (status === "429") return "Too many attempts — wait a minute and retry.";
   if (status) {
