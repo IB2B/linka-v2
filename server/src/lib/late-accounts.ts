@@ -1,4 +1,5 @@
 import { lateFetch } from "./late-api";
+import { lateAccountsUrl } from "./late-accounts-url";
 import { getOrCreateLateProfile } from "./late-profile";
 
 type RawAccount = {
@@ -50,7 +51,7 @@ export async function resolvePlatformAccounts(
 ): Promise<PlatformEntry[]> {
   const profileId = await getOrCreateLateProfile(userId);
   const data = await lateFetch<{ accounts: RawAccount[] }>(
-    `/accounts?profileId=${encodeURIComponent(profileId)}&limit=100`,
+    lateAccountsUrl(profileId),
   );
   const owned = (data.accounts ?? []).filter((a) => {
     const pid = ownerProfileId(a);

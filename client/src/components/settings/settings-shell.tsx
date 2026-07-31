@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ProfileSection } from "./profile-section";
 import { PasswordSection } from "./password-section";
 import { AiInstructionsSection } from "./ai-instructions-section";
+import { AvatarSection } from "./avatar-section";
 import { PreferencesSection } from "./preferences-section";
 import { NotificationsSection } from "./notifications-section";
 import { ConnectedAccountsSection } from "./connected-accounts-section";
@@ -37,6 +38,7 @@ export function SettingsShell({ accounts, preferredLanguage, instructions, ...pr
         {active === "profile" && <ProfileSection {...profile} />}
         {active === "security" && <PasswordSection />}
         {active === "aiInstructions" && <AiInstructionsSection instructions={instructions} />}
+        {active === "aiAvatar" && <AvatarSection />}
         {active === "preferences" && <PreferencesSection postLanguage={preferredLanguage} />}
         {active === "notifications" && <NotificationsSection />}
         {active === "accounts" && <ConnectedAccountsSection accounts={accounts} />}

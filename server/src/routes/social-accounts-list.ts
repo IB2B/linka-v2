@@ -1,6 +1,7 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { lateFetch } from "../lib/late-api";
+import { lateAccountsUrl } from "../lib/late-accounts-url";
 import { getOrCreateLateProfile } from "../lib/late-profile";
 import { fetchPinterestAvatar } from "../lib/pinterest-avatar";
 import { fetchRedditAvatar } from "../lib/reddit-avatar";
@@ -50,7 +51,7 @@ function fallbackAvatar(platform: string, username: string): string | null {
 
 async function buildAccounts(profileId: string) {
   const data = await lateFetch<{ accounts: RawAccount[] }>(
-    `/accounts?profileId=${encodeURIComponent(profileId)}&limit=100`,
+    lateAccountsUrl(profileId),
   );
   const filtered = (data.accounts ?? []).filter((a) => {
     const pid = profileIdOf(a);

@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, Image as ImageIcon, RotateCw } from "lucide-react";
+import { FileText, Image as ImageIcon, RotateCw, Video } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -12,9 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRegen } from "./regen-context";
 
-export function PostDetailRegenerate() {
-  const { textPending, imagePending, runText, runImage } = useRegen();
-  const pending = textPending || imagePending;
+// hasVideo gates the video entry: re-rendering only makes sense for a post that
+// asked for one, and the server rejects the rest with "This post has no video."
+export function PostDetailRegenerate({ hasVideo }: { hasVideo?: boolean }) {
+  const { textPending, imagePending, videoPending, runText, runImage, runVideo } =
+    useRegen();
+  const pending = textPending || imagePending || videoPending;
 
   return (
     <DropdownMenu>
@@ -35,6 +38,12 @@ export function PostDetailRegenerate() {
           <ImageIcon className="size-4" />
           Regenerate image
         </DropdownMenuItem>
+        {hasVideo ? (
+          <DropdownMenuItem onClick={runVideo} className="whitespace-nowrap">
+            <Video className="size-4" />
+            Re-render video
+          </DropdownMenuItem>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

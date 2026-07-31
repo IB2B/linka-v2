@@ -4,6 +4,8 @@ import { Label } from "@/components/ui/label";
 import { PlatformPicker } from "./platform-picker";
 import { LanguageSelect } from "./language-select";
 import { MediaTypeSelect } from "./media-type-select";
+import { AvatarVideoOptions } from "./avatar-video-options";
+import { ImageOptions } from "./image-options";
 import type { Platform } from "@/lib/content/platforms";
 import type { PostSettings } from "@/types/content";
 
@@ -40,6 +42,22 @@ export function PostSettingsPanel({ value, onChange, disabled }: Props) {
           disabled={disabled}
         />
       </div>
+      {value.media === "image" ? (
+        <ImageOptions
+          shape={value.imageShape}
+          onShapeChange={(s) => onChange({ ...value, imageShape: s })}
+          disabled={disabled}
+        />
+      ) : null}
+      {value.media === "avatar" ? (
+        <AvatarVideoOptions
+          aspect={value.avatarAspect}
+          seconds={value.avatarSeconds}
+          onAspectChange={(a) => onChange({ ...value, avatarAspect: a })}
+          onSecondsChange={(s) => onChange({ ...value, avatarSeconds: s })}
+          disabled={disabled}
+        />
+      ) : null}
     </div>
   );
 }

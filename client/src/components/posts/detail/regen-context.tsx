@@ -7,13 +7,16 @@ import { toast } from "sonner";
 import {
   regenerateTextAction,
   regenerateImageAction,
+  regenerateVideoAction,
 } from "@/app/dashboard/posts/actions";
 
 type RegenCtx = {
   textPending: boolean;
   imagePending: boolean;
+  videoPending: boolean;
   runText: () => void;
   runImage: (prompt?: string) => void;
+  runVideo: () => void;
 };
 
 const Ctx = createContext<RegenCtx | null>(null);
@@ -30,6 +33,7 @@ export function RegenProvider({
   const router = useRouter();
   const [textPending, textStart] = useTransition();
   const [imageOptimistic, setImageOptimistic] = useState(false);
+  const [videoOptimistic, setVideoOptimistic] = useState(false);
 
   function runText() {
     textStart(async () => {
@@ -50,9 +54,23 @@ export function RegenProvider({
     })();
   }
 
+  // Renders take minutes, so the server flips the row to "generating" and the
+  // refreshed page shows its own progress state — no long-lived local flag.
+  function runVideo() {
+    setVideoOptimistic(true);
+    (async () => {
+      const res = await regenerateVideoAction(postId);
+      if (res.error) { toast.error(res.error); setVideoOptimistic(false); return; }
+      toast.success("Video re-render queued.");
+      router.refresh();
+      setTimeout(() => setVideoOptimistic(false), 1500);
+    })();
+  }
+
   return (
     <Ctx.Provider value={{
-      textPending, imagePending: imageOptimistic, runText, runImage,
+      textPending, imagePending: imageOptimistic, videoPending: videoOptimistic,
+      runText, runImage, runVideo,
     }}>{children}</Ctx.Provider>
   );
 }

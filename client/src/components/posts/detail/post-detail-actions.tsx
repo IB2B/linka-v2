@@ -36,7 +36,9 @@ export function PostDetailActions({ post }: { post: GeneratedPost }) {
         {post.imageUrl ? (
           <PostDetailDownload url={post.imageUrl} postId={post.id} />
         ) : null}
-        {!isPosted ? <PostDetailRegenerate /> : null}
+        {!isPosted ? (
+          <PostDetailRegenerate hasVideo={post.videoStatus !== "skipped"} />
+        ) : null}
         <div className="ml-auto flex flex-wrap items-center gap-2">
           {!isPosted ? (
             <Button size="sm" variant="outline"

@@ -7,6 +7,7 @@ import { generateImageForPostInBackground }
 import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import { deleteGeneratedImage } from "../lib/image-storage";
 import { setImageGenerating } from "../models/generated-content-image.model";
+import { asImageShape } from "../lib/image-size";
 
 export async function regenerateText(
   req: AuthRequest, res: Response, next: NextFunction,
@@ -49,6 +50,7 @@ export async function regenerateImage(
     await setImageGenerating(id, userId);
     void generateImageForPostInBackground(
       id, userId, post.content, post.platform ?? "linkedin", customPrompt,
+      asImageShape(req.body?.imageShape),
     );
     res.json({ ok: true });
   } catch (e) { next(e); }

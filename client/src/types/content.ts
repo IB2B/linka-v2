@@ -1,3 +1,6 @@
+import type { AvatarAspect, AvatarSeconds } from "./avatar-video";
+import type { ImageShape } from "./image-shape";
+
 export type PostType =
   | "news_commentary"
   | "personal_insight"
@@ -48,6 +51,9 @@ export type GenerateInput = {
   platforms?: string[];
   language?: string;
   media?: MediaKind;
+  avatarAspect?: AvatarAspect;
+  avatarSeconds?: AvatarSeconds;
+  imageShape?: ImageShape;
   // Legacy flag still sent by the trends flow; generate page uses `media`.
   withImage?: boolean;
 };
@@ -56,4 +62,7 @@ export type PostSettings = {
   platforms: string[];
   language: string;
   media: MediaKind;
+  avatarAspect: AvatarAspect;
+  avatarSeconds: AvatarSeconds;
+  imageShape: ImageShape;
 };

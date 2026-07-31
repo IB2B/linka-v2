@@ -11,6 +11,8 @@ import {
 import {
   regenerateText, regenerateImage,
 } from "../controllers/posts-regenerate.controller";
+import { regenerateVideo }
+  from "../controllers/posts-regenerate-video.controller";
 import { createManual } from "../controllers/posts-create.controller";
 import {
   postImageUpload, uploadPostImage,
@@ -21,6 +23,8 @@ import { listPublishedPlatforms }
   from "../controllers/posts-published-platforms.controller";
 import { listNotifications }
   from "../controllers/posts-notifications.controller";
+import { markPostOneRead, markPostAllRead }
+  from "../controllers/posts-notifications-read.controller";
 import { listComments } from "../controllers/post-comments.controller";
 import { replyComment } from "../controllers/post-comments-reply.controller";
 import { suggestReply } from "../controllers/post-comments-suggest.controller";
@@ -35,6 +39,8 @@ router.get("/", list);
 router.post("/", createManual);
 router.post("/upload-image", postImageUpload, uploadPostImage);
 router.get("/notifications", listNotifications);
+router.post("/notifications/read-all", markPostAllRead);
+router.post("/notifications/:key/read", markPostOneRead);
 router.get("/published-platforms", listPublishedPlatforms);
 router.get("/:id", getOne);
 router.get("/:id/comments", listComments);
@@ -46,6 +52,7 @@ router.post("/:id/schedule", schedule);
 router.post("/:id/publish", publish);
 router.post("/:id/regenerate-text", regenerateText);
 router.post("/:id/regenerate-image", regenerateImage);
+router.post("/:id/regenerate-video", regenerateVideo);
 router.post("/:id/score", scoreById);
 router.post("/bulk-delete", bulkDelete);
 router.patch("/:id", updateContent);

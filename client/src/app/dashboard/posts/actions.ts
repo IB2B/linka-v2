@@ -83,3 +83,15 @@ export async function regenerateImageAction(
   revalidatePath(`/dashboard/posts/${id}`);
   return { success: true };
 }
+
+export async function regenerateVideoAction(
+  id: string, opts?: { avatarAspect?: string; avatarSeconds?: number },
+): Promise<Result> {
+  const res = await serverFetch(`/api/posts/${id}/regenerate-video`, {
+    method: "POST",
+    body: opts ? JSON.stringify(opts) : undefined,
+  });
+  if (!res.ok) return { error: await readError(res, "Failed to re-render video.") };
+  revalidatePath(`/dashboard/posts/${id}`);
+  return { success: true };
+}

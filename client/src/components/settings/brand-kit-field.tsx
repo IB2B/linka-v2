@@ -3,9 +3,14 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ColorSwatchInput } from "./color-swatch-input";
+import { BrandLogoField } from "./brand-logo-field";
 import type { BrandKit } from "@/lib/content/platform-instructions.types";
 
-const COLOURS: { name: string; key: keyof BrandKit; label: string }[] = [
+// Narrower than keyof BrandKit, which now also covers the logo's boolean and
+// placement — a swatch only ever renders a hex string.
+type ColourKey = "primary" | "secondary" | "accent" | "background" | "text";
+
+const COLOURS: { name: string; key: ColourKey; label: string }[] = [
   { name: "bkPrimary", key: "primary", label: "Primary" },
   { name: "bkSecondary", key: "secondary", label: "Secondary" },
   { name: "bkAccent", key: "accent", label: "Accent" },
@@ -42,6 +47,7 @@ export function BrandKitField({ kit }: { kit: BrandKit }) {
             defaultValue={kit.bodyFont ?? ""} placeholder="Georgia" />
         </div>
       </div>
+      <BrandLogoField kit={kit} />
     </div>
   );
 }

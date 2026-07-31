@@ -254,6 +254,30 @@ a[href] {
   }
 }
 
+/* Sweep across a media placeholder while its image or video is generating.
+   The element starts off-frame on both ends, so it must not also carry a
+   static -translate-x-full class — that pins it and nothing appears to move. */
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* Indeterminate progress. A render reports queued/rendering but never a
+   percentage, so the bar travels instead of filling — a growing bar would be
+   showing a number nobody measured. */
+@keyframes progress-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(400%);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

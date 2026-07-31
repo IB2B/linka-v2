@@ -6,6 +6,7 @@ import { getUserMe } from "../lib/user-me-query";
 import { changePassword } from "./users-password";
 import { patchProfile } from "./users-profile";
 import avatarRouter from "./users-avatar";
+import brandLogoRouter from "./users-brand-logo";
 import { softDeleteUser } from "../lib/user-soft-delete";
 import { CLEAR_COOKIE_OPTS } from "../lib/cookie-opts";
 import { getNotificationPrefs, patchNotificationPrefs } from "./users-notification-prefs";
@@ -13,6 +14,7 @@ import { listInstructions, patchInstructions } from "./users-platform-instructio
 
 const router = Router();
 router.use("/me/avatar", avatarRouter);
+router.use("/me/brand-logo", brandLogoRouter);
 router.use(authenticate);
 
 router.get("/me", async (req: AuthRequest, res, next) => {
