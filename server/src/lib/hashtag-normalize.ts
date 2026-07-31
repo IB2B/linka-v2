@@ -1,4 +1,5 @@
 import { maxTagsFor } from "./hashtag-policy";
+import { isFiller } from "./hashtag-filler";
 
 // LinkedIn's markup renders a tag as "hashtag#leadership", so scraped training
 // data carries the bare word and models reproduce it. Only a line made up
@@ -51,7 +52,8 @@ export function normalizeHashtags(text: string, platform: string): string {
   }
 
   const body = lines.slice(0, end).join("\n").trimEnd();
-  const kept = dedupe(tags).slice(0, maxTagsFor(platform));
+  const kept = dedupe(tags.filter((t) => !isFiller(t)))
+    .slice(0, maxTagsFor(platform));
   if (!kept.length) return body;
   return `${body}\n\n${kept.map((t) => `#${t}`).join(" ")}`;
 }

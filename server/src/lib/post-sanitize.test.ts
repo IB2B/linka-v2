@@ -6,18 +6,18 @@ const tail = (text: string, platform = "linkedin") =>
 
 describe("spelled-out tags", () => {
   it("rewrites a whole line of them", () => {
-    expect(tail("Body.\n\nhashtag leadership hashtag operations"))
-      .toBe("#leadership #operations");
+    expect(tail("Body.\n\nhashtag standups hashtag operations"))
+      .toBe("#standups #operations");
   });
 
   it("handles the half-corrected form", () => {
-    expect(tail("Body.\n\nhashtag #leadership hashtag #operations"))
-      .toBe("#leadership #operations");
+    expect(tail("Body.\n\nhashtag #standups hashtag #operations"))
+      .toBe("#standups #operations");
   });
 
   it("keeps non-English words", () => {
-    expect(tail("Corpo.\n\nhashtag leadership hashtag operazioni"))
-      .toBe("#leadership #operazioni");
+    expect(tail("Corpo.\n\nhashtag milano hashtag operazioni"))
+      .toBe("#milano #operazioni");
   });
 
   it("leaves the word alone inside a sentence", () => {
@@ -51,9 +51,25 @@ describe("per-platform caps", () => {
   });
 });
 
+describe("filler tags", () => {
+  it("drops badge tags and keeps the subject ones", () => {
+    expect(tail("Body.\n\n#leadership #fintech #growth #standups"))
+      .toBe("#fintech #standups");
+  });
+
+  it("removes the tag block entirely when it was all filler", () => {
+    expect(sanitizePost("Body.\n\n#success #motivation #mindset")).toBe("Body.");
+  });
+
+  it("counts the cap after filler is removed", () => {
+    expect(tail("Body.\n\n#growth #fintech #rustlang #milano #hustle"))
+      .toBe("#fintech #rustlang #milano");
+  });
+});
+
 describe("tidying", () => {
   it("drops case-duplicate tags", () => {
-    expect(tail("Body.\n\n#Growth #growth #ops")).toBe("#Growth #ops");
+    expect(tail("Body.\n\n#Fintech #fintech #ops")).toBe("#Fintech #ops");
   });
 
   it("collapses tags spread over several lines", () => {

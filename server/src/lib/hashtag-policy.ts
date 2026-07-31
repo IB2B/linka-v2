@@ -28,8 +28,12 @@ export function hashtagRule(platform: string): string {
     return "No hashtags anywhere — on this platform they read as an outsider.";
   }
   return `Hashtags: at most ${max}, on their own final line, written as #word `
-    + `— never spell out the word "hashtag". Each must name something this post `
-    + `is actually about (a niche, a tool, a place, a craft). Generic badges like `
-    + `#leadership #growth #innovation #success #motivation are AI filler — leave `
-    + `them out, and use fewer than ${max} rather than padding.`;
+    + `— never spell out the word "hashtag". Every tag must be a term people `
+    + `already search or follow on this platform: an industry, a tool, a craft, a `
+    + `place, a community (#fintech, #standups, #remotework, #rustlang, #milano). `
+    + `If you had to invent a compound to say it — #productivitymyths, `
+    + `#founderlessons, #founderstories, #buildinpublicjourney — it is not a real `
+    + `tag; nobody follows it. Generic badges are the other failure: #leadership `
+    + `#growth #innovation #success #motivation #mindset say nothing. One precise `
+    + `tag beats ${max} padded ones, and none is better than filler.`;
 }
