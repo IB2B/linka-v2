@@ -3,7 +3,7 @@ import type { GeneratedPost, ImageStatus, PostStatus, VideoStatus } from "../typ
 import { stripMarkdown } from "../lib/strip-markdown";
 
 export const POST_COLS =
-  `id, user_id, prompt, content, image_url, image_status, image_prompt,
+  `id, user_id, prompt, title, content, image_url, image_status, image_prompt,
    image_error, video_url, video_status, video_error,
    platform, scheduled_platforms, status, scheduled_for,
    posted_at, created_at, late_post_id,
@@ -13,6 +13,7 @@ export interface PostRow extends RowDataPacket {
   id: string;
   user_id: string;
   prompt: string | null;
+  title: string | null;
   content: string;
   image_url: string | null;
   image_status: ImageStatus;
@@ -42,7 +43,8 @@ function parseStrArray(v: string | string[] | null): string[] | null {
 
 export function rowToPost(r: PostRow): GeneratedPost {
   return {
-    id: r.id, userId: r.user_id, prompt: r.prompt, content: stripMarkdown(r.content),
+    id: r.id, userId: r.user_id, prompt: r.prompt, title: r.title,
+    content: stripMarkdown(r.content),
     imageUrl: r.image_url, imageStatus: r.image_status,
     imagePrompt: r.image_prompt, imageError: r.image_error,
     videoUrl: r.video_url, videoStatus: r.video_status, videoError: r.video_error,

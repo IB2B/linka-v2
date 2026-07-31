@@ -9,6 +9,7 @@ import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import { checkVideoRateLimit } from "../lib/video-rate-limiter";
 import * as posts from "../models/generated-content.model";
 import { checkAndNotifyUsageLimit } from "./check-usage-limit";
+import { buildPostTitle } from "./post-title";
 import type { ImageShape } from "./image-size";
 
 // "video" = b-roll clip animated from a seed image; "avatar" = HeyGen presenter
@@ -36,6 +37,12 @@ export async function generateForPlatform(
     topic: input.topic, newsArticle: input.newsArticle,
     platform: platform as never, language: input.language,
   });
+  // Never blocks the post: Reddit and YouTube need a title to publish, but a
+  // draft with no title is still a draft the user can title themselves.
+  const title = await buildPostTitle(result.content, platform).catch((err) => {
+    console.error(`[post-title] failed for ${platform}:`, err);
+    return null;
+  });
   const videoAllowed = checkVideoRateLimit(userId).allowed;
   const wantsVideo = input.media === "video" && videoAllowed;
   const wantsAvatar = input.media === "avatar" && videoAllowed;
@@ -46,6 +53,7 @@ export async function generateForPlatform(
   const stored = await posts.insertOne({
     userId,
     prompt: input.topic ?? input.newsArticle?.title ?? null,
+    title,
     content: result.content,
     platform,
     imageStatus: wantsImage || wantsVideo ? "pending" : "skipped",

@@ -7,6 +7,7 @@ export type GeneratedPost = {
   id: string;
   userId: string;
   prompt: string | null;
+  title: string | null;
   content: string;
   imageUrl: string | null;
   imageStatus: ImageStatus;

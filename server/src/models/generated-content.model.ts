@@ -9,6 +9,7 @@ export {
 
 type InsertInput = {
   userId: string; prompt: string | null; content: string;
+  title?: string | null;
   platform: string | null; imageUrl?: string | null;
   imageStatus?: "pending" | "skipped" | "completed";
   videoStatus?: "pending" | "skipped" | "completed";
@@ -20,10 +21,10 @@ export async function insertOne(i: InsertInput): Promise<GeneratedPost> {
   const id = randomUUID();
   await db.query(
     `INSERT INTO generated_content
-       (id, user_id, prompt, content, tokens_input, tokens_output,
+       (id, user_id, prompt, title, content, tokens_input, tokens_output,
         model, platform, image_url, image_status, video_status)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, i.userId, i.prompt, i.content,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [id, i.userId, i.prompt, i.title ?? null, i.content,
      i.tokensInput ?? null, i.tokensOutput ?? null, i.model ?? null,
      i.platform, i.imageUrl ?? null, i.imageStatus ?? "skipped",
      i.videoStatus ?? "skipped"],

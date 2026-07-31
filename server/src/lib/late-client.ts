@@ -1,6 +1,7 @@
 import { lateFetch } from "./late-api";
 import { resolvePublicImageUrl } from "./late-media";
 import { stripMarkdown } from "./strip-markdown";
+import { withPlatformData } from "./late-platform-data";
 import type { GeneratedPost } from "../types/post";
 import type { PlatformEntry } from "./late-accounts";
 
@@ -11,7 +12,8 @@ type CreateResult = { post: { _id: string }; platformResults?: PlatformResult[] 
 
 async function buildBody(post: GeneratedPost, platforms: PlatformEntry[]) {
   const body: Record<string, unknown> = {
-    content: stripMarkdown(post.content), platforms,
+    content: stripMarkdown(post.content),
+    platforms: withPlatformData(platforms, post.title),
   };
   // Video takes precedence over the poster image when both are present.
   if (post.videoStatus === "completed" && /^https:\/\//i.test(post.videoUrl ?? "")) {
