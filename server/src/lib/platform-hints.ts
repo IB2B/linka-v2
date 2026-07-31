@@ -1,5 +1,5 @@
 export const PLATFORM_HINT: Record<string, string> = {
-  linkedin: "Native LinkedIn post, 120-220 words. First line is a scroll-stopping hook on its own line. Short 1-3 line paragraphs separated by blank lines. Conversational and concrete, not corporate. Optionally end with 2-3 relevant hashtags.",
+  linkedin: "Native LinkedIn post, 120-220 words. First line is a scroll-stopping hook on its own line. Short 1-3 line paragraphs separated by blank lines. Conversational and concrete, not corporate. Optionally end with 2-3 relevant hashtags, written as #word — never spell out the word \"hashtag\".",
   twitter: "Twitter/X post, punchy, under 280 characters total.",
   facebook: "Facebook post, conversational, 80-160 words.",
   instagram: "Instagram caption, engaging, 80-150 words, light emoji ok.",

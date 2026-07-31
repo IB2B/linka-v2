@@ -3,6 +3,7 @@ import { getAnthropic } from "../lib/anthropic";
 import { buildPrompt, POST_SYSTEM, type ProfileRow, type NewsArticleInput } from "../lib/post-prompt";
 import { getForPlatform } from "../models/platform-instructions.model";
 import { buildBrief } from "../lib/platform-brief";
+import { sanitizePost } from "../lib/post-sanitize";
 
 export type GenerateInput = {
   userId: string;
@@ -45,7 +46,7 @@ export async function generatePost(input: GenerateInput): Promise<GenerateResult
   const block = message.content[0];
   if (block.type !== "text") throw new Error("No text returned by model");
   return {
-    content: block.text.trim(),
+    content: sanitizePost(block.text),
     model: message.model,
     tokensInput: message.usage.input_tokens,
     tokensOutput: message.usage.output_tokens,
