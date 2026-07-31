@@ -46,7 +46,7 @@ export async function generatePost(input: GenerateInput): Promise<GenerateResult
   const block = message.content[0];
   if (block.type !== "text") throw new Error("No text returned by model");
   return {
-    content: sanitizePost(block.text),
+    content: sanitizePost(block.text, input.platform ?? "linkedin"),
     model: message.model,
     tokensInput: message.usage.input_tokens,
     tokensOutput: message.usage.output_tokens,
