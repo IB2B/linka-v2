@@ -5,6 +5,15 @@ export class HeygenError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
 
+// A render that was accepted and then failed inside HeyGen. Carries the
+// failure_code from the status payload, which is the only place the real reason
+// appears — the create call answers 200 either way.
+export class HeygenRenderError extends Error {
+  constructor(public code: string | null, message: string) {
+    super(`HeyGen render failed${code ? ` (${code})` : ""}: ${message}`);
+  }
+}
+
 function apiKey(): string {
   const key = process.env.HEYGEN_API_KEY;
   if (!key) throw new HeygenError(500, "HEYGEN_API_KEY not configured");

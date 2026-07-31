@@ -3,7 +3,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { connectAction, disconnectInPlaceAction } from "@/app/dashboard/accounts/actions";
+import { disconnectInPlaceAction } from "@/app/dashboard/accounts/actions";
+import { startConnect } from "./start-connect";
 import type { Platform, ZernioAccount } from "@/lib/zernio/zernio-account.types";
 
 // Toggling on sends the user to the provider's OAuth screen; toggling off asks
@@ -20,7 +21,10 @@ export function useAccountToggle() {
       return;
     }
     setBusy(account.platform);
-    startTransition(() => connectAction(account.platform));
+    startTransition(async () => {
+      await startConnect(account.platform);
+      setBusy(null);
+    });
   }
 
   function confirmDisconnect() {

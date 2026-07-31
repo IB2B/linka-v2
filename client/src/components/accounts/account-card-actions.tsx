@@ -4,7 +4,8 @@ import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { connectAction, disconnectAction } from "@/app/dashboard/accounts/actions";
+import { disconnectAction } from "@/app/dashboard/accounts/actions";
+import { startConnect } from "./start-connect";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
 
 type Props = {
@@ -33,7 +34,7 @@ export function AccountCardActions({ platform, connected, accountId }: Props) {
     <Button
       size="sm"
       disabled={pending}
-      onClick={() => startTransition(() => connectAction(platform))}
+      onClick={() => startTransition(() => startConnect(platform))}
     >
       {pending ? <Spinner size="xs" /> : "Connect"}
     </Button>
