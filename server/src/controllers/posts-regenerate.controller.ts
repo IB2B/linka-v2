@@ -8,6 +8,7 @@ import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import { deleteGeneratedImage } from "../lib/image-storage";
 import { setImageGenerating } from "../models/generated-content-image.model";
 import { asImageShape } from "../lib/image-size";
+import { preferredLanguage } from "../lib/user-language";
 
 export async function regenerateText(
   req: AuthRequest, res: Response, next: NextFunction,
@@ -20,10 +21,14 @@ export async function regenerateText(
     if (post.status === "posted") {
       res.status(400).json({ error: "Already posted." }); return;
     }
+    // The row does not record which language it was written in, so the user's
+    // remembered language is the signal. Hardcoding "en" here turned every
+    // regenerate of an Italian post into an English one.
+    const language = (await preferredLanguage(userId).catch(() => null)) ?? "en";
     const result = await generatePost({
       userId, postType: "personal_insight",
       topic: post.prompt ?? undefined,
-      platform: post.platform ?? "linkedin", language: "en",
+      platform: post.platform ?? "linkedin", language,
     });
     await posts.setContent(id, userId, result.content);
     res.json({ post: await posts.findById(id, userId) });

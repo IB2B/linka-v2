@@ -20,6 +20,18 @@ describe("tidy", () => {
   it("leaves a title inside the limit alone", () => {
     expect(tidy("Short enough", 80)).toBe("Short enough");
   });
+
+  it("drops the function-word scraps the cut leaves behind", () => {
+    expect(tidy("Quello che un developer senior farebbe in una settimana lo fa in", 63))
+      .toBe("Quello che un developer senior farebbe in una settimana");
+    expect(tidy("Claude refactorizo 900 lineas y me hizo repensar el miedo al", 58))
+      .toBe("Claude refactorizo 900 lineas y me hizo repensar el miedo");
+  });
+
+  it("strips a trailing comma or dash left by the cut", () => {
+    expect(tidy("Killing standups worked, and here is more", 24))
+      .toBe("Killing standups worked");
+  });
 });
 
 describe("platform limits", () => {
