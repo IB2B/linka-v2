@@ -9,6 +9,11 @@ const FILLER = new Set([
   "professional", "career", "goals", "grind", "winning", "excellence",
   "transformation", "synergy", "thoughtleadership", "personalbranding",
   "lessonslearned", "lifelessons", "mondaymotivation", "riseandgrind",
+  // Management-speak compounds. Grammatically a subject, but no one browses them
+  // and they fit any post about any team doing anything.
+  "operationsmanagement", "processimprovement", "teammanagement",
+  "bestpractices", "businessgrowth", "digitaltransformation",
+  "productivityhacks", "workculture", "teamculture",
 ]);
 
 export function isFiller(tag: string): boolean {

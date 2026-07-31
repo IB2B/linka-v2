@@ -16,24 +16,8 @@ export const MAX_TAGS: Record<string, number> = {
   reddit: 0,
 };
 
+// The tag-picking prompt and the normaliser read the same number, so what is
+// asked for and what is enforced cannot drift apart.
 export function maxTagsFor(platform: string): number {
   return MAX_TAGS[platform] ?? 3;
-}
-
-// The prompt and the normaliser read the same numbers, so guidance and
-// enforcement can never drift apart.
-export function hashtagRule(platform: string): string {
-  const max = maxTagsFor(platform);
-  if (max === 0) {
-    return "No hashtags anywhere — on this platform they read as an outsider.";
-  }
-  return `Hashtags: at most ${max}, on their own final line, written as #word `
-    + `— never spell out the word "hashtag". Every tag must be a term people `
-    + `already search or follow on this platform: an industry, a tool, a craft, a `
-    + `place, a community (#fintech, #standups, #remotework, #rustlang, #milano). `
-    + `If you had to invent a compound to say it — #productivitymyths, `
-    + `#founderlessons, #founderstories, #buildinpublicjourney — it is not a real `
-    + `tag; nobody follows it. Generic badges are the other failure: #leadership `
-    + `#growth #innovation #success #motivation #mindset say nothing. One precise `
-    + `tag beats ${max} padded ones, and none is better than filler.`;
 }
