@@ -18,14 +18,15 @@ export async function generateImageForPostInBackground(
 
     let prompt = customPrompt?.trim() ?? "";
     if (!prompt) {
-      try {
-        const visualStyle = await getVisualStyle(userId, platform).catch(() => null);
-        prompt = await buildImagePrompt(postContent, platform, visualStyle ?? undefined);
-        console.log(`[image-gen] prompt ok ${contentId}: ${prompt.slice(0, 80)}…`);
-      } catch (err) {
-        console.error(`[image-gen] prompt FAILED ${contentId}:`, err);
-        prompt = postContent.slice(0, 200);
-      }
+      const visualStyle = await getVisualStyle(userId, platform).catch(() => null);
+      const brief = () =>
+        buildImagePrompt(postContent, platform, visualStyle ?? undefined);
+      // One retry, then let it fail. The old fallback fed the post's own opening
+      // sentences to the image model, which renders them literally — text baked
+      // into the picture, nothing to do with the point being made — and ships
+      // looking finished, so nobody knows the brief was never written.
+      prompt = await brief().catch(brief);
+      console.log(`[image-gen] prompt ok ${contentId}: ${prompt.slice(0, 80)}…`);
     }
 
     // Fetched alongside the render rather than before it: the logo is only
