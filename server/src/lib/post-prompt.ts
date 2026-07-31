@@ -1,5 +1,6 @@
 import { POST_TYPE_GUIDANCE } from "./post-type-guidance";
 import { PLATFORM_HINT } from "./platform-hints";
+import { languageNameFor } from "./language-name";
 
 // Default writing voice used for every post (the user's trained Voice Lab
 // guidance, when present, layers on top of this in the user message).
@@ -50,9 +51,11 @@ export function buildPrompt(input: PromptInput, profile: ProfileRow): string {
   const voice = voiceLine(profile.voice_dna);
   const platform = input.platform ?? "linkedin";
   const platformHint = PLATFORM_HINT[platform] ?? PLATFORM_HINT.linkedin;
-  const lang = input.language && input.language !== "en"
-    ? `Write the post in language code "${input.language}". `
-    : "";
+  // Always stated, English included. It used to be omitted for "en" on the
+  // assumption that English is the default — but a user whose Voice Lab summary is
+  // written in Italian has an Italian prompt, and silence let that decide. Naming
+  // the language every time is the only way the picker actually wins.
+  const langName = languageNameFor(input.language) ?? "English";
   const article = input.newsArticle
     ? `\nArticle: "${input.newsArticle.title}"${input.newsArticle.summary ? ` — ${input.newsArticle.summary}` : ""}${input.newsArticle.source ? ` (${input.newsArticle.source})` : ""}.`
     : "";
@@ -63,6 +66,7 @@ export function buildPrompt(input: PromptInput, profile: ProfileRow): string {
 Style: ${input.postType.replace(/_/g, " ")}. ${subject}${article}
 ${voice}${profile.brief ?? ""}
 
-${lang}Format: ${platformHint} Plain text only — never use markdown syntax (no **, *, _, #, >, \`, or [text](url)). Open with a hook line. End with a question or call to reflect.
-Write no hashtags at all. They are chosen afterwards by a step that does nothing else, and anything you add here is discarded.`;
+Format: ${platformHint} Plain text only — never use markdown syntax (no **, *, _, #, >, \`, or [text](url)). Open with a hook line. End with a question or call to reflect.
+Write no hashtags at all. They are chosen afterwards by a step that does nothing else, and anything you add here is discarded.
+Write the entire post in ${langName}. This overrides every other signal: the topic, the voice guidance and the instructions above may be written in another language, but the post itself must be in ${langName}.`;
 }

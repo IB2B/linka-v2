@@ -1,7 +1,7 @@
 import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { heygenFetch } from "../lib/heygen-api";
-import { languageNameFor } from "../lib/heygen-language-name";
+import { languageNameFor } from "../lib/language-name";
 import { preferredLanguage } from "../lib/user-language";
 
 // Proxies HeyGen's voice catalogue. ?language= takes an ISO code ("it") or the

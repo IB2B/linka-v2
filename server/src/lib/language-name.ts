@@ -1,7 +1,7 @@
-// HeyGen filters its voice catalogue by language *display name* ("Italian"),
-// while everything on our side speaks ISO 639-1 ("it"). Separate from
-// heygen-locale, which answers a different question: that one decides how a
-// voice pronounces, this one decides which voices are listed at all.
+// ISO 639-1 code to display name. Everything on our side stores the code; models
+// and third-party catalogues both want the name — "write it in Italian" is a
+// clearer instruction than 'language code "it"', and HeyGen filters voices by
+// display name.
 const NAMES: Record<string, string> = {
   en: "English", it: "Italian", fr: "French", de: "German", es: "Spanish",
   pt: "Portuguese", nl: "Dutch", pl: "Polish", sv: "Swedish", da: "Danish",
@@ -11,8 +11,8 @@ const NAMES: Record<string, string> = {
   id: "Indonesian", vi: "Vietnamese",
 };
 
-// Accepts "it" or "it-IT". Unknown codes return null so the caller omits the
-// filter rather than sending a name HeyGen will match nothing against.
+// Accepts "it" or "it-IT". Unknown codes return null so the caller can fall back
+// rather than pass on a name nothing will match.
 export function languageNameFor(language?: string | null): string | null {
   const code = (language ?? "").trim().toLowerCase().split("-")[0];
   return code ? NAMES[code] ?? null : null;
