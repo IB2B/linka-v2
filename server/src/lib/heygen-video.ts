@@ -1,4 +1,4 @@
-import { heygenFetch } from "./heygen-api";
+import { HeygenRenderError, heygenFetch } from "./heygen-api";
 import { aspectFor } from "./heygen-aspect";
 import { renderExtras } from "./heygen-render";
 
@@ -20,7 +20,10 @@ type Status = {
     video_url?: string | null;
     captioned_video_url?: string | null;
     duration?: number | null;
-    error?: { message?: string } | null;
+    // A failed render reports failure_code/failure_message. There is no `error`
+    // object here — reading one is how "HeyGen job failed: unknown" happens.
+    failure_code?: string | null;
+    failure_message?: string | null;
   };
 };
 
@@ -65,7 +68,10 @@ async function pollVideo(id: string): Promise<AvatarVideoResult> {
       return { url, model: ENGINE, durationSec: s.data?.duration ?? null };
     }
     if (state === "failed") {
-      throw new Error(`HeyGen job failed: ${s.data?.error?.message ?? "unknown"}`);
+      throw new HeygenRenderError(
+        s.data?.failure_code ?? null,
+        s.data?.failure_message ?? "no reason given",
+      );
     }
   }
   throw new Error("HeyGen: video timed out");

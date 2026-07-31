@@ -26,6 +26,10 @@ export async function walletBalance(): Promise<number | null> {
   return me.data.wallet?.remaining_balance ?? 0;
 }
 
+// Only a $0 balance is a certain "no". A small balance still fails the render
+// with MOVIO_PAYMENT_INSUFFICIENT_CREDIT, and neither the balance nor the legacy
+// api quota figure predicts a render's price — so the failure_code on the job is
+// the only trustworthy signal, and this stays a cheap early-out, not a guarantee.
 export async function assertWalletFunded(): Promise<void> {
   const balance = await walletBalance().catch(() => null);
   if (balance === null || balance > 0) return;
