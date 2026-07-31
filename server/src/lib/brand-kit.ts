@@ -1,3 +1,6 @@
+export type LogoPlacement =
+  | "top_left" | "top_right" | "bottom_left" | "bottom_right";
+
 export type BrandKit = {
   primary?: string;
   secondary?: string;
@@ -6,6 +9,11 @@ export type BrandKit = {
   text?: string;
   headingFont?: string;
   bodyFont?: string;
+  // Stamped onto the finished picture, never described in the prompt — image
+  // models draw logos as garbled pseudo-text.
+  logoUrl?: string;
+  logoOnImages?: boolean;
+  logoPlacement?: LogoPlacement;
 };
 
 const COLOUR_KEYS: [keyof BrandKit, string][] = [

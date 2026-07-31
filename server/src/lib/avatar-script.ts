@@ -21,8 +21,12 @@ export async function buildAvatarScript(
     ? `\n\nSpeak in this brand tone of voice: "${tone.trim().slice(0, 300)}".`
     : "";
   const res = await getAnthropic().messages.create({
-    model: "claude-sonnet-4-6",
-    max_tokens: 700,
+    model: "claude-sonnet-5",
+    // Sonnet 5 thinks by default and max_tokens caps thinking + text together,
+    // so leaving it on would eat the script's budget and truncate mid-sentence.
+    // A post rewrite does not need reasoning; it needs the words.
+    thinking: { type: "disabled" },
+    max_tokens: 1200,
     system: SYSTEM,
     messages: [{
       role: "user",

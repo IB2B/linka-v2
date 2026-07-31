@@ -25,6 +25,7 @@ export type NotificationApiItem = {
   scheduledFor: string | null;
   postedAt: string | null;
   createdAt: string;
+  seen?: boolean;
 };
 
 function preview(s: string, n = 70): string {
@@ -36,15 +37,16 @@ export function buildNotifications(
 ): Notification[] {
   const out: Notification[] = [];
   for (const p of items) {
+    const base = { body: preview(p.content), href: `${prefix}/posts/${p.id}`, seen: p.seen };
     if (p.status === "failed") {
-      out.push({ id: `fail-${p.id}`, kind: "failed", title: "Post failed to publish",
-        body: preview(p.content), href: `${prefix}/posts/${p.id}`, at: p.postedAt ?? p.createdAt });
+      out.push({ ...base, id: `fail-${p.id}`, kind: "failed",
+        title: "Post failed to publish", at: p.postedAt ?? p.createdAt });
     } else if (p.status === "scheduled" && p.scheduledFor) {
-      out.push({ id: `up-${p.id}`, kind: "upcoming", title: "Going live within 24h",
-        body: preview(p.content), href: `${prefix}/posts/${p.id}`, at: p.scheduledFor });
+      out.push({ ...base, id: `up-${p.id}`, kind: "upcoming",
+        title: "Going live within 24h", at: p.scheduledFor });
     } else if (p.status === "draft") {
-      out.push({ id: `gen-${p.id}`, kind: "generated", title: "Post ready to review",
-        body: preview(p.content), href: `${prefix}/posts/${p.id}`, at: p.createdAt });
+      out.push({ ...base, id: `gen-${p.id}`, kind: "generated",
+        title: "Post ready to review", at: p.createdAt });
     }
   }
   return out.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());

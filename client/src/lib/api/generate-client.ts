@@ -23,6 +23,12 @@ export async function generatePost(input: GenerateInput): Promise<Result<Generat
     postType: input.postType, topic: input.topic, newsArticle: input.newsArticle,
     platforms: input.platforms, language: input.language,
     media, withImage: media === "image",
+    // Only meaningful for avatar renders; omitted otherwise so the server keeps
+    // its per-platform defaults.
+    ...(media === "avatar" && {
+      avatarAspect: input.avatarAspect, avatarSeconds: input.avatarSeconds,
+    }),
+    ...(media === "image" && { imageShape: input.imageShape }),
   });
   const json = (await res.json().catch(() => ({}))) as {
     posts?: { platform: string; id: string; content: string }[];

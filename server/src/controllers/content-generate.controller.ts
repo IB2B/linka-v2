@@ -23,6 +23,11 @@ const schema = z.object({
   platforms: z.array(z.enum(PLATFORMS)).min(1).max(PLATFORMS.length).default(["linkedin"]),
   language: z.string().trim().min(2).max(8).default("en"),
   media: z.enum(["none", "image", "video", "avatar"]).optional(),
+  // Avatar framing/length. "auto" defers to the per-platform aspect.
+  avatarAspect: z.enum(["auto", "16:9", "9:16", "4:5", "1:1"]).optional(),
+  avatarSeconds: z.union([z.literal(30), z.literal(60), z.literal(120)]).optional(),
+  // Image-only shape; OpenAI offers no feed-native 4:5 or 9:16.
+  imageShape: z.enum(["square", "portrait", "landscape"]).optional(),
   withImage: z.boolean().default(false),
 }).refine((d) => Boolean(d.topic || d.newsArticle), {
   message: "Provide a topic or a news article.",

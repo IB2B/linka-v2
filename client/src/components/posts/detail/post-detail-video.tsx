@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertTriangle, Clapperboard } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
+import { VideoRendering } from "./video-rendering";
 import type { GeneratedPost } from "@/types/post";
 
 // Video renders take minutes, not seconds — state that up front, or the wait
@@ -12,20 +13,7 @@ export function PostDetailVideo({ post }: { post: GeneratedPost }) {
     post.videoStatus === "pending" || post.videoStatus === "generating";
 
   if (inflight) {
-    return (
-      <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg border bg-muted">
-        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-        <div className="flex flex-col items-center gap-2 px-4 text-center">
-          <Clapperboard className="size-6 animate-pulse text-foreground/60" />
-          <span className="text-sm font-medium text-foreground/80">
-            {post.videoStatus === "pending" ? "Queuing video…" : "Rendering video…"}
-          </span>
-          <span className="text-xs text-muted-foreground">
-            1–3 min · safe to leave this page, it keeps rendering
-          </span>
-        </div>
-      </div>
-    );
+    return <VideoRendering queued={post.videoStatus === "pending"} />;
   }
 
   if (post.videoUrl) {

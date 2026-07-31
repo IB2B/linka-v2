@@ -9,6 +9,7 @@ import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import { checkVideoRateLimit } from "../lib/video-rate-limiter";
 import * as posts from "../models/generated-content.model";
 import { checkAndNotifyUsageLimit } from "./check-usage-limit";
+import type { ImageShape } from "./image-size";
 
 // "video" = b-roll clip animated from a seed image; "avatar" = HeyGen presenter
 // speaking the post to camera.
@@ -20,6 +21,11 @@ type Input = {
   newsArticle?: { title: string; url?: string; source?: string; summary?: string };
   language: string;
   media: MediaKind;
+  // Avatar-only framing/length. Undefined = per-platform aspect, 30s script.
+  avatarAspect?: string | null;
+  avatarSeconds?: number;
+  // Image-only shape. Undefined = landscape, the long-standing default.
+  imageShape?: ImageShape;
 };
 
 export async function generateForPlatform(
@@ -49,11 +55,16 @@ export async function generateForPlatform(
     model: result.model,
   });
   if (wantsAvatar) {
-    void generateAvatarVideoInBackground(stored.id, userId, result.content, platform);
+    void generateAvatarVideoInBackground(
+      stored.id, userId, result.content, platform,
+      { aspect: input.avatarAspect, seconds: input.avatarSeconds },
+    );
   } else if (wantsVideo) {
     void generateVideoForPostInBackground(stored.id, userId, result.content, platform);
   } else if (wantsImage) {
-    void generateImageForPostInBackground(stored.id, userId, result.content, platform);
+    void generateImageForPostInBackground(
+      stored.id, userId, result.content, platform, undefined, input.imageShape,
+    );
   }
   checkAndNotifyUsageLimit(userId).catch((e) =>
     console.error("[usage-limit]", e));

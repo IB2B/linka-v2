@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import type { Notification } from "./notifications-data";
 import { loadAdminNotifications, loadUserNotifications } from "./notifications-loaders";
-import { readAllUrl, readOneUrl } from "./notifications-read-urls";
+import { readAllUrls, readOneUrl } from "./notifications-read-urls";
 
 const POLL_MS = 60_000;
 
@@ -33,7 +33,9 @@ export function useNotifications(prefix: string, isAdmin: boolean) {
 
   const markAllRead = useCallback(() => {
     setList((l) => l.map((n) => (readOneUrl(n.id, isAdmin) ? { ...n, seen: true } : n)));
-    fetch(readAllUrl(isAdmin), { method: "POST" }).catch(() => {});
+    for (const url of readAllUrls(isAdmin)) {
+      fetch(url, { method: "POST" }).catch(() => {});
+    }
   }, [isAdmin]);
 
   const unreadCount = useMemo(() => list.filter((n) => n.seen !== true).length, [list]);

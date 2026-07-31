@@ -1,5 +1,6 @@
 import { mkdir, writeFile, unlink } from "node:fs/promises";
 import { join } from "node:path";
+import { applyLogo, type LogoOverlay } from "./image-watermark";
 
 const ALLOWED_IMAGE_HOSTS = new Set([
   "oaidalleapiprodscus.blob.core.windows.net",
@@ -30,11 +31,13 @@ async function bytesFromSource(source: string): Promise<Buffer> {
 
 // Persists image bytes to disk and returns a short public path suitable for
 // storing in the DB. Accepts either a data: URL (gpt-image-1) or http(s) URL
-// (dall-e-3).
+// (dall-e-3). The logo is burned in here rather than at render time, so the
+// stored file is the branded one and nothing downstream has to re-apply it.
 export async function persistGeneratedImage(
-  contentId: string, source: string,
+  contentId: string, source: string, logo?: LogoOverlay | null,
 ): Promise<string> {
-  const bytes = await bytesFromSource(source);
+  const raw = await bytesFromSource(source);
+  const bytes = logo ? await applyLogo(raw, logo) : raw;
   await mkdir(IMAGES_DIR, { recursive: true });
   // Version the filename per generation so regenerated images get a fresh URL —
   // the static cache serves /uploads with maxAge, and a fixed name would make

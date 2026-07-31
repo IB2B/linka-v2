@@ -1,6 +1,7 @@
 import type { Response } from "express";
 import type { AuthRequest } from "../middleware/auth";
 import { lateFetch } from "../lib/late-api";
+import { lateAccountsUrl } from "../lib/late-accounts-url";
 import { getOrCreateLateProfile } from "../lib/late-profile";
 
 type RawAccount = { _id: string; profileId?: string | { _id: string } };
@@ -10,7 +11,7 @@ export async function disconnectAccount(req: AuthRequest, res: Response) {
   const profileId = await getOrCreateLateProfile(req.user!.id);
 
   const list = await lateFetch<{ accounts: RawAccount[] }>(
-    `/accounts?profileId=${encodeURIComponent(profileId)}&limit=100`,
+    lateAccountsUrl(profileId),
   );
   const owned = (list.accounts ?? []).some((a) => {
     if (a._id !== accountId) return false;

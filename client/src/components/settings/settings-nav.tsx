@@ -2,19 +2,20 @@
 
 import {
   User, Lock, SlidersHorizontal, Bell, Link2, AlertTriangle, Activity, Sparkles,
-  type LucideIcon,
+  UserRound, type LucideIcon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 type SectionId =
-  | "profile" | "security" | "aiInstructions" | "preferences"
+  | "profile" | "security" | "aiInstructions" | "aiAvatar" | "preferences"
   | "notifications" | "accounts" | "services" | "danger";
 
 const SECTIONS: { id: SectionId; icon: LucideIcon }[] = [
   { id: "profile", icon: User },
   { id: "security", icon: Lock },
   { id: "aiInstructions", icon: Sparkles },
+  { id: "aiAvatar", icon: UserRound },
   { id: "preferences", icon: SlidersHorizontal },
   { id: "notifications", icon: Bell },
   { id: "accounts", icon: Link2 },

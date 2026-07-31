@@ -31,6 +31,8 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
       const res = await generatePost({
         postType: type, topic, newsArticle: opts.article,
         platforms: settings.platforms, language: settings.language, media: settings.media,
+        avatarAspect: settings.avatarAspect, avatarSeconds: settings.avatarSeconds,
+        imageShape: settings.imageShape,
       });
       setGeneratingFor(null);
       if (res.error) {

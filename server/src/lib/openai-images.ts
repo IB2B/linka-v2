@@ -1,13 +1,15 @@
+import { imageSizeFor, type ImageShape } from "./image-size";
+
 // Direct REST call to OpenAI Images API to avoid pulling in the SDK.
 // Returns a URL (hosted by OpenAI, ~1h TTL) or a data: URL fallback for
 // gpt-image-1 which returns base64.
 
-type Size = "1024x1024" | "1792x1024" | "1536x1024";
-
 export type OpenAIImageOptions = {
   prompt: string;
   model?: string;
-  size?: Size;
+  // Shape is resolved to the model's pixel size; omitted keeps landscape, which
+  // is what this call produced before shapes were selectable.
+  shape?: ImageShape;
   signal?: AbortSignal;
 };
 
@@ -24,7 +26,7 @@ export async function generateOpenAIImage(
 
   const model = opts.model ?? "dall-e-3";
   const isGptImage = model.startsWith("gpt-image");
-  const size: Size = opts.size ?? (isGptImage ? "1536x1024" : "1792x1024");
+  const size = imageSizeFor(opts.shape ?? "landscape", model);
 
   const body: Record<string, unknown> = { model, prompt: opts.prompt, n: 1, size };
   if (isGptImage) {

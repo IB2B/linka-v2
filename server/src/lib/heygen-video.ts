@@ -1,5 +1,6 @@
 import { heygenFetch } from "./heygen-api";
 import { aspectFor } from "./heygen-aspect";
+import { renderExtras } from "./heygen-render";
 
 // HeyGen renders an avatar speaking a script. Async — POST returns a video_id,
 // then we poll until completed. We ask for SRT captions and prefer the captioned
@@ -24,7 +25,11 @@ type Status = {
 };
 
 export type AvatarVideoInput = {
-  script: string; avatarId: string; voiceId: string; platform: string;
+  script: string; avatarId: string; voiceId: string;
+  // Omitted or "auto" → "auto", which matches the look's own framing.
+  aspect?: string | null;
+  // Drives the voice locale so the script is spoken, not transliterated.
+  language?: string | null;
 };
 
 export async function createAvatarVideo(
@@ -38,10 +43,10 @@ export async function createAvatarVideo(
       voice_id: input.voiceId,
       script: input.script,
       engine: { type: ENGINE },
-      aspect_ratio: aspectFor(input.platform),
+      aspect_ratio: aspectFor(input.aspect),
       resolution: "1080p",
-      caption: { file_format: "srt" },
       output_format: "mp4",
+      ...renderExtras({ language: input.language, engine: ENGINE }),
     }),
   });
   const id = created.data?.video_id;

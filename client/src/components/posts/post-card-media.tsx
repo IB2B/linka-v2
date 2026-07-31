@@ -3,6 +3,7 @@ import { ImageIcon, Play } from "lucide-react";
 import { PlatformIcon } from "@/components/accounts/platform-icon";
 import { FallbackImage } from "@/components/media/fallback-image";
 import { PostImagePlaceholder } from "./post-image-placeholder";
+import { ShimmerOverlay } from "./shimmer-overlay";
 import { getPlatformGradient } from "./platform-gradient";
 import type { GeneratedPost } from "@/types/post";
 import type { Platform } from "@/lib/zernio/zernio-account.types";
@@ -36,9 +37,9 @@ export function PostCardMedia({ post }: { post: GeneratedPost }) {
           fallback={<PostImagePlaceholder />}
         />
       ) : isLoading ? (
-        <div className="relative size-full">
-          <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-          <div className="flex size-full flex-col items-center justify-center gap-2">
+        <div className="relative size-full overflow-hidden">
+          <ShimmerOverlay className="via-white/20" />
+          <div className="relative flex size-full flex-col items-center justify-center gap-2">
             {videoLoading
               ? <Play className="size-5 text-muted-foreground/50" />
               : <ImageIcon className="size-5 text-muted-foreground/50" />}
