@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Plus_Jakarta_Sans, IBM_Plex_Mono, Geist_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
@@ -9,7 +9,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({ variable: "--font-sans", subsets: ["latin"] });
+const inter = Inter({ variable: "--font-sans", subsets: ["latin"] });
 const plexMono = IBM_Plex_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
@@ -51,7 +51,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${jakarta.variable} ${plexMono.variable} ${geistMono.variable} h-full antialiased tracking-tight`}
+      className={`${inter.variable} ${plexMono.variable} ${geistMono.variable} h-full antialiased tracking-tight`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         <Script

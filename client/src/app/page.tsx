@@ -1,3 +1,4 @@
+import { landingFont } from "@/components/landing/landing-font";
 import { LandingBg } from "@/components/landing/landing-bg";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { LandingHero } from "@/components/landing/landing-hero";
@@ -17,7 +18,9 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#FAFAFA] font-sans text-[#0F1113]">
+    <div
+      className={`${landingFont.className} relative min-h-screen overflow-hidden bg-[#FAFAFA] tracking-tight text-[#0F1113]`}
+    >
       <LandingBg />
       <LandingNav />
       <LandingHero />
