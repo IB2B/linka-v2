@@ -106,25 +106,7 @@
       "title2": "Bau dein Publikum auf.",
       "body": "Linka lernt deine Stimme, erstellt markenkonforme Inhalte für jede Plattform und veröffentlicht zur richtigen Zeit — ohne den Aufwand.",
       "ctaPrimary": "Loslegen",
-      "ctaSecondary": "Preise ansehen",
-      "stats": {
-        "platforms": {
-          "label": "Plattformen, native Veröffentlichung",
-          "value": "10"
-        },
-        "languages": {
-          "label": "Sprachen, geschrieben statt übersetzt",
-          "value": "23"
-        },
-        "media": {
-          "label": "Formate — Text, Bild, Avatar-Video",
-          "value": "3"
-        },
-        "images": {
-          "label": "KI-Bilder pro Tag, in jedem Tarif",
-          "value": "20"
-        }
-      }
+      "ctaSecondary": "Preise ansehen"
     },
 "heroPreview": {
       "title": "Zielgruppen-Analyse",

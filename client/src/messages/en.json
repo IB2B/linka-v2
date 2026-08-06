@@ -106,25 +106,7 @@
       "title2": "Start building your audience.",
       "body": "Linka learns your voice, generates on-brand content across every platform, and ships it at the right time — without the busywork.",
       "ctaPrimary": "Get started",
-      "ctaSecondary": "See pricing",
-      "stats": {
-        "platforms": {
-          "label": "Platforms, published natively",
-          "value": "10"
-        },
-        "languages": {
-          "label": "Languages, written not translated",
-          "value": "23"
-        },
-        "media": {
-          "label": "Formats — text, image, avatar video",
-          "value": "3"
-        },
-        "images": {
-          "label": "AI images a day, on every plan",
-          "value": "20"
-        }
-      }
+      "ctaSecondary": "See pricing"
     },
 "heroPreview": {
       "title": "Audience analytics",

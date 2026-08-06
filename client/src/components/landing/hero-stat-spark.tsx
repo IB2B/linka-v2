@@ -1,7 +1,7 @@
 import { smoothPath } from "./hero-preview-series";
 
 const W = 100;
-const H = 26;
+const H = 32;
 
 type Props = { data: readonly number[]; color: string };
 
@@ -20,7 +20,7 @@ export function HeroStatSpark({ data, color }: Props) {
   return (
     <svg
       viewBox={`0 0 ${W} ${H}`}
-      className="h-[26px] w-full"
+      className="h-8 w-full"
       preserveAspectRatio="none"
       aria-hidden
     >

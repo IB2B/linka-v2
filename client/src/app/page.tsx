@@ -2,7 +2,6 @@ import { landingFont } from "@/components/landing/landing-font";
 import { LandingBg } from "@/components/landing/landing-bg";
 import { LandingNav } from "@/components/landing/landing-nav";
 import { LandingHero } from "@/components/landing/landing-hero";
-import { HeroStats } from "@/components/landing/hero-stats";
 import { PlatformsStrip } from "@/components/landing/platforms-strip";
 import { FeaturesSection } from "@/components/landing/features-section";
 import { ProductTourSection } from "@/components/landing/product-tour-section";
@@ -26,9 +25,6 @@ export default function Home() {
         <LandingBg />
         <LandingNav />
         <LandingHero />
-        <div className="mx-auto w-full max-w-6xl px-6">
-          <HeroStats />
-        </div>
         <PlatformsStrip />
         <FeaturesSection />
         <ProductTourSection />

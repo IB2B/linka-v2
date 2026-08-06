@@ -106,25 +106,7 @@
       "title2": "Construisez votre audience.",
       "body": "Linka apprend votre voix, génère du contenu cohérent sur chaque plateforme et publie au bon moment — sans le travail répétitif.",
       "ctaPrimary": "Commencer",
-      "ctaSecondary": "Voir les tarifs",
-      "stats": {
-        "platforms": {
-          "label": "Plateformes, publication native",
-          "value": "10"
-        },
-        "languages": {
-          "label": "Langues, écrites pas traduites",
-          "value": "23"
-        },
-        "media": {
-          "label": "Formats — texte, image, vidéo avatar",
-          "value": "3"
-        },
-        "images": {
-          "label": "Images IA par jour, sur tous les forfaits",
-          "value": "20"
-        }
-      }
+      "ctaSecondary": "Voir les tarifs"
     },
 "heroPreview": {
       "title": "Analyse d'audience",

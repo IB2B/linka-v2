@@ -106,25 +106,7 @@
       "title2": "Empieza a construir tu audiencia.",
       "body": "Linka aprende tu voz, genera contenido alineado con tu marca en cada plataforma y publica en el momento adecuado — sin el trabajo repetitivo.",
       "ctaPrimary": "Empezar",
-      "ctaSecondary": "Ver precios",
-      "stats": {
-        "platforms": {
-          "label": "Plataformas, publicación nativa",
-          "value": "10"
-        },
-        "languages": {
-          "label": "Idiomas, escritos no traducidos",
-          "value": "23"
-        },
-        "media": {
-          "label": "Formatos — texto, imagen, vídeo avatar",
-          "value": "3"
-        },
-        "images": {
-          "label": "Imágenes IA al día, en todos los planes",
-          "value": "20"
-        }
-      }
+      "ctaSecondary": "Ver precios"
     },
 "heroPreview": {
       "title": "Analítica de audiencia",

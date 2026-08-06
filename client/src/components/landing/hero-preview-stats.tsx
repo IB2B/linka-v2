@@ -15,27 +15,27 @@ const items = [
 export async function HeroPreviewStats() {
   const t = await getTranslations("landing.heroPreview");
   return (
-    <div className="grid gap-3 border-b border-[#F4F4F5] p-5 sm:grid-cols-3">
+    <div className="grid gap-4 border-b border-[#F0F0F3] p-6 sm:grid-cols-3">
       {items.map(({ key, value, delta, accent, Icon, series }) => (
         <div
           key={key}
-          className="group flex flex-col gap-2.5 rounded-xl border border-[#E5E5E5] bg-white p-3 transition duration-300 hover:-translate-y-0.5 hover:border-[#D4D4D4] hover:shadow-[0_14px_30px_-20px_rgba(15,17,19,0.3)]"
+          className="group flex flex-col gap-3 rounded-xl border border-[#EAEAEE] bg-white p-4 transition duration-300 hover:-translate-y-0.5 hover:border-[#D9D9DE] hover:shadow-[0_16px_34px_-22px_rgba(15,17,19,0.3)]"
         >
           <div className="flex items-center justify-between gap-2">
-            <p className="truncate text-[11px] tracking-tight text-[#737373]">{t(key)}</p>
+            <p className="truncate text-[12.5px] tracking-tight text-[#737373]">{t(key)}</p>
             <span
-              className="flex size-5 shrink-0 items-center justify-center rounded-md transition group-hover:scale-110"
+              className="flex size-6 shrink-0 items-center justify-center rounded-md transition group-hover:scale-110"
               style={{ backgroundColor: `${accent}14`, color: accent }}
             >
-              <Icon className="size-3" strokeWidth={2} />
+              <Icon className="size-3.5" strokeWidth={2} />
             </span>
           </div>
           <div className="flex items-baseline justify-between gap-2">
-            <p className="text-[20px] font-semibold tracking-[-0.02em] text-[#0F1113]">
+            <p className="text-[26px] font-semibold leading-none tracking-[-0.03em] text-[#0F1113]">
               {value}
             </p>
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium tracking-tight text-[#16A34A]">
-              <TrendingUp className="size-3" />
+            <span className="inline-flex items-center gap-1 text-[12px] font-medium tracking-tight text-[#16A34A]">
+              <TrendingUp className="size-3.5" />
               {delta}
             </span>
           </div>
