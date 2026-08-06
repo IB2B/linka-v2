@@ -15,8 +15,13 @@ export async function LandingNavActions() {
   return (
     <div className="flex items-center gap-3 justify-self-end">
       <LandingLanguageSwitch />
+      <span aria-hidden className="hidden h-5 w-px bg-[#E5E6EA] sm:block" />
       {user ? (
-        <Button render={<Link href={ROLE_REDIRECTS[user.role]} />} nativeButton={false}>
+        <Button
+          render={<Link href={ROLE_REDIRECTS[user.role]} />}
+          nativeButton={false}
+          className="rounded-full px-5"
+        >
           {t("dashboard")}
         </Button>
       ) : (
@@ -27,7 +32,11 @@ export async function LandingNavActions() {
           >
             {t("signIn")}
           </Link>
-          <Button render={<Link href="/register" />} nativeButton={false}>
+          <Button
+            render={<Link href="/register" />}
+            nativeButton={false}
+            className="rounded-full px-5"
+          >
             {t("getStarted")}
           </Button>
         </>

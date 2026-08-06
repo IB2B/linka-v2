@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export async function HeroCta() {
   const t = await getTranslations("landing.hero");
   return (
-    <div className="flex flex-wrap items-center gap-2.5">
+    <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
       <Button render={<Link href="/register" />} nativeButton={false} size="lg">
         {t("ctaPrimary")}
       </Button>

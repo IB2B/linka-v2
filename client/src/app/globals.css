@@ -239,6 +239,23 @@ a[href] {
     transform: none;
   }
 }
+/* Platform tiles scattered around the hero headline drift a few pixels so the
+   hero does not read as a flat screenshot. */
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-float {
+    animation: hero-float 6s ease-in-out infinite;
+  }
+}
+
 .hp-line {
   stroke-dasharray: 1400;
 }

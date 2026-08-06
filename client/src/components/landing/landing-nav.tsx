@@ -14,12 +14,12 @@ export async function LandingNav() {
     { href: "#faq", label: t("faq") },
   ];
   return (
-    <header className="relative z-20 border-b border-[#0F1113]/[0.06] bg-white/70 backdrop-blur">
-      <div className="mx-auto grid h-16 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <BrandLogo size={28} />
-          <span className="text-[15px] font-semibold tracking-tight text-[#0F1113]">
-            linka<span className="text-[#A3A3A3]">.studio</span>
+    <header className="relative z-20">
+      <div className="mx-auto grid h-[76px] w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center px-6">
+        <Link href="/" className="flex items-center gap-2.5">
+          <BrandLogo size={32} />
+          <span className="text-[19px] font-semibold tracking-[-0.02em] text-[#0F1113]">
+            linka
           </span>
         </Link>
         <nav className="hidden items-center gap-8 justify-self-center md:flex">
