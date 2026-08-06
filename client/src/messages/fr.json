@@ -126,16 +126,36 @@
         }
       }
     },
-    "heroPreview": {
+"heroPreview": {
       "title": "Analyse d'audience",
-      "period": "30 derniers jours",
       "export": "Exporter",
       "impressions": "Impressions",
       "engagementRate": "Taux d'engagement",
       "newFollowers": "Nouveaux abonnés",
       "chartTitle": "Impressions · 30 derniers jours",
       "vsPrev": "+28% vs préc.",
-      "live": "En direct"
+      "live": "En direct",
+      "ranges": [
+        "7 j",
+        "30 j",
+        "90 j"
+      ],
+      "legendNow": "Cette période",
+      "legendPrev": "30 jours avant",
+      "topPlatforms": "Principales plateformes",
+      "yAxis": [
+        "12 K",
+        "8 K",
+        "4 K",
+        "0"
+      ],
+      "xAxis": [
+        "1 juin",
+        "8 juin",
+        "15 juin",
+        "22 juin",
+        "30 juin"
+      ]
     },
     "platforms": {
       "eyebrow": "Publiez nativement sur",

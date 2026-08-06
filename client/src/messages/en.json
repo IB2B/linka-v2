@@ -126,16 +126,36 @@
         }
       }
     },
-    "heroPreview": {
+"heroPreview": {
       "title": "Audience analytics",
-      "period": "last 30 days",
       "export": "Export",
       "impressions": "Impressions",
       "engagementRate": "Engagement rate",
       "newFollowers": "New followers",
       "chartTitle": "Impressions · last 30 days",
       "vsPrev": "+28% vs prev",
-      "live": "Live"
+      "live": "Live",
+      "ranges": [
+        "7d",
+        "30d",
+        "90d"
+      ],
+      "legendNow": "This period",
+      "legendPrev": "Previous 30 days",
+      "topPlatforms": "Top platforms",
+      "yAxis": [
+        "12K",
+        "8K",
+        "4K",
+        "0"
+      ],
+      "xAxis": [
+        "Jun 1",
+        "Jun 8",
+        "Jun 15",
+        "Jun 22",
+        "Jun 30"
+      ]
     },
     "platforms": {
       "eyebrow": "Publish natively to",

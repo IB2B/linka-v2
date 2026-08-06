@@ -126,16 +126,36 @@
         }
       }
     },
-    "heroPreview": {
+"heroPreview": {
       "title": "Zielgruppen-Analyse",
-      "period": "letzte 30 Tage",
       "export": "Exportieren",
       "impressions": "Impressionen",
       "engagementRate": "Engagement-Rate",
       "newFollowers": "Neue Follower",
       "chartTitle": "Impressionen · letzte 30 Tage",
       "vsPrev": "+28% vs. zuvor",
-      "live": "Live"
+      "live": "Live",
+      "ranges": [
+        "7 T",
+        "30 T",
+        "90 T"
+      ],
+      "legendNow": "Dieser Zeitraum",
+      "legendPrev": "30 Tage davor",
+      "topPlatforms": "Top-Plattformen",
+      "yAxis": [
+        "12 Tsd.",
+        "8 Tsd.",
+        "4 Tsd.",
+        "0"
+      ],
+      "xAxis": [
+        "1. Jun",
+        "8. Jun",
+        "15. Jun",
+        "22. Jun",
+        "30. Jun"
+      ]
     },
     "platforms": {
       "eyebrow": "Native Veröffentlichung auf",
