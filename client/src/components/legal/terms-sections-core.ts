@@ -31,11 +31,11 @@ export const TERMS_CORE: LegalSection[] = [
   },
   {
     id: "billing",
-    heading: "Subscriptions, trials and billing",
+    heading: "Subscriptions and billing",
     blocks: [
       { type: "p", text: "Paid plans are billed in advance on a recurring basis through our payment processor, Stripe. By subscribing, you authorize these recurring charges." },
       { type: "list", items: [
-        "Each paid plan includes a 7-day free trial; your card is not charged until the trial ends.",
+        "A free plan is available with no card and no time limit; paid plans are charged from the day you subscribe.",
         "You may cancel any time from billing and keep access until the end of the current period.",
         "Fees are non-refundable except where required by law.",
         "We may change pricing on a going-forward basis with prior notice.",

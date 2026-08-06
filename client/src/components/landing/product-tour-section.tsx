@@ -5,6 +5,8 @@ import { ProductTourCard } from "./product-tour-card";
 import { TOUR_META } from "./product-tour-data";
 import { TourMockVoice } from "./tour-mock-voice";
 import { TourMockCalendar } from "./tour-mock-calendar";
+import { TourMockFanout } from "./tour-mock-fanout";
+import { TourMockAvatar } from "./tour-mock-avatar";
 import { TourMockInbox } from "./tour-mock-inbox";
 import { TourMockRadar } from "./tour-mock-radar";
 
@@ -17,6 +19,8 @@ export async function ProductTourSection() {
   const mocks = [
     <TourMockVoice key="v" c={m.voice} />,
     <TourMockCalendar key="c" c={m.calendar} />,
+    <TourMockFanout key="f" c={m.fanout} />,
+    <TourMockAvatar key="a" c={m.avatar} />,
     <TourMockInbox key="i" c={m.inbox} />,
     <TourMockRadar key="r" c={m.radar} />,
   ];

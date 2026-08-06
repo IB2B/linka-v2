@@ -21,10 +21,25 @@ const geistMono = Geist_Mono({
   weight: ["400", "500", "600"],
 });
 
+const TITLE = "linka.studio — one idea in, ten native posts out";
+const DESCRIPTION =
+  "Linka writes in your voice, rewrites every idea for the platform it's going to, generates the image or avatar video, and publishes to 10 platforms in 23 languages.";
+
 export const metadata: Metadata = {
-  title: "linka.studio — posts that actually convert",
-  description:
-    "Linka writes, designs and schedules every social post in your voice — across LinkedIn, Instagram and X.",
+  metadataBase: process.env.NEXT_PUBLIC_APP_URL
+    ? new URL(process.env.NEXT_PUBLIC_APP_URL)
+    : undefined,
+  title: TITLE,
+  description: DESCRIPTION,
+  applicationName: "linka.studio",
+  openGraph: {
+    type: "website",
+    siteName: "linka.studio",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
+  robots: { index: true, follow: true },
 };
 
 export default async function RootLayout({

@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 import { SectionHeading } from "./section-heading";
 import { FeatureCard } from "./feature-card";
-import { FEATURE_ICONS } from "./features-data";
+import { FEATURE_ICONS, NEW_FEATURES } from "./features-data";
 
 type Item = { tag: string; title: string; body: string };
 
@@ -14,7 +14,15 @@ export async function FeaturesSection() {
       <SectionHeading eyebrow={t("eyebrow")} title={t("title")} sub={t("sub")} />
       <div className="mt-12 grid gap-px overflow-hidden rounded-xl bg-[#E5E5E5] ring-1 ring-[#E5E5E5] sm:grid-cols-2 lg:grid-cols-4">
         {items.map((f, i) => (
-          <FeatureCard key={f.title} icon={FEATURE_ICONS[i]} tag={f.tag} title={f.title} body={f.body} />
+          <FeatureCard
+            key={f.title}
+            icon={FEATURE_ICONS[i]}
+            tag={f.tag}
+            title={f.title}
+            body={f.body}
+            isNew={NEW_FEATURES.has(i)}
+            newLabel={t("newLabel")}
+          />
         ))}
       </div>
     </section>

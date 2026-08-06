@@ -87,7 +87,7 @@
       "spamFlagged": "Looks like spam — flagged."
     }
   },
-  "landing": {
+"landing": {
     "nav": {
       "features": "Features",
       "process": "Process",
@@ -100,29 +100,29 @@
       "language": "Language"
     },
     "hero": {
-      "badge": "Trusted by fast-growing creators worldwide",
-      "badgeLink": "Learn more",
-      "title1": "Stop writing posts.",
-      "title2": "Start building your audience.",
-      "body": "Linka learns your voice, generates on-brand content across every platform, and ships it at the right time — without the busywork.",
+      "badge": "New — avatar video, and posts written in 23 languages",
+      "badgeLink": "See what's new",
+      "title1": "One idea in.",
+      "title2": "Ten native posts out.",
+      "body": "Linka learns your voice, rewrites every idea for the platform it's going to — with the image, the video, the title and the hashtags — and publishes it in your language.",
       "ctaPrimary": "Get started",
-      "ctaSecondary": "Book a demo",
+      "ctaSecondary": "See pricing",
       "stats": {
-        "posts": {
-          "label": "Posts shipped",
-          "value": "184M"
-        },
-        "reach": {
-          "label": "Audience reach",
-          "value": "12M+"
-        },
-        "creators": {
-          "label": "Active creators",
-          "value": "2,400+"
-        },
         "platforms": {
-          "label": "Platforms connected",
-          "value": "8"
+          "label": "Platforms, published natively",
+          "value": "10"
+        },
+        "languages": {
+          "label": "Languages, written not translated",
+          "value": "23"
+        },
+        "media": {
+          "label": "Formats — text, image, avatar video",
+          "value": "3"
+        },
+        "images": {
+          "label": "AI images a day, on every plan",
+          "value": "20"
         }
       }
     },
@@ -139,59 +139,80 @@
     },
     "platforms": {
       "eyebrow": "Publish natively to",
-      "note": "Official APIs. No browser extension, no copy-paste, no missed posts."
+      "note": "Ten platforms through official APIs. No browser extension, no copy-paste, no missed posts."
     },
     "features": {
       "eyebrow": "Features",
-      "title": "Replace six tools. Keep one workspace.",
-      "sub": "Linka is the writer, the designer, the scheduler and the analyst. One subscription, one calendar, every channel.",
+      "title": "One workspace instead of six tabs.",
+      "sub": "Linka is the writer, the designer, the video studio, the scheduler and the analyst. One subscription, one calendar, ten platforms.",
+      "newLabel": "New",
       "items": [
         {
           "tag": "Voice Lab",
           "title": "Writes in your voice",
-          "body": "Trained on your content. Every hook, CTA and format sounds like you wrote it on your best day — not like AI."
+          "body": "Trained on posts you've already written — paste them, upload a file, or import your LinkedIn export. Linka learns your hooks, rhythm and sign-offs."
+        },
+        {
+          "tag": "Per-platform",
+          "title": "Rewrites, never cross-posts",
+          "body": "The same idea becomes a LinkedIn story, an X one-liner and a Reddit post with no marketing voice. Length, tone and format follow each platform."
         },
         {
           "tag": "Image Studio",
-          "title": "Generates the visuals",
-          "body": "On-brand images and carousels created alongside the copy. No Canva, no designer, no extra tab."
+          "title": "Designs the visuals",
+          "body": "Images built from the post's own world, in your brand colours, with your logo placed where you want it. Landscape, square or portrait."
+        },
+        {
+          "tag": "Avatar Video",
+          "title": "Puts you on camera",
+          "body": "Turns a post into a talking-head video with your avatar and voice — vertical or landscape, in the language you wrote it in. No filming, no editing."
+        },
+        {
+          "tag": "23 Languages",
+          "title": "Writes in your language",
+          "body": "Set your language once and the post, the title, the hashtags and the replies all come out native — not English run through a translator."
+        },
+        {
+          "tag": "Platform Rules",
+          "title": "Hashtags and titles that behave",
+          "body": "Three tags on LinkedIn, five on Instagram, none on Reddit — enforced, not requested. Tags are picked after reading the finished post, never invented."
+        },
+        {
+          "tag": "Titles",
+          "title": "Writes the headline too",
+          "body": "A title on every post, written to each platform's own character limit — and never missing on Reddit, YouTube or Pinterest, where nothing publishes without one."
         },
         {
           "tag": "Calendar",
           "title": "Schedules everywhere",
-          "body": "One calendar for LinkedIn, Instagram, X, TikTok, Pinterest and more. Posts go out at the best slot per platform."
+          "body": "One grid for all ten platforms. Queue a week, move a post to a better slot, and Linka publishes it through the official API."
         },
         {
           "tag": "Trend Radar",
           "title": "Trends, before they peak",
-          "body": "Surfaces trending topics in your niche before they go mainstream. Be first, not late."
+          "body": "Fresh topics in your niche, scored and dated, each one with hook angles you can send straight to the writer."
         },
         {
           "tag": "Inbox",
-          "title": "Replies on autopilot",
-          "body": "AI-drafted replies to every comment and DM. You review, it sends. Inbox zero, every day."
+          "title": "Replies drafted for you",
+          "body": "DMs and comments from your connected accounts in one list, each with a reply already written in your tone. You review, it sends."
         },
         {
           "tag": "Analytics",
           "title": "Insights that act",
-          "body": "Learns which hooks, times and formats drive results — then writes more of what actually works."
-        },
-        {
-          "tag": "Smart Recycler",
-          "title": "Resurfaces what worked",
-          "body": "Your top posts get fresh angles automatically — so your best ideas keep paying you back."
+          "body": "Which hooks, times, formats and platforms actually earn reach — per post, with the image's contribution and your weakest posts called out."
         },
         {
           "tag": "Pipeline",
-          "title": "Turns posts into leads",
-          "body": "Track inbound DMs and comments as deals. From a viral hook to a closed call without a CRM swap."
+          "title": "Turns posts into deals",
+          "body": "Move an inbound DM onto a board, keep the platform it came from attached, and track it to a closed call without a second CRM."
         }
       ]
     },
     "tour": {
       "eyebrow": "Product",
       "title": "A closer look at how the magic happens.",
-      "sub": "Four pieces working together — voice, scheduling, inbox and trends — so you ship content that actually sounds like you.",
+      "sub": "Six pieces working together — voice, calendar, per-platform rewriting, avatar video, inbox and trends.",
       "items": [
         {
           "tag": "Voice Lab",
@@ -200,13 +221,23 @@
         },
         {
           "tag": "Calendar",
-          "title": "One calendar. Every platform.",
-          "body": "LinkedIn, X, Instagram, TikTok and more on a single grid. Optimal slots picked per channel."
+          "title": "One calendar. Ten platforms.",
+          "body": "LinkedIn, X, Instagram, TikTok, YouTube and the rest on a single grid, each post armed for the platform it was written for."
+        },
+        {
+          "tag": "Per-platform",
+          "title": "One idea. Ten native posts.",
+          "body": "Not one text pasted ten times. Each platform gets its own length, tone, title and hashtag count — set your goal per platform once in settings."
+        },
+        {
+          "tag": "Avatar Video",
+          "title": "You on camera, without filming.",
+          "body": "Linka writes the script from the finished post, then renders your avatar saying it — vertical or landscape, 30 or 60 seconds."
         },
         {
           "tag": "Inbox",
           "title": "Replies that draft themselves.",
-          "body": "Every comment and DM gets an AI-drafted reply in your tone. You review, it sends."
+          "body": "Every DM and comment we can reach arrives with a reply already written in your tone. You review, it sends."
         },
         {
           "tag": "Radar",
@@ -232,12 +263,45 @@
           "queued": "14 posts queued",
           "note": "Optimal slots per platform — picked automatically."
         },
+        "fanout": {
+          "ideaLabel": "Your idea",
+          "idea": "We cut onboarding from nine steps to three and signups converted 40% better.",
+          "variants": [
+            {
+              "label": "LinkedIn",
+              "text": "Nine steps down to three. The one we were most scared to cut is the one nobody missed →",
+              "tags": "3 tags"
+            },
+            {
+              "label": "X",
+              "text": "Deleted 6 onboarding steps. Conversion went up 40%.",
+              "tags": "2 tags"
+            },
+            {
+              "label": "Instagram",
+              "text": "Less really was the feature. Swipe for the three screens that survived.",
+              "tags": "5 tags"
+            },
+            {
+              "label": "Reddit",
+              "text": "Cut our onboarding from 9 steps to 3 — happy to answer what broke along the way.",
+              "tags": "no tags"
+            }
+          ]
+        },
+        "avatar": {
+          "scriptLabel": "Script from your post",
+          "script": "Nine onboarding steps. We cut six. Conversion went up forty percent — here's what we kept.",
+          "aspect": "9:16",
+          "seconds": "30 sec",
+          "status": "Rendered"
+        },
         "inbox": {
           "name": "Jordan M.",
           "time": "2m",
           "question": "Does Linka work for non-English content? Looking at Spanish + French.",
           "draftBadge": "AI draft · ready to send",
-          "reply": "Hey Jordan — yes, Linka writes natively in 12+ languages. Spanish and French are both fluent. Happy to do a quick demo?",
+          "reply": "Hey Jordan — yes, Linka writes natively in 23 languages. Spanish and French are both fluent. Happy to do a quick demo?",
           "send": "Send",
           "rewrite": "Rewrite",
           "skip": "Skip"
@@ -254,20 +318,20 @@
     },
     "process": {
       "eyebrow": "Process",
-      "title": "From signup to first post in three minutes.",
+      "title": "From signup to your first post in minutes.",
       "stepLabel": "Step",
       "steps": [
         {
           "title": "Connect your accounts",
-          "body": "Link LinkedIn, Instagram, X, TikTok and more in seconds. Linka reads your past content to learn your tone and style."
+          "body": "Link LinkedIn, Instagram, X, TikTok, YouTube and the rest in seconds through official APIs. Then drop a few old posts into Voice Lab so Linka learns your tone."
         },
         {
-          "title": "Set your goal",
-          "body": "Grow followers, drive signups, or book calls. We tune the copy, format and posting cadence to hit that goal."
+          "title": "Brief it once, per platform",
+          "body": "Who you are, what you do, your brand colours and logo — then a goal, a tone and the post types you want for each platform separately."
         },
         {
           "title": "Approve and publish",
-          "body": "Wake up to a week of ready-to-ship drafts. Approve, tweak a word if you like, and they go out at the optimal time."
+          "body": "Drafts arrive with the image, the title and the hashtags already in place. Approve, tweak a word if you like, and they go out at the right slot."
         }
       ]
     },
@@ -281,8 +345,8 @@
           "body": "Ship product, ship posts. One workflow for both.",
           "bullets": [
             "Hooks pulled from your changelog",
-            "Build-in-public threads on autopilot",
-            "Lead capture across LinkedIn + X"
+            "Build-in-public posts on autopilot",
+            "Inbound DMs tracked on a deal board"
           ]
         },
         {
@@ -290,26 +354,26 @@
           "body": "Show up daily without burning out on Canva.",
           "bullets": [
             "Voice trained on your best posts",
-            "Carousels and reels in one click",
-            "Inbox autopilot for DMs"
+            "Image and avatar video in one pass",
+            "DMs and comments drafted for you"
           ]
         },
         {
           "title": "Agencies",
           "body": "Run more clients without hiring more writers.",
           "bullets": [
-            "Brand kits and voice per workspace",
-            "Approval flows with team seats",
-            "White-label exports — PDF + CSV"
+            "Brand kit — colours, logo, placement",
+            "Separate goal and tone per platform",
+            "Per-post analytics to show the work"
           ]
         },
         {
           "title": "Marketing teams",
           "body": "A real content engine. Not another tool.",
           "bullets": [
-            "Calendar across 8 platforms",
+            "One calendar across ten platforms",
             "Analytics that tune the next post",
-            "SSO, audit logs, role-based access"
+            "23 languages for local markets"
           ]
         }
       ]
@@ -331,7 +395,7 @@
           "metric": "12.3k → 41k"
         },
         {
-          "quote": "The Inbox Autopilot is the killer feature. I haven't typed a comment reply in 6 weeks and replies are up.",
+          "quote": "The Inbox is the killer feature. I haven't typed a comment reply in 6 weeks and replies are up.",
           "name": "Priya S.",
           "role": "Coach & creator",
           "metric": "4.2x replies"
@@ -344,7 +408,7 @@
       "items": [
         {
           "label": "Posts shipped",
-          "hint": "across 8 platforms in the last 12 months"
+          "hint": "across ten platforms in the last 12 months"
         },
         {
           "label": "Avg. reach lift",
@@ -374,15 +438,21 @@
         },
         {
           "label": "AI posts per month",
-          "linka": "100 (Creator)",
+          "linka": "30 — or 150 on Business",
           "agency": "3–5 manually",
           "diy": "If you have time"
         },
         {
-          "label": "Connected accounts",
-          "linka": "Unlimited",
+          "label": "Platforms",
+          "linka": "10, official APIs",
           "agency": "What you pay for",
-          "diy": "Manual per app"
+          "diy": "Manual, app by app"
+        },
+        {
+          "label": "Languages",
+          "linka": "23, written natively",
+          "agency": "English, usually",
+          "diy": "Google Translate"
         },
         {
           "label": "On-brand voice",
@@ -391,26 +461,38 @@
           "diy": "Yes — that's the bottleneck"
         },
         {
-          "label": "Image generation",
-          "linka": "Included",
+          "label": "Images",
+          "linka": "Included, in your brand colours",
           "agency": "Charged separately",
           "diy": "Canva chaos"
         },
         {
+          "label": "Avatar video",
+          "linka": "Included, no filming",
+          "agency": "A filming day",
+          "diy": "Not happening"
+        },
+        {
+          "label": "Hashtags & titles",
+          "linka": "Per-platform limits, enforced",
+          "agency": "Whatever fits",
+          "diy": "Guesswork"
+        },
+        {
           "label": "Analytics & DMs",
-          "linka": "All in one dashboard",
+          "linka": "One dashboard",
           "agency": "Separate tools",
           "diy": "5 different apps"
         },
         {
-          "label": "Auto-scheduling",
-          "linka": "Optimal slots per platform",
+          "label": "Scheduling",
+          "linka": "One calendar, every platform",
           "agency": "Manual",
           "diy": "Manual"
         },
         {
           "label": "Reply automation",
-          "linka": "Drafts every comment & DM",
+          "linka": "Drafts DMs and comments",
           "agency": "Not their job",
           "diy": "You, at midnight"
         },
@@ -425,21 +507,21 @@
     "pricing": {
       "eyebrow": "Pricing",
       "title": "One coffee a day. A whole content team.",
-      "sub": "7-day free trial on every paid plan. No card until day 7. Cancel any time.",
+      "sub": "Start on the free plan — no card, no time limit. Paid plans are billed monthly and you can cancel any time from the billing portal.",
       "recommended": "Recommended",
       "plans": [
         {
           "name": "Free",
           "price": "$0",
           "period": "free forever",
-          "tagline": "Try the magic. No card needed.",
+          "tagline": "Try the engine. No card needed.",
           "cta": "Start free",
           "features": [
             "5 AI posts / month",
-            "2 AI images / month",
-            "1 connected account",
-            "Manual scheduling",
-            "7-day post history"
+            "All 10 platforms",
+            "AI images — up to 20 / day",
+            "Voice Lab & brand kit",
+            "Calendar & scheduling"
           ]
         },
         {
@@ -447,30 +529,28 @@
           "price": "$29",
           "period": "/month",
           "tagline": "Everything a solo creator needs to ship consistently.",
-          "cta": "Start 7-day trial",
+          "cta": "Choose Creator",
           "features": [
             "30 AI posts / month",
-            "10 AI images / month",
-            "3 connected accounts",
-            "Voice training on your writing style",
-            "Auto-scheduling & content calendar",
-            "Basic analytics"
+            "Per-platform goal, tone & post types",
+            "23 languages, written natively",
+            "AI images + avatar video",
+            "Pipeline for inbound DMs",
+            "Email support"
           ]
         },
         {
           "name": "Business",
           "price": "$79",
           "period": "/month",
-          "tagline": "For multi-brand operators and small teams.",
-          "cta": "Start 7-day trial",
+          "tagline": "For operators who post daily and want the numbers.",
+          "cta": "Choose Business",
           "features": [
             "150 AI posts / month",
-            "40 AI images / month",
-            "Unlimited accounts — all 8 platforms",
             "DM inbox & comment replies",
-            "Optimal-slot auto-scheduling",
-            "Team seats (up to 3) & approvals",
-            "Advanced analytics",
+            "Trend Radar with hook angles",
+            "Full analytics, down to each post",
+            "Everything in Creator",
             "Priority support"
           ]
         },
@@ -481,19 +561,26 @@
           "tagline": "For agencies and large teams with custom needs.",
           "cta": "Contact sales",
           "features": [
-            "Unlimited posts & images",
-            "Unlimited team seats",
-            "SSO & role-based access",
-            "Audit logs & data export",
+            "Custom post, image & video limits",
+            "Onboarding done with you",
+            "Admin controls & audit trail",
             "Dedicated account manager",
-            "Custom SLA & onboarding"
+            "Custom SLA"
           ]
         }
       ]
     },
     "integrations": {
       "eyebrow": "Powered by",
-      "title": "Best-in-class models. Boring, reliable plumbing."
+      "title": "Best-in-class models. Boring, reliable plumbing.",
+      "roles": {
+        "text": "writing",
+        "image": "images",
+        "video": "avatar video",
+        "trends": "trends & news",
+        "billing": "billing",
+        "infra": "delivery"
+      }
     },
     "faq": {
       "eyebrow": "FAQ",
@@ -501,35 +588,55 @@
       "items": [
         {
           "q": "Will it actually sound like me?",
-          "a": "Yes. Linka trains on your existing posts, bio, and writing samples you provide at setup. Most users edit fewer than 3 words per draft."
+          "a": "That's what Voice Lab is for. Paste old posts, upload a file or import your LinkedIn export, and Linka pulls your hooks, rhythm and sign-offs from real samples. Most users edit fewer than 3 words per draft."
         },
         {
           "q": "Which platforms do you support?",
-          "a": "LinkedIn, Instagram (feed, reels, carousels), X, TikTok, Pinterest, Threads, YouTube Shorts and Facebook Pages."
+          "a": "Ten: LinkedIn, Instagram, X, Facebook, Threads, TikTok, YouTube, Pinterest, Bluesky and Reddit — all through official APIs."
+        },
+        {
+          "q": "Does it post the same text everywhere?",
+          "a": "No. Every platform gets its own draft: a 120–220 word LinkedIn post, under 280 characters on X, a Reddit post with the marketing voice stripped out. You set the goal, tone and post types per platform once, and Linka writes to them."
+        },
+        {
+          "q": "What about hashtags and titles?",
+          "a": "Hashtags are chosen after the post is finished, capped per platform — 3 on LinkedIn, 5 on Instagram, none on Reddit or Facebook — and invented tags are rejected. Titles are written to each platform's own limit, including the ones that won't publish without one."
+        },
+        {
+          "q": "Can it write in my language?",
+          "a": "Yes — 23 languages, written natively rather than translated from English. Set your default once in settings and override it per post when you need to."
+        },
+        {
+          "q": "What is the avatar video?",
+          "a": "Linka writes a script from the finished post, then renders your avatar speaking it — vertical or landscape, 30 or 60 seconds, in the post's language. Renders are capped per day to keep costs sane."
         },
         {
           "q": "Do I need to install anything?",
-          "a": "No. Connect once via OAuth and posts publish through official APIs — full auto-publish, no browser extension, no manual steps."
+          "a": "No. Connect once via OAuth and posts publish through official APIs — no browser extension, no copy-paste, no manual steps."
+        },
+        {
+          "q": "Which DMs and comments can it reply to?",
+          "a": "DMs on LinkedIn, Facebook, Instagram, X, Bluesky and Reddit, plus comments on Threads and YouTube. TikTok and Pinterest are publish-only for now. The inbox is on the Business plan."
         },
         {
           "q": "What if I don't like a draft?",
-          "a": "Regenerate it, edit it inline, or skip it entirely. The model improves with every approve and reject over time."
-        },
-        {
-          "q": "Can I cancel any time?",
-          "a": "Yes — one click from billing. You keep access until the end of the period and your data stays exportable for 30 days after."
+          "a": "Regenerate it, edit it inline, or skip it. Nothing publishes until you approve it."
         },
         {
           "q": "Is there a free trial?",
-          "a": "Every paid plan includes a 7-day free trial. Your card is not charged until day 8 and you can cancel any time before that."
+          "a": "There's a free plan instead — 5 AI posts a month, no card, no time limit. Upgrade when you need more volume."
+        },
+        {
+          "q": "Can I cancel any time?",
+          "a": "Yes — one click from billing opens the Stripe portal. You keep access until the end of the period you've paid for."
         }
       ]
     },
     "finalCta": {
-      "badge": "Booking June 2026",
+      "badge": "New — avatar video and 23 languages",
       "title": "Stop posting. Start shipping.",
-      "body": "7 days free. No card until day 7. Cancel in one click. Your audience is already scrolling.",
-      "ctaPrimary": "Start free trial",
+      "body": "Start free, no card. One idea becomes ten native posts before your coffee lands.",
+      "ctaPrimary": "Start free",
       "ctaSecondary": "Sign in"
     },
     "footer": {

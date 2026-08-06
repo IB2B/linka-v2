@@ -1,17 +1,20 @@
 import type { BillingPlan } from "@/types/billing-plan";
 
+// Feature lines mirror `landing.pricing.plans` in the message files — keep the
+// two in step. Only the monthly post count and the inbox/trends/analytics gate
+// are enforced in code (see plan-features.ts); nothing here promises more.
 export const BILLING_PLANS: readonly BillingPlan[] = [
   {
     id: "starter",
     name: "Free",
     priceKind: "free",
-    description: "Try the magic. No card needed.",
+    description: "Try the engine. No card needed.",
     features: [
       "5 AI posts / month",
-      "2 AI images / month",
-      "1 connected account",
-      "Manual scheduling",
-      "7-day post history",
+      "All 10 platforms",
+      "AI images — up to 20 / day",
+      "Voice Lab & brand kit",
+      "Calendar & scheduling",
     ],
   },
   {
@@ -21,26 +24,24 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
     description: "Everything a solo creator needs to ship consistently.",
     features: [
       "30 AI posts / month",
-      "10 AI images / month",
-      "3 connected accounts",
-      "Voice training on your writing style",
-      "Auto-scheduling & content calendar",
-      "Basic analytics",
+      "Per-platform goal, tone & post types",
+      "23 languages, written natively",
+      "AI images + avatar video",
+      "Pipeline for inbound DMs",
+      "Email support",
     ],
   },
   {
     id: "scale",
     name: "Business",
     priceKind: "paid",
-    description: "For multi-brand operators and small teams.",
+    description: "For operators who post daily and want the numbers.",
     features: [
       "150 AI posts / month",
-      "40 AI images / month",
-      "Unlimited accounts — all 8 platforms",
       "DM inbox & comment replies",
-      "Optimal-slot auto-scheduling",
-      "Team seats (up to 3) & approvals",
-      "Advanced analytics",
+      "Trend Radar with hook angles",
+      "Full analytics, down to each post",
+      "Everything in Creator",
       "Priority support",
     ],
     highlighted: true,
@@ -54,12 +55,11 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
     cta: "contact",
     contactHref: "mailto:sales@linka.studio",
     features: [
-      "Unlimited posts & images",
-      "Unlimited team seats",
-      "SSO & role-based access",
-      "Audit logs & data export",
+      "Custom post, image & video limits",
+      "Onboarding done with you",
+      "Admin controls & audit trail",
       "Dedicated account manager",
-      "Custom SLA & onboarding",
+      "Custom SLA",
     ],
   },
 ];
