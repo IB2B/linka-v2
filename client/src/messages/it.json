@@ -150,64 +150,40 @@
       "newLabel": "Novità",
       "items": [
         {
-          "tag": "Voice Lab",
-          "title": "Scrive con la tua voce",
-          "body": "Addestrata sui post che hai già scritto — incollali, carica un file o importa l'export di LinkedIn. Linka impara i tuoi hook, il ritmo e le chiusure."
+          "title": "Scrive con la tua voce"
         },
         {
-          "tag": "Per piattaforma",
-          "title": "Riscrive, non ricopia",
-          "body": "La stessa idea diventa una storia su LinkedIn, una battuta secca su X e un post su Reddit senza voce da marketing. Lunghezza, tono e formato seguono la piattaforma."
+          "title": "Riscrive, non ricopia"
         },
         {
-          "tag": "Image Studio",
-          "title": "Disegna le immagini",
-          "body": "Immagini costruite dal mondo del post stesso, con i colori del tuo brand e il logo dove lo vuoi. Orizzontale, quadrato o verticale."
+          "title": "Disegna le immagini"
         },
         {
-          "tag": "Video Avatar",
-          "title": "Ti mette davanti alla camera",
-          "body": "Trasforma un post in un video parlato con il tuo avatar e la tua voce — verticale o orizzontale, nella lingua in cui l'hai scritto. Senza riprese, senza montaggio."
+          "title": "Ti mette davanti alla camera"
         },
         {
-          "tag": "23 lingue",
-          "title": "Scrive nella tua lingua",
-          "body": "Imposti la lingua una volta e il post, il titolo, gli hashtag e le risposte escono nativi — non inglese passato da un traduttore."
+          "title": "Scrive nella tua lingua"
         },
         {
-          "tag": "Regole delle piattaforme",
-          "title": "Hashtag e titoli che si comportano bene",
-          "body": "Tre tag su LinkedIn, cinque su Instagram, nessuno su Reddit — imposti, non suggeriti. I tag vengono scelti leggendo il post finito, mai inventati."
+          "title": "Hashtag e titoli che si comportano bene"
         },
         {
-          "tag": "Titoli",
-          "title": "Scrive anche il titolo",
-          "body": "Un titolo su ogni post, entro il limite di caratteri di ogni piattaforma — e mai assente su Reddit, YouTube e Pinterest, dove senza titolo non si pubblica."
+          "title": "Scrive anche il titolo"
         },
         {
-          "tag": "Calendario",
-          "title": "Programma ovunque",
-          "body": "Una griglia per tutte e dieci le piattaforme. Metti in coda una settimana, sposta un post in uno slot migliore e Linka pubblica via API ufficiale."
+          "title": "Programma ovunque"
         },
         {
-          "tag": "Trend Radar",
-          "title": "I trend, prima del picco",
-          "body": "Argomenti freschi della tua nicchia, con punteggio e data, ognuno con angoli di hook da mandare subito a chi scrive."
+          "title": "I trend, prima del picco"
         },
         {
-          "tag": "Inbox",
-          "title": "Risposte già scritte",
-          "body": "DM e commenti dai tuoi account in un'unica lista, ognuno con una risposta già pronta nel tuo tono. Tu controlli, lei invia."
+          "title": "Risposte già scritte"
         },
         {
-          "tag": "Analytics",
-          "title": "Dati che agiscono",
-          "body": "Quali hook, orari, formati e piattaforme portano davvero reach — post per post, con il contributo dell'immagine e i post più debolli in evidenza."
+          "title": "Dati che agiscono"
         },
         {
-          "tag": "Pipeline",
-          "title": "Trasforma i post in trattative",
-          "body": "Sposti un DM in arrivo su una board, mantieni la piattaforma di origine e lo segui fino alla call chiusa, senza un secondo CRM."
+          "title": "Trasforma i post in trattative"
         }
       ]
     },
@@ -321,19 +297,18 @@
     "process": {
       "eyebrow": "Come funziona",
       "title": "Dalla registrazione al primo post in pochi minuti.",
-      "stepLabel": "Passo",
       "steps": [
         {
           "title": "Collega i tuoi account",
-          "body": "Colleghi LinkedIn, Instagram, X, TikTok, YouTube e le altre in pochi secondi tramite API ufficiali. Poi metti qualche vecchio post nel Voice Lab per insegnarle il tuo tono."
+          "body": "LinkedIn, Instagram, X, TikTok e le altre — in pochi secondi, API ufficiali."
         },
         {
           "title": "Un briefing, per ogni piattaforma",
-          "body": "Chi sei, cosa fai, i colori del brand e il logo — poi un obiettivo, un tono e i tipi di post che vuoi, separatamente per ogni piattaforma."
+          "body": "Chi sei, i tuoi colori, il tuo obiettivo. Una volta, per piattaforma."
         },
         {
           "title": "Approva e pubblica",
-          "body": "Le bozze arrivano con immagine, titolo e hashtag già al loro posto. Approvi, cambi una parola se vuoi, ed escono nello slot giusto."
+          "body": "Le bozze arrivano finite. Approvi, ed escono nello slot giusto."
         }
       ]
     },

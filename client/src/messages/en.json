@@ -150,64 +150,40 @@
       "newLabel": "New",
       "items": [
         {
-          "tag": "Voice Lab",
-          "title": "Writes in your voice",
-          "body": "Trained on posts you've already written — paste them, upload a file, or import your LinkedIn export. Linka learns your hooks, rhythm and sign-offs."
+          "title": "Writes in your voice"
         },
         {
-          "tag": "Per-platform",
-          "title": "Rewrites, never cross-posts",
-          "body": "The same idea becomes a LinkedIn story, an X one-liner and a Reddit post with no marketing voice. Length, tone and format follow each platform."
+          "title": "Rewrites, never cross-posts"
         },
         {
-          "tag": "Image Studio",
-          "title": "Designs the visuals",
-          "body": "Images built from the post's own world, in your brand colours, with your logo placed where you want it. Landscape, square or portrait."
+          "title": "Designs the visuals"
         },
         {
-          "tag": "Avatar Video",
-          "title": "Puts you on camera",
-          "body": "Turns a post into a talking-head video with your avatar and voice — vertical or landscape, in the language you wrote it in. No filming, no editing."
+          "title": "Puts you on camera"
         },
         {
-          "tag": "23 Languages",
-          "title": "Writes in your language",
-          "body": "Set your language once and the post, the title, the hashtags and the replies all come out native — not English run through a translator."
+          "title": "Writes in your language"
         },
         {
-          "tag": "Platform Rules",
-          "title": "Hashtags and titles that behave",
-          "body": "Three tags on LinkedIn, five on Instagram, none on Reddit — enforced, not requested. Tags are picked after reading the finished post, never invented."
+          "title": "Hashtags and titles that behave"
         },
         {
-          "tag": "Titles",
-          "title": "Writes the headline too",
-          "body": "A title on every post, written to each platform's own character limit — and never missing on Reddit, YouTube or Pinterest, where nothing publishes without one."
+          "title": "Writes the headline too"
         },
         {
-          "tag": "Calendar",
-          "title": "Schedules everywhere",
-          "body": "One grid for all ten platforms. Queue a week, move a post to a better slot, and Linka publishes it through the official API."
+          "title": "Schedules everywhere"
         },
         {
-          "tag": "Trend Radar",
-          "title": "Trends, before they peak",
-          "body": "Fresh topics in your niche, scored and dated, each one with hook angles you can send straight to the writer."
+          "title": "Trends, before they peak"
         },
         {
-          "tag": "Inbox",
-          "title": "Replies drafted for you",
-          "body": "DMs and comments from your connected accounts in one list, each with a reply already written in your tone. You review, it sends."
+          "title": "Replies drafted for you"
         },
         {
-          "tag": "Analytics",
-          "title": "Insights that act",
-          "body": "Which hooks, times, formats and platforms actually earn reach — per post, with the image's contribution and your weakest posts called out."
+          "title": "Insights that act"
         },
         {
-          "tag": "Pipeline",
-          "title": "Turns posts into deals",
-          "body": "Move an inbound DM onto a board, keep the platform it came from attached, and track it to a closed call without a second CRM."
+          "title": "Turns posts into deals"
         }
       ]
     },
@@ -321,19 +297,18 @@
     "process": {
       "eyebrow": "Process",
       "title": "From signup to your first post in minutes.",
-      "stepLabel": "Step",
       "steps": [
         {
           "title": "Connect your accounts",
-          "body": "Link LinkedIn, Instagram, X, TikTok, YouTube and the rest in seconds through official APIs. Then drop a few old posts into Voice Lab so Linka learns your tone."
+          "body": "LinkedIn, Instagram, X, TikTok and the rest — in seconds, official APIs."
         },
         {
           "title": "Brief it once, per platform",
-          "body": "Who you are, what you do, your brand colours and logo — then a goal, a tone and the post types you want for each platform separately."
+          "body": "Who you are, your colours, your goal. Set once, per platform."
         },
         {
           "title": "Approve and publish",
-          "body": "Drafts arrive with the image, the title and the hashtags already in place. Approve, tweak a word if you like, and they go out at the right slot."
+          "body": "Drafts arrive finished. Approve, and they go out at the right slot."
         }
       ]
     },

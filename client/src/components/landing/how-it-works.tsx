@@ -12,9 +12,15 @@ export async function HowItWorks() {
   return (
     <section id="process" className="relative z-10 mx-auto w-full max-w-6xl px-6 py-24">
       <SectionHeading eyebrow={t("eyebrow")} title={t("title")} />
-      <div className="mt-12 grid gap-8 md:grid-cols-3">
+      <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
         {steps.map((s, i) => (
-          <StepCard key={STEP_NUMBERS[i]} n={STEP_NUMBERS[i]} title={s.title} body={s.body} stepLabel={t("stepLabel")} />
+          <StepCard
+            key={STEP_NUMBERS[i]}
+            n={STEP_NUMBERS[i]}
+            title={s.title}
+            body={s.body}
+            isLast={i === steps.length - 1}
+          />
         ))}
       </div>
     </section>
