@@ -584,6 +584,7 @@
       ]
     },
     "faq": {
+      "stillStuck": "Il manque quelque chose ?",
       "eyebrow": "FAQ",
       "title": "Ce qu'on demande avant de s'inscrire.",
       "items": [
@@ -643,8 +644,7 @@
     "footer": {
       "tagline": "Croissance sociale boostée par l'IA pour les fondateurs qui préfèrent livrer que poster.",
       "product": "Produit",
-      "company": "Entreprise",
-      "legal": "Légal",
+      "account": "Compte",
       "copyright": "© {year} linka — tous droits réservés",
       "developedBy": "Développé par",
       "contactIntro": "Au plaisir de vous lire :"

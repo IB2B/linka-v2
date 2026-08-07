@@ -584,6 +584,7 @@
       ]
     },
     "faq": {
+      "stillStuck": "Noch etwas offen?",
       "eyebrow": "FAQ",
       "title": "Was Leute vor der Anmeldung fragen.",
       "items": [
@@ -643,8 +644,7 @@
     "footer": {
       "tagline": "KI-gestütztes Social-Wachstum für Gründer, die lieber liefern als posten.",
       "product": "Produkt",
-      "company": "Unternehmen",
-      "legal": "Rechtliches",
+      "account": "Konto",
       "copyright": "© {year} linka — alle Rechte vorbehalten",
       "developedBy": "Entwickelt von",
       "contactIntro": "Wir freuen uns auf Sie:"

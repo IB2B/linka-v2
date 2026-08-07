@@ -584,6 +584,7 @@
       ]
     },
     "faq": {
+      "stillStuck": "Manca qualcosa?",
       "eyebrow": "FAQ",
       "title": "Le domande che arrivano prima di iscriversi.",
       "items": [
@@ -643,8 +644,7 @@
     "footer": {
       "tagline": "Crescita social guidata dall'IA per founder che preferiscono spedire che postare.",
       "product": "Prodotto",
-      "company": "Azienda",
-      "legal": "Legale",
+      "account": "Account",
       "copyright": "© {year} linka — tutti i diritti riservati",
       "developedBy": "Sviluppato da",
       "contactIntro": "Non vediamo l'ora di sentirti:"

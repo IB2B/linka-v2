@@ -584,6 +584,7 @@
       ]
     },
     "faq": {
+      "stillStuck": "Something we did not cover?",
       "eyebrow": "FAQ",
       "title": "Things people ask before signing.",
       "items": [
@@ -643,8 +644,7 @@
     "footer": {
       "tagline": "AI-led social growth for founders who'd rather ship than post.",
       "product": "Product",
-      "company": "Company",
-      "legal": "Legal",
+      "account": "Account",
       "copyright": "© {year} linka — all rights reserved",
       "developedBy": "Developed by",
       "contactIntro": "We look forward to seeing you:"

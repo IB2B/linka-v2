@@ -584,6 +584,7 @@
       ]
     },
     "faq": {
+      "stillStuck": "¿Falta algo?",
       "eyebrow": "FAQ",
       "title": "Lo que preguntan antes de registrarse.",
       "items": [
@@ -643,8 +644,7 @@
     "footer": {
       "tagline": "Crecimiento social con IA para fundadores que prefieren entregar antes que publicar.",
       "product": "Producto",
-      "company": "Empresa",
-      "legal": "Legal",
+      "account": "Cuenta",
       "copyright": "© {year} linka — todos los derechos reservados",
       "developedBy": "Desarrollado por",
       "contactIntro": "Estaremos encantados de saludarte:"
