@@ -295,6 +295,27 @@ a[href] {
   }
 }
 
+/* Testimonial marquee. The track holds the list twice, so travelling exactly
+   -50% lands on the duplicate and the loop is seamless. Without motion the
+   track simply sits still and the first screenful stays readable. */
+@keyframes marquee-track {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track {
+    animation: marquee-track var(--marquee-duration, 60s) linear infinite;
+    animation-direction: var(--marquee-direction, normal);
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

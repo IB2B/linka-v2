@@ -360,22 +360,58 @@
       "title": "El trabajo habla. Ellos también.",
       "items": [
         {
-          "quote": "Cancelé mi agencia de 2,4k $/mes en la segunda semana. Linka la supera en cada métrica y nunca falla un post del lunes.",
+          "quote": "Cancelé mi agencia de 2.400 $/mes en la segunda semana. Linka nunca falla un lunes.",
           "name": "Maya R.",
           "role": "Fundadora, Stitchwave",
-          "metric": "+184% de alcance"
+          "metric": "+184% reach"
         },
         {
-          "quote": "Clava mi voz de forma asombrosa. Tres de mis últimos cinco hooks virales eran borradores de Linka que apenas edité.",
+          "quote": "Clava mi voz. Tres de mis últimos cinco hooks virales eran borradores suyos.",
           "name": "Devon K.",
           "role": "SaaS en solitario, indie hacker",
-          "metric": "12,3k → 41k"
+          "metric": "12.3k → 41k"
         },
         {
-          "quote": "La bandeja en piloto automático es la función estrella. No escribo una respuesta a un comentario desde hace 6 semanas y las respuestas suben.",
+          "quote": "Llevo seis semanas sin escribir una respuesta, y las respuestas suben.",
           "name": "Priya S.",
-          "role": "Coach & creadora",
-          "metric": "4,2x respuestas"
+          "role": "Coach y creadora",
+          "metric": "4.2x replies"
+        },
+        {
+          "quote": "Programar me comía el domingo. Ahora son veinte minutos el lunes.",
+          "name": "Tomas L.",
+          "role": "Head of growth, Nordwerk",
+          "metric": "3h → 20m"
+        },
+        {
+          "quote": "Un lanzamiento, nueve plataformas, nueve posts distintos. Nadie lo nota.",
+          "name": "Aisha B.",
+          "role": "Responsable de marketing, Palova",
+          "metric": "9 platforms"
+        },
+        {
+          "quote": "Las imágenes sí encajan con el post. Dejé de abrir Canva.",
+          "name": "Lucas M.",
+          "role": "Fundador, Trailhand",
+          "metric": "0 designers"
+        },
+        {
+          "quote": "Escribe un español que suena a mí, no a traducción.",
+          "name": "Jonas W.",
+          "role": "Consultor, Hamburgo",
+          "metric": "+61% saves"
+        },
+        {
+          "quote": "Los DMs entrantes caen en el tablero. Catorce llamadas cerradas el trimestre pasado.",
+          "name": "Rina O.",
+          "role": "Dueña de agencia, Kite & Co",
+          "metric": "14 deals"
+        },
+        {
+          "quote": "Cinco pestañas se volvieron una. Todo el equipo vive en el calendario.",
+          "name": "Ben K.",
+          "role": "Ecommerce, Halden",
+          "metric": "6 → 1 tool"
         }
       ]
     },

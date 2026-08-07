@@ -360,22 +360,58 @@
       "title": "Il lavoro parla. Anche loro.",
       "items": [
         {
-          "quote": "Ho disdetto la mia agenzia da 2,4k $/mese alla seconda settimana. Linka la batte su ogni metrica e non salta mai un post del lunedì.",
+          "quote": "Ho disdetto l'agenzia da 2.400 €/mese alla seconda settimana. Linka non salta un lunedì.",
           "name": "Maya R.",
-          "role": "Founder, Stitchwave",
-          "metric": "+184% di copertura"
+          "role": "Fondatrice, Stitchwave",
+          "metric": "+184% reach"
         },
         {
-          "quote": "Azzecca la mia voce in modo impressionante. Tre dei miei ultimi cinque hook virali erano bozze di Linka che ho ritoccato appena.",
+          "quote": "Prende il mio tono in pieno. Tre dei miei ultimi cinque hook virali erano bozze sue.",
           "name": "Devon K.",
-          "role": "SaaS solo, indie hacker",
-          "metric": "12,3k → 41k"
+          "role": "SaaS in solo, indie hacker",
+          "metric": "12.3k → 41k"
         },
         {
-          "quote": "L'Inbox in automatico è la funzione decisiva. Non scrivo una risposta a un commento da 6 settimane e le risposte sono aumentate.",
+          "quote": "Non scrivo una risposta da sei settimane, e le risposte crescono.",
           "name": "Priya S.",
-          "role": "Coach & creator",
-          "metric": "4,2x risposte"
+          "role": "Coach e creator",
+          "metric": "4.2x replies"
+        },
+        {
+          "quote": "Programmare mi mangiava la domenica. Ora sono venti minuti il lunedì.",
+          "name": "Tomas L.",
+          "role": "Head of growth, Nordwerk",
+          "metric": "3h → 20m"
+        },
+        {
+          "quote": "Un lancio, nove piattaforme, nove post diversi. Nessuno se ne accorge.",
+          "name": "Aisha B.",
+          "role": "Responsabile marketing, Palova",
+          "metric": "9 platforms"
+        },
+        {
+          "quote": "Le immagini c'entrano davvero col post. Ho smesso di aprire Canva.",
+          "name": "Lucas M.",
+          "role": "Fondatore, Trailhand",
+          "metric": "0 designers"
+        },
+        {
+          "quote": "Scrive un italiano che suona come me, non come una traduzione.",
+          "name": "Jonas W.",
+          "role": "Consulente, Amburgo",
+          "metric": "+61% saves"
+        },
+        {
+          "quote": "I DM in arrivo finiscono sulla board. Quattordici call chiuse lo scorso trimestre.",
+          "name": "Rina O.",
+          "role": "Titolare d'agenzia, Kite & Co",
+          "metric": "14 deals"
+        },
+        {
+          "quote": "Cinque schede sono diventate una. Tutto il team vive nel calendario.",
+          "name": "Ben K.",
+          "role": "Ecommerce, Halden",
+          "metric": "6 → 1 tool"
         }
       ]
     },

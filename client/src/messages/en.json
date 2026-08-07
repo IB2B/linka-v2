@@ -360,22 +360,58 @@
       "title": "The work speaks. They speak too.",
       "items": [
         {
-          "quote": "I cancelled my $2.4k/mo agency in week two. Linka outperforms them on every metric and never misses a Monday post.",
+          "quote": "I cancelled my $2.4k/mo agency in week two. Linka never misses a Monday.",
           "name": "Maya R.",
           "role": "Founder, Stitchwave",
           "metric": "+184% reach"
         },
         {
-          "quote": "It nails my voice scary-well. Three of my last five viral hooks were Linka drafts I barely edited.",
+          "quote": "It nails my voice. Three of my last five viral hooks were Linka drafts.",
           "name": "Devon K.",
           "role": "Solo SaaS, indie hacker",
           "metric": "12.3k → 41k"
         },
         {
-          "quote": "The Inbox is the killer feature. I haven't typed a comment reply in 6 weeks and replies are up.",
+          "quote": "I haven't typed a comment reply in six weeks, and replies are up.",
           "name": "Priya S.",
           "role": "Coach & creator",
           "metric": "4.2x replies"
+        },
+        {
+          "quote": "Scheduling used to eat my Sunday. Now it's twenty minutes on Monday.",
+          "name": "Tomas L.",
+          "role": "Head of growth, Nordwerk",
+          "metric": "3h → 20m"
+        },
+        {
+          "quote": "One launch, nine platforms, nine different posts. Nobody can tell.",
+          "name": "Aisha B.",
+          "role": "Marketing lead, Palova",
+          "metric": "9 platforms"
+        },
+        {
+          "quote": "The images actually match the post. I stopped opening Canva.",
+          "name": "Lucas M.",
+          "role": "Founder, Trailhand",
+          "metric": "0 designers"
+        },
+        {
+          "quote": "It writes German that sounds like me, not like a translation.",
+          "name": "Jonas W.",
+          "role": "Consultant, Hamburg",
+          "metric": "+61% saves"
+        },
+        {
+          "quote": "Inbound DMs land on the board. Fourteen calls closed last quarter.",
+          "name": "Rina O.",
+          "role": "Agency owner, Kite & Co",
+          "metric": "14 deals"
+        },
+        {
+          "quote": "Five tabs became one. The whole team works out of the calendar now.",
+          "name": "Ben K.",
+          "role": "Ecommerce, Halden",
+          "metric": "6 → 1 tool"
         }
       ]
     },

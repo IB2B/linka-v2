@@ -360,22 +360,58 @@
       "title": "Le travail parle. Eux aussi.",
       "items": [
         {
-          "quote": "J'ai résilié mon agence à 2,4k $/mois dès la deuxième semaine. Linka la dépasse sur chaque métrique et ne rate jamais un post du lundi.",
+          "quote": "J'ai résilié mon agence à 2 400 €/mois dès la deuxième semaine. Linka ne rate jamais un lundi.",
           "name": "Maya R.",
           "role": "Fondatrice, Stitchwave",
-          "metric": "+184% de portée"
+          "metric": "+184% reach"
         },
         {
-          "quote": "Elle capte ma voix de façon bluffante. Trois de mes cinq derniers hooks viraux étaient des brouillons Linka à peine retouchés.",
+          "quote": "Elle a mon ton exact. Trois de mes cinq derniers hooks viraux étaient des brouillons Linka.",
           "name": "Devon K.",
           "role": "SaaS solo, indie hacker",
-          "metric": "12,3k → 41k"
+          "metric": "12.3k → 41k"
         },
         {
-          "quote": "La messagerie en pilote auto est la fonction décisive. Je n'ai pas tapé une réponse en commentaire depuis 6 semaines et les réponses augmentent.",
+          "quote": "Je n'ai pas tapé une réponse depuis six semaines, et les réponses augmentent.",
           "name": "Priya S.",
-          "role": "Coach & créatrice",
-          "metric": "4,2x réponses"
+          "role": "Coach et créatrice",
+          "metric": "4.2x replies"
+        },
+        {
+          "quote": "La planification me prenait le dimanche. Maintenant, vingt minutes le lundi.",
+          "name": "Tomas L.",
+          "role": "Head of growth, Nordwerk",
+          "metric": "3h → 20m"
+        },
+        {
+          "quote": "Un lancement, neuf plateformes, neuf posts différents. Personne ne voit rien.",
+          "name": "Aisha B.",
+          "role": "Responsable marketing, Palova",
+          "metric": "9 platforms"
+        },
+        {
+          "quote": "Les images collent vraiment au post. J'ai arrêté d'ouvrir Canva.",
+          "name": "Lucas M.",
+          "role": "Fondateur, Trailhand",
+          "metric": "0 designers"
+        },
+        {
+          "quote": "Elle écrit un français qui me ressemble, pas une traduction.",
+          "name": "Jonas W.",
+          "role": "Consultant, Hambourg",
+          "metric": "+61% saves"
+        },
+        {
+          "quote": "Les DM entrants arrivent sur le board. Quatorze calls signés le trimestre dernier.",
+          "name": "Rina O.",
+          "role": "Dirigeante d'agence, Kite & Co",
+          "metric": "14 deals"
+        },
+        {
+          "quote": "Cinq onglets sont devenus un. Toute l'équipe vit dans le calendrier.",
+          "name": "Ben K.",
+          "role": "E-commerce, Halden",
+          "metric": "6 → 1 tool"
         }
       ]
     },
