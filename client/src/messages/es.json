@@ -583,18 +583,6 @@
         }
       ]
     },
-    "integrations": {
-      "eyebrow": "Con tecnología de",
-      "title": "Modelos de primera. Infraestructura aburrida y fiable.",
-      "roles": {
-        "text": "escritura",
-        "image": "imágenes",
-        "video": "vídeo avatar",
-        "trends": "tendencias y noticias",
-        "billing": "pagos",
-        "infra": "entrega"
-      }
-    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Lo que preguntan antes de registrarse.",

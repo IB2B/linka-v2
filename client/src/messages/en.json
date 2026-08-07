@@ -583,18 +583,6 @@
         }
       ]
     },
-    "integrations": {
-      "eyebrow": "Powered by",
-      "title": "Best-in-class models. Boring, reliable plumbing.",
-      "roles": {
-        "text": "writing",
-        "image": "images",
-        "video": "avatar video",
-        "trends": "trends & news",
-        "billing": "billing",
-        "infra": "delivery"
-      }
-    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Things people ask before signing.",

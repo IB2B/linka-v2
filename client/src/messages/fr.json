@@ -583,18 +583,6 @@
         }
       ]
     },
-    "integrations": {
-      "eyebrow": "Propulsé par",
-      "title": "Les meilleurs modèles. Une plomberie fiable et sans surprise.",
-      "roles": {
-        "text": "rédaction",
-        "image": "images",
-        "video": "vidéo avatar",
-        "trends": "tendances & actu",
-        "billing": "paiements",
-        "infra": "diffusion"
-      }
-    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Ce qu'on demande avant de s'inscrire.",

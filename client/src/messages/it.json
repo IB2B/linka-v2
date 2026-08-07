@@ -583,18 +583,6 @@
         }
       ]
     },
-    "integrations": {
-      "eyebrow": "Con la tecnologia di",
-      "title": "Modelli al top. Infrastruttura noiosa e affidabile.",
-      "roles": {
-        "text": "scrittura",
-        "image": "immagini",
-        "video": "video avatar",
-        "trends": "trend e news",
-        "billing": "pagamenti",
-        "infra": "consegna"
-      }
-    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Le domande che arrivano prima di iscriversi.",

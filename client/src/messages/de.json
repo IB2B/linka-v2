@@ -583,18 +583,6 @@
         }
       ]
     },
-    "integrations": {
-      "eyebrow": "Angetrieben von",
-      "title": "Erstklassige Modelle. Langweilig verlässliche Infrastruktur.",
-      "roles": {
-        "text": "Texte",
-        "image": "Bilder",
-        "video": "Avatar-Video",
-        "trends": "Trends & News",
-        "billing": "Zahlungen",
-        "infra": "Auslieferung"
-      }
-    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Was Leute vor der Anmeldung fragen.",

@@ -11,7 +11,6 @@ import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { MetricsStrip } from "@/components/landing/metrics-strip";
 import { ComparisonSection } from "@/components/landing/comparison-section";
 import { PricingSection } from "@/components/landing/pricing-section";
-import { IntegrationsStrip } from "@/components/landing/integrations-strip";
 import { FaqSection } from "@/components/landing/faq-section";
 import { FinalCta } from "@/components/landing/final-cta";
 import { LandingFooter } from "@/components/landing/landing-footer";
@@ -34,7 +33,6 @@ export default function Home() {
         <MetricsStrip />
         <ComparisonSection />
         <PricingSection />
-        <IntegrationsStrip />
         <FaqSection />
         <FinalCta />
         <LandingFooter />
