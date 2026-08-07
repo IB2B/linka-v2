@@ -20,22 +20,29 @@ export default function Home() {
     <div
       className={`${landingFont.className} min-h-screen bg-[#EDEFF3] tracking-tight text-[#0F1113] sm:p-3`}
     >
-      <div className="relative overflow-hidden bg-white ring-1 ring-[#0F1113]/5 sm:rounded-[28px]">
+      {/* overflow-clip, not overflow-hidden: hidden would make this a scroll
+          container, which hijacks view() timelines and position: sticky from
+          the document. clip still respects the rounded corners. */}
+      <div className="relative overflow-clip bg-white ring-1 ring-[#0F1113]/5 sm:rounded-[28px]">
         <LandingBg />
         <LandingNav />
         <LandingHero />
-        <PlatformsStrip />
-        <FeaturesSection />
-        <ProductTourSection />
-        <HowItWorks />
-        <UseCasesSection />
-        <TestimonialsSection />
-        <MetricsStrip />
-        <ComparisonSection />
-        <PricingSection />
-        <FaqSection />
-        <FinalCta />
-        <LandingFooter />
+        {/* Nav and hero stay outside the reveal — the first thing you see
+            should already be there. */}
+        <div className="reveal">
+          <PlatformsStrip />
+          <FeaturesSection />
+          <ProductTourSection />
+          <HowItWorks />
+          <UseCasesSection />
+          <TestimonialsSection />
+          <MetricsStrip />
+          <ComparisonSection />
+          <PricingSection />
+          <FaqSection />
+          <FinalCta />
+          <LandingFooter />
+        </div>
       </div>
     </div>
   );
