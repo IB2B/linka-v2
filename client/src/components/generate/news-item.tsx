@@ -1,16 +1,25 @@
 "use client";
 
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { SelectDot } from "./select-dot";
+import { cn } from "@/lib/utils";
 import type { NewsArticle } from "@/types/content";
 
-type Props = { article: NewsArticle; disabled: boolean; onClick: () => void };
+type Props = {
+  article: NewsArticle; selected: boolean; disabled: boolean; onClick: () => void;
+};
 
-export function NewsItem({ article, disabled, onClick }: Props) {
+export function NewsItem({ article, selected, disabled, onClick }: Props) {
   return (
-    <div className="group relative flex items-start gap-3 rounded-md border bg-card p-3 transition-colors hover:border-primary/50 hover:bg-muted/40">
+    <div className={cn(
+      "group relative flex items-start gap-3 rounded-md border bg-card p-3 transition-colors",
+      selected ? "border-primary bg-primary/5 ring-1 ring-primary" : "hover:border-primary/50 hover:bg-muted/40",
+    )}>
       <button
         type="button"
+        role="radio"
+        aria-checked={selected}
         onClick={onClick}
         disabled={disabled}
         className="min-w-0 flex-1 space-y-1.5 text-left disabled:cursor-not-allowed disabled:opacity-50"
@@ -21,8 +30,8 @@ export function NewsItem({ article, disabled, onClick }: Props) {
         ) : null}
         <Badge variant="outline" className="text-xs">{article.source}</Badge>
       </button>
-      <div className="flex shrink-0 flex-col items-center gap-1.5">
-        <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+      <div className="flex shrink-0 flex-col items-center gap-2">
+        <SelectDot selected={selected} />
         {article.url && article.url !== "#" ? (
           <a
             href={article.url}

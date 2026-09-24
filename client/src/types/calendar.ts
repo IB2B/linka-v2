@@ -10,3 +10,4 @@ export type CalendarDay = {
 
 export type StatusFilter = "all" | PostStatus;
 export type PlatformFilter = "all" | string;
+export type CalendarViewMode = "day" | "week" | "month" | "year";

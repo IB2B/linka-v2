@@ -22,3 +22,11 @@ export async function loadGroupOwners(): Promise<Map<string, string>> {
   );
   return new Map(rows.map((r) => [r.group_id, r.user_id]));
 }
+
+// Who uploaded this group, or null for a house avatar anyone may use.
+export async function groupOwner(groupId: string): Promise<string | null> {
+  const [rows] = await db.query<Row[]>(
+    "SELECT group_id, user_id FROM user_avatar_groups WHERE group_id = ?", [groupId],
+  );
+  return rows[0]?.user_id ?? null;
+}

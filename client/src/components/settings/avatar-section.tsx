@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { SettingsSection } from "./settings-section";
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,18 @@ import { Spinner } from "@/components/ui/spinner";
 import { AvatarSourceTabs } from "./avatar/avatar-source-tabs";
 import { VoicePicker } from "./avatar/voice-picker";
 import { useAvatarConfig } from "./avatar/use-avatar-config";
+import { useAvatarSave } from "./avatar/use-avatar-save";
+import { AvatarUploadCard } from "./avatar/avatar-upload-card";
 
 export function AvatarSection() {
   const c = useAvatarConfig();
+  const { saving, save } = useAvatarSave(c.avatarId, c.voiceId);
+  const { reloadGroups, setAvatarId } = c;
+  // A new photo avatar finished training: show it and pick it straight away.
+  const onAvatarReady = useCallback(async (lookId: string) => {
+    await reloadGroups();
+    setAvatarId(lookId);
+  }, [reloadGroups, setAvatarId]);
 
   // Stock is the only source for a user with no avatars of their own, so it is
   // loaded up front rather than waiting for them to type a search.
@@ -29,6 +38,7 @@ export function AvatarSection() {
         </div>
       ) : (
         <div className="space-y-6">
+          <AvatarUploadCard onReady={onAvatarReady} />
           <AvatarSourceTabs
             groups={c.groups} looks={c.looks} stock={c.stock}
             selectedId={c.avatarId}
@@ -41,8 +51,8 @@ export function AvatarSection() {
             language={c.voiceLanguage}
             onLanguageChange={c.changeVoiceLanguage} />
           <div className="flex items-center gap-3">
-            <Button onClick={c.save} disabled={c.saving}>
-              {c.saving ? <Spinner aria-hidden /> : null}
+            <Button onClick={save} disabled={saving}>
+              {saving ? <Spinner aria-hidden /> : null}
               Save avatar
             </Button>
             {!c.avatarId || !c.voiceId ? (

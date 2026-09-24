@@ -2,7 +2,7 @@
 
 import { Newspaper, PenLine } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { NewsPicker } from "./news-picker";
+import { NewsTopicPanel } from "./news-topic-panel";
 import { TopicChooser } from "./topic-chooser";
 import { getPostTypeMeta } from "@/lib/content/post-type-utils";
 import type { NewsArticle, PostType } from "@/types/content";
@@ -38,16 +38,16 @@ export function TopicSection({ postType, initialNews, pending, language, onGener
             </CardTitle>
             <CardDescription className="mt-0.5">
               {isNews
-                ? "Pick a story — we'll draft a commentary post in your voice."
-                : `${meta.description}. Pick an AI suggestion or write your own.`}
+                ? "Pick one story, then press Generate — we'll draft a commentary post in your voice."
+                : `${meta.description}. Pick one AI suggestion or write your own.`}
             </CardDescription>
           </div>
         </div>
       </CardHeader>
       <CardContent>
         {isNews ? (
-          <NewsPicker articles={initialNews} pending={pending}
-            onSelect={(article) => onGenerate({ article, label: article.title })} />
+          <NewsTopicPanel articles={initialNews} pending={pending}
+            onGenerate={(article) => onGenerate({ article, label: article.title })} />
         ) : (
           <TopicChooser postType={postType} pending={pending} language={language}
             onGenerate={(topic) => onGenerate({ topic, label: topic })} />

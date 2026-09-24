@@ -535,7 +535,8 @@
             "Tutte e 10 le piattaforme",
             "Immagini IA — fino a 20 / giorno",
             "Voice Lab & brand kit",
-            "Calendario e programmazione"
+            "Calendario e programmazione",
+            "Rigenerazioni del testo illimitate"
           ]
         },
         {
@@ -546,10 +547,12 @@
           "cta": "Scegli Creator",
           "features": [
             "30 post IA / mese",
+            "Immagini IA — fino a 20 / giorno",
+            "Video avatar — fino a 3 / giorno",
             "Obiettivo, tono e tipi di post per piattaforma",
             "23 lingue, scritte in modo nativo",
-            "Immagini IA + video avatar",
             "Pipeline per i DM in arrivo",
+            "Rigenerazioni del testo illimitate",
             "Supporto via email"
           ]
         },
@@ -561,6 +564,8 @@
           "cta": "Scegli Business",
           "features": [
             "150 post IA / mese",
+            "Immagini IA — fino a 20 / giorno",
+            "Video avatar — fino a 3 / giorno",
             "Inbox DM e risposte ai commenti",
             "Trend Radar con angoli di hook",
             "Analytics completa, post per post",
@@ -582,7 +587,8 @@
             "SLA personalizzato"
           ]
         }
-      ]
+      ],
+      "footnote": "1 post = 1 versione per piattaforma: un post per LinkedIn e X ne usa 2. Rigenerare il testo è gratis. I limiti dei post si azzerano il 1° di ogni mese; quelli di immagini e video ogni 24 ore."
     },
     "faq": {
       "stillStuck": "Manca qualcosa?",

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "../lib/db";
 import { authenticate, type AuthRequest } from "../middleware/auth";
 import { getUserMe } from "../lib/user-me-query";
+import { getUsageSummary } from "../lib/user-usage";
 import { changePassword } from "./users-password";
 import { patchProfile } from "./users-profile";
 import avatarRouter from "./users-avatar";
@@ -24,6 +25,10 @@ router.get("/me", async (req: AuthRequest, res, next) => {
     if (!user) { res.status(404).json({ error: "Not found" }); return; }
     res.json(user);
   } catch (e) { next(e); }
+});
+
+router.get("/me/usage", (req: AuthRequest, res, next) => {
+  getUsageSummary(req.user!.id).then((u) => res.json(u)).catch(next);
 });
 
 router.patch("/me", async (req: AuthRequest, res, next) => {

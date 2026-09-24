@@ -14,14 +14,16 @@ type Props = {
   postType: PostType;
   pending: boolean;
   language: string;
-  onSelect: (topic: string) => void;
+  selected: string | null;
+  onSelect: (topic: string | null) => void;
 };
 
-export function SuggestionsList({ postType, pending, language, onSelect }: Props) {
+export function SuggestionsList({ postType, pending, language, selected, onSelect }: Props) {
   const [items, setItems] = useState<TopicSuggestion[]>([]);
   const [loading, start] = useTransition();
 
   function load(refresh = false) {
+    onSelect(null);
     start(async () => {
       const res = await suggestTopics(postType, 5, refresh, language);
       if (res.error) toast.error(res.error);
@@ -39,14 +41,9 @@ export function SuggestionsList({ postType, pending, language, onSelect }: Props
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          Click a topic to generate.
+          Pick one topic, then press Generate.
         </p>
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => load(true)}
-          disabled={loading || pending}
-        >
+        <Button size="sm" variant="ghost" onClick={() => load(true)} disabled={loading || pending}>
           <RefreshCw className={loading ? "size-4 animate-spin" : "size-4"} />
           Refresh
         </Button>
@@ -63,14 +60,10 @@ export function SuggestionsList({ postType, pending, language, onSelect }: Props
           <p className="text-sm text-muted-foreground">No suggestions yet.</p>
         </div>
       ) : (
-        <div className="space-y-2">
+        <div role="radiogroup" aria-label="Topic suggestions" className="space-y-2">
           {items.map((s, i) => (
-            <SuggestionItem
-              key={i}
-              suggestion={s}
-              disabled={pending}
-              onClick={() => onSelect(s.topic)}
-            />
+            <SuggestionItem key={i} suggestion={s} selected={s.topic === selected}
+              disabled={pending} onClick={() => onSelect(s.topic)} />
           ))}
         </div>
       )}

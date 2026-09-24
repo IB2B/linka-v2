@@ -10,6 +10,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { PlatformPicker } from "./platform-picker";
 import { ComposeImageField } from "./compose-image-field";
 import { useComposeSubmit } from "./use-compose-submit";
+import { usePostPlatforms } from "./platforms-context";
 
 type Props = {
   onPosted: () => void;
@@ -22,7 +23,10 @@ export function ComposeForm({ onPosted, onScheduleDraft }: Props) {
   const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const { pending, postNow, schedule } = useComposeSubmit(onPosted, onScheduleDraft);
-  const empty = content.trim().length === 0;
+  const ctx = usePostPlatforms();
+  // No connected account means nowhere to publish; the picker says so.
+  const locked = pending || content.trim().length === 0
+    || !ctx || ctx.loading || ctx.connected.length === 0;
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -34,12 +38,12 @@ export function ComposeForm({ onPosted, onScheduleDraft }: Props) {
         <PlatformPicker />
       </div>
       <div className="flex justify-end gap-2 border-t pt-3">
-        <Button type="button" variant="outline" disabled={pending || empty}
+        <Button type="button" variant="outline" disabled={locked}
           onClick={() => schedule(content, file)}>
           <Calendar className="size-4" />
           {tp("schedule")}
         </Button>
-        <Button type="button" disabled={pending || empty}
+        <Button type="button" disabled={locked}
           onClick={() => postNow(content, file)}>
           {pending ? <Spinner aria-hidden /> : <Send className="size-4" />}
           {tp("postNow")}

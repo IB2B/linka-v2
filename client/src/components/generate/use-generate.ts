@@ -12,7 +12,9 @@ export type GenOpts = {
   type?: PostType; topic?: string; article?: NewsArticle; surprise?: boolean; label: string;
 };
 
-export function useGenerate(postType: PostType, settings: PostSettings) {
+export function useGenerate(
+  postType: PostType, settings: PostSettings, scheduleDate: string | null = null,
+) {
   const router = useRouter();
   const t = useTranslations("generate.toast");
   const [generatingFor, setGeneratingFor] = useState<string | null>(null);
@@ -36,7 +38,7 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
       });
       setGeneratingFor(null);
       if (res.error) {
-        const isLimit = res.code === "POST_LIMIT_REACHED";
+        const isLimit = res.code === "POST_LIMIT_REACHED" || res.code === "VIDEO_REQUIRES_PAID";
         toast.error(res.error, isLimit ? {
           action: { label: t("upgrade"), onClick: () => { window.location.href = "/dashboard/billing"; } },
         } : undefined);
@@ -46,7 +48,9 @@ export function useGenerate(postType: PostType, settings: PostSettings) {
       (res.data?.errors ?? []).forEach((e) => toast.error(`${e.platform}: ${e.error}`));
       if (posts.length === 0) return;
       toast.success(posts.length === 1 ? t("postGenerated") : t("postsGenerated", { count: posts.length }));
-      router.push(posts.length === 1 ? `/dashboard/posts/${posts[0].contentId}` : "/dashboard/posts");
+      // From a calendar day, one post opens with its schedule dialog on that day.
+      const single = `/dashboard/posts/${posts[0].contentId}${scheduleDate ? `?schedule=${scheduleDate}` : ""}`;
+      router.push(posts.length === 1 ? single : "/dashboard/posts");
       router.refresh();
     });
   }

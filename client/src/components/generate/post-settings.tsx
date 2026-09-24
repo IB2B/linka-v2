@@ -13,9 +13,11 @@ type Props = {
   value: PostSettings;
   onChange: (next: PostSettings) => void;
   disabled?: boolean;
+  // Free plan: video is sold from Creator up, and the API refuses it.
+  videoLocked?: boolean;
 };
 
-export function PostSettingsPanel({ value, onChange, disabled }: Props) {
+export function PostSettingsPanel({ value, onChange, disabled, videoLocked }: Props) {
   return (
     <div className="space-y-3">
       <div className="space-y-1.5">
@@ -40,6 +42,7 @@ export function PostSettingsPanel({ value, onChange, disabled }: Props) {
           value={value.media}
           onChange={(m) => onChange({ ...value, media: m })}
           disabled={disabled}
+          videoLocked={videoLocked}
         />
       </div>
       {value.media === "image" ? (

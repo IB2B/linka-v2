@@ -1,58 +1,49 @@
 import { heygenFetch, HeygenError } from "./heygen-api";
 
-// Photo avatars, not digital twins. Digital twins are capped per plan (5 on
-// Creator) so they cannot scale across users; photo avatars are unlimited, which
-// makes them the only workable basis for user-created avatars.
-//
-// The upload host differs from the API host and takes a RAW body — not
-// multipart — which is why this does not go through heygenFetch.
-const UPLOAD_URL = "https://upload.heygen.com/v1/asset";
+// v3 photo avatars: upload the photo as an asset, then create the avatar from
+// it. Creating starts training on its own (v3 has no train call) and bills the
+// wallet, so callers check funding first. The v2 upload/create/train endpoints
+// stop working on 2026-10-31.
+const base = () => process.env.HEYGEN_API_URL ?? "https://api.heygen.com";
 
-type Uploaded = { data?: { image_key?: string; url?: string } };
+type Asset = { data?: { asset_id?: string } };
 
-export async function uploadAvatarImage(
-  body: Buffer, mime: string,
+// Multipart, so this skips heygenFetch, which always sends a JSON content type.
+export async function uploadAvatarAsset(
+  body: Buffer, mime: string, filename: string,
 ): Promise<string> {
-  const res = await fetch(UPLOAD_URL, {
+  const form = new FormData();
+  form.append("file", new Blob([new Uint8Array(body)], { type: mime }), filename);
+  const res = await fetch(`${base()}/v3/assets`, {
     method: "POST",
-    headers: { "x-api-key": process.env.HEYGEN_API_KEY ?? "", "Content-Type": mime },
-    body: new Uint8Array(body),
+    headers: { "x-api-key": process.env.HEYGEN_API_KEY ?? "" },
+    body: form,
   });
-  const json = (await res.json().catch(() => ({}))) as Uploaded;
-  if (!res.ok || !json.data?.image_key) {
-    throw new HeygenError(res.status, "Could not upload that image.");
+  const json = (await res.json().catch(() => ({}))) as Asset;
+  if (!res.ok || !json.data?.asset_id) {
+    throw new HeygenError(res.status, "Could not upload that photo.");
   }
-  return json.data.image_key;
+  return json.data.asset_id;
 }
 
-type Created = { data?: { id?: string } };
+type Created = {
+  data?: {
+    avatar_item?: { id?: string; group_id?: string };
+    avatar_group?: { id?: string };
+  };
+};
 
-export async function createPhotoAvatarGroup(
-  name: string, imageKey: string,
-): Promise<string> {
-  const r = await heygenFetch<Created>("/v2/photo_avatar/avatar_group/create", {
+export type PhotoAvatar = { lookId: string; groupId: string };
+
+// Returns at once with status "processing"; the look id is what POST
+// /v3/videos renders, the group id is what the avatar picker browses.
+export async function createPhotoAvatar(name: string, assetId: string): Promise<PhotoAvatar> {
+  const r = await heygenFetch<Created>("/v3/avatars", {
     method: "POST",
-    body: JSON.stringify({ name, image_key: imageKey }),
+    body: JSON.stringify({ type: "photo", name, file: { type: "asset_id", asset_id: assetId } }),
   });
-  const id = r.data?.id;
-  if (!id) throw new Error("HeyGen returned no avatar group id");
-  return id;
-}
-
-// Async and billable — the group exists before this runs, but its looks cannot
-// render until training completes.
-export async function trainPhotoAvatarGroup(groupId: string): Promise<void> {
-  await heygenFetch("/v2/photo_avatar/train", {
-    method: "POST",
-    body: JSON.stringify({ group_id: groupId }),
-  });
-}
-
-type Status = { data?: { status?: string; error_msg?: string | null } };
-
-export async function photoAvatarTrainStatus(groupId: string): Promise<string> {
-  const r = await heygenFetch<Status>(
-    `/v2/photo_avatar/train/status/${encodeURIComponent(groupId)}`,
-  );
-  return r.data?.status ?? "unknown";
+  const lookId = r.data?.avatar_item?.id;
+  const groupId = r.data?.avatar_item?.group_id ?? r.data?.avatar_group?.id;
+  if (!lookId || !groupId) throw new Error("HeyGen returned no avatar id");
+  return { lookId, groupId };
 }

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { PenLine, Wand2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { SuggestionsList } from "./suggestions-list";
 import { ManualTopicForm } from "./manual-topic-form";
-import { cn } from "@/lib/utils";
+import { TopicGenerateBar } from "./topic-generate-bar";
+import { ModeTab } from "./mode-tab";
 import type { PostType, TopicMode } from "@/types/content";
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
 
 export function TopicChooser({ postType, pending, language, onGenerate }: Props) {
   const [mode, setMode] = useState<TopicMode>("ai");
+  const [selected, setSelected] = useState<string | null>(null);
   return (
     <div className="space-y-4">
       <div className="inline-flex w-full rounded-md border bg-muted/30 p-1 sm:w-auto">
@@ -31,40 +32,15 @@ export function TopicChooser({ postType, pending, language, onGenerate }: Props)
         </ModeTab>
       </div>
       {mode === "ai" ? (
-        <SuggestionsList
-          postType={postType}
-          pending={pending}
-          language={language}
-          onSelect={onGenerate}
-        />
+        <>
+          <SuggestionsList postType={postType} pending={pending} language={language}
+            selected={selected} onSelect={setSelected} />
+          <TopicGenerateBar label={selected} pending={pending}
+            onGenerate={() => selected && onGenerate(selected)} />
+        </>
       ) : (
         <ManualTopicForm pending={pending} onSubmit={onGenerate} />
       )}
     </div>
-  );
-}
-
-function ModeTab({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <Button
-      type="button"
-      size="sm"
-      variant="ghost"
-      onClick={onClick}
-      className={cn(
-        "flex-1 gap-2",
-        active && "bg-background text-foreground shadow-xs",
-      )}
-    >
-      {children}
-    </Button>
   );
 }

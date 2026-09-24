@@ -24,6 +24,8 @@ type Props = {
   postId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  // Day to open on, e.g. the calendar day the post was created from.
+  initialDate?: Date;
 };
 
 function startOfToday(): Date {
@@ -32,8 +34,8 @@ function startOfToday(): Date {
   return d;
 }
 
-export function ScheduleDialog({ postId, open, onOpenChange }: Props) {
-  const [date, setDate] = useState<Date>(startOfToday);
+export function ScheduleDialog({ postId, open, onOpenChange, initialDate }: Props) {
+  const [date, setDate] = useState<Date>(() => initialDate ?? startOfToday());
   const [slot, setSlot] = useState<TimeSlot | null>(null);
   const [format, setFormat] = useState<TimeFormat>("12h");
   const [confirmOpen, setConfirmOpen] = useState(false);

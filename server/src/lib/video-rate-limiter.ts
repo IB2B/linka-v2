@@ -2,7 +2,7 @@
 // Video is far pricier than images, so the cap is much tighter.
 // Single-instance only — replace with Redis when scaling out.
 
-const MAX_PER_DAY = Number(process.env.VIDEO_MAX_PER_DAY ?? 3);
+export const VIDEO_MAX_PER_DAY = Number(process.env.VIDEO_MAX_PER_DAY ?? 3);
 const WINDOW_MS = 24 * 60 * 60 * 1000;
 
 type Entry = { count: number; resetAt: number };
@@ -21,8 +21,8 @@ export type VideoRateCheck = { allowed: boolean; remaining: number; resetAt: Dat
 export function checkVideoRateLimit(userId: string): VideoRateCheck {
   const b = bucket(userId);
   return {
-    allowed: b.count < MAX_PER_DAY,
-    remaining: Math.max(0, MAX_PER_DAY - b.count),
+    allowed: b.count < VIDEO_MAX_PER_DAY,
+    remaining: Math.max(0, VIDEO_MAX_PER_DAY - b.count),
     resetAt: new Date(b.resetAt),
   };
 }
