@@ -27,6 +27,7 @@ export const TERMS_LEGAL: LegalSection[] = [
     heading: "Suspension and termination",
     blocks: [
       { type: "p", text: "You may stop using linka and close your account at any time. We may suspend or terminate your access if you breach these terms or use the service in a way that risks harm to us, other users, or third parties." },
+      { type: "p", text: "If we close your account for any other reason, we refund the unused part of your current paid period." },
       { type: "p", text: "On termination your right to use the service ends. You can download your data from Settings at any time before you delete your account; once deleted, it is erased as described in our Privacy Policy." },
     ],
   },
