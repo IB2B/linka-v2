@@ -11,6 +11,7 @@ import { NotificationsSection } from "./notifications-section";
 import { ConnectedAccountsSection } from "./connected-accounts-section";
 import { DangerSection } from "./danger-section";
 import { ServicesSection } from "./services-section";
+import { PrivacySection } from "./privacy-section";
 import { SettingsNav } from "./settings-nav";
 import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
 import type { PlatformInstructions } from "@/lib/content/platform-instructions.types";
@@ -43,6 +44,7 @@ export function SettingsShell({ accounts, preferredLanguage, instructions, ...pr
         {active === "notifications" && <NotificationsSection />}
         {active === "accounts" && <ConnectedAccountsSection accounts={accounts} />}
         {active === "services" && <ServicesSection />}
+        {active === "privacy" && <PrivacySection />}
         {active === "danger" && <DangerSection email={profile.email} />}
       </div>
     </div>

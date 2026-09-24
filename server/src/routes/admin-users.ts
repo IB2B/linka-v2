@@ -7,7 +7,7 @@ import { parseSortKey, parseSortDir } from "../lib/admin-users-sort";
 import { createAdminUser } from "../lib/admin-user-create";
 import { exportAdminUsers } from "../controllers/admin-users-export.controller";
 import { recordAdminAction } from "../lib/admin-audit";
-import { softDeleteUser } from "../lib/user-soft-delete";
+import { eraseUser } from "../lib/user-erase";
 import { guardAdminTarget } from "../lib/admin-target-guard";
 
 const router = Router();
@@ -48,7 +48,7 @@ router.patch("/:id/role", async (req: AuthRequest, res, next) => {
 router.delete("/:id", async (req: AuthRequest, res, next) => {
   try {
     if (!(await guardAdminTarget(req, res))) return;
-    await softDeleteUser(String(req.params.id));
+    await eraseUser(String(req.params.id));
     await recordAdminAction(req.user!.id, "user.deleted", String(req.params.id));
     res.json({ ok: true });
   } catch (e) { next(e); }

@@ -7,8 +7,8 @@ import { changePassword } from "./users-password";
 import { patchProfile } from "./users-profile";
 import avatarRouter from "./users-avatar";
 import brandLogoRouter from "./users-brand-logo";
-import { softDeleteUser } from "../lib/user-soft-delete";
-import { CLEAR_COOKIE_OPTS } from "../lib/cookie-opts";
+import dataRouter from "./users-data";
+import { patchOnboarding } from "./users-onboarding";
 import { getNotificationPrefs, patchNotificationPrefs } from "./users-notification-prefs";
 import { listInstructions, patchInstructions } from "./users-platform-instructions";
 
@@ -16,6 +16,7 @@ const router = Router();
 router.use("/me/avatar", avatarRouter);
 router.use("/me/brand-logo", brandLogoRouter);
 router.use(authenticate);
+router.use(dataRouter);
 
 router.get("/me", async (req: AuthRequest, res, next) => {
   try {
@@ -44,20 +45,8 @@ router.patch("/me/profile", (req: AuthRequest, res, next) => {
   patchProfile(req, res).catch(next);
 });
 
-router.patch("/me/onboarding", async (req: AuthRequest, res, next) => {
-  try {
-    const parsed = z.object({
-      step: z.number().int().min(1).optional(),
-      completed: z.boolean().optional(),
-    }).safeParse(req.body);
-    if (!parsed.success) { res.status(400).json({ error: parsed.error.issues[0].message }); return; }
-    const { step, completed } = parsed.data;
-    if (step !== undefined)
-      await db.query("UPDATE users SET onboarding_step=? WHERE id=?", [step, req.user!.id]);
-    if (completed !== undefined)
-      await db.query("UPDATE users SET onboarding_completed=? WHERE id=?", [completed, req.user!.id]);
-    res.json({ ok: true });
-  } catch (e) { next(e); }
+router.patch("/me/onboarding", (req: AuthRequest, res, next) => {
+  patchOnboarding(req, res).catch(next);
 });
 
 router.post("/me/password", (req: AuthRequest, res, next) => {
@@ -78,14 +67,6 @@ router.get("/me/notification-prefs", (req: AuthRequest, res, next) => {
 
 router.patch("/me/notification-prefs", (req: AuthRequest, res, next) => {
   patchNotificationPrefs(req, res).catch(next);
-});
-
-router.delete("/me", async (req: AuthRequest, res, next) => {
-  try {
-    await softDeleteUser(req.user!.id);
-    res.clearCookie("token", CLEAR_COOKIE_OPTS);
-    res.json({ ok: true });
-  } catch (e) { next(e); }
 });
 
 export default router;

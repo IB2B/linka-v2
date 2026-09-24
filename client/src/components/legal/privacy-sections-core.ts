@@ -18,7 +18,7 @@ export const PRIVACY_CORE: LegalSection[] = [
         "Connected accounts — the social profiles you link and the access tokens needed to publish on your behalf.",
         "Content — the posts, drafts, images, and writing samples you create, upload, or publish through linka.",
         "Billing data — handled by our payment processor, Stripe; we store only your plan and subscription status, not card numbers.",
-        "Usage and device data — log data, IP address, browser type, and analytics that help us operate and improve the service.",
+        "Usage and device data — log data, IP address, and browser type that help us operate and secure the service.",
       ] },
     ],
   },
