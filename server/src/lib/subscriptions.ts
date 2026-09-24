@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type Stripe from "stripe";
 import { db } from "./db";
+import { tierForStatus } from "./subscription-access";
 
 export async function upsertSubscription(userId: string, sub: Stripe.Subscription, tier?: string) {
   const item = sub.items.data[0];
@@ -22,7 +23,7 @@ export async function upsertSubscription(userId: string, sub: Stripe.Subscriptio
        canceled_at = VALUES(canceled_at)`,
     [
       randomUUID(), userId, sub.customer as string, sub.id,
-      tier ?? sub.metadata?.tier ?? "starter", sub.status,
+      tierForStatus(sub.status, tier ?? sub.metadata?.tier ?? "starter"), sub.status,
       periodStart ? new Date(periodStart * 1000) : null,
       periodEnd ? new Date(periodEnd * 1000) : null,
       sub.cancel_at_period_end,
