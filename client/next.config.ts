@@ -12,6 +12,14 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: { bodySizeLimit: "5mb" },
   },
+  // Lets Chromium send the OS colour scheme, so the "System" theme renders
+  // right on the server with no bootstrap script.
+  async headers() {
+    return [{
+      source: "/:path*",
+      headers: [{ key: "Accept-CH", value: "Sec-CH-Prefers-Color-Scheme" }],
+    }];
+  },
   async rewrites() {
     return [
       { source: "/api/:path*", destination: `${API_URL}/api/:path*` },

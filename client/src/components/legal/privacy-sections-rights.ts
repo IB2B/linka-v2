@@ -20,7 +20,7 @@ export const PRIVACY_RIGHTS: LegalSection[] = [
     id: "cookies",
     heading: "Cookies and tracking",
     blocks: [
-      { type: "p", text: "We only use strictly necessary cookies: one keeps you signed in (an httpOnly session token), and two remember your language and whether the sidebar is open. We do not use analytics, advertising, or cross-site tracking cookies." },
+      { type: "p", text: "We only use strictly necessary cookies: one keeps you signed in (an httpOnly session token), and three remember your language, your light or dark theme, and whether the sidebar is open. We do not use analytics, advertising, or cross-site tracking cookies." },
     ],
   },
   {

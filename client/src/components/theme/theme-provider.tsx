@@ -3,15 +3,12 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { ThemeContext, type Theme } from "./theme-context";
-import { THEME_STORAGE_KEY } from "./theme-script";
-
-function parseStoredTheme(raw: string | null): Theme | null {
-  return raw === "light" || raw === "dark" || raw === "system" ? raw : null;
-}
+import { THEME_COOKIE, parseTheme, writeThemeCookie } from "./theme-cookie";
 
 type Props = {
   children: React.ReactNode;
-  defaultTheme?: Theme;
+  // Read from the cookie by the root layout, which already set <html class>.
+  initialTheme: Theme;
   disableTransitionOnChange?: boolean;
 };
 
@@ -31,24 +28,27 @@ function killTransitions(): void {
   requestAnimationFrame(() => requestAnimationFrame(() => css.remove()));
 }
 
-export function ThemeProvider({
-  children,
-  defaultTheme = "light",
-  disableTransitionOnChange = false,
-}: Props) {
-  const [theme, setThemeState] = useState<Theme | undefined>(undefined);
-
-  useEffect(() => {
-    const stored = parseStoredTheme(localStorage.getItem(THEME_STORAGE_KEY)) ?? defaultTheme;
-    setThemeState(stored);
-  }, [defaultTheme]);
+export function ThemeProvider({ children, initialTheme, disableTransitionOnChange = false }: Props) {
+  const [theme, setThemeState] = useState<Theme>(initialTheme);
 
   const setTheme = useCallback((next: Theme) => {
     if (disableTransitionOnChange) killTransitions();
-    localStorage.setItem(THEME_STORAGE_KEY, next);
+    writeThemeCookie(next);
     applyTheme(next);
     setThemeState(next);
   }, [disableTransitionOnChange]);
+
+  useEffect(() => {
+    // The choice used to live in localStorage; move it to the cookie once.
+    const saved = parseTheme(localStorage.getItem(THEME_COOKIE));
+    if (saved) {
+      localStorage.removeItem(THEME_COOKIE);
+      setTheme(saved);
+    } else if (initialTheme === "system") {
+      // The server may have guessed without the colour-scheme hint.
+      applyTheme("system");
+    }
+  }, [initialTheme, setTheme]);
 
   useEffect(() => {
     if (theme !== "system") return;

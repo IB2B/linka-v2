@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Script from "next/script";
+import { cookies, headers } from "next/headers";
 import { Inter, IBM_Plex_Mono, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
@@ -7,6 +7,9 @@ import { getLocale, getMessages } from "next-intl/server";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import {
+  DEFAULT_THEME, THEME_COOKIE, isDarkOnServer, parseTheme,
+} from "@/components/theme/theme-cookie";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-sans", subsets: ["latin"] });
@@ -45,22 +48,20 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const locale = await getLocale();
-  const messages = await getMessages();
+  const [locale, messages, cookieStore, hdrs] = await Promise.all([
+    getLocale(), getMessages(), cookies(), headers(),
+  ]);
+  const theme = parseTheme(cookieStore.get(THEME_COOKIE)?.value) ?? DEFAULT_THEME;
+  const dark = isDarkOnServer(theme, hdrs.get("sec-ch-prefers-color-scheme"));
   return (
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${inter.variable} ${plexMono.variable} ${geistMono.variable} h-full antialiased tracking-tight`}
+      className={`${dark ? "dark " : ""}${inter.variable} ${plexMono.variable} ${geistMono.variable} h-full antialiased tracking-tight`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col">
-        <Script
-          id="theme-bootstrap"
-          src="/theme-bootstrap.js"
-          strategy="beforeInteractive"
-        />
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ThemeProvider defaultTheme="dark" disableTransitionOnChange>
+          <ThemeProvider initialTheme={theme} disableTransitionOnChange>
             <TooltipProvider>{children}</TooltipProvider>
             <Toaster position="top-right" richColors closeButton />
           </ThemeProvider>
