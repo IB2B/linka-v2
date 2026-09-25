@@ -4,6 +4,7 @@ import { CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CalendarAgendaRow } from "./calendar-agenda-row";
 import { dateKey } from "@/lib/calendar/format";
+import { generateHref } from "@/lib/calendar/generate-href";
 import { isPastDay } from "@/lib/calendar/view-range";
 import type { GeneratedPost } from "@/types/post";
 
@@ -18,7 +19,7 @@ export function CalendarDayView({ date, posts }: Props) {
           {posts.length === 0 ? "Nothing on this day yet." : `${posts.length} post${posts.length === 1 ? "" : "s"}`}
         </p>
         {canCreate ? (
-          <Button render={<Link href={`/dashboard/generate?date=${dateKey(date)}`} />}
+          <Button render={<Link href={generateHref(dateKey(date))} />}
             nativeButton={false} size="sm" variant="outline">
             <CalendarPlus className="size-4" />
             Create a post for this day

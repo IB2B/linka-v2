@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
+import { generateHref } from "@/lib/calendar/generate-href";
 import { cn } from "@/lib/utils";
 
 type Props = { dayKey: string; className?: string };
@@ -10,7 +11,7 @@ type Props = { dayKey: string; className?: string };
 export function CalendarAddButton({ dayKey, className }: Props) {
   return (
     <Link
-      href={`/dashboard/generate?date=${dayKey}`}
+      href={generateHref(dayKey)}
       aria-label={`Create a post for ${dayKey}`}
       title="Create a post for this day"
       className={cn(
