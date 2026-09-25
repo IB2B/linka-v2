@@ -3,16 +3,19 @@
 import { useMemo, useState } from "react";
 
 import { CalendarHeader } from "./calendar-header";
-import { CalendarGrid } from "./calendar-grid";
-import { buildMonth } from "@/lib/calendar/build-month";
+import { CalendarBody } from "./calendar-body";
+import { shiftCursor } from "@/lib/calendar/view-range";
 import type { GeneratedPost } from "@/types/post";
-import type { PlatformFilter, StatusFilter } from "@/types/calendar";
+import type { CalendarViewMode, PlatformFilter, StatusFilter } from "@/types/calendar";
+
+function startOfToday(): Date {
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
 
 export function CalendarView({ posts }: { posts: GeneratedPost[] }) {
-  const [cursor, setCursor] = useState(() => {
-    const d = new Date();
-    return new Date(d.getFullYear(), d.getMonth(), 1);
-  });
+  const [view, setView] = useState<CalendarViewMode>("month");
+  const [cursor, setCursor] = useState(startOfToday);
   const [status, setStatus] = useState<StatusFilter>("all");
   const [platform, setPlatform] = useState<PlatformFilter>("all");
 
@@ -25,34 +28,28 @@ export function CalendarView({ posts }: { posts: GeneratedPost[] }) {
       ),
     [posts, status, platform],
   );
-  const days = useMemo(
-    () => buildMonth(cursor, filtered),
-    [cursor, filtered],
-  );
 
-  function shift(months: number) {
-    setCursor(
-      (c) => new Date(c.getFullYear(), c.getMonth() + months, 1),
-    );
-  }
-  function today() {
-    const d = new Date();
-    setCursor(new Date(d.getFullYear(), d.getMonth(), 1));
+  function open(next: CalendarViewMode, date: Date) {
+    setView(next);
+    setCursor(date);
   }
 
   return (
     <div className="space-y-3">
       <CalendarHeader
         cursor={cursor}
+        view={view}
         status={status}
         platform={platform}
-        onPrev={() => shift(-1)}
-        onNext={() => shift(1)}
-        onToday={today}
+        onPrev={() => setCursor((c) => shiftCursor(c, view, -1))}
+        onNext={() => setCursor((c) => shiftCursor(c, view, 1))}
+        onToday={() => setCursor(startOfToday())}
+        onViewChange={setView}
         onStatusChange={setStatus}
         onPlatformChange={setPlatform}
       />
-      <CalendarGrid days={days} />
+      <CalendarBody view={view} cursor={cursor} posts={filtered}
+        onOpenDay={(d) => open("day", d)} onOpenMonth={(d) => open("month", d)} />
     </div>
   );
 }

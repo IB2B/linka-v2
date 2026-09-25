@@ -9,7 +9,7 @@ const STEPS = [
 
 export function GenerateStepBar({ step }: { step: number }) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center justify-center">
       {STEPS.map((s, i) => (
         <div key={s.n} className="flex items-center">
           <div className="flex items-center gap-2">

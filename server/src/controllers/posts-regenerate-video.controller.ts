@@ -5,6 +5,8 @@ import * as posts from "../models/generated-content.model";
 import { setVideoGenerating } from "../models/generated-content-video.model";
 import { videoKindOf } from "../lib/video-kind";
 import { checkVideoRateLimit } from "../lib/video-rate-limiter";
+import { getMonthlyUsage } from "../lib/posts-monthly-usage";
+import { isPaidTier } from "../lib/plan-features";
 import { generateAvatarVideoInBackground }
   from "../services/avatar-video.service";
 import { generateVideoForPostInBackground }
@@ -39,6 +41,10 @@ export async function regenerateVideo(
     }
     if (post.videoStatus === "generating" || post.videoStatus === "pending") {
       res.status(409).json({ error: "A render is already in progress." }); return;
+    }
+    if (!isPaidTier((await getMonthlyUsage(userId)).tier)) {
+      res.status(403).json({ error: "Video is included from the Creator plan.", code: "VIDEO_REQUIRES_PAID" });
+      return;
     }
     const limit = checkVideoRateLimit(userId);
     if (!limit.allowed) {

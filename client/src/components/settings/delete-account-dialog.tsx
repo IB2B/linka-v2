@@ -28,8 +28,10 @@ export function DeleteAccountDialog({ email, open, onOpenChange }: Props) {
         <DialogHeader>
           <DialogTitle>Verify account deletion</DialogTitle>
           <DialogDescription>
-            We&rsquo;ll permanently delete your account, wipe your profile and
-            cancel your subscription. This cannot be undone.
+            We&rsquo;ll cancel your subscription and permanently erase your
+            account, posts, uploaded files, connected accounts and AI avatars.
+            This cannot be undone &mdash; download your data first if you want
+            a copy.
           </DialogDescription>
         </DialogHeader>
         <DeleteAccountConfirm

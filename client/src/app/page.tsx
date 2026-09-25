@@ -14,8 +14,10 @@ import { PricingSection } from "@/components/landing/pricing-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { FinalCta } from "@/components/landing/final-cta";
 import { LandingFooter } from "@/components/landing/landing-footer";
+import { redirectIfSignedIn } from "@/lib/auth/redirect-if-signed-in";
 
-export default function Home() {
+export default async function Home() {
+  await redirectIfSignedIn();
   return (
     <div
       className={`${landingFont.className} min-h-screen bg-[#EDEFF3] tracking-tight text-[#0F1113] sm:p-3`}

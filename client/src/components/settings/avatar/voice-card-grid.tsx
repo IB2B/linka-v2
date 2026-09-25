@@ -2,6 +2,7 @@
 
 import { Check, Pause, Play } from "lucide-react";
 
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 import type { VoiceOption } from "@/types/avatar-settings";
 
@@ -9,17 +10,19 @@ type Props = {
   voices: VoiceOption[];
   selectedId: string | null;
   playingId: string | null;
+  loadingId: string | null;
   onSelect: (id: string) => void;
   onPreview: (voice: VoiceOption) => void;
 };
 
 export function VoiceCardGrid({
-  voices, selectedId, playingId, onSelect, onPreview,
+  voices, selectedId, playingId, loadingId, onSelect, onPreview,
 }: Props) {
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
       {voices.map((v) => {
         const selected = v.id === selectedId;
+        const loading = v.id === loadingId;
         return (
           <div
             key={v.id}
@@ -43,12 +46,15 @@ export function VoiceCardGrid({
               <button
                 type="button"
                 onClick={() => onPreview(v)}
-                aria-label={`Preview ${v.name}`}
+                aria-label={loading ? `Loading ${v.name}` : `Preview ${v.name}`}
+                aria-busy={loading}
                 className="flex size-7 shrink-0 items-center justify-center rounded-md border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
-                {playingId === v.id
-                  ? <Pause className="size-3.5" />
-                  : <Play className="size-3.5" />}
+                {loading
+                  ? <Spinner size="sm" aria-hidden />
+                  : playingId === v.id
+                    ? <Pause className="size-3.5" />
+                    : <Play className="size-3.5" />}
               </button>
             ) : null}
             {selected ? <Check className="size-4 shrink-0 text-primary" /> : null}

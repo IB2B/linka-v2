@@ -12,6 +12,7 @@
       "notifications": "Notificaciones",
       "accounts": "Cuentas conectadas",
       "services": "Servicios",
+      "privacy": "Tus datos",
       "danger": "Zona de peligro"
     },
     "preferences": {
@@ -534,7 +535,8 @@
             "Las 10 plataformas",
             "Imágenes IA — hasta 20 / día",
             "Voice Lab y brand kit",
-            "Calendario y programación"
+            "Calendario y programación",
+            "Regeneraciones de texto ilimitadas"
           ]
         },
         {
@@ -545,10 +547,12 @@
           "cta": "Elegir Creator",
           "features": [
             "30 posts IA / mes",
+            "Imágenes IA — hasta 20 / día",
+            "Video con avatar — hasta 3 / día",
             "Objetivo, tono y tipos de post por plataforma",
             "23 idiomas, escritos de forma nativa",
-            "Imágenes IA + vídeo avatar",
             "Pipeline para DMs entrantes",
+            "Regeneraciones de texto ilimitadas",
             "Soporte por email"
           ]
         },
@@ -560,6 +564,8 @@
           "cta": "Elegir Business",
           "features": [
             "150 posts IA / mes",
+            "Imágenes IA — hasta 20 / día",
+            "Video con avatar — hasta 3 / día",
             "Inbox de DMs y respuestas a comentarios",
             "Trend Radar con ángulos de hook",
             "Analytics completa, post a post",
@@ -581,7 +587,8 @@
             "SLA personalizado"
           ]
         }
-      ]
+      ],
+      "footnote": "1 post = 1 versión por plataforma: un post para LinkedIn y X usa 2. Regenerar el texto es gratis. Los límites de posts se reinician el día 1 de cada mes; los de imágenes y vídeos, cada 24 horas."
     },
     "faq": {
       "stillStuck": "¿Falta algo?",

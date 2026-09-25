@@ -11,11 +11,18 @@ import { GenerateStepBar } from "./generate-step-bar";
 import { useGenerate } from "./use-generate";
 import { Button } from "@/components/ui/button";
 import type { NewsArticle, PostSettings, PostType } from "@/types/content";
+import type { UsageSummary } from "@/types/usage";
 
-type Props = { initialNews: NewsArticle[]; defaultLanguage: string };
+type Props = {
+  initialNews: NewsArticle[];
+  defaultLanguage: string;
+  // YYYY-MM-DD when started from a calendar day.
+  scheduleDate: string | null;
+  usage: UsageSummary | null;
+};
 type Step = 1 | 2 | 3;
 
-export function GenerateForm({ initialNews, defaultLanguage }: Props) {
+export function GenerateForm({ initialNews, defaultLanguage, scheduleDate, usage }: Props) {
   const [step, setStep] = useState<Step>(1);
   const [postType, setPostType] = useState<PostType>("news_commentary");
   const [settings, setSettings] = useState<PostSettings>({
@@ -23,7 +30,7 @@ export function GenerateForm({ initialNews, defaultLanguage }: Props) {
     avatarAspect: "auto", avatarSeconds: 30, imageShape: "landscape",
   });
   const { generate, randomGenerate, pending, generatingFor } =
-    useGenerate(postType, settings);
+    useGenerate(postType, settings, scheduleDate);
 
   return (
     <div className="space-y-8">
@@ -38,7 +45,7 @@ export function GenerateForm({ initialNews, defaultLanguage }: Props) {
       )}
 
       {step === 2 && (
-        <GenerateStepTwo settings={settings} pending={pending}
+        <GenerateStepTwo settings={settings} pending={pending} usage={usage}
           onChange={setSettings} onBack={() => setStep(1)} onNext={() => setStep(3)} />
       )}
 

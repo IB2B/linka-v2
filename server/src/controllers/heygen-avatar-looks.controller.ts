@@ -1,34 +1,29 @@
 import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/auth";
-import { heygenFetch } from "../lib/heygen-api";
+import { listGroupLooks } from "../lib/heygen-look";
+import { groupOwner } from "../models/user-avatar-groups.model";
 
 // Looks inside one group. These ids ARE what POST /v3/videos accepts, so this is
-// what the picker must store. Entries without an id do occur — drop them rather
-// than offering a choice that cannot render.
-type Look = {
-  id?: string; name?: string; status?: string; image_url?: string | null;
-  is_motion?: boolean;
-};
-type Payload = { data?: { avatar_list?: Look[] } };
-
+// what the picker must store.
 export async function listAvatarLooks(
   req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
     const groupId = String(req.params.id);
-    const r = await heygenFetch<Payload>(
-      `/v2/avatar_group/${encodeURIComponent(groupId)}/avatars`,
-    );
+    // Only groups this user created can be browsed; stock looks come from the
+    // stock library, which lists looks directly.
+    if ((await groupOwner(groupId)) !== req.user!.id) {
+      res.status(404).json({ error: "Avatar not found." });
+      return;
+    }
+    const looks = await listGroupLooks(groupId);
     res.json({
-      looks: (r.data?.avatar_list ?? [])
-        .filter((l): l is Look & { id: string } => Boolean(l.id))
-        .map((l) => ({
-          id: l.id,
-          name: l.name ?? "Untitled",
-          previewImage: l.image_url ?? null,
-          motion: l.is_motion ?? false,
-          ready: (l.status ?? "completed") === "completed",
-        })),
+      looks: looks.map((l) => ({
+        id: l.id,
+        name: l.name,
+        previewImage: l.previewImage,
+        ready: l.status === "completed",
+      })),
     });
   } catch (e) { next(e); }
 }

@@ -1,4 +1,6 @@
 import { db } from "./db";
+import { unipileConfigured, unipileFetch } from "./unipile-api";
+import { ignoreStatus } from "./ignore-status";
 
 export type LinkedinAccount = {
   accountId: string; displayName: string | null; email: string | null;
@@ -31,6 +33,17 @@ export async function saveLinkedinAccount(
   );
 }
 
+// Unlinks the account at Unipile too. Dropping only our row left the LinkedIn
+// session live there after a disconnect or an account deletion.
 export async function deleteLinkedinAccount(userId: string): Promise<void> {
+  const [rows] = await db.query<any[]>(
+    "SELECT account_id FROM linkedin_dm_accounts WHERE user_id = ?", [userId],
+  );
+  const accountId = rows[0]?.account_id as string | undefined;
+  if (accountId && unipileConfigured()) {
+    await ignoreStatus(
+      unipileFetch(`/accounts/${encodeURIComponent(accountId)}`, { method: "DELETE" }),
+    );
+  }
   await db.query("DELETE FROM linkedin_dm_accounts WHERE user_id = ?", [userId]);
 }

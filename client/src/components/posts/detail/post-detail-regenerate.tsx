@@ -33,15 +33,18 @@ export function PostDetailRegenerate({ hasVideo }: { hasVideo?: boolean }) {
         <DropdownMenuItem onClick={runText} className="whitespace-nowrap">
           <FileText className="size-4" />
           Regenerate text
+          <span className="ml-auto pl-3 text-xs text-muted-foreground">Free</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => runImage()} className="whitespace-nowrap">
           <ImageIcon className="size-4" />
           Regenerate image
+          <span className="ml-auto pl-3 text-xs text-muted-foreground">Daily limit</span>
         </DropdownMenuItem>
         {hasVideo ? (
           <DropdownMenuItem onClick={runVideo} className="whitespace-nowrap">
             <Video className="size-4" />
             Re-render video
+            <span className="ml-auto pl-3 text-xs text-muted-foreground">Daily limit</span>
           </DropdownMenuItem>
         ) : null}
       </DropdownMenuContent>

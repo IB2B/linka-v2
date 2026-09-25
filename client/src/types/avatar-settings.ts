@@ -14,6 +14,8 @@ export type AvatarGroup = {
   looks: number;
   previewImage: string | null;
   trained: boolean;
+  failed: boolean;
+  error: string | null;
 };
 
 export type VoiceOption = {

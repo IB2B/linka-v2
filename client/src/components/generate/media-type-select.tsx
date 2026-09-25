@@ -26,23 +26,29 @@ type Props = {
   value: MediaKind;
   onChange: (next: MediaKind) => void;
   disabled?: boolean;
+  videoLocked?: boolean;
 };
 
-export function MediaTypeSelect({ value, onChange, disabled }: Props) {
+const VIDEO: MediaKind[] = ["video", "avatar"];
+
+export function MediaTypeSelect({ value, onChange, disabled, videoLocked }: Props) {
   return (
     <div
       className="grid grid-cols-2 gap-2 sm:grid-cols-3"
       role="radiogroup"
       aria-label="AI media"
     >
-      {OPTIONS.map(({ value: v, label, hint, Icon, badge }) => (
+      {OPTIONS.map(({ value: v, label, hint, Icon, badge }) => {
+        const locked = !!videoLocked && VIDEO.includes(v);
+        return (
         <button
           key={v}
           type="button"
           role="radio"
           aria-checked={value === v}
           data-selected={value === v}
-          disabled={disabled}
+          disabled={disabled || locked}
+          title={locked ? "Included from the Creator plan" : undefined}
           onClick={() => onChange(v)}
           className={cn(
             "group relative flex flex-col gap-2 rounded-lg border p-3 text-left transition-colors",
@@ -51,9 +57,9 @@ export function MediaTypeSelect({ value, onChange, disabled }: Props) {
             "data-[selected=true]:border-primary data-[selected=true]:bg-primary/5",
           )}
         >
-          {badge ? (
+          {locked || badge ? (
             <span className="absolute right-2 top-2 rounded-full bg-primary/15 px-1.5 py-0.5 text-[10px] font-medium text-primary">
-              {badge}
+              {locked ? "Creator+" : badge}
             </span>
           ) : null}
           <div className="flex size-8 items-center justify-center rounded-md bg-muted text-muted-foreground transition-colors group-data-[selected=true]:bg-primary group-data-[selected=true]:text-primary-foreground">
@@ -61,10 +67,13 @@ export function MediaTypeSelect({ value, onChange, disabled }: Props) {
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-medium">{label}</p>
-            <p className="line-clamp-2 text-xs text-muted-foreground">{hint}</p>
+            <p className="line-clamp-2 text-xs text-muted-foreground">
+              {locked ? "On paid plans" : hint}
+            </p>
           </div>
         </button>
-      ))}
+        );
+      })}
     </div>
   );
 }

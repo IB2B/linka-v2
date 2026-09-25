@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { tierLabel } from "@/lib/billing/format";
 import type { BillingOverview } from "@/types/billing-overview";
 
 function pct(used: number, limit: number): number {
@@ -9,10 +10,14 @@ function pct(used: number, limit: number): number {
   return Math.min(100, Math.round((used / limit) * 100));
 }
 
-export async function UsageCard({ overview }: { overview: BillingOverview | null }) {
+// `tier` is the effective plan (a comp account counts as Enterprise), the same
+// one the sidebar meter and the post limit use; the billing row says "free".
+type Props = { overview: BillingOverview | null; tier?: string };
+
+export async function UsageCard({ overview, tier }: Props) {
   if (!overview) return null;
   const t = await getTranslations("dashboard.usage");
-  const { tier, postsThisMonth, postsLimit } = overview;
+  const { postsThisMonth, postsLimit } = overview;
   const percent = pct(postsThisMonth, postsLimit);
   return (
     <Card>
@@ -25,8 +30,8 @@ export async function UsageCard({ overview }: { overview: BillingOverview | null
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="flex items-baseline justify-between">
-          <span className="text-xs text-muted-foreground capitalize">
-            {t("planLabel", { tier: tier.toLowerCase() })}
+          <span className="text-xs text-muted-foreground">
+            {t("planLabel", { tier: tierLabel(tier ?? overview.tier) })}
           </span>
           <span className="text-sm font-medium tabular-nums">
             {t("postsFormat", { used: postsThisMonth, limit: postsLimit })}

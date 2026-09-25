@@ -2,7 +2,7 @@ import type { Response, NextFunction } from "express";
 import { z } from "zod";
 import type { AuthRequest } from "../middleware/auth";
 import { POST_TYPES } from "../lib/post-type-guidance";
-import { getMonthlyUsage } from "../lib/posts-monthly-usage";
+import { checkGenerateAllowed } from "../lib/generate-guard";
 import { generateForPlatform } from "../lib/content-generate-one";
 import { rememberLanguage } from "../lib/remember-language";
 import { sendPostsGeneratedEmail } from "../lib/post-event-emails";
@@ -51,15 +51,8 @@ export async function generate(
     // Frontend sends `media`; fall back to the legacy `withImage` flag.
     const media = input.media ?? (input.withImage ? "image" : "none");
     const userId = req.user!.id;
-    const usage = await getMonthlyUsage(userId);
-    const remaining = usage.limit - usage.used;
-    if (remaining < input.platforms.length) {
-      res.status(403).json({
-        error: `Need ${input.platforms.length} posts but only ${remaining} left (${usage.used}/${usage.limit}). Upgrade to keep generating.`,
-        code: "POST_LIMIT_REACHED",
-      });
-      return;
-    }
+    const blocked = await checkGenerateAllowed(userId, input.platforms.length, media);
+    if (blocked) { res.status(blocked.status).json({ error: blocked.error, code: blocked.code }); return; }
     void rememberLanguage(userId, input.language).catch(() => {});
     const settled = await Promise.allSettled(
       input.platforms.map((p) => generateForPlatform(userId, { ...input, media }, p)),

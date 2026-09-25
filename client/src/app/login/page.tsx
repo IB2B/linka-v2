@@ -3,8 +3,10 @@ import Link from "next/link";
 import { AuthShowcase } from "@/components/auth/auth-showcase";
 import { AuthSplitLayout } from "@/components/auth/auth-split-layout";
 import { LoginForm } from "@/components/auth/login-form";
+import { redirectIfSignedIn } from "@/lib/auth/redirect-if-signed-in";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  await redirectIfSignedIn();
   return (
     <AuthSplitLayout showcase={<AuthShowcase />}>
       <div className="space-y-2">

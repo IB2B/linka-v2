@@ -1,8 +1,8 @@
 import type { BillingPlan } from "@/types/billing-plan";
 
 // Feature lines mirror `landing.pricing.plans` in the message files — keep the
-// two in step. Only the monthly post count and the inbox/trends/analytics gate
-// are enforced in code (see plan-features.ts); nothing here promises more.
+// two in step. Enforced in code: the monthly post count, the daily image and
+// video caps, video on paid plans only, and the inbox/trends/analytics gate.
 export const BILLING_PLANS: readonly BillingPlan[] = [
   {
     id: "starter",
@@ -15,6 +15,7 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
       "AI images — up to 20 / day",
       "Voice Lab & brand kit",
       "Calendar & scheduling",
+      "Unlimited text regenerations",
     ],
   },
   {
@@ -24,10 +25,12 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
     description: "Everything a solo creator needs to ship consistently.",
     features: [
       "30 AI posts / month",
+      "AI images — up to 20 / day",
+      "Avatar video — up to 3 / day",
       "Per-platform goal, tone & post types",
       "23 languages, written natively",
-      "AI images + avatar video",
       "Pipeline for inbound DMs",
+      "Unlimited text regenerations",
       "Email support",
     ],
   },
@@ -38,6 +41,8 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
     description: "For operators who post daily and want the numbers.",
     features: [
       "150 AI posts / month",
+      "AI images — up to 20 / day",
+      "Avatar video — up to 3 / day",
       "DM inbox & comment replies",
       "Trend Radar with hook angles",
       "Full analytics, down to each post",
@@ -63,3 +68,8 @@ export const BILLING_PLANS: readonly BillingPlan[] = [
     ],
   },
 ];
+
+// Shown under the plan grid; mirrors `landing.pricing.footnote`.
+export const PLAN_FOOTNOTE =
+  "1 post = 1 platform version — a post for LinkedIn and X uses 2. Regenerating text is free. "
+  + "Post limits reset on the 1st of each month; image and video limits every 24 hours.";

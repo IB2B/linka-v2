@@ -12,6 +12,7 @@
       "notifications": "Benachrichtigungen",
       "accounts": "Verbundene Konten",
       "services": "Dienste",
+      "privacy": "Deine Daten",
       "danger": "Gefahrenzone"
     },
     "preferences": {
@@ -534,7 +535,8 @@
             "Alle 10 Plattformen",
             "KI-Bilder — bis zu 20 / Tag",
             "Voice Lab & Brand Kit",
-            "Kalender und Planung"
+            "Kalender und Planung",
+            "Unbegrenzte Text-Neugenerierungen"
           ]
         },
         {
@@ -545,10 +547,12 @@
           "cta": "Creator wählen",
           "features": [
             "30 KI-Posts / Monat",
+            "KI-Bilder — bis zu 20 / Tag",
+            "Avatar-Video — bis zu 3 / Tag",
             "Ziel, Ton & Post-Typen pro Plattform",
             "23 Sprachen, native geschrieben",
-            "KI-Bilder + Avatar-Video",
             "Pipeline für eingehende DMs",
+            "Unbegrenzte Text-Neugenerierungen",
             "E-Mail-Support"
           ]
         },
@@ -560,6 +564,8 @@
           "cta": "Business wählen",
           "features": [
             "150 KI-Posts / Monat",
+            "KI-Bilder — bis zu 20 / Tag",
+            "Avatar-Video — bis zu 3 / Tag",
             "DM-Inbox & Kommentar-Antworten",
             "Trend Radar mit Hook-Ansätzen",
             "Volle Analytics, bis auf jeden Post",
@@ -581,7 +587,8 @@
             "Individuelles SLA"
           ]
         }
-      ]
+      ],
+      "footnote": "1 Post = 1 Plattform-Version — ein Post für LinkedIn und X zählt als 2. Text neu generieren ist kostenlos. Post-Limits werden am 1. jedes Monats zurückgesetzt, Bild- und Video-Limits alle 24 Stunden."
     },
     "faq": {
       "stillStuck": "Noch etwas offen?",

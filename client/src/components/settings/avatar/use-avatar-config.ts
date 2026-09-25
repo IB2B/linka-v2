@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import {
   fetchAvatarChoice, fetchAvatarGroups, fetchGroupLooks, fetchStockAvatars,
-  fetchVoices, saveAvatarChoice,
+  fetchVoices,
 } from "@/lib/api/avatar-client";
 import { ALL_LANGUAGES } from "./voice-languages";
 import type {
@@ -21,7 +21,6 @@ export function useAvatarConfig() {
   const [avatarId, setAvatarId] = useState<string | null>(null);
   const [voiceId, setVoiceId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -60,20 +59,15 @@ export function useAvatarConfig() {
     setStock(r.data?.avatars ?? []);
   }, []);
 
-  async function save() {
-    if (!avatarId || !voiceId) {
-      toast.error("Pick both an avatar and a voice."); return;
-    }
-    setSaving(true);
-    const r = await saveAvatarChoice({ avatarId, voiceId });
-    setSaving(false);
-    if (r.error) toast.error(r.error);
-    else toast.success("Avatar saved.");
-  }
+  // After a photo avatar is created, so the new person shows up under "My avatars".
+  const reloadGroups = useCallback(async () => {
+    const g = await fetchAvatarGroups();
+    setGroups(g.data?.groups ?? []);
+  }, []);
 
   return {
     groups, looks, stock, voices, voiceLanguage, avatarId, voiceId,
-    loading, saving,
-    setAvatarId, setVoiceId, openGroup, searchStock, changeVoiceLanguage, save,
+    loading,
+    setAvatarId, setVoiceId, openGroup, searchStock, changeVoiceLanguage, reloadGroups,
   };
 }

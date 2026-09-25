@@ -27,6 +27,9 @@ export async function PricingSection() {
           <PricingCard key={p.name} plan={p} />
         ))}
       </div>
+      <p className="mx-auto mt-6 max-w-2xl text-center text-[13px] leading-[1.6] tracking-tight text-[#737373]">
+        {t("footnote")}
+      </p>
     </section>
   );
 }

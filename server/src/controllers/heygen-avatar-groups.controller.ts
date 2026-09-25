@@ -1,30 +1,33 @@
 import type { Response, NextFunction } from "express";
 import type { AuthRequest } from "../middleware/auth";
-import { heygenFetch } from "../lib/heygen-api";
+import { listGroupLooks } from "../lib/heygen-look";
+import { ignoreStatus } from "../lib/ignore-status";
+import { listUserGroups } from "../models/user-avatar-groups.model";
 
-// The account's own avatar groups — digital twins and photo-avatar sets. A group
-// is NOT renderable on its own; its looks are, so the UI drills into one via
-// /avatar/groups/:id/looks.
-type Group = {
-  id: string; name?: string; num_looks?: number;
-  preview_image?: string | null; group_type?: string; train_status?: string;
-};
-type Payload = { data?: { avatar_group_list?: Group[] } };
-
+// "My avatars": only the people this user created from their own photos. The
+// shared HeyGen workspace also holds the team's private avatars, which must
+// never reach other users; public avatars live in the stock library tab.
+// A group is NOT renderable on its own; its looks are.
 export async function listAvatarGroups(
-  _req: AuthRequest, res: Response, next: NextFunction,
+  req: AuthRequest, res: Response, next: NextFunction,
 ): Promise<void> {
   try {
-    const r = await heygenFetch<Payload>("/v2/avatar_group.list");
-    res.json({
-      groups: (r.data?.avatar_group_list ?? []).map((g) => ({
-        id: g.id,
-        name: g.name ?? "Untitled",
-        looks: g.num_looks ?? 0,
-        previewImage: g.preview_image ?? null,
-        kind: g.group_type ?? null,
-        trained: (g.train_status ?? "") !== "empty",
-      })),
-    });
+    const owned = await listUserGroups(req.user!.id);
+    const groups = await Promise.all(owned.map(async (g) => {
+      // A group deleted on HeyGen's side just drops out of the list.
+      const looks = await ignoreStatus(listGroupLooks(g.groupId), [400, 404]);
+      if (!looks) return null;
+      return {
+        id: g.groupId,
+        name: g.name,
+        looks: looks.length,
+        previewImage: looks[0]?.previewImage ?? null,
+        trained: looks.some((l) => l.status === "completed"),
+        // e.g. HeyGen's moderation rejected the photo; shown on the tile.
+        failed: looks.length > 0 && looks.every((l) => l.status === "failed"),
+        error: looks.find((l) => l.error)?.error ?? null,
+      };
+    }));
+    res.json({ groups: groups.filter((g) => g !== null) });
   } catch (e) { next(e); }
 }

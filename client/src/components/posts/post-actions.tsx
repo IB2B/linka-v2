@@ -1,46 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Calendar, Eye, Send, Trash2 } from "lucide-react";
-import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { ScheduleDialog } from "./schedule-dialog";
 import { DeletePostConfirm } from "./delete-post-confirm";
-import { deletePostAction, publishPostAction } from "@/app/dashboard/posts/actions";
-import { showPublishToast } from "@/lib/posts/publish-toast";
+import { useHasAccounts } from "./has-accounts-context";
+import { usePostCardMutations } from "./use-post-card-mutations";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostActions({ post }: { post: GeneratedPost }) {
   const t = useTranslations("posts");
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [delPending, delStart] = useTransition();
-  const [pubPending, pubStart] = useTransition();
+  const { delPending, pubPending, onConfirmDelete, onPublishNow } =
+    usePostCardMutations(post, () => setConfirmOpen(false));
+  const hasAccounts = useHasAccounts();
+  const lockedTitle = hasAccounts ? undefined : "Connect a social account first";
 
   const isPosted = post.status === "posted";
   const isScheduled = post.status === "scheduled";
-
-  function onConfirmDelete() {
-    delStart(async () => {
-      const res = await deletePostAction(post.id);
-      if (res.error) toast.error(res.error);
-      else { toast.success(t("toast.deleted")); setConfirmOpen(false); }
-    });
-  }
-
-  function onPublishNow() {
-    const platform = post.platform;
-    if (!platform) { toast.error(t("toast.noPlatform")); return; }
-    pubStart(async () => {
-      const res = await publishPostAction(post.id, [platform]);
-      if (res.error) toast.error(res.error);
-      else showPublishToast({ publishedTo: res.publishedTo ?? [platform], failed: res.failed ?? [] });
-    });
-  }
 
   return (
     <>
@@ -56,13 +39,15 @@ export function PostActions({ post }: { post: GeneratedPost }) {
         <div className="ml-auto flex gap-2">
           {!isPosted ? (
             <Button size="sm" variant="outline"
-              onClick={() => setScheduleOpen(true)} disabled={pubPending}>
+              onClick={() => setScheduleOpen(true)} disabled={pubPending || !hasAccounts}
+              title={lockedTitle}>
               <Calendar className="size-4" />
               {isScheduled ? t("reschedule") : t("schedule")}
             </Button>
           ) : null}
           {!isPosted ? (
-            <Button size="sm" onClick={onPublishNow} disabled={pubPending}>
+            <Button size="sm" onClick={onPublishNow} disabled={pubPending || !hasAccounts}
+              title={lockedTitle}>
               {pubPending ? <Spinner aria-hidden /> : <Send className="size-4" />}
               {t("postNow")}
             </Button>

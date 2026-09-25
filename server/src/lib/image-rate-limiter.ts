@@ -1,7 +1,7 @@
 // In-memory per-user image generation budget. Resets every 24h.
 // Single-instance only — replace with Redis when scaling out.
 
-const MAX_PER_DAY = 20;
+export const IMAGE_MAX_PER_DAY = 20;
 const WINDOW_MS = 24 * 60 * 60 * 1000;
 
 type Entry = { count: number; resetAt: number };
@@ -26,8 +26,8 @@ export type ImageRateCheck = {
 export function checkImageRateLimit(userId: string): ImageRateCheck {
   const b = bucket(userId);
   return {
-    allowed: b.count < MAX_PER_DAY,
-    remaining: Math.max(0, MAX_PER_DAY - b.count),
+    allowed: b.count < IMAGE_MAX_PER_DAY,
+    remaining: Math.max(0, IMAGE_MAX_PER_DAY - b.count),
     resetAt: new Date(b.resetAt),
   };
 }
