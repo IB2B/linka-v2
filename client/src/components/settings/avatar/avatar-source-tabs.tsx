@@ -42,7 +42,12 @@ export function AvatarSourceTabs({
       {source === "mine" ? (
         <>
           <AvatarGroupGrid groups={groups} activeId={group} onOpen={openGroup} />
-          {group === null ? (
+          {groups.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              You haven&apos;t created an avatar yet. Upload a photo above to make your own,
+              or pick one from the Stock library.
+            </p>
+          ) : group === null ? (
             <p className="text-sm text-muted-foreground">
               Pick a person above to see their looks.
             </p>

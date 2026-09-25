@@ -33,9 +33,15 @@ export function AvatarGroupGrid({ groups, activeId, onOpen }: Props) {
           <PreviewThumb src={g.previewImage} alt={g.name} className="aspect-square" />
           <div className="px-2 py-1.5">
             <p className="truncate text-xs font-medium">{g.name}</p>
-            <p className="text-[10px] text-muted-foreground">
-              {g.looks} {g.looks === 1 ? "look" : "looks"}
-            </p>
+            {g.failed ? (
+              <p className="line-clamp-2 text-[10px] text-destructive" title={g.error ?? undefined}>
+                Failed{g.error ? ` — ${g.error}` : ""}
+              </p>
+            ) : (
+              <p className="text-[10px] text-muted-foreground">
+                {g.trained ? `${g.looks} ${g.looks === 1 ? "look" : "looks"}` : "Building…"}
+              </p>
+            )}
           </div>
         </button>
       ))}

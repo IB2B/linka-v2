@@ -10,8 +10,9 @@ export async function listAvatarLooks(
 ): Promise<void> {
   try {
     const groupId = String(req.params.id);
-    const owner = await groupOwner(groupId);
-    if (owner && owner !== req.user!.id) {
+    // Only groups this user created can be browsed; stock looks come from the
+    // stock library, which lists looks directly.
+    if ((await groupOwner(groupId)) !== req.user!.id) {
       res.status(404).json({ error: "Avatar not found." });
       return;
     }
