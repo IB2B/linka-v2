@@ -40,7 +40,7 @@ export default async function UserDashboardPage({ searchParams }: Props) {
       <div className="grid gap-4 lg:grid-cols-3">
         <UpcomingPosts posts={upcomingPosts(posts)} />
         <StatusBreakdownCard counts={counts} />
-        <UsageCard overview={overview} />
+        <UsageCard overview={overview} tier={me?.tier} />
       </div>
       <RecentPosts posts={recentPosts(posts)} />
     </div>
