@@ -25,3 +25,19 @@ export function postsLimitFor(tier: string | null | undefined): number {
   const key = (tier ?? "free").toLowerCase();
   return POSTS_LIMIT_PER_TIER[key] ?? POSTS_LIMIT_PER_TIER.free;
 }
+
+// Videos per month. Kept far below the post allowance: a render costs real
+// money at HeyGen/Higgsfield, where a post costs cents.
+export const VIDEOS_LIMIT_PER_TIER: Record<string, number> = {
+  free: 0,
+  starter: 5,
+  pro: 10,
+  professional: 30,
+  scale: 30,
+  enterprise: 100,
+};
+
+export function videosLimitFor(tier: string | null | undefined): number {
+  const key = (tier ?? "free").toLowerCase();
+  return VIDEOS_LIMIT_PER_TIER[key] ?? VIDEOS_LIMIT_PER_TIER.free;
+}

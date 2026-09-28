@@ -1,6 +1,6 @@
 import { buildVideoSeed } from "../lib/video-seed";
 import { createImageToVideo } from "../lib/higgsfield-video";
-import { incrementVideoCount } from "../lib/video-rate-limiter";
+import { claimVideo, refundVideo } from "../lib/video-quota";
 import { setImageCompleted, setImageFailed, setImageGenerating }
   from "../models/generated-content-image.model";
 import { setVideoCompleted, setVideoFailed, setVideoGenerating }
@@ -14,7 +14,10 @@ export async function generateVideoForPostInBackground(
   contentId: string, userId: string, postContent: string, platform = "linkedin",
 ): Promise<void> {
   console.log(`[video-gen] start ${contentId}`);
+  let claimed = false;
   try {
+    await claimVideo(userId, contentId);
+    claimed = true;
     await setImageGenerating(contentId, userId);
     await setVideoGenerating(contentId, userId);
 
@@ -26,12 +29,13 @@ export async function generateVideoForPostInBackground(
     const motion = `${seed.prompt}. Subtle cinematic motion, natural movement.`;
     const { url, model } = await createImageToVideo(motion, seed.seedUrl);
     await setVideoCompleted(contentId, userId, url, motion, model);
-    incrementVideoCount(userId);
     console.log(`[video-gen] done ${contentId}`);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown video error";
     console.error(`[video-gen] FATAL ${contentId}:`, err);
     await setVideoFailed(contentId, userId, message).catch(() => {});
     await setImageFailed(contentId, userId, message).catch(() => {});
+    // A failed render never costs the user one of their monthly videos.
+    if (claimed) await refundVideo(userId, contentId).catch(() => {});
   }
 }

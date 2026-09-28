@@ -1,7 +1,6 @@
 import { getMonthlyUsage } from "./posts-monthly-usage";
 import { isPaidTier } from "./plan-features";
 import { checkImageRateLimit, IMAGE_MAX_PER_DAY } from "./image-rate-limiter";
-import { checkVideoRateLimit, VIDEO_MAX_PER_DAY } from "./video-rate-limiter";
 
 export type UsageSummary = {
   tier: string;
@@ -15,21 +14,20 @@ function firstOfNextMonth(): string {
   return new Date(d.getFullYear(), d.getMonth() + 1, 1).toISOString();
 }
 
-// What the user can still generate: the monthly post allowance (each platform
-// draft counts as one; regenerating text does not), plus the daily image and
-// video caps, which regenerations do count against.
+// What the user can still generate: the monthly post and video allowances
+// (each platform draft counts as one post; regenerating text does not, but
+// re-rendering a video does), plus the daily image cap.
 export async function getUsageSummary(userId: string): Promise<UsageSummary> {
   const usage = await getMonthlyUsage(userId);
   const images = checkImageRateLimit(userId);
-  const videos = checkVideoRateLimit(userId);
   return {
     tier: usage.tier,
     posts: { used: usage.used, limit: usage.limit, resetsAt: firstOfNextMonth() },
     images: { used: IMAGE_MAX_PER_DAY - images.remaining, limit: IMAGE_MAX_PER_DAY },
     videos: {
-      used: VIDEO_MAX_PER_DAY - videos.remaining,
-      limit: VIDEO_MAX_PER_DAY,
-      allowed: isPaidTier(usage.tier),
+      used: usage.videosUsed,
+      limit: usage.videosLimit,
+      allowed: isPaidTier(usage.tier) && usage.videosLimit > 0,
     },
   };
 }

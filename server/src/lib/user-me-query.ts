@@ -1,10 +1,11 @@
 import { db } from "./db";
-import { postsLimitFor } from "./plan-features";
+import { postsLimitFor, videosLimitFor } from "./plan-features";
 import { effectiveTier, isCompEmail } from "./comp-accounts";
 import { countPostsThisMonth } from "./posts-month-count";
+import { countVideosThisMonth } from "./video-quota";
 
 export async function getUserMe(userId: string) {
-  const [userResult, postsUsed] = await Promise.all([
+  const [userResult, postsUsed, videosUsed] = await Promise.all([
     db.query<any[]>(
       `SELECT u.id, u.email, u.role, u.first_name, u.last_name,
               u.onboarding_completed, u.email_verified_at,
@@ -18,6 +19,7 @@ export async function getUserMe(userId: string) {
        WHERE u.id = ?`, [userId],
     ),
     countPostsThisMonth(userId),
+    countVideosThisMonth(userId),
   ]);
   const u = userResult[0][0];
   if (!u) return null;
@@ -37,6 +39,8 @@ export async function getUserMe(userId: string) {
     emailVerified,
     postsUsed,
     postsLimit: postsLimitFor(tier),
+    videosUsed,
+    videosLimit: videosLimitFor(tier),
     features: { recycler: u.recycler_enabled === 1 },
   };
 }

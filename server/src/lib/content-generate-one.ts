@@ -6,7 +6,6 @@ import { generateVideoForPostInBackground }
 import { generateAvatarVideoInBackground }
   from "../services/avatar-video.service";
 import { checkImageRateLimit } from "../lib/image-rate-limiter";
-import { checkVideoRateLimit } from "../lib/video-rate-limiter";
 import * as posts from "../models/generated-content.model";
 import { checkAndNotifyUsageLimit } from "./check-usage-limit";
 import { buildPostTitle } from "./post-title";
@@ -43,9 +42,9 @@ export async function generateForPlatform(
     console.error(`[post-title] failed for ${platform}:`, err);
     return null;
   });
-  const videoAllowed = checkVideoRateLimit(userId).allowed;
-  const wantsVideo = input.media === "video" && videoAllowed;
-  const wantsAvatar = input.media === "avatar" && videoAllowed;
+  // The monthly video quota was checked for every platform before generating.
+  const wantsVideo = input.media === "video";
+  const wantsAvatar = input.media === "avatar";
   const wantsImage = !wantsVideo && !wantsAvatar
     && input.media === "image" && checkImageRateLimit(userId).allowed;
   // B-roll video also produces a poster image, so image_status is pending there.

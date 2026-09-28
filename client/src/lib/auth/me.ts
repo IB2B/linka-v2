@@ -24,6 +24,8 @@ export type Me = {
   onboardingCompleted: boolean;
   postsUsed: number;
   postsLimit: number;
+  videosUsed: number;
+  videosLimit: number;
   features: UserFeatures;
 };
 

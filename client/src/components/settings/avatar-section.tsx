@@ -3,7 +3,6 @@
 import { useCallback, useEffect } from "react";
 
 import { SettingsSection } from "./settings-section";
-import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { AvatarSourceTabs } from "./avatar/avatar-source-tabs";
 import { VoicePicker } from "./avatar/voice-picker";
@@ -13,7 +12,7 @@ import { AvatarUploadCard } from "./avatar/avatar-upload-card";
 
 export function AvatarSection() {
   const c = useAvatarConfig();
-  const { saving, save } = useAvatarSave(c.avatarId, c.voiceId);
+  const { saving } = useAvatarSave(c.avatarId, c.voiceId, c.loading);
   const { reloadGroups, setAvatarId } = c;
   // A new photo avatar finished training: show it and pick it straight away.
   const onAvatarReady = useCallback(async (lookId: string) => {
@@ -50,17 +49,13 @@ export function AvatarSection() {
             onChange={c.setVoiceId}
             language={c.voiceLanguage}
             onLanguageChange={c.changeVoiceLanguage} />
-          <div className="flex items-center gap-3">
-            <Button onClick={save} disabled={saving}>
-              {saving ? <Spinner aria-hidden /> : null}
-              Save avatar
-            </Button>
-            {!c.avatarId || !c.voiceId ? (
-              <span className="text-xs text-muted-foreground">
-                Avatar videos stay disabled until both are set.
-              </span>
-            ) : null}
-          </div>
+          <p className="flex items-center gap-2 text-sm text-muted-foreground">
+            {saving ? <Spinner aria-hidden /> : null}
+            {saving ? "Saving…"
+              : !c.avatarId ? "Pick an avatar — videos use it once a voice is set too."
+              : !c.voiceId ? "Now pick a voice to finish setting up your avatar."
+              : "Saved. New videos use this avatar and voice."}
+          </p>
         </div>
       )}
     </SettingsSection>

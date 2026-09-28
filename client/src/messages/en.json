@@ -71,7 +71,8 @@
     },
     "sidebarMeter": {
       "planLabel": "{tier} plan",
-      "postsRemaining": "{count, plural, =1 {1 post remaining} other {# posts remaining}}"
+      "posts": "Posts",
+      "videos": "Videos"
     }
   },
   "inbox": {
@@ -548,7 +549,7 @@
           "features": [
             "30 AI posts / month",
             "AI images — up to 20 / day",
-            "Avatar video — up to 3 / day",
+            "Avatar video — 10 / month",
             "Per-platform goal, tone & post types",
             "23 languages, written natively",
             "Pipeline for inbound DMs",
@@ -565,7 +566,7 @@
           "features": [
             "150 AI posts / month",
             "AI images — up to 20 / day",
-            "Avatar video — up to 3 / day",
+            "Avatar video — 30 / month",
             "DM inbox & comment replies",
             "Trend Radar with hook angles",
             "Full analytics, down to each post",
@@ -588,7 +589,7 @@
           ]
         }
       ],
-      "footnote": "1 post = 1 platform version — a post for LinkedIn and X uses 2. Regenerating text is free. Post limits reset on the 1st of each month; image and video limits every 24 hours."
+      "footnote": "1 post = 1 platform version — a post for LinkedIn and X uses 2. Regenerating text is free. Post and video limits reset on the 1st of each month; image limits every 24 hours."
     },
     "faq": {
       "stillStuck": "Something we did not cover?",

@@ -20,7 +20,7 @@ export default async function Home() {
   await redirectIfSignedIn();
   return (
     <div
-      className={`${landingFont.className} min-h-screen bg-[#EDEFF3] tracking-tight text-[#0F1113] sm:p-3`}
+      className={`${landingFont.className} light min-h-screen bg-[#EDEFF3] tracking-tight text-[#0F1113] sm:p-3`}
     >
       {/* overflow-clip, not overflow-hidden: hidden would make this a scroll
           container, which hijacks view() timelines and position: sticky from

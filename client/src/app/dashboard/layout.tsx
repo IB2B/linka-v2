@@ -31,6 +31,8 @@ export default async function DashboardLayout({
     tier: user.tier,
     postsUsed: user.postsUsed,
     postsLimit: user.postsLimit,
+    videosUsed: user.videosUsed,
+    videosLimit: user.videosLimit,
     features: user.features,
   };
 

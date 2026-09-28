@@ -71,7 +71,8 @@
     },
     "sidebarMeter": {
       "planLabel": "Forfait {tier}",
-      "postsRemaining": "{count, plural, =1 {1 publication restante} other {# publications restantes}}"
+      "posts": "Publications",
+      "videos": "Vidéos"
     }
   },
   "inbox": {
@@ -548,7 +549,7 @@
           "features": [
             "30 posts IA / mois",
             "Images IA — jusqu'à 20 / jour",
-            "Vidéo avatar — jusqu'à 3 / jour",
+            "Vidéo avatar — 10 / mois",
             "Objectif, ton et types de posts par plateforme",
             "23 langues, écrites nativement",
             "Pipeline pour les DM entrants",
@@ -565,7 +566,7 @@
           "features": [
             "150 posts IA / mois",
             "Images IA — jusqu'à 20 / jour",
-            "Vidéo avatar — jusqu'à 3 / jour",
+            "Vidéo avatar — 30 / mois",
             "Inbox DM et réponses aux commentaires",
             "Trend Radar avec angles de hook",
             "Analytique complète, post par post",
@@ -588,7 +589,7 @@
           ]
         }
       ],
-      "footnote": "1 post = 1 version par plateforme — un post pour LinkedIn et X en utilise 2. Régénérer le texte est gratuit. Les limites de posts se réinitialisent le 1er de chaque mois ; celles d’images et de vidéos toutes les 24 heures."
+      "footnote": "1 post = 1 version par plateforme — un post pour LinkedIn et X en utilise 2. Régénérer le texte est gratuit. Les limites de posts et de vidéos se réinitialisent le 1er de chaque mois ; celles d’images toutes les 24 heures."
     },
     "faq": {
       "stillStuck": "Il manque quelque chose ?",
