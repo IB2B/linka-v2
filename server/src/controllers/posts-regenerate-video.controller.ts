@@ -4,7 +4,6 @@ import type { AuthRequest } from "../middleware/auth";
 import * as posts from "../models/generated-content.model";
 import { setVideoGenerating } from "../models/generated-content-video.model";
 import { videoKindOf } from "../lib/video-kind";
-import { checkVideoRateLimit } from "../lib/video-rate-limiter";
 import { getMonthlyUsage } from "../lib/posts-monthly-usage";
 import { isPaidTier } from "../lib/plan-features";
 import { generateAvatarVideoInBackground }
@@ -42,14 +41,15 @@ export async function regenerateVideo(
     if (post.videoStatus === "generating" || post.videoStatus === "pending") {
       res.status(409).json({ error: "A render is already in progress." }); return;
     }
-    if (!isPaidTier((await getMonthlyUsage(userId)).tier)) {
+    const usage = await getMonthlyUsage(userId);
+    if (!isPaidTier(usage.tier) || usage.videosLimit <= 0) {
       res.status(403).json({ error: "Video is included from the Creator plan.", code: "VIDEO_REQUIRES_PAID" });
       return;
     }
-    const limit = checkVideoRateLimit(userId);
-    if (!limit.allowed) {
-      res.status(429).json({
-        error: "Daily video limit reached. Try again tomorrow.",
+    if (usage.videosUsed >= usage.videosLimit) {
+      res.status(403).json({
+        error: `You've used all ${usage.videosLimit} videos for this month. Upgrade for more, or wait for the reset on the 1st.`,
+        code: "VIDEO_LIMIT_REACHED",
       });
       return;
     }

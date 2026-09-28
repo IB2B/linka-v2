@@ -2,28 +2,26 @@
 
 import { useTranslations } from "next-intl";
 import { tierLabel } from "@/lib/billing/format";
-import { SegmentedMeter } from "@/components/segmented-meter";
+import { SidebarUsageRow } from "./sidebar-usage-row";
 
 import type { DashboardUser } from "@/types/dashboard-user";
 
+// Posts and videos are separate monthly quotas: a video costs far more to
+// render than a post, so plans cap it much lower. Free plans have no video.
 export function SidebarUsageMeter({ user }: { user: DashboardUser }) {
   const t = useTranslations("dashboard.sidebarMeter");
-  const tier = tierLabel(user.tier);
-  const pct = Math.min(100, Math.round((user.postsUsed / user.postsLimit) * 100));
-  const remaining = Math.max(0, user.postsLimit - user.postsUsed);
 
   return (
-    <div className="mx-1 mb-1 space-y-2 rounded-lg border bg-card p-3">
-      <div className="flex items-center justify-between">
-        <p className="text-xs font-semibold">{t("planLabel", { tier })}</p>
-        <p className="text-xs tabular-nums text-muted-foreground">
-          {user.postsUsed}/{user.postsLimit}
-        </p>
-      </div>
-      <SegmentedMeter pct={pct} segments={22} />
-      <p className="text-xs text-muted-foreground">
-        {t("postsRemaining", { count: remaining })}
+    <div className="mx-1 mb-1 space-y-3 rounded-lg border bg-card p-3">
+      <p className="text-xs font-semibold">
+        {t("planLabel", { tier: tierLabel(user.tier) })}
       </p>
+      <SidebarUsageRow label={t("posts")} used={user.postsUsed}
+        limit={user.postsLimit} />
+      {user.videosLimit > 0 ? (
+        <SidebarUsageRow label={t("videos")} used={user.videosUsed}
+          limit={user.videosLimit} />
+      ) : null}
     </div>
   );
 }

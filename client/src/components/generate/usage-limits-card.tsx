@@ -18,7 +18,7 @@ export function UsageLimitsCard({ usage, platformCount }: Props) {
         note={<>This will use <strong>{platformCount}</strong> post{platformCount === 1 ? "" : "s"} — one per platform. Resets {resetFmt.format(new Date(posts.resetsAt))}.</>} />
       <UsageLimitRow label="Images today" used={images.used} limit={images.limit} />
       {videos.allowed ? (
-        <UsageLimitRow label="Videos today" used={videos.used} limit={videos.limit} />
+        <UsageLimitRow label="Videos this month" used={videos.used} limit={videos.limit} />
       ) : (
         <p className="text-sm">
           <span className="font-medium">Videos</span>
@@ -28,7 +28,8 @@ export function UsageLimitsCard({ usage, platformCount }: Props) {
       )}
       <p className="border-t pt-3 text-xs text-muted-foreground">
         Regenerating a post&apos;s text is free and doesn&apos;t count as a post.
-        Regenerating an image or video counts toward today&apos;s limit.
+        Regenerating an image counts toward today&apos;s limit; re-rendering a
+        video uses one of this month&apos;s videos. Failed videos don&apos;t count.
       </p>
     </div>
   );

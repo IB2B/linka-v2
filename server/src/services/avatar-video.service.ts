@@ -3,7 +3,7 @@ import { avatarUserMessage } from "../lib/avatar-video-error";
 import { assertWalletFunded } from "../lib/heygen-wallet";
 import { resolveAvatarLook } from "../lib/heygen-avatar-look";
 import { createAvatarVideo } from "../lib/heygen-video";
-import { incrementVideoCount } from "../lib/video-rate-limiter";
+import { claimVideo, refundVideo } from "../lib/video-quota";
 import { setVideoCompleted, setVideoFailed, setVideoGenerating }
   from "../models/generated-content-video.model";
 import { getAvatarChoice } from "../models/user-avatar.model";
@@ -26,8 +26,11 @@ export async function generateAvatarVideoInBackground(
   opts: AvatarVideoOptions = {},
 ): Promise<void> {
   console.log(`[avatar-video] start ${contentId}`);
+  let claimed = false;
   try {
     await setVideoGenerating(contentId, userId);
+    await claimVideo(userId, contentId);
+    claimed = true;
 
     // Before the script call, which costs tokens whether or not HeyGen can pay.
     await assertWalletFunded();
@@ -56,10 +59,11 @@ export async function generateAvatarVideoInBackground(
       voiceId: choice.voiceId,
     });
     await setVideoCompleted(contentId, userId, url, script, `heygen:${model}`);
-    incrementVideoCount(userId);
     console.log(`[avatar-video] done ${contentId}`);
   } catch (err) {
     console.error(`[avatar-video] FATAL ${contentId}:`, err);
     await setVideoFailed(contentId, userId, avatarUserMessage(err)).catch(() => {});
+    // A failed render never costs the user one of their monthly videos.
+    if (claimed) await refundVideo(userId, contentId).catch(() => {});
   }
 }
