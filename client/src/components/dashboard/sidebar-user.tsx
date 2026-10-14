@@ -15,7 +15,7 @@ import { SidebarUserMenu } from "./sidebar-user-menu";
 import { useLogout } from "@/hooks/use-logout";
 import type { SidebarUserProps } from "@/types/sidebar-user-props";
 
-export function SidebarUser({ user, usage }: SidebarUserProps) {
+export function SidebarUser({ user }: SidebarUserProps) {
   const { isMobile } = useSidebar();
   const { logout, pending } = useLogout();
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -27,7 +27,7 @@ export function SidebarUser({ user, usage }: SidebarUserProps) {
           <DropdownMenuTrigger
             render={<SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent" />}
           >
-            <SidebarUserPreview user={user} usage={usage} />
+            <SidebarUserPreview user={user} />
             <ChevronsUpDown className="ml-auto size-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
           </DropdownMenuTrigger>
           <SidebarUserMenu

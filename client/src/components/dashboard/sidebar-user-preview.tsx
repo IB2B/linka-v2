@@ -1,14 +1,24 @@
 import { tierLabel } from "@/lib/billing/format";
-import { getDisplayName } from "@/lib/dashboard/user-display";
-import { SidebarUserAvatar } from "./sidebar-user-avatar";
+import { getDisplayName, getInitials } from "@/lib/dashboard/user-display";
 import type { SidebarUserPreviewProps } from "@/types/sidebar-user-preview-props";
 
 // Users see their plan in the badge; staff see their role.
-export function SidebarUserPreview({ user, usage }: SidebarUserPreviewProps) {
+export function SidebarUserPreview({ user }: SidebarUserPreviewProps) {
   const badge = user.role === "USER" ? tierLabel(user.tier) : user.role.replace("_", " ");
   return (
     <>
-      <SidebarUserAvatar user={user} usage={usage} />
+      <span className="flex size-8 items-center justify-center overflow-hidden rounded-full bg-foreground text-xs font-medium text-background">
+        {user.avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={user.avatarUrl}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          getInitials(user)
+        )}
+      </span>
       <span className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
         <span className="flex items-center gap-1.5 truncate">
           <span className="truncate text-sm font-medium">{getDisplayName(user)}</span>

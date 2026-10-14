@@ -70,19 +70,15 @@
       "empty": "Du hast noch keine Beiträge erstellt."
     },
     "usagePlan": {
-      "resetsOn": "Kontingente werden am {date} zurückgesetzt",
-      "planLabel": "{tier}",
-      "resetsIn": "{days, plural, =0 {heute} one {# Tag} other {# Tage}}",
+      "resets": "Reset am {date}",
+      "manage": "Verwalten",
       "posts": "Beiträge",
-      "images": "Bilder",
+      "images": "Bilder heute",
       "videos": "Videos",
-      "detail": "{used} von {limit} genutzt",
-      "creatorPlus": "Creator+",
-      "videosLocked": "Videos sind ab dem Creator-Plan enthalten.",
+      "videosLocked": "Ab Creator-Plan",
       "warning": "Du bist fast am Limit. Upgrade, um ohne Pause weiter zu posten.",
       "danger": "Du hast ein Limit erreicht. Jetzt upgraden oder auf das Zurücksetzen warten.",
-      "manage": "Plan verwalten",
-      "upgrade": "Upgrade"
+      "upgrade": "Plan upgraden"
     }
   },
   "inbox": {

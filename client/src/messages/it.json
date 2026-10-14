@@ -70,19 +70,15 @@
       "empty": "Non hai ancora generato alcun post."
     },
     "usagePlan": {
-      "resetsOn": "I limiti si azzerano il {date}",
-      "planLabel": "{tier}",
-      "resetsIn": "{days, plural, =0 {oggi} one {# giorno} other {# giorni}}",
-      "posts": "post",
-      "images": "immagini",
-      "videos": "video",
-      "detail": "{used} usati su {limit}",
-      "creatorPlus": "Creator+",
-      "videosLocked": "I video sono inclusi dal piano Creator.",
+      "resets": "si azzera il {date}",
+      "manage": "Gestisci",
+      "posts": "Post",
+      "images": "Immagini oggi",
+      "videos": "Video",
+      "videosLocked": "Dal piano Creator",
       "warning": "Sei vicino a un limite. Passa a un piano superiore per continuare senza pause.",
       "danger": "Hai raggiunto un limite. Passa a un piano superiore o attendi l’azzeramento.",
-      "manage": "Gestisci piano",
-      "upgrade": "Passa a un piano superiore"
+      "upgrade": "Cambia piano"
     }
   },
   "inbox": {

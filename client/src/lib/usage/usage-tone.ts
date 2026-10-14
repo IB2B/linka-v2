@@ -23,12 +23,6 @@ export function offersUpgrade(tier: string, tone: UsageTone): boolean {
   return tier === "free" || (tone !== "ok" && tier !== "enterprise");
 }
 
-export const TONE_TEXT: Record<UsageTone, string> = {
-  ok: "text-primary",
-  warning: "text-yellow-500",
-  danger: "text-destructive",
-};
-
 export const TONE_BG: Record<UsageTone, string> = {
   ok: "bg-primary",
   warning: "bg-yellow-500",

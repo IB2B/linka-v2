@@ -70,19 +70,15 @@
       "empty": "You haven't generated any posts yet."
     },
     "usagePlan": {
-      "resetsOn": "Quotas reset on {date}",
-      "planLabel": "{tier}",
-      "resetsIn": "{days, plural, =0 {today} one {# day} other {# days}}",
-      "posts": "posts left",
-      "images": "images left",
-      "videos": "videos left",
-      "detail": "{used} used of {limit}",
-      "creatorPlus": "Creator+",
-      "videosLocked": "Videos are included from the Creator plan.",
+      "resets": "resets {date}",
+      "manage": "Manage",
+      "posts": "Posts",
+      "images": "Images today",
+      "videos": "Videos",
+      "videosLocked": "Creator plan and up",
       "warning": "You are close to a limit. Upgrade to keep posting without a pause.",
       "danger": "You have hit a limit. Upgrade now or wait for the reset.",
-      "manage": "Manage plan",
-      "upgrade": "Upgrade"
+      "upgrade": "Upgrade plan"
     }
   },
   "inbox": {

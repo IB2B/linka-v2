@@ -70,19 +70,15 @@
       "empty": "Aún no has generado ninguna publicación."
     },
     "usagePlan": {
-      "resetsOn": "Los límites se reinician el {date}",
-      "planLabel": "{tier}",
-      "resetsIn": "{days, plural, =0 {hoy} one {# día} other {# días}}",
-      "posts": "publicaciones",
-      "images": "imágenes",
-      "videos": "vídeos",
-      "detail": "{used} usados de {limit}",
-      "creatorPlus": "Creator+",
-      "videosLocked": "Los vídeos se incluyen desde el plan Creator.",
+      "resets": "se reinicia el {date}",
+      "manage": "Gestionar",
+      "posts": "Publicaciones",
+      "images": "Imágenes hoy",
+      "videos": "Vídeos",
+      "videosLocked": "Desde el plan Creator",
       "warning": "Estás cerca de un límite. Mejora tu plan para seguir publicando sin pausa.",
       "danger": "Has alcanzado un límite. Mejora tu plan o espera al reinicio.",
-      "manage": "Gestionar plan",
-      "upgrade": "Mejorar"
+      "upgrade": "Mejorar plan"
     }
   },
   "inbox": {

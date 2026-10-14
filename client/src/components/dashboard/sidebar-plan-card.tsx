@@ -2,46 +2,61 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { UpgradePlansDialog } from "@/components/billing/upgrade-plans-dialog";
+import { tierLabel } from "@/lib/billing/format";
 import { offersUpgrade, peakUsagePct, usageTone } from "@/lib/usage/usage-tone";
 import { cn } from "@/lib/utils";
-import { UsagePlanHeading } from "./usage-plan-heading";
-import { UsageQuotaTiles } from "./usage-quota-tiles";
+import { SidebarQuotaRow } from "./sidebar-quota-row";
 import type { UserTier } from "@/lib/auth/me";
 import type { UsageSummary } from "@/types/usage";
 
 type Props = { usage: UsageSummary; tier: UserTier };
 
-// Always-visible plan card above the account row: quotas, reset, next step.
+// Plain plan summary above the account row: plan, reset date, three quotas.
 export function SidebarPlanCard({ usage, tier }: Props) {
   const t = useTranslations("dashboard.usagePlan");
+  const locale = useLocale();
   const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const { posts, images, videos } = usage;
   const tone = usageTone(peakUsagePct(usage));
+  const date = new Intl.DateTimeFormat(locale, { month: "short", day: "numeric" })
+    .format(new Date(posts.resetsAt));
 
   return (
-    <div className="mx-1 mb-1 space-y-2.5 rounded-lg border bg-card p-2.5">
-      <UsagePlanHeading tier={tier} resetsAt={usage.posts.resetsAt} />
-      <UsageQuotaTiles usage={usage} />
+    <div className="mx-1 mb-1 space-y-3 rounded-lg border p-3">
+      <div className="flex items-baseline justify-between gap-2 text-xs">
+        <p className="truncate">
+          <span className="font-medium">{tierLabel(tier)}</span>
+          <span className="text-muted-foreground"> · {t("resets", { date })}</span>
+        </p>
+        <Link href="/dashboard/billing"
+          className="shrink-0 text-muted-foreground underline-offset-2 hover:text-foreground hover:underline">
+          {t("manage")}
+        </Link>
+      </div>
+      <SidebarQuotaRow label={t("posts")} used={posts.used} limit={posts.limit} />
+      <SidebarQuotaRow label={t("images")} used={images.used} limit={images.limit} />
+      {videos.allowed ? (
+        <SidebarQuotaRow label={t("videos")} used={videos.used} limit={videos.limit} />
+      ) : (
+        <p className="flex justify-between text-xs text-muted-foreground">
+          <span>{t("videos")}</span>
+          <span>{t("videosLocked")}</span>
+        </p>
+      )}
       {tone !== "ok" ? (
-        <p className={cn("text-xs",
-          tone === "danger" ? "text-destructive" : "text-yellow-600 dark:text-yellow-500")}>
+        <p className={cn("text-xs", tone === "danger" ? "text-destructive" : "text-yellow-600 dark:text-yellow-500")}>
           {t(tone)}
         </p>
       ) : null}
-      <div className="flex items-center justify-between gap-2">
-        <Link href="/dashboard/billing"
-          className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
-          {t("manage")}
-          <ArrowRight className="size-3" />
-        </Link>
-        {offersUpgrade(tier, tone) ? (
-          <Button size="xs" onClick={() => setUpgradeOpen(true)}>{t("upgrade")}</Button>
-        ) : null}
-      </div>
+      {offersUpgrade(tier, tone) ? (
+        <Button variant="outline" size="sm" className="w-full" onClick={() => setUpgradeOpen(true)}>
+          {t("upgrade")}
+        </Button>
+      ) : null}
       <UpgradePlansDialog open={upgradeOpen} onOpenChange={setUpgradeOpen} currentTier={tier} />
     </div>
   );

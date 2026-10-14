@@ -24,7 +24,7 @@ export function AppSidebar({ user, usage, ...props }: AppSidebarProps) {
       <SidebarFooter>
         <SidebarUpgrade user={user} usage={usage} />
         <SidebarServiceHealth role={user.role} />
-        <SidebarUser user={user} usage={usage} />
+        <SidebarUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
