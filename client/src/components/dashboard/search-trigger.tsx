@@ -32,7 +32,7 @@ export function SearchTrigger({ role, tier, features }: SidebarNavProps) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Search"
-        className="group inline-flex h-8 w-9 items-center gap-2 rounded-md border bg-background px-2 text-xs text-muted-foreground transition hover:bg-muted/60 hover:text-foreground sm:w-48 sm:px-2.5 md:w-64"
+        className="group inline-flex h-9 w-9 items-center gap-2 rounded-md border bg-background px-2 text-xs text-muted-foreground transition hover:bg-muted/60 hover:text-foreground sm:w-48 sm:px-2.5 md:w-64"
       >
         <Search className="size-3.5 shrink-0" />
         <span className="hidden flex-1 text-left sm:inline">Search pages…</span>
