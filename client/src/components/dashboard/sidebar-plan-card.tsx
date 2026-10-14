@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { UpgradePlansDialog } from "@/components/billing/upgrade-plans-dialog";
 import { tierLabel } from "@/lib/billing/format";
-import { cycleElapsedPct } from "@/lib/usage/cycle-progress";
+import { useCyclePace } from "@/hooks/use-cycle-pace";
 import { offersUpgrade, peakUsagePct, usageTone } from "@/lib/usage/usage-tone";
 import { cn } from "@/lib/utils";
 import { SidebarQuotaRow } from "./sidebar-quota-row";
@@ -23,8 +23,9 @@ export function SidebarPlanCard({ usage, tier }: Props) {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const { posts, images, videos } = usage;
   const tone = usageTone(peakUsagePct(usage));
-  const pace = cycleElapsedPct(posts.resetsAt);
-  const date = new Intl.DateTimeFormat(locale, { month: "short", day: "numeric" })
+  const pace = useCyclePace(posts.resetsAt);
+  // Resets land on midnight UTC; formatting in UTC keeps server and browser equal.
+  const date = new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", timeZone: "UTC" })
     .format(new Date(posts.resetsAt));
 
   return (
