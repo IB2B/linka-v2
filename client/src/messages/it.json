@@ -70,6 +70,8 @@
       "empty": "Non hai ancora generato alcun post."
     },
     "usagePlan": {
+      "leftHint": "{left} rimasti oggi",
+      "paceHint": "{left} rimasti questo mese. Il segno indica un ritmo costante per il mese.",
       "resets": "si azzera il {date}",
       "manage": "Gestisci",
       "posts": "Post",

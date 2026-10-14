@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { UpgradePlansDialog } from "@/components/billing/upgrade-plans-dialog";
 import { tierLabel } from "@/lib/billing/format";
+import { cycleElapsedPct } from "@/lib/usage/cycle-progress";
 import { offersUpgrade, peakUsagePct, usageTone } from "@/lib/usage/usage-tone";
 import { cn } from "@/lib/utils";
 import { SidebarQuotaRow } from "./sidebar-quota-row";
@@ -22,6 +23,7 @@ export function SidebarPlanCard({ usage, tier }: Props) {
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const { posts, images, videos } = usage;
   const tone = usageTone(peakUsagePct(usage));
+  const pace = cycleElapsedPct(posts.resetsAt);
   const date = new Intl.DateTimeFormat(locale, { month: "short", day: "numeric" })
     .format(new Date(posts.resetsAt));
 
@@ -37,10 +39,10 @@ export function SidebarPlanCard({ usage, tier }: Props) {
           {t("manage")}
         </Link>
       </div>
-      <SidebarQuotaRow label={t("posts")} used={posts.used} limit={posts.limit} />
+      <SidebarQuotaRow label={t("posts")} used={posts.used} limit={posts.limit} pace={pace} />
       <SidebarQuotaRow label={t("images")} used={images.used} limit={images.limit} />
       {videos.allowed ? (
-        <SidebarQuotaRow label={t("videos")} used={videos.used} limit={videos.limit} />
+        <SidebarQuotaRow label={t("videos")} used={videos.used} limit={videos.limit} pace={pace} />
       ) : (
         <p className="flex justify-between text-xs text-muted-foreground">
           <span>{t("videos")}</span>

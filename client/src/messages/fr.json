@@ -70,6 +70,8 @@
       "empty": "Vous n'avez encore généré aucune publication."
     },
     "usagePlan": {
+      "leftHint": "{left} restantes aujourd’hui",
+      "paceHint": "{left} restantes ce mois-ci. Le repère indique un rythme régulier sur le mois.",
       "resets": "réinit. le {date}",
       "manage": "Gérer",
       "posts": "Publications",

@@ -70,6 +70,8 @@
       "empty": "Aún no has generado ninguna publicación."
     },
     "usagePlan": {
+      "leftHint": "Quedan {left} hoy",
+      "paceHint": "Quedan {left} este mes. La marca indica un ritmo uniforme para el mes.",
       "resets": "se reinicia el {date}",
       "manage": "Gestionar",
       "posts": "Publicaciones",

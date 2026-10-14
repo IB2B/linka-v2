@@ -70,6 +70,8 @@
       "empty": "You haven't generated any posts yet."
     },
     "usagePlan": {
+      "leftHint": "{left} left today",
+      "paceHint": "{left} left this month. The tick marks an even pace for the month.",
       "resets": "resets {date}",
       "manage": "Manage",
       "posts": "Posts",

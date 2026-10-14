@@ -70,6 +70,8 @@
       "empty": "Du hast noch keine Beiträge erstellt."
     },
     "usagePlan": {
+      "leftHint": "Heute noch {left} übrig",
+      "paceHint": "Diesen Monat noch {left} übrig. Die Markierung zeigt ein gleichmäßiges Tempo für den Monat.",
       "resets": "Reset am {date}",
       "manage": "Verwalten",
       "posts": "Beiträge",
