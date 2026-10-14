@@ -69,10 +69,20 @@
       "title": "Letzte Beiträge", "viewAll": "Alle anzeigen",
       "empty": "Du hast noch keine Beiträge erstellt."
     },
-    "sidebarMeter": {
+    "usagePill": {
+      "trigger": "Plan-Nutzung",
+      "postsLeft": "Noch {count} Beiträge",
       "planLabel": "{tier}-Plan",
-      "posts": "Beiträge",
-      "videos": "Videos"
+      "resets": "Zurückgesetzt am {date} · {days, plural, =0 {heute} one {in # Tag} other {in # Tagen}}",
+      "posts": "Beiträge diesen Monat",
+      "images": "Bilder heute",
+      "videos": "Videos diesen Monat",
+      "left": "{left} von {limit} übrig",
+      "videosLocked": "Videos sind ab dem Creator-Plan enthalten.",
+      "warning": "Du bist fast am Limit. Upgrade, um ohne Pause weiter zu posten.",
+      "danger": "Du hast ein Limit erreicht. Jetzt upgraden oder auf das Zurücksetzen warten.",
+      "manage": "Plan verwalten",
+      "upgrade": "Upgrade"
     }
   },
   "inbox": {

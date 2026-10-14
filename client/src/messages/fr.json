@@ -69,10 +69,20 @@
       "title": "Publications récentes", "viewAll": "Tout voir",
       "empty": "Vous n'avez encore généré aucune publication."
     },
-    "sidebarMeter": {
+    "usagePill": {
+      "trigger": "Utilisation du forfait",
+      "postsLeft": "{count} publications restantes",
       "planLabel": "Forfait {tier}",
-      "posts": "Publications",
-      "videos": "Vidéos"
+      "resets": "Réinitialisation le {date} · {days, plural, =0 {aujourd’hui} one {dans # jour} other {dans # jours}}",
+      "posts": "Publications ce mois-ci",
+      "images": "Images aujourd’hui",
+      "videos": "Vidéos ce mois-ci",
+      "left": "{left} sur {limit} restantes",
+      "videosLocked": "Les vidéos sont incluses à partir du forfait Creator.",
+      "warning": "Vous approchez d’une limite. Passez à un forfait supérieur pour continuer sans pause.",
+      "danger": "Vous avez atteint une limite. Passez à un forfait supérieur ou attendez la réinitialisation.",
+      "manage": "Gérer le forfait",
+      "upgrade": "Mettre à niveau"
     }
   },
   "inbox": {

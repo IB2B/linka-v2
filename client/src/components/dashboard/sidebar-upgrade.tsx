@@ -2,13 +2,12 @@
 
 import { useSidebar } from "@/components/ui/sidebar";
 import { SidebarUpgradeCta } from "./sidebar-upgrade-cta";
-import { SidebarUsageMeter } from "./sidebar-usage-meter";
 import type { DashboardUser } from "@/types/dashboard-user";
 
+// Free users get a standing upgrade nudge; paid usage lives in the header pill.
 export function SidebarUpgrade({ user }: { user: DashboardUser }) {
   const { state, isMobile } = useSidebar();
-  if (user.role !== "USER") return null;
+  if (user.role !== "USER" || user.tier !== "free") return null;
   if (state === "collapsed" && !isMobile) return null;
-  if (user.tier === "free") return <SidebarUpgradeCta tier={user.tier} />;
-  return <SidebarUsageMeter user={user} />;
+  return <SidebarUpgradeCta tier={user.tier} />;
 }

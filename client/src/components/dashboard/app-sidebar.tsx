@@ -6,7 +6,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { SidebarBrand } from "@/components/dashboard/sidebar-brand";
-import { SidebarCompose } from "@/components/dashboard/sidebar-compose";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { SidebarUpgrade } from "@/components/dashboard/sidebar-upgrade";
 import { SidebarServiceHealth } from "@/components/dashboard/sidebar-service-health";
@@ -20,7 +19,6 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         <SidebarBrand />
       </SidebarHeader>
       <SidebarContent>
-        {user.role === "USER" ? <SidebarCompose /> : null}
         <SidebarNav role={user.role} tier={user.tier} features={user.features} />
       </SidebarContent>
       <SidebarFooter>

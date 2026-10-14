@@ -69,10 +69,20 @@
       "title": "Post recenti", "viewAll": "Vedi tutti",
       "empty": "Non hai ancora generato alcun post."
     },
-    "sidebarMeter": {
+    "usagePill": {
+      "trigger": "Utilizzo del piano",
+      "postsLeft": "{count} post rimasti",
       "planLabel": "Piano {tier}",
-      "posts": "Post",
-      "videos": "Video"
+      "resets": "Si azzera il {date} · {days, plural, =0 {oggi} one {tra # giorno} other {tra # giorni}}",
+      "posts": "Post questo mese",
+      "images": "Immagini oggi",
+      "videos": "Video questo mese",
+      "left": "{left} su {limit} rimasti",
+      "videosLocked": "I video sono inclusi dal piano Creator.",
+      "warning": "Sei vicino a un limite. Passa a un piano superiore per continuare senza pause.",
+      "danger": "Hai raggiunto un limite. Passa a un piano superiore o attendi l’azzeramento.",
+      "manage": "Gestisci piano",
+      "upgrade": "Passa a un piano superiore"
     }
   },
   "inbox": {

@@ -10,6 +10,7 @@ import { PlatformBanner } from "@/components/dashboard/platform-banner";
 import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/auth/require-role";
 import { getPlatformNotice } from "@/lib/platform/get-platform";
+import { getUsage } from "@/lib/usage/get-usage";
 import type { DashboardUser } from "@/types/dashboard-user";
 
 export default async function DashboardLayout({
@@ -17,7 +18,9 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [{ user }, notice] = await Promise.all([requireRole("USER"), getPlatformNotice()]);
+  const [{ user }, notice, usage] = await Promise.all([
+    requireRole("USER"), getPlatformNotice(), getUsage(),
+  ]);
   if (!user.emailVerified) redirect("/verify-email");
   if (!user.onboardingCompleted) redirect("/onboarding");
 
@@ -29,10 +32,6 @@ export default async function DashboardLayout({
     avatarUrl: user.avatarUrl,
     role: user.role,
     tier: user.tier,
-    postsUsed: user.postsUsed,
-    postsLimit: user.postsLimit,
-    videosUsed: user.videosUsed,
-    videosLimit: user.videosLimit,
     features: user.features,
   };
 
@@ -50,6 +49,7 @@ export default async function DashboardLayout({
             role={user.role}
             tier={user.tier}
             features={user.features}
+            usage={usage}
           />
         </header>
         <div className="scrollbar-thin flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>
