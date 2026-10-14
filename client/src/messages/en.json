@@ -69,11 +69,12 @@
       "title": "Recent posts", "viewAll": "View all",
       "empty": "You haven't generated any posts yet."
     },
-    "usageMenu": {
-      "planLabel": "{tier} plan",
-      "resetsIn": "{days, plural, =0 {Resets today} one {Resets in # day} other {Resets in # days}}",
+    "usagePlan": {
+      "resetsOn": "Quotas reset on {date}",
+      "planLabel": "{tier}",
+      "resetsIn": "{days, plural, =0 {today} one {# day} other {# days}}",
       "posts": "posts left",
-      "images": "images today",
+      "images": "images left",
       "videos": "videos left",
       "detail": "{used} used of {limit}",
       "creatorPlus": "Creator+",

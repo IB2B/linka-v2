@@ -10,7 +10,6 @@ import { SidebarUserPreview } from "@/components/dashboard/sidebar-user-preview"
 import { SidebarUserMenuLegal } from "./sidebar-user-menu-legal";
 import { SidebarUserMenuTheme } from "./sidebar-user-menu-theme";
 import { SidebarUserMenuLanguage } from "./sidebar-user-menu-language";
-import { SidebarUserUsage } from "./sidebar-user-usage";
 import type { SidebarUserProps } from "@/types/sidebar-user-props";
 
 type Props = SidebarUserProps & {
@@ -18,23 +17,19 @@ type Props = SidebarUserProps & {
   pending: boolean;
   logout: () => void;
   onSendFeedback: () => void;
-  onUpgrade: () => void;
 };
 
-export function SidebarUserMenu({ user, usage, isMobile, pending, logout, onSendFeedback, onUpgrade }: Props) {
+export function SidebarUserMenu({ user, isMobile, pending, logout, onSendFeedback }: Props) {
   const settingsHref = user.role === "USER" ? "/dashboard/settings" : "/admin/settings";
   const t = useTranslations("userMenu");
   return (
-    <DropdownMenuContent className="w-72 rounded-lg" side={isMobile ? "bottom" : "right"} align="end" sideOffset={4}>
+    <DropdownMenuContent className="min-w-56 rounded-lg" side={isMobile ? "bottom" : "right"} align="end" sideOffset={4}>
       <DropdownMenuGroup>
         <DropdownMenuItem className="p-0 font-normal" render={<Link href={settingsHref} />}>
           <div className="flex items-center gap-2 px-1 py-1.5"><SidebarUserPreview user={user} /></div>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      {user.role === "USER" && usage ? (
-        <SidebarUserUsage usage={usage} tier={user.tier} onUpgrade={onUpgrade} />
-      ) : null}
       {user.role === "USER" ? (
         <>
           <DropdownMenuGroup>

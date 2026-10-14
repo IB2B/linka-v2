@@ -69,12 +69,13 @@
       "title": "Letzte Beiträge", "viewAll": "Alle anzeigen",
       "empty": "Du hast noch keine Beiträge erstellt."
     },
-    "usageMenu": {
-      "planLabel": "{tier}-Plan",
-      "resetsIn": "{days, plural, =0 {Heute zurückgesetzt} one {Zurückgesetzt in # Tag} other {Zurückgesetzt in # Tagen}}",
-      "posts": "Beiträge übrig",
-      "images": "Bilder heute",
-      "videos": "Videos übrig",
+    "usagePlan": {
+      "resetsOn": "Kontingente werden am {date} zurückgesetzt",
+      "planLabel": "{tier}",
+      "resetsIn": "{days, plural, =0 {heute} one {# Tag} other {# Tage}}",
+      "posts": "Beiträge",
+      "images": "Bilder",
+      "videos": "Videos",
       "detail": "{used} von {limit} genutzt",
       "creatorPlus": "Creator+",
       "videosLocked": "Videos sind ab dem Creator-Plan enthalten.",

@@ -69,12 +69,13 @@
       "title": "Post recenti", "viewAll": "Vedi tutti",
       "empty": "Non hai ancora generato alcun post."
     },
-    "usageMenu": {
-      "planLabel": "Piano {tier}",
-      "resetsIn": "{days, plural, =0 {Si azzera oggi} one {Si azzera tra # giorno} other {Si azzera tra # giorni}}",
-      "posts": "post rimasti",
-      "images": "immagini oggi",
-      "videos": "video rimasti",
+    "usagePlan": {
+      "resetsOn": "I limiti si azzerano il {date}",
+      "planLabel": "{tier}",
+      "resetsIn": "{days, plural, =0 {oggi} one {# giorno} other {# giorni}}",
+      "posts": "post",
+      "images": "immagini",
+      "videos": "video",
       "detail": "{used} usati su {limit}",
       "creatorPlus": "Creator+",
       "videosLocked": "I video sono inclusi dal piano Creator.",

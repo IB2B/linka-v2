@@ -22,7 +22,7 @@ export function AppSidebar({ user, usage, ...props }: AppSidebarProps) {
         <SidebarNav role={user.role} tier={user.tier} features={user.features} />
       </SidebarContent>
       <SidebarFooter>
-        <SidebarUpgrade user={user} />
+        <SidebarUpgrade user={user} usage={usage} />
         <SidebarServiceHealth role={user.role} />
         <SidebarUser user={user} usage={usage} />
       </SidebarFooter>

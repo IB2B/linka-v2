@@ -69,11 +69,12 @@
       "title": "Publications récentes", "viewAll": "Tout voir",
       "empty": "Vous n'avez encore généré aucune publication."
     },
-    "usageMenu": {
-      "planLabel": "Forfait {tier}",
-      "resetsIn": "{days, plural, =0 {Réinitialisé aujourd’hui} one {Réinitialisé dans # jour} other {Réinitialisé dans # jours}}",
+    "usagePlan": {
+      "resetsOn": "Quotas réinitialisés le {date}",
+      "planLabel": "{tier}",
+      "resetsIn": "{days, plural, =0 {aujourd’hui} one {# jour} other {# jours}}",
       "posts": "publications",
-      "images": "images auj.",
+      "images": "images",
       "videos": "vidéos",
       "detail": "{used} utilisés sur {limit}",
       "creatorPlus": "Creator+",

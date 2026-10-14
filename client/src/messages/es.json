@@ -69,11 +69,12 @@
       "title": "Publicaciones recientes", "viewAll": "Ver todo",
       "empty": "Aún no has generado ninguna publicación."
     },
-    "usageMenu": {
-      "planLabel": "Plan {tier}",
-      "resetsIn": "{days, plural, =0 {Se reinicia hoy} one {Se reinicia en # día} other {Se reinicia en # días}}",
+    "usagePlan": {
+      "resetsOn": "Los límites se reinician el {date}",
+      "planLabel": "{tier}",
+      "resetsIn": "{days, plural, =0 {hoy} one {# día} other {# días}}",
       "posts": "publicaciones",
-      "images": "imágenes hoy",
+      "images": "imágenes",
       "videos": "vídeos",
       "detail": "{used} usados de {limit}",
       "creatorPlus": "Creator+",

@@ -1,6 +1,6 @@
 "use client";
 
-import { Crown } from "lucide-react";
+import { Crown, RotateCcw } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { tierLabel } from "@/lib/billing/format";
 
@@ -10,7 +10,7 @@ type Props = { tier: string; resetsAt: string };
 
 // Plan name on the left, a "resets in N days" pill on the right.
 export function UsagePlanHeading({ tier, resetsAt }: Props) {
-  const t = useTranslations("dashboard.usageMenu");
+  const t = useTranslations("dashboard.usagePlan");
   const locale = useLocale();
   const reset = new Date(resetsAt);
   const days = Math.max(0, Math.ceil((reset.getTime() - Date.now()) / DAY_MS));
@@ -24,8 +24,9 @@ export function UsagePlanHeading({ tier, resetsAt }: Props) {
           {t("planLabel", { tier: tierLabel(tier) })}
         </span>
       </span>
-      <span title={date}
-        className="shrink-0 rounded-full border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+      <span title={t("resetsOn", { date })}
+        className="inline-flex shrink-0 items-center gap-1 rounded-full border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+        <RotateCcw className="size-2.5" />
         {t("resetsIn", { days })}
       </span>
     </div>
