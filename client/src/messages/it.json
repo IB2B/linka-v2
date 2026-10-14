@@ -69,9 +69,7 @@
       "title": "Post recenti", "viewAll": "Vedi tutti",
       "empty": "Non hai ancora generato alcun post."
     },
-    "usagePill": {
-      "trigger": "Utilizzo del piano",
-      "postsLeft": "{count} post rimasti",
+    "usageMenu": {
       "planLabel": "Piano {tier}",
       "resets": "Si azzera il {date} · {days, plural, =0 {oggi} one {tra # giorno} other {tra # giorni}}",
       "posts": "Post questo mese",

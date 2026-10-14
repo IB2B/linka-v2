@@ -12,7 +12,7 @@ import { SidebarServiceHealth } from "@/components/dashboard/sidebar-service-hea
 import { SidebarUser } from "@/components/dashboard/sidebar-user";
 import type { AppSidebarProps } from "@/types/app-sidebar-props";
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+export function AppSidebar({ user, usage, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -24,7 +24,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       <SidebarFooter>
         <SidebarUpgrade user={user} />
         <SidebarServiceHealth role={user.role} />
-        <SidebarUser user={user} />
+        <SidebarUser user={user} usage={usage} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

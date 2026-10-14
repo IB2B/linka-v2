@@ -69,9 +69,7 @@
       "title": "Recent posts", "viewAll": "View all",
       "empty": "You haven't generated any posts yet."
     },
-    "usagePill": {
-      "trigger": "Plan usage",
-      "postsLeft": "{count} posts left",
+    "usageMenu": {
       "planLabel": "{tier} plan",
       "resets": "Resets {date} · {days, plural, =0 {today} one {in # day} other {in # days}}",
       "posts": "Posts this month",

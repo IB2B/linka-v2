@@ -69,9 +69,7 @@
       "title": "Publications récentes", "viewAll": "Tout voir",
       "empty": "Vous n'avez encore généré aucune publication."
     },
-    "usagePill": {
-      "trigger": "Utilisation du forfait",
-      "postsLeft": "{count} publications restantes",
+    "usageMenu": {
       "planLabel": "Forfait {tier}",
       "resets": "Réinitialisation le {date} · {days, plural, =0 {aujourd’hui} one {dans # jour} other {dans # jours}}",
       "posts": "Publications ce mois-ci",

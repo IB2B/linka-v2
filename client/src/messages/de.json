@@ -69,9 +69,7 @@
       "title": "Letzte Beiträge", "viewAll": "Alle anzeigen",
       "empty": "Du hast noch keine Beiträge erstellt."
     },
-    "usagePill": {
-      "trigger": "Plan-Nutzung",
-      "postsLeft": "Noch {count} Beiträge",
+    "usageMenu": {
       "planLabel": "{tier}-Plan",
       "resets": "Zurückgesetzt am {date} · {days, plural, =0 {heute} one {in # Tag} other {in # Tagen}}",
       "posts": "Beiträge diesen Monat",

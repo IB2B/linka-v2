@@ -69,9 +69,7 @@
       "title": "Publicaciones recientes", "viewAll": "Ver todo",
       "empty": "Aún no has generado ninguna publicación."
     },
-    "usagePill": {
-      "trigger": "Uso del plan",
-      "postsLeft": "Quedan {count} publicaciones",
+    "usageMenu": {
       "planLabel": "Plan {tier}",
       "resets": "Se reinicia el {date} · {days, plural, =0 {hoy} one {en # día} other {en # días}}",
       "posts": "Publicaciones este mes",

@@ -37,7 +37,7 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider className="h-svh overflow-hidden">
-      <AppSidebar user={dashboardUser} />
+      <AppSidebar user={dashboardUser} usage={usage} />
       <SidebarInset className="min-h-0 overflow-hidden">
         <PlatformBanner notice={notice} />
         <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 pl-4 pr-5 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -49,7 +49,6 @@ export default async function DashboardLayout({
             role={user.role}
             tier={user.tier}
             features={user.features}
-            usage={usage}
           />
         </header>
         <div className="scrollbar-thin flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">{children}</div>

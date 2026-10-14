@@ -18,6 +18,11 @@ export function peakUsagePct({ posts, images, videos }: UsageSummary): number {
   return Math.max(...all);
 }
 
+// Free plans always get the upgrade path; paid plans only when running low.
+export function offersUpgrade(tier: string, tone: UsageTone): boolean {
+  return tier === "free" || (tone !== "ok" && tier !== "enterprise");
+}
+
 export const TONE_TEXT: Record<UsageTone, string> = {
   ok: "text-primary",
   warning: "text-yellow-500",
