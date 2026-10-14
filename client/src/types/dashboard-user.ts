@@ -9,9 +9,5 @@ export type DashboardUser = {
   avatarUrl: string | null;
   role: UserRole;
   tier: UserTier;
-  postsUsed: number;
-  postsLimit: number;
-  videosUsed: number;
-  videosLimit: number;
   features: UserFeatures;
 };

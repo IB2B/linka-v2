@@ -10,6 +10,7 @@ import { PlatformBanner } from "@/components/dashboard/platform-banner";
 import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/auth/require-role";
 import { getPlatformNotice } from "@/lib/platform/get-platform";
+import { getUsage } from "@/lib/usage/get-usage";
 import type { DashboardUser } from "@/types/dashboard-user";
 
 export default async function DashboardLayout({
@@ -17,7 +18,9 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [{ user }, notice] = await Promise.all([requireRole("USER"), getPlatformNotice()]);
+  const [{ user }, notice, usage] = await Promise.all([
+    requireRole("USER"), getPlatformNotice(), getUsage(),
+  ]);
   if (!user.emailVerified) redirect("/verify-email");
   if (!user.onboardingCompleted) redirect("/onboarding");
 
@@ -29,16 +32,12 @@ export default async function DashboardLayout({
     avatarUrl: user.avatarUrl,
     role: user.role,
     tier: user.tier,
-    postsUsed: user.postsUsed,
-    postsLimit: user.postsLimit,
-    videosUsed: user.videosUsed,
-    videosLimit: user.videosLimit,
     features: user.features,
   };
 
   return (
     <SidebarProvider className="h-svh overflow-hidden">
-      <AppSidebar user={dashboardUser} />
+      <AppSidebar user={dashboardUser} usage={usage} />
       <SidebarInset className="min-h-0 overflow-hidden">
         <PlatformBanner notice={notice} />
         <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-background/80 pl-4 pr-5 backdrop-blur supports-[backdrop-filter]:bg-background/60">

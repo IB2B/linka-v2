@@ -69,10 +69,18 @@
       "title": "Recent posts", "viewAll": "View all",
       "empty": "You haven't generated any posts yet."
     },
-    "sidebarMeter": {
-      "planLabel": "{tier} plan",
+    "usagePlan": {
+      "leftHint": "{left} left today",
+      "paceHint": "{left} left this month. The tick marks an even pace for the month.",
+      "resets": "resets {date}",
+      "manage": "Manage",
       "posts": "Posts",
-      "videos": "Videos"
+      "images": "Images today",
+      "videos": "Videos",
+      "videosLocked": "Creator plan and up",
+      "warning": "You are close to a limit. Upgrade to keep posting without a pause.",
+      "danger": "You have hit a limit. Upgrade now or wait for the reset.",
+      "upgrade": "Upgrade plan"
     }
   },
   "inbox": {

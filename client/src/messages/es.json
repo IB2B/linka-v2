@@ -69,10 +69,18 @@
       "title": "Publicaciones recientes", "viewAll": "Ver todo",
       "empty": "Aún no has generado ninguna publicación."
     },
-    "sidebarMeter": {
-      "planLabel": "Plan {tier}",
+    "usagePlan": {
+      "leftHint": "Quedan {left} hoy",
+      "paceHint": "Quedan {left} este mes. La marca indica un ritmo uniforme para el mes.",
+      "resets": "se reinicia el {date}",
+      "manage": "Gestionar",
       "posts": "Publicaciones",
-      "videos": "Vídeos"
+      "images": "Imágenes hoy",
+      "videos": "Vídeos",
+      "videosLocked": "Desde el plan Creator",
+      "warning": "Estás cerca de un límite. Mejora tu plan para seguir publicando sin pausa.",
+      "danger": "Has alcanzado un límite. Mejora tu plan o espera al reinicio.",
+      "upgrade": "Mejorar plan"
     }
   },
   "inbox": {

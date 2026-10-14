@@ -11,7 +11,7 @@ export type UsageSummary = {
 
 function firstOfNextMonth(): string {
   const d = new Date();
-  return new Date(d.getFullYear(), d.getMonth() + 1, 1).toISOString();
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1)).toISOString();
 }
 
 // What the user can still generate: the monthly post and video allowances
