@@ -23,7 +23,7 @@ export function HeaderCompose() {
     <ComposePost>
       {(open) => (
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button size="lg" className="px-3" aria-label={label} />}>
+          <DropdownMenuTrigger render={<Button className="px-3" aria-label={label} />}>
             <Plus />
             <span className="hidden sm:inline">{label}</span>
           </DropdownMenuTrigger>
