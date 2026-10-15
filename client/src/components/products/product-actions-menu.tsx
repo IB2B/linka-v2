@@ -13,8 +13,8 @@ import type { Product } from "@/types/product";
 
 type Props = { product: Product; onEdit: () => void };
 
-// The card's "⋯" menu: edit, open the site, delete (with a confirm).
-export function ProductCardMenu({ product, onEdit }: Props) {
+// The "⋯" menu for a product: edit, open the site, delete (with a confirm).
+export function ProductActionsMenu({ product, onEdit }: Props) {
   const [deleting, setDeleting] = useState(false);
   return (
     <>

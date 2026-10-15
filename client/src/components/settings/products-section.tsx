@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SettingsSection } from "./settings-section";
 import { ProductSheet } from "@/components/products/product-sheet";
-import { ProductCard } from "@/components/products/product-card";
+import { ProductsTable } from "@/components/products/products-table";
 import { ProductsEmpty } from "@/components/products/products-empty";
 import type { Product } from "@/types/product";
 
@@ -26,11 +26,7 @@ export function ProductsSection({ products }: { products: Product[] }) {
       ) : null}
     >
       {hasProducts ? (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {products.map((p) => (
-            <ProductCard key={p.id} product={p} onEdit={() => setEditing(p)} />
-          ))}
-        </div>
+        <ProductsTable products={products} onEdit={setEditing} />
       ) : (
         <ProductsEmpty onAdd={() => setEditing(null)} />
       )}
