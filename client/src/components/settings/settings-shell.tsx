@@ -12,9 +12,11 @@ import { ConnectedAccountsSection } from "./connected-accounts-section";
 import { DangerSection } from "./danger-section";
 import { ServicesSection } from "./services-section";
 import { PrivacySection } from "./privacy-section";
+import { ProductsSection } from "./products-section";
 import { SettingsNav } from "./settings-nav";
 import type { ZernioAccount } from "@/lib/zernio/zernio-account.types";
 import type { PlatformInstructions } from "@/lib/content/platform-instructions.types";
+import type { Product } from "@/types/product";
 
 type Props = {
   firstName: string;
@@ -27,9 +29,10 @@ type Props = {
   preferredLanguage: string;
   accounts: ZernioAccount[];
   instructions: Record<string, PlatformInstructions>;
+  products: Product[];
 };
 
-export function SettingsShell({ accounts, preferredLanguage, instructions, ...profile }: Props) {
+export function SettingsShell({ accounts, preferredLanguage, instructions, products, ...profile }: Props) {
   const [active, setActive] = useState("profile");
 
   return (
@@ -39,6 +42,7 @@ export function SettingsShell({ accounts, preferredLanguage, instructions, ...pr
         {active === "profile" && <ProfileSection {...profile} />}
         {active === "security" && <PasswordSection />}
         {active === "aiInstructions" && <AiInstructionsSection instructions={instructions} />}
+        {active === "products" && <ProductsSection products={products} />}
         {active === "aiAvatar" && <AvatarSection />}
         {active === "preferences" && <PreferencesSection postLanguage={preferredLanguage} />}
         {active === "notifications" && <NotificationsSection />}

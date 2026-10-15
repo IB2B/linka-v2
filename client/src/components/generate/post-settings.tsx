@@ -6,6 +6,7 @@ import { LanguageSelect } from "./language-select";
 import { MediaTypeSelect } from "./media-type-select";
 import { AvatarVideoOptions } from "./avatar-video-options";
 import { ImageOptions } from "./image-options";
+import { NoChannelsNote } from "./no-channels-note";
 import type { Platform } from "@/lib/content/platforms";
 import type { PostSettings } from "@/types/content";
 
@@ -15,9 +16,11 @@ type Props = {
   disabled?: boolean;
   // Free plan: video is sold from Creator up, and the API refuses it.
   videoLocked?: boolean;
+  // Connected platforms; only these are offered. null = couldn't check, offer all.
+  channels: Platform[] | null;
 };
 
-export function PostSettingsPanel({ value, onChange, disabled, videoLocked }: Props) {
+export function PostSettingsPanel({ value, onChange, disabled, videoLocked, channels }: Props) {
   return (
     <div className="space-y-3">
       <div className="space-y-1.5">
@@ -25,8 +28,10 @@ export function PostSettingsPanel({ value, onChange, disabled, videoLocked }: Pr
         <PlatformPicker
           values={value.platforms as Platform[]}
           onChange={(p) => onChange({ ...value, platforms: p })}
+          options={channels}
           disabled={disabled}
         />
+        {channels?.length === 0 ? <NoChannelsNote /> : null}
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="language" className="text-xs text-muted-foreground">Language</Label>

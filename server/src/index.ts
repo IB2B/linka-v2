@@ -18,7 +18,9 @@ const PORT = Number(process.env.PORT ?? 4000);
 app.use(cors({ origin: process.env.NEXT_PUBLIC_APP_URL, credentials: true }));
 app.use(cookieParser());
 app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
-app.use(express.json());
+// 300kb: a product's 50,000-character knowledge field can pass 100kb (the default) in
+// UTF-8 for non-Latin languages.
+app.use(express.json({ limit: "300kb" }));
 app.use("/uploads", express.static(join(process.cwd(), "uploads"), {
   maxAge: "1d", fallthrough: false,
   setHeaders: (res) => res.setHeader("X-Content-Type-Options", "nosniff"),

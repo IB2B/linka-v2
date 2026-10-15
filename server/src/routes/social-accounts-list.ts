@@ -72,8 +72,9 @@ export async function listAccounts(req: AuthRequest, res: Response) {
     const profileId = await getOrCreateLateProfile(req.user!.id);
     res.json({ accounts: await buildAccounts(profileId) });
   } catch (e) {
-    // Late profile-limit / outage: show none rather than 500 the page.
+    // Late profile-limit / outage: show none rather than 500 the page, but say
+    // so, so callers don't mistake "couldn't check" for "nothing connected".
     console.warn("[accounts] Late unavailable:", e instanceof Error ? e.message : e);
-    res.json({ accounts: [] });
+    res.json({ accounts: [], unavailable: true });
   }
 }

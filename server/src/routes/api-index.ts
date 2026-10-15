@@ -25,6 +25,7 @@ import servicesRouter from "./services";
 import socialNotificationsRouter from "./social-notifications";
 import platformRouter from "./platform";
 import avatarRouter from "./avatar";
+import productsRouter from "./products";
 import { mountAdminRoutes } from "./admin-index";
 import { proxyImage } from "../controllers/image-proxy.controller";
 import { authenticate } from "../middleware/auth";
@@ -59,5 +60,6 @@ export function mountApiRoutes(app: Express): void {
   app.use("/api/social/notifications", socialNotificationsRouter);
   app.use("/api/platform", platformRouter);
   app.use("/api/avatar", avatarRouter);
+  app.use("/api/products", productsRouter);
   mountAdminRoutes(app);
 }

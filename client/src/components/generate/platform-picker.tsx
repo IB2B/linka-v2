@@ -8,10 +8,14 @@ import { PLATFORMS, type Platform } from "@/lib/content/platforms";
 type Props = {
   values: Platform[];
   onChange: (next: Platform[]) => void;
+  // Platforms to offer; null or empty shows every platform.
+  options: Platform[] | null;
   disabled?: boolean;
 };
 
-export function PlatformPicker({ values, onChange, disabled }: Props) {
+export function PlatformPicker({ values, onChange, options, disabled }: Props) {
+  const shown = options?.length ? PLATFORMS.filter((p) => options.includes(p.value)) : PLATFORMS;
+
   function toggle(p: Platform) {
     if (values.includes(p)) {
       if (values.length === 1) return;
@@ -22,7 +26,7 @@ export function PlatformPicker({ values, onChange, disabled }: Props) {
   }
   return (
     <div className="flex flex-wrap gap-1.5">
-      {PLATFORMS.map(({ value: v, label }) => {
+      {shown.map(({ value: v, label }) => {
         const active = values.includes(v);
         return (
           <Button

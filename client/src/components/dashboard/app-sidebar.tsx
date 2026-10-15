@@ -15,7 +15,7 @@ import type { AppSidebarProps } from "@/types/app-sidebar-props";
 export function AppSidebar({ user, usage, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
+      <SidebarHeader className="h-14 justify-center border-b border-sidebar-border">
         <SidebarBrand />
       </SidebarHeader>
       <SidebarContent>

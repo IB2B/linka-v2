@@ -1,18 +1,16 @@
 import { generatePost } from "../services/post-generation.service";
-import { generateImageForPostInBackground }
-  from "../services/image-generation.service";
-import { generateVideoForPostInBackground }
-  from "../services/video-generation.service";
-import { generateAvatarVideoInBackground }
-  from "../services/avatar-video.service";
+import { generateImageForPostInBackground } from "../services/image-generation.service";
+import { generateVideoForPostInBackground } from "../services/video-generation.service";
+import { generateAvatarVideoInBackground } from "../services/avatar-video.service";
 import { checkImageRateLimit } from "../lib/image-rate-limiter";
 import * as posts from "../models/generated-content.model";
 import { checkAndNotifyUsageLimit } from "./check-usage-limit";
 import { buildPostTitle } from "./post-title";
+import { promoFor } from "./product-promo";
 import type { ImageShape } from "./image-size";
+import type { Product } from "../models/product.model";
 
-// "video" = b-roll clip animated from a seed image; "avatar" = HeyGen presenter
-// speaking the post to camera.
+// "video" = b-roll clip from a seed image; "avatar" = HeyGen presenter on camera.
 export type MediaKind = "none" | "image" | "video" | "avatar";
 
 type Input = {
@@ -26,6 +24,7 @@ type Input = {
   avatarSeconds?: number;
   // Image-only shape. Undefined = landscape, the long-standing default.
   imageShape?: ImageShape;
+  product?: Product | null;
 };
 
 export async function generateForPlatform(
@@ -35,6 +34,7 @@ export async function generateForPlatform(
     userId, postType: input.postType as never,
     topic: input.topic, newsArticle: input.newsArticle,
     platform: platform as never, language: input.language,
+    promo: promoFor(input.product, platform),
   });
   // Never blocks the post: Reddit and YouTube need a title to publish, but a
   // draft with no title is still a draft the user can title themselves.
@@ -51,7 +51,7 @@ export async function generateForPlatform(
   // Avatar video ships with HeyGen's own thumbnail — no image job.
   const stored = await posts.insertOne({
     userId,
-    prompt: input.topic ?? input.newsArticle?.title ?? null,
+    prompt: input.topic ?? input.newsArticle?.title ?? input.product?.name ?? null,
     title,
     content: result.content,
     platform,
