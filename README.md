@@ -72,6 +72,9 @@ month at midnight UTC. Images have a daily limit.
   2 videos.
 - Regenerating a post's text is free. Re-rendering a video uses a video.
 - A failed video render doesn't count.
+- "Fill from site" (product import) has its own daily cap: 3 a day on the
+  free plan, 20 on paid plans, counted in the `product_imports` table. A
+  failed import doesn't count. Users can save up to 20 products.
 - Videos are counted in the `video_usage` table, so restarts and deploys
   don't reset the count.
 

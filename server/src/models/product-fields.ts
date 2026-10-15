@@ -26,3 +26,9 @@ export type ProductInput = { name: string; pitch: string }
 export type Product = { id: string } & Record<ProductField, string | null> & {
   name: string; pitch: string;
 };
+
+// Values in PRODUCT_FIELD_NAMES order. Empty strings are stored as NULL so
+// "not filled in" has one meaning.
+export function productValues(p: ProductInput): (string | null)[] {
+  return PRODUCT_FIELD_NAMES.map((k) => (p[k as keyof ProductInput] as string | null | undefined) || null);
+}

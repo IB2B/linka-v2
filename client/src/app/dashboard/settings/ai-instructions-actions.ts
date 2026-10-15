@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { forwardSetCookies } from "@/lib/server-actions/forward-set-cookie";
 import { PLATFORMS } from "@/lib/content/platforms";
+import { GLOBAL_PLATFORM } from "@/lib/content/platform-instructions.types";
 import { buildInstructionsBody } from "./ai-instructions-form-data";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
@@ -29,6 +30,9 @@ export async function savePlatformInstructionsAction(
   platform: string,
   formData: FormData,
 ): Promise<ActionResult> {
+  // The argument comes from the browser: only known platforms go into the API path.
+  const known = platform === GLOBAL_PLATFORM || PLATFORMS.some((p) => p.value === platform);
+  if (!known) return { error: "Unknown platform." };
   const error = await patchInstructions(platform, buildInstructionsBody(formData));
   if (error) return { error };
   revalidatePath("/dashboard/settings");

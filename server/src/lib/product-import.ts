@@ -1,5 +1,6 @@
 import { getAnthropic } from "./anthropic";
 import { cleanKnowledge } from "./clean-knowledge";
+import { ImportError } from "./import-error";
 import { PRODUCT_FIELDS, type ProductField } from "../models/product-fields";
 
 // Fields the AI may fill from a website. Name and url come from the page itself;
@@ -31,16 +32,16 @@ async function extract(url: string, depth: "basic" | "advanced"): Promise<string
 
 // Basic first (fast, cheap); advanced only for sites basic can't render.
 async function pageText(url: string): Promise<string> {
-  if (!process.env.TAVILY_API_KEY) throw new Error("Website import isn't set up yet.");
+  if (!process.env.TAVILY_API_KEY) throw new ImportError("Website import isn't set up yet.");
   const text = (await extract(url, "basic")) || (await extract(url, "advanced"));
   const clean = cleanKnowledge(text);
-  if (!clean) throw new Error("Couldn't read that website. Is the link public?");
+  if (!clean) throw new ImportError("Couldn't read that website. Is the link public?");
   return clean.slice(0, 30_000);
 }
 
 export async function importProductFromUrl(url: string): Promise<Record<string, string>> {
   // The route already enforces this; kept here so no other caller can fetch plain http.
-  if (!url.startsWith("https://")) throw new Error("Only secure https links work.");
+  if (!url.startsWith("https://")) throw new ImportError("Only secure https links work.");
   const text = await pageText(url);
   const msg = await getAnthropic().messages.create({
     model: "claude-sonnet-4-6",
@@ -53,7 +54,7 @@ export async function importProductFromUrl(url: string): Promise<Record<string, 
   try {
     json = JSON.parse(raw.replace(/^```(?:json)?\s*|\s*```$/g, "").trim());
   } catch {
-    throw new Error("Couldn't pull product details from that page. Fill them in by hand.");
+    throw new ImportError("Couldn't pull product details from that page. Fill them in by hand.");
   }
   const out: Record<string, string> = { url };
   for (const k of FILLABLE) {

@@ -31,13 +31,18 @@ async function mutate(path: string, method: string, body?: unknown): Promise<Act
   return { id: json.id };
 }
 
+// Server actions take any argument from the browser: only a real product id
+// may become part of the API path.
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 // Creates when `id` is null, otherwise updates that product.
 export async function saveProductAction(id: string | null, draft: ProductDraft): Promise<ActionResult> {
-  return id ? mutate(`/${id}`, "PATCH", draft) : mutate("", "POST", draft);
+  if (id === null) return mutate("", "POST", draft);
+  return UUID.test(id) ? mutate(`/${id}`, "PATCH", draft) : { error: "Product not found." };
 }
 
 export async function deleteProductAction(id: string): Promise<ActionResult> {
-  return mutate(`/${id}`, "DELETE");
+  return UUID.test(id) ? mutate(`/${id}`, "DELETE") : { error: "Product not found." };
 }
 
 // Reads a website and returns suggested field values. Nothing is saved.
