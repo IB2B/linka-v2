@@ -36,6 +36,8 @@ async function pageText(url: string): Promise<string> {
 }
 
 export async function importProductFromUrl(url: string): Promise<Record<string, string>> {
+  // The route already enforces this; kept here so no other caller can fetch plain http.
+  if (!url.startsWith("https://")) throw new Error("Only secure https links work.");
   const text = await pageText(url);
   const msg = await getAnthropic().messages.create({
     model: "claude-sonnet-4-6",

@@ -3,14 +3,24 @@ import { PRODUCT_FIELDS } from "../models/product-fields";
 
 const optional = (max: number) => z.string().trim().max(max).optional().nullable();
 
-// "yourapp.com" → "https://yourapp.com"; people rarely type the scheme.
-const withScheme = (v: unknown) => (typeof v === "string" && v.trim() && !/^https?:\/\//i.test(v.trim())
-  ? `https://${v.trim()}` : v);
+// "yourapp.com" → "https://yourapp.com" and http:// → https://. We never fetch
+// or store plain http; any other scheme is left as is so the check rejects it.
+function withHttps(v: unknown): unknown {
+  if (typeof v !== "string" || !v.trim()) return v;
+  const s = v.trim();
+  if (/^https?:\/\//i.test(s)) return s.replace(/^https?:\/\//i, "https://");
+  return /^[a-z][a-z0-9+.-]*:/i.test(s) ? s : `https://${s}`;
+}
+
+const httpsUrl = z.string().trim().max(PRODUCT_FIELDS.url)
+  .refine((u) => u.startsWith("https://"), "Only secure https links work.")
+  .refine((u) => { try { return new URL(u).hostname.includes("."); } catch { return false; } },
+    "That doesn't look like a website link.");
 
 export const productSchema = z.object({
   name: z.string().trim().min(1, "Give the product a name.").max(PRODUCT_FIELDS.name),
-  url: z.preprocess(withScheme, z.string().trim().max(PRODUCT_FIELDS.url)
-    .url("That doesn't look like a website link.").optional().nullable().or(z.literal(""))),
+  // Empty means "no link"; anything else must be a public https address.
+  url: z.preprocess((v) => (v === "" ? null : withHttps(v)), httpsUrl.nullable().optional()),
   pitch: z.string().trim().min(1, "Add a one-line pitch.").max(PRODUCT_FIELDS.pitch),
   audience: optional(PRODUCT_FIELDS.audience),
   problem: optional(PRODUCT_FIELDS.problem),
@@ -26,6 +36,5 @@ export const productSchema = z.object({
 });
 
 export const importSchema = z.object({
-  url: z.preprocess(withScheme, z.string().trim().url("That doesn't look like a website link.")
-    .refine((u) => /^https?:\/\//i.test(u), "Only http and https links work.")),
+  url: z.preprocess(withHttps, httpsUrl),
 });
