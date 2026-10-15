@@ -8,12 +8,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { LogoPlacementSelect } from "./logo-placement-select";
+import { LogoBackgroundControls } from "./logo-background-controls";
 import type { BrandKit } from "@/lib/content/platform-instructions.types";
 
 // The file uploads on pick and the returned path rides along in a hidden input,
 // so the logo is only committed when the surrounding brand kit form is saved.
 export function BrandLogoField({ kit }: { kit: BrandKit }) {
   const [url, setUrl] = useState(kit.logoUrl ?? "");
+  // The logo as uploaded; background removal works from this file.
+  const [base, setBase] = useState(kit.logoUrl ?? "");
   const [busy, setBusy] = useState(false);
   const input = useRef<HTMLInputElement>(null);
 
@@ -26,6 +29,7 @@ export function BrandLogoField({ kit }: { kit: BrandKit }) {
     setBusy(false);
     if (!res.ok) { toast.error(json.error ?? "Upload failed."); return; }
     setUrl(json.url);
+    setBase(json.url);
   }
 
   return (
@@ -45,10 +49,11 @@ export function BrandLogoField({ kit }: { kit: BrandKit }) {
           {url ? "Replace logo" : "Upload logo"}
         </Button>
         {url ? (
-          <Button type="button" variant="ghost" size="sm" onClick={() => setUrl("")}>
+          <Button type="button" variant="ghost" size="sm" onClick={() => { setUrl(""); setBase(""); }}>
             Remove
           </Button>
         ) : null}
+        {url ? <LogoBackgroundControls base={base} url={url} onChange={setUrl} /> : null}
         <input ref={input} type="file" accept="image/png,image/webp,image/jpeg"
           className="hidden"
           onChange={(e) => {
@@ -58,7 +63,8 @@ export function BrandLogoField({ kit }: { kit: BrandKit }) {
           }} />
       </div>
       <p className="text-xs text-muted-foreground">
-        PNG with a transparent background works best — up to 2 MB.
+        PNG with a transparent background works best — up to 2 MB. Logo on a white or
+        plain background? Use Remove background.
       </p>
       <div className="flex flex-wrap items-center gap-4">
         <Label className="flex items-center gap-2 text-sm font-normal">
