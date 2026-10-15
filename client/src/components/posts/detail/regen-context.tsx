@@ -1,20 +1,20 @@
 "use client";
 
-import { createContext, useContext, useState, useTransition } from "react";
+import { createContext, useContext, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-import {
-  regenerateTextAction,
-  regenerateImageAction,
-  regenerateVideoAction,
-} from "@/app/dashboard/posts/actions";
+import { regenerateImageAction, regenerateVideoAction } from "@/app/dashboard/posts/actions";
+import { useTextRegen } from "./use-text-regen";
 
 type RegenCtx = {
   textPending: boolean;
+  // What the content block's loader says: "Rewriting…" or "Applying suggestions…".
+  textLabel: string;
   imagePending: boolean;
   videoPending: boolean;
   runText: () => void;
+  runImprove: (suggestions: string[], note: string, onDone: () => void) => void;
   runImage: (prompt?: string) => void;
   runVideo: () => void;
 };
@@ -31,46 +31,35 @@ export function RegenProvider({
   postId, children,
 }: { postId: string; children: React.ReactNode }) {
   const router = useRouter();
-  const [textPending, textStart] = useTransition();
-  const [imageOptimistic, setImageOptimistic] = useState(false);
-  const [videoOptimistic, setVideoOptimistic] = useState(false);
+  const text = useTextRegen(postId);
+  const [imagePending, imageStart] = useTransition();
+  const [videoPending, videoStart] = useTransition();
 
-  function runText() {
-    textStart(async () => {
-      const res = await regenerateTextAction(postId);
-      if (res.error) toast.error(res.error);
-      else { toast.success("Content regenerated."); router.refresh(); }
+  // The server flips the row to "generating"; the refresh runs inside the same
+  // transition, so this loader holds until the page shows the media's own
+  // progress state (which then polls) — no gap where the old image reappears.
+  function runImage(prompt?: string) {
+    imageStart(async () => {
+      const res = await regenerateImageAction(postId, prompt);
+      if (res.error) { toast.error(res.error); return; }
+      toast.success("Image queued.");
+      imageStart(() => router.refresh());
     });
   }
 
-  function runImage(prompt?: string) {
-    setImageOptimistic(true);
-    (async () => {
-      const res = await regenerateImageAction(postId, prompt);
-      if (res.error) { toast.error(res.error); setImageOptimistic(false); return; }
-      toast.success("Image queued.");
-      router.refresh();
-      setTimeout(() => setImageOptimistic(false), 1500);
-    })();
-  }
-
-  // Renders take minutes, so the server flips the row to "generating" and the
-  // refreshed page shows its own progress state — no long-lived local flag.
   function runVideo() {
-    setVideoOptimistic(true);
-    (async () => {
+    videoStart(async () => {
       const res = await regenerateVideoAction(postId);
-      if (res.error) { toast.error(res.error); setVideoOptimistic(false); return; }
+      if (res.error) { toast.error(res.error); return; }
       toast.success("Video re-render queued.");
-      router.refresh();
-      setTimeout(() => setVideoOptimistic(false), 1500);
-    })();
+      videoStart(() => router.refresh());
+    });
   }
 
   return (
     <Ctx.Provider value={{
-      textPending, imagePending: imageOptimistic, videoPending: videoOptimistic,
-      runText, runImage, runVideo,
+      textPending: text.pending, textLabel: text.label, imagePending, videoPending,
+      runText: text.runText, runImprove: text.runImprove, runImage, runVideo,
     }}>{children}</Ctx.Provider>
   );
 }

@@ -1,26 +1,24 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Wand2 } from "lucide-react";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import { improvePostAction } from "@/app/dashboard/posts/improve-action";
+import { useRegen } from "./regen-context";
 import { CopyButton } from "./copy-button";
 
-type Props = { postId: string; suggestions: string[]; onApplied: () => void };
+type Props = { suggestions: string[]; onApplied: () => void };
 
 // The score's "Try" list, made actionable: pick the fixes you want, add your
-// own if you like, and the AI edits the post with exactly those changes.
-export function ViralitySuggestions({ postId, suggestions, onApplied }: Props) {
-  const router = useRouter();
+// own if you like, and the AI edits the post with exactly those changes. Runs
+// through the shared text regen, so the content block shows its loader too.
+export function ViralitySuggestions({ suggestions, onApplied }: Props) {
+  const { textPending: pending, runImprove } = useRegen();
   const [picked, setPicked] = useState<Set<number>>(() => new Set(suggestions.map((_, i) => i)));
   const [note, setNote] = useState("");
-  const [pending, start] = useTransition();
   const chosen = suggestions.filter((_, i) => picked.has(i));
   const canApply = chosen.length > 0 || note.trim().length > 0;
   const label = chosen.length === 0 ? "Apply my note to post"
@@ -28,17 +26,6 @@ export function ViralitySuggestions({ postId, suggestions, onApplied }: Props) {
 
   function toggle(i: number, on: boolean) {
     setPicked((s) => { const n = new Set(s); if (on) n.add(i); else n.delete(i); return n; });
-  }
-
-  function apply() {
-    start(async () => {
-      const res = await improvePostAction(postId, chosen, note);
-      if (res.error) { toast.error(res.error); return; }
-      toast.success("Post updated. Re-scoring…");
-      setNote("");
-      router.refresh();
-      onApplied();
-    });
   }
 
   return (
@@ -56,7 +43,8 @@ export function ViralitySuggestions({ postId, suggestions, onApplied }: Props) {
       </ul>
       <Textarea rows={2} value={note} disabled={pending} onChange={(e) => setNote(e.target.value)}
         className="text-xs" placeholder="Anything else to change? (optional)" maxLength={500} />
-      <Button size="sm" className="w-full" disabled={!canApply || pending} onClick={apply}>
+      <Button size="sm" className="w-full" disabled={!canApply || pending}
+        onClick={() => runImprove(chosen, note, () => { setNote(""); onApplied(); })}>
         {pending ? <Spinner aria-hidden /> : <Wand2 />}
         {pending ? "Applying…" : label}
       </Button>

@@ -48,7 +48,7 @@ export function PostViralityScore({ postId, initial = null }: Props) {
             </div>
           ) : null}
           {score.suggestions.length > 0 ? (
-            <ViralitySuggestions key={score.suggestions.join("|")} postId={postId}
+            <ViralitySuggestions key={score.suggestions.join("|")}
               suggestions={score.suggestions} onApplied={run} />
           ) : null}
         </>

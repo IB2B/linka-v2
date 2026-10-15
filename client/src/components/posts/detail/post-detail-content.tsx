@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import type { GeneratedPost } from "@/types/post";
 
 export function PostDetailContent({ post }: { post: GeneratedPost }) {
-  const { textPending } = useRegen();
+  const { textPending, textLabel } = useRegen();
   const [editing, setEditing] = useState(false);
 
   async function onCopy() {
@@ -58,7 +58,7 @@ export function PostDetailContent({ post }: { post: GeneratedPost }) {
           <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.6s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-foreground/5 to-transparent" />
           <div className="absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-center justify-center gap-2 text-sm font-medium text-foreground/80">
             <Sparkles className="size-4 animate-pulse" />
-            Rewriting…
+            {textLabel}
           </div>
         </div>
       ) : null}
