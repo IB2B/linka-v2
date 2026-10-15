@@ -16,8 +16,8 @@ type Props = {
   disabled?: boolean;
   // Free plan: video is sold from Creator up, and the API refuses it.
   videoLocked?: boolean;
-  // Connected platforms; only these are offered.
-  channels: Platform[];
+  // Connected platforms; only these are offered. null = couldn't check, offer all.
+  channels: Platform[] | null;
 };
 
 export function PostSettingsPanel({ value, onChange, disabled, videoLocked, channels }: Props) {
@@ -31,7 +31,7 @@ export function PostSettingsPanel({ value, onChange, disabled, videoLocked, chan
           options={channels}
           disabled={disabled}
         />
-        {channels.length === 0 ? <NoChannelsNote /> : null}
+        {channels?.length === 0 ? <NoChannelsNote /> : null}
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="language" className="text-xs text-muted-foreground">Language</Label>

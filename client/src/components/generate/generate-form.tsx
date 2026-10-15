@@ -22,8 +22,8 @@ type Props = {
   scheduleDate: string | null;
   usage: UsageSummary | null;
   products: Product[];
-  // Connected platforms, in order; the first is selected to start.
-  channels: Platform[];
+  // Connected platforms, in order; the first is selected to start. null = unknown.
+  channels: Platform[] | null;
   // Product id to promote, from a "Promote" link: skips straight to settings.
   promoProduct: string | null;
 };
@@ -33,7 +33,7 @@ export function GenerateForm({ initialNews, defaultLanguage, scheduleDate, usage
   const [step, setStep] = useState<Step>(promoProduct ? 2 : 1);
   const [postType, setPostType] = useState<PostType>(promoProduct ? "promote_product" : "news_commentary");
   const [settings, setSettings] = useState<PostSettings>({
-    platforms: [channels[0] ?? "linkedin"], language: defaultLanguage, media: "image",
+    platforms: [channels?.[0] ?? "linkedin"], language: defaultLanguage, media: "image",
     avatarAspect: "auto", avatarSeconds: 30, imageShape: "landscape",
   });
   const { generate, randomGenerate, pending, generatingFor } =

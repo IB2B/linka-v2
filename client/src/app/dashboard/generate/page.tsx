@@ -9,15 +9,14 @@ import { parseDay } from "@/lib/calendar/parse-day";
 import { isPastDay } from "@/lib/calendar/view-range";
 import { getUsage } from "@/lib/usage/get-usage";
 import { fetchProducts } from "@/lib/api/products";
-import { getAccounts } from "@/lib/zernio/get-accounts";
-import { connectedPostPlatforms } from "@/lib/content/connected-platforms";
+import { getConnectedPlatforms } from "@/lib/content/get-connected-platforms";
 import { fetchNewsAction } from "./actions";
 
 type Props = { searchParams: Promise<{ date?: string | string[]; product?: string | string[] }> };
 
 export default async function GeneratePage({ searchParams }: Props) {
-  const [news, me, usage, products, accounts, locale, t, sp] = await Promise.all([
-    fetchNewsAction(), fetchMe(), getUsage(), fetchProducts(), getAccounts(), getLocale(),
+  const [news, me, usage, products, channels, locale, t, sp] = await Promise.all([
+    fetchNewsAction(), fetchMe(), getUsage(), fetchProducts(), getConnectedPlatforms(), getLocale(),
     getTranslations("generate"), searchParams,
   ]);
   // Remembered choice first, else fall back to the language they browse in.
@@ -34,7 +33,7 @@ export default async function GeneratePage({ searchParams }: Props) {
       {day && scheduleDate ? <GenerateDateBanner date={day} /> : null}
       <GenerateForm initialNews={news.data ?? []} defaultLanguage={defaultLanguage}
         scheduleDate={scheduleDate} usage={usage} products={products}
-        channels={connectedPostPlatforms(accounts)} promoProduct={promoProduct} />
+        channels={channels} promoProduct={promoProduct} />
     </>
   );
 }

@@ -10,7 +10,7 @@ type Props = {
   settings: PostSettings;
   pending: boolean;
   usage: UsageSummary | null;
-  channels: Platform[];
+  channels: Platform[] | null;
   onChange: (s: PostSettings) => void;
   onBack: () => void;
   onNext: () => void;

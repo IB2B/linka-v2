@@ -8,13 +8,13 @@ import { PLATFORMS, type Platform } from "@/lib/content/platforms";
 type Props = {
   values: Platform[];
   onChange: (next: Platform[]) => void;
-  // Platforms to offer; empty shows every platform.
-  options: Platform[];
+  // Platforms to offer; null or empty shows every platform.
+  options: Platform[] | null;
   disabled?: boolean;
 };
 
 export function PlatformPicker({ values, onChange, options, disabled }: Props) {
-  const shown = options.length ? PLATFORMS.filter((p) => options.includes(p.value)) : PLATFORMS;
+  const shown = options?.length ? PLATFORMS.filter((p) => options.includes(p.value)) : PLATFORMS;
 
   function toggle(p: Platform) {
     if (values.includes(p)) {
