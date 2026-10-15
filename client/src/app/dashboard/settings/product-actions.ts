@@ -3,13 +3,13 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { forwardSetCookies } from "@/lib/server-actions/forward-set-cookie";
+import type { ProductDraft } from "@/types/product";
 
 const API_BASE = process.env.API_URL ?? "http://localhost:4000";
-const FIELDS = ["name", "url", "pitch", "audience", "features", "cta"] as const;
 
-type ActionResult = { error?: string; id?: string };
+type ActionResult<T = { id?: string }> = { error?: string } & Partial<T>;
 
-async function send(path: string, method: string, body?: unknown): Promise<ActionResult> {
+async function send<T>(path: string, method: string, body?: unknown): Promise<{ ok: boolean; json: T & { error?: string } }> {
   const cookieStore = await cookies();
   const cookie = cookieStore.getAll().map((c) => `${c.name}=${c.value}`).join("; ");
   const res = await fetch(`${API_BASE}/api/products${path}`, {
@@ -19,24 +19,30 @@ async function send(path: string, method: string, body?: unknown): Promise<Actio
     cache: "no-store",
   });
   await forwardSetCookies(res);
-  const json = (await res.json().catch(() => ({}))) as { error?: string; id?: string };
-  if (!res.ok) return { error: json.error ?? "Request failed." };
+  return { ok: res.ok, json: (await res.json().catch(() => ({}))) as T & { error?: string } };
+}
+
+async function mutate(path: string, method: string, body?: unknown): Promise<ActionResult> {
+  const { ok, json } = await send<{ id?: string }>(path, method, body);
+  if (!ok) return { error: json.error ?? "Request failed." };
   // Products show in Settings and on the Generate page.
   revalidatePath("/dashboard/settings");
   revalidatePath("/dashboard/generate");
   return { id: json.id };
 }
 
-function readProduct(fd: FormData): Record<string, string> {
-  return Object.fromEntries(FIELDS.map((k) => [k, String(fd.get(k) ?? "").trim()]));
-}
-
 // Creates when `id` is null, otherwise updates that product.
-export async function saveProductAction(id: string | null, fd: FormData): Promise<ActionResult> {
-  const body = readProduct(fd);
-  return id ? send(`/${id}`, "PATCH", body) : send("", "POST", body);
+export async function saveProductAction(id: string | null, draft: ProductDraft): Promise<ActionResult> {
+  return id ? mutate(`/${id}`, "PATCH", draft) : mutate("", "POST", draft);
 }
 
 export async function deleteProductAction(id: string): Promise<ActionResult> {
-  return send(`/${id}`, "DELETE");
+  return mutate(`/${id}`, "DELETE");
+}
+
+// Reads a website and returns suggested field values. Nothing is saved.
+export async function importProductAction(url: string): Promise<ActionResult<{ fields: Partial<ProductDraft> }>> {
+  const { ok, json } = await send<Partial<ProductDraft>>("/import", "POST", { url });
+  if (!ok) return { error: json.error ?? "Couldn't read that website." };
+  return { fields: json };
 }

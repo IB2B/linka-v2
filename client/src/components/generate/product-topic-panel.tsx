@@ -6,7 +6,7 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ProductDialog } from "@/components/products/product-dialog";
+import { ProductSheet } from "@/components/products/product-sheet";
 import { ProductPickItem } from "./product-pick-item";
 import { TopicGenerateBar } from "./topic-generate-bar";
 import type { Product } from "@/types/product";
@@ -55,7 +55,7 @@ export function ProductTopicPanel({ products, pending, onGenerate }: Props) {
       ) : null}
       <TopicGenerateBar label={product?.name ?? null} pending={pending}
         onGenerate={() => product && onGenerate(product.id, product.name, direction.trim() || undefined)} />
-      <ProductDialog open={adding} onOpenChange={setAdding} product={null}
+      <ProductSheet key={String(adding)} open={adding} onOpenChange={setAdding} product={null}
         onSaved={(id) => id && setSelected(id)} />
     </div>
   );

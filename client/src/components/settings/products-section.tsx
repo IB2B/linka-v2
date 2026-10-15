@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { SettingsSection } from "./settings-section";
-import { ProductDialog } from "@/components/products/product-dialog";
+import { ProductSheet } from "@/components/products/product-sheet";
 import { ProductRow } from "@/components/products/product-row";
 import type { Product } from "@/types/product";
 
@@ -35,7 +35,7 @@ export function ProductsSection({ products }: { products: Product[] }) {
       <Button variant="outline" size="sm" onClick={() => setEditing(null)}>
         <Plus /> Add product
       </Button>
-      <ProductDialog key={editing?.id ?? "new"} open={editing !== undefined} product={editing ?? null}
+      <ProductSheet key={editing === undefined ? "closed" : editing?.id ?? "new"} open={editing !== undefined} product={editing ?? null}
         onOpenChange={(open) => { if (!open) setEditing(undefined); }} />
     </SettingsSection>
   );

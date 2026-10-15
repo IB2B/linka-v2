@@ -10,8 +10,16 @@ export const PROMO_ANGLES = [
   "Give a quick, genuinely useful tip in the product's area, and show the product as the easy way to do it.",
 ];
 
+// Enough of the user's docs to ground the post without bloating every prompt.
+const KNOWLEDGE_CHARS = 8000;
+
 export function pickAngle(): string {
   return PROMO_ANGLES[Math.floor(Math.random() * PROMO_ANGLES.length)];
+}
+
+// Each platform gets its own angle, so a multi-platform batch isn't one ad five times.
+export function promoFor(product: Product | null | undefined, platform: string): string | undefined {
+  return product ? promoBlock(product, platform, pickAngle()) : undefined;
 }
 
 // Instagram captions don't make links clickable, so the CTA points to the bio.
@@ -21,20 +29,29 @@ function linkRule(product: Product, platform: string): string {
   return `Put this link once, on its own line near the end: ${product.url}`;
 }
 
-// Each platform gets its own angle, so a multi-platform batch isn't one ad five times.
-export function promoFor(product: Product | null | undefined, platform: string): string | undefined {
-  return product ? promoBlock(product, platform, pickAngle()) : undefined;
+function facts(p: Product): string[] {
+  const line = (label: string, v: string | null) => (v ? `${label}: ${v}` : "");
+  return [
+    line("It is for", p.audience),
+    line("Their problem", p.problem),
+    line("What they use today instead", p.alternatives),
+    p.features ? `Key features and benefits:\n${p.features}` : "",
+    p.differentiators ? `What makes it different:\n${p.differentiators}` : "",
+    line("Pricing", p.pricing),
+    p.proof ? `Proof (results, customers, quotes) — use only these, word for word if quoted:\n${p.proof}` : "",
+    line("Never say or do", p.avoid),
+    p.knowledge ? `Background from the author's own docs (for facts only, don't copy):\n${p.knowledge.slice(0, KNOWLEDGE_CHARS)}` : "",
+  ];
 }
 
 export function promoBlock(product: Product, platform: string, angle: string): string {
   const lines = [
     `This post promotes the author's product. Product: ${product.name} — ${product.pitch}`,
-    product.audience ? `It is for: ${product.audience}.` : "",
-    product.features ? `Key features and benefits:\n${product.features}` : "",
+    ...facts(product),
     `Angle for this post: ${angle}`,
     "Rules: lead with the reader's problem or a story, not the product name. Mention the product by name once or twice, naturally. "
       + "Sound like a person recommending something they built, not an ad: no hype words, no exclamation-mark selling, no fake urgency. "
-      + "Only claim what the details above support.",
+      + "Only claim what the details above support. Never invent numbers, customers or quotes.",
     `Close with this call to action instead of a question: ${product.cta || `try ${product.name}`}. ${linkRule(product, platform)}`,
   ];
   return lines.filter(Boolean).join("\n");

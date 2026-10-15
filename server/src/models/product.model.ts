@@ -1,20 +1,10 @@
 import { randomUUID } from "node:crypto";
 import { db } from "../lib/db";
+import { PRODUCT_FIELD_NAMES, type Product, type ProductInput } from "./product-fields";
 
-export type ProductInput = {
-  name: string;
-  url?: string | null;
-  pitch: string;
-  audience?: string | null;
-  features?: string | null;
-  cta?: string | null;
-};
+export type { Product, ProductInput };
 
-export type Product = Required<{ [K in keyof ProductInput]: ProductInput[K] }> & {
-  id: string;
-};
-
-const COLS = "id, name, url, pitch, audience, features, cta";
+const COLS = ["id", ...PRODUCT_FIELD_NAMES].join(", ");
 // Keeps the list small enough to show as cards and to stay cheap per user.
 export const MAX_PRODUCTS = 20;
 
@@ -39,24 +29,26 @@ export async function countProducts(userId: string): Promise<number> {
   return Number(rows[0]?.n ?? 0);
 }
 
-function values(p: ProductInput) {
-  return [p.name, p.url || null, p.pitch, p.audience || null, p.features || null, p.cta || null];
+// Empty strings are stored as NULL so "not filled in" has one meaning.
+function values(p: ProductInput): (string | null)[] {
+  return PRODUCT_FIELD_NAMES.map((k) => (p[k as keyof ProductInput] as string | null | undefined) || null);
 }
 
 export async function createProduct(userId: string, p: ProductInput): Promise<string> {
   const id = randomUUID();
+  const cols = PRODUCT_FIELD_NAMES.join(", ");
+  const marks = PRODUCT_FIELD_NAMES.map(() => "?").join(", ");
   await db.query(
-    `INSERT INTO products (id, user_id, name, url, pitch, audience, features, cta)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO products (id, user_id, ${cols}) VALUES (?, ?, ${marks})`,
     [id, userId, ...values(p)],
   );
   return id;
 }
 
 export async function updateProduct(userId: string, id: string, p: ProductInput): Promise<boolean> {
+  const sets = PRODUCT_FIELD_NAMES.map((k) => `${k} = ?`).join(", ");
   const [res] = await db.query<any>(
-    `UPDATE products SET name = ?, url = ?, pitch = ?, audience = ?, features = ?, cta = ?
-     WHERE id = ? AND user_id = ?`,
+    `UPDATE products SET ${sets} WHERE id = ? AND user_id = ?`,
     [...values(p), id, userId],
   );
   return res.affectedRows > 0;
