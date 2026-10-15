@@ -1,4 +1,5 @@
 import type { BrandKit } from "@/lib/content/platform-instructions.types";
+import { normalizeHex } from "@/lib/content/normalize-hex";
 
 const TEXT_KEYS = [
   "whoIAm", "whatIDo", "goals", "interests",
@@ -18,9 +19,9 @@ function str(fd: FormData, key: string): string {
   return String(fd.get(key) ?? "").trim();
 }
 
+// "1A1A1A", "#fff" and friends become "#1A1A1A"; the form blocks anything else.
 function hex(fd: FormData, key: string): string | undefined {
-  const v = str(fd, key);
-  return /^#[0-9a-fA-F]{6}$/.test(v) ? v : undefined;
+  return normalizeHex(str(fd, key)) || undefined;
 }
 
 function font(fd: FormData, key: string): string | undefined {
