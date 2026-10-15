@@ -14,6 +14,10 @@ export function useInstructionsSave(platform: string) {
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    // A field flagged invalid (e.g. a colour that isn't a hex code) would be
+    // dropped by the save, so stop and say so instead of saving without it.
+    const bad = e.currentTarget.querySelector<HTMLElement>("[aria-invalid=true]");
+    if (bad) { bad.focus(); toast.error("Fix the highlighted field before saving."); return; }
     const formData = new FormData(e.currentTarget);
     startTransition(async () => {
       const result = await savePlatformInstructionsAction(platform, formData);
