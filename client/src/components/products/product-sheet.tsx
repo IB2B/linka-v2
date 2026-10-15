@@ -11,6 +11,7 @@ import {
   Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet";
 import { saveProductAction } from "@/app/dashboard/settings/product-actions";
+import { normalizeUrl } from "@/lib/content/normalize-url";
 import { PRODUCT_SECTIONS } from "./product-sections";
 import { ProductBasics } from "./product-basics";
 import { ProductSectionFields } from "./product-section-fields";
@@ -34,7 +35,7 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: Props) {
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     start(async () => {
-      const res = await saveProductAction(product?.id ?? null, draft);
+      const res = await saveProductAction(product?.id ?? null, { ...draft, url: normalizeUrl(draft.url) || draft.url });
       if (res.error) { toast.error(res.error); return; }
       toast.success(product ? "Product updated." : "Product saved.");
       onOpenChange(false);

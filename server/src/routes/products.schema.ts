@@ -3,10 +3,14 @@ import { PRODUCT_FIELDS } from "../models/product-fields";
 
 const optional = (max: number) => z.string().trim().max(max).optional().nullable();
 
+// "yourapp.com" → "https://yourapp.com"; people rarely type the scheme.
+const withScheme = (v: unknown) => (typeof v === "string" && v.trim() && !/^https?:\/\//i.test(v.trim())
+  ? `https://${v.trim()}` : v);
+
 export const productSchema = z.object({
   name: z.string().trim().min(1, "Give the product a name.").max(PRODUCT_FIELDS.name),
-  url: z.string().trim().max(PRODUCT_FIELDS.url).url("Use a full link, like https://yourapp.com")
-    .optional().nullable().or(z.literal("")),
+  url: z.preprocess(withScheme, z.string().trim().max(PRODUCT_FIELDS.url)
+    .url("That doesn't look like a website link.").optional().nullable().or(z.literal(""))),
   pitch: z.string().trim().min(1, "Add a one-line pitch.").max(PRODUCT_FIELDS.pitch),
   audience: optional(PRODUCT_FIELDS.audience),
   problem: optional(PRODUCT_FIELDS.problem),
@@ -22,6 +26,6 @@ export const productSchema = z.object({
 });
 
 export const importSchema = z.object({
-  url: z.string().trim().url("Use a full link, like https://yourapp.com")
-    .refine((u) => /^https?:\/\//i.test(u), "Only http and https links work."),
+  url: z.preprocess(withScheme, z.string().trim().url("That doesn't look like a website link.")
+    .refine((u) => /^https?:\/\//i.test(u), "Only http and https links work.")),
 });

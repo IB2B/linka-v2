@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { importProductAction } from "@/app/dashboard/settings/product-actions";
+import { normalizeUrl } from "@/lib/content/normalize-url";
 import type { ProductDraft } from "@/types/product";
 
 type Props = {
@@ -21,10 +22,12 @@ type Props = {
 // only the fields that are still empty.
 export function ProductUrlField({ value, onChange, onFill }: Props) {
   const [pending, start] = useTransition();
+  const url = normalizeUrl(value);
 
   function fill() {
+    onChange(url);
     start(async () => {
-      const res = await importProductAction(value.trim());
+      const res = await importProductAction(url);
       if (res.error || !res.fields) { toast.error(res.error ?? "Couldn't read that website."); return; }
       const n = onFill(res.fields);
       toast.success(n > 0 ? `Filled ${n} fields from your site. Check them before saving.` : "Nothing new to fill in.");
@@ -35,10 +38,11 @@ export function ProductUrlField({ value, onChange, onFill }: Props) {
     <div className="space-y-1.5">
       <Label htmlFor="url">Website link</Label>
       <div className="flex gap-2">
-        <Input id="url" type="url" maxLength={500} placeholder="https://yourapp.com"
-          value={value} onChange={(e) => onChange(e.target.value)} disabled={pending} />
+        <Input id="url" inputMode="url" maxLength={500} placeholder="yourapp.com"
+          value={value} onChange={(e) => onChange(e.target.value)} disabled={pending}
+          onBlur={() => { if (url) onChange(url); }} />
         <Button type="button" variant="outline" className="shrink-0" onClick={fill}
-          disabled={pending || !/^https?:\/\/\S+\.\S+/.test(value.trim())}>
+          disabled={pending || !url}>
           {pending ? <Spinner aria-hidden /> : <Globe />}
           {pending ? "Reading your site…" : "Fill from site"}
         </Button>
