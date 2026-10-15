@@ -8,6 +8,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { scorePostAction } from "@/app/dashboard/posts/score-action";
 import { ViralityMeter } from "./virality-meter";
 import { RainbowScoreButton } from "./rainbow-score-button";
+import { ViralitySuggestions } from "./virality-suggestions";
 import type { PostScore } from "@/types/post-score";
 
 type Props = { postId: string; initial?: PostScore | null };
@@ -47,14 +48,8 @@ export function PostViralityScore({ postId, initial = null }: Props) {
             </div>
           ) : null}
           {score.suggestions.length > 0 ? (
-            <div>
-              <p className="mb-1 text-xs font-medium text-muted-foreground">Try</p>
-              <ul className="space-y-1 text-xs text-foreground/80">
-                {score.suggestions.map((s, i) => (
-                  <li key={i} className="leading-relaxed">→ {s}</li>
-                ))}
-              </ul>
-            </div>
+            <ViralitySuggestions key={score.suggestions.join("|")} postId={postId}
+              suggestions={score.suggestions} onApplied={run} />
           ) : null}
         </>
       ) : (

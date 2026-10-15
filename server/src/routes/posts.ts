@@ -18,6 +18,7 @@ import {
   postImageUpload, uploadPostImage,
 } from "../controllers/posts-image-upload.controller";
 import { scoreById } from "../controllers/posts-score.controller";
+import { improveText } from "../controllers/posts-improve.controller";
 import { bulkDelete } from "../controllers/posts-bulk.controller";
 import { listPublishedPlatforms }
   from "../controllers/posts-published-platforms.controller";
@@ -54,6 +55,7 @@ router.post("/:id/regenerate-text", regenerateText);
 router.post("/:id/regenerate-image", regenerateImage);
 router.post("/:id/regenerate-video", regenerateVideo);
 router.post("/:id/score", scoreById);
+router.post("/:id/improve-text", improveText);
 router.post("/bulk-delete", bulkDelete);
 router.patch("/:id", updateContent);
 router.delete("/:id", remove);
