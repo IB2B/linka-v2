@@ -1,19 +1,19 @@
 "use client";
 
-import { useTransition } from "react";
+import { Fragment, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
-import { FormField } from "@/components/forms/form-field";
 import {
   Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle,
 } from "@/components/ui/sheet";
 import { saveProductAction } from "@/app/dashboard/settings/product-actions";
 import { PRODUCT_SECTIONS } from "./product-sections";
+import { ProductBasics } from "./product-basics";
 import { ProductSectionFields } from "./product-section-fields";
-import { ProductImportBar } from "./product-import-bar";
 import { ProductKnowledgeField } from "./product-knowledge-field";
 import { useProductDraft } from "./use-product-draft";
 import type { Product } from "@/types/product";
@@ -45,27 +45,23 @@ export function ProductSheet({ open, onOpenChange, product, onSaved }: Props) {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full gap-0 p-0 sm:max-w-xl data-[side=right]:sm:max-w-xl">
-        <SheetHeader className="border-b p-5">
+      <SheetContent className="w-full gap-0 p-0 data-[side=right]:sm:max-w-2xl">
+        <SheetHeader className="border-b px-6 py-5">
           <SheetTitle>{product ? `Edit ${product.name}` : "Add a product"}</SheetTitle>
-          <SheetDescription>
-            The more the AI knows, the better your promo posts. Only name and pitch are required.
-          </SheetDescription>
+          <SheetDescription>The more the AI knows, the better your promo posts.</SheetDescription>
         </SheetHeader>
-        <form id="product-form" onSubmit={onSubmit} className="flex-1 space-y-8 overflow-y-auto p-5">
-          <ProductImportBar initialUrl={draft.url} onFill={fill} />
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FormField id="name" label="Product name" required maxLength={120} placeholder="Linka"
-              value={draft.name} onChange={(e) => set("name", e.target.value)} />
-            <FormField id="url" type="url" label="Website link" maxLength={500} placeholder="https://yourapp.com"
-              value={draft.url} onChange={(e) => set("url", e.target.value)} />
-          </div>
+        <form id="product-form" onSubmit={onSubmit} className="flex-1 space-y-8 overflow-y-auto px-6 py-6">
+          <ProductBasics draft={draft} onChange={set} onFill={fill} />
           {PRODUCT_SECTIONS.map((s) => (
-            <ProductSectionFields key={s.title} section={s} draft={draft} onChange={set} />
+            <Fragment key={s.title}>
+              <Separator />
+              <ProductSectionFields section={s} draft={draft} onChange={set} />
+            </Fragment>
           ))}
+          <Separator />
           <ProductKnowledgeField value={draft.knowledge} onChange={(v) => set("knowledge", v)} />
         </form>
-        <SheetFooter className="flex-row justify-end border-t p-4">
+        <SheetFooter className="flex-row justify-end gap-2 border-t px-6 py-4">
           <SheetClose render={<Button variant="outline" disabled={pending} />}>Cancel</SheetClose>
           <Button type="submit" form="product-form" disabled={pending}>
             {pending ? <Spinner aria-hidden /> : null}

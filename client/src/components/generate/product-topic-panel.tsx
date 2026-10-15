@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ProductSheet } from "@/components/products/product-sheet";
+import { ProductsEmpty } from "@/components/products/products-empty";
 import { ProductPickItem } from "./product-pick-item";
 import { TopicGenerateBar } from "./topic-generate-bar";
 import type { Product } from "@/types/product";
@@ -28,23 +29,19 @@ export function ProductTopicPanel({ products, pending, onGenerate }: Props) {
   return (
     <div className="space-y-4">
       {products.length === 0 ? (
-        <div className="rounded-lg border border-dashed p-6 text-center">
-          <p className="text-sm font-medium">Add the product you want to promote</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Name, link, pitch and key features. You only do this once.
-          </p>
-        </div>
+        <ProductsEmpty onAdd={() => setAdding(true)} />
       ) : (
         <div role="radiogroup" aria-label="Product" className="space-y-2">
           {products.map((p) => (
             <ProductPickItem key={p.id} product={p} selected={p.id === selected}
               disabled={pending} onClick={() => setSelected(p.id)} />
           ))}
+          <Button variant="ghost" disabled={pending} onClick={() => setAdding(true)}
+            className="h-11 w-full justify-start border border-dashed text-muted-foreground">
+            <Plus /> Add another product
+          </Button>
         </div>
       )}
-      <Button variant="outline" size="sm" disabled={pending} onClick={() => setAdding(true)}>
-        <Plus /> Add product
-      </Button>
       {product ? (
         <div className="space-y-2">
           <Label htmlFor="promo-direction">Anything specific for this post? (optional)</Label>

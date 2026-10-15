@@ -6,13 +6,13 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { InstructionTextarea } from "@/components/settings/instruction-textarea";
+import { ProductSectionHeading } from "./product-section-heading";
 
 const MAX_CHARS = 50_000;
 
 const FIELD = {
   name: "knowledge",
-  label: "Extra knowledge",
-  hint: "Paste or upload docs, landing page copy, FAQs or release notes (.txt or .md). The AI reads this for facts.",
+  label: "Docs, notes or page copy",
   placeholder: "Anything else the AI should know about the product…",
 };
 
@@ -31,17 +31,21 @@ export function ProductKnowledgeField({ value, onChange }: Props) {
   }
 
   return (
-    <InstructionTextarea field={FIELD} value={value} onChange={onChange} rows={6}>
-      <div className="flex items-center justify-between gap-2">
-        <Button type="button" variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
-          <Upload /> Upload .txt or .md
-        </Button>
-        <span className="text-xs tabular-nums text-muted-foreground">
-          {value.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
-        </span>
-        <input ref={inputRef} type="file" accept=".txt,.md,.markdown,text/plain,text/markdown"
-          className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
-      </div>
-    </InstructionTextarea>
+    <section className="space-y-4">
+      <ProductSectionHeading title="Extra knowledge"
+        description="Paste or upload docs, landing page copy, FAQs or release notes. The AI reads this for facts." />
+      <InstructionTextarea field={FIELD} value={value} onChange={onChange} rows={6}>
+        <div className="flex items-center justify-between gap-2">
+          <Button type="button" variant="outline" size="sm" onClick={() => inputRef.current?.click()}>
+            <Upload /> Upload .txt or .md
+          </Button>
+          <span className="text-xs tabular-nums text-muted-foreground">
+            {value.length.toLocaleString()} / {MAX_CHARS.toLocaleString()}
+          </span>
+          <input ref={inputRef} type="file" accept=".txt,.md,.markdown,text/plain,text/markdown"
+            className="hidden" onChange={(e) => onFile(e.target.files?.[0])} />
+        </div>
+      </InstructionTextarea>
+    </section>
   );
 }
