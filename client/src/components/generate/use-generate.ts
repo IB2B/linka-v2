@@ -9,7 +9,8 @@ import { RANDOM_TYPES } from "@/lib/content/post-type-utils";
 import type { NewsArticle, PostSettings, PostType } from "@/types/content";
 
 export type GenOpts = {
-  type?: PostType; topic?: string; article?: NewsArticle; surprise?: boolean; label: string;
+  type?: PostType; topic?: string; article?: NewsArticle; productId?: string;
+  surprise?: boolean; label: string;
 };
 
 export function useGenerate(
@@ -31,7 +32,7 @@ export function useGenerate(
         if (!topic) { setGeneratingFor(null); toast.error(s.error ?? t("surpriseFailed")); return; }
       }
       const res = await generatePost({
-        postType: type, topic, newsArticle: opts.article,
+        postType: type, topic, newsArticle: opts.article, productId: opts.productId,
         platforms: settings.platforms, language: settings.language, media: settings.media,
         avatarAspect: settings.avatarAspect, avatarSeconds: settings.avatarSeconds,
         imageShape: settings.imageShape,

@@ -5,10 +5,12 @@ import type { InstructionField } from "./ai-instruction-fields";
 type Props = {
   field: InstructionField;
   defaultValue: string;
+  rows?: number;
+  required?: boolean;
   children?: React.ReactNode;
 };
 
-export function InstructionTextarea({ field, defaultValue, children }: Props) {
+export function InstructionTextarea({ field, defaultValue, rows = 2, required, children }: Props) {
   return (
     <div className="space-y-1.5">
       <Label htmlFor={field.name}>{field.label}</Label>
@@ -18,7 +20,8 @@ export function InstructionTextarea({ field, defaultValue, children }: Props) {
       <Textarea
         id={field.name}
         name={field.name}
-        rows={2}
+        rows={rows}
+        required={required}
         defaultValue={defaultValue}
         placeholder={field.placeholder}
       />

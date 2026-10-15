@@ -10,7 +10,8 @@ export type PostType =
   | "achievement"
   | "motivational"
   | "curated_content"
-  | "lead_magnet";
+  | "lead_magnet"
+  | "promote_product";
 
 export type TopicMode = "ai" | "manual";
 
@@ -48,6 +49,8 @@ export type GenerateInput = {
   postType: PostType;
   topic?: string;
   newsArticle?: NewsArticle;
+  // Saved product for "promote_product"; the topic is then optional direction.
+  productId?: string;
   platforms?: string[];
   language?: string;
   media?: MediaKind;

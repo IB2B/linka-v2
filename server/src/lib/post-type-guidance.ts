@@ -16,6 +16,8 @@ export const POST_TYPE_GUIDANCE: Record<string, string> = {
     "tools you recommend, books that changed your thinking, resources others should know",
   lead_magnet:
     "problems you solve for clients, insights from your expertise, value you can offer",
+  promote_product:
+    "a problem your product solves, one feature in the spotlight, a customer-style story, why you built it",
 };
 
 export const POST_TYPES = Object.keys(POST_TYPE_GUIDANCE) as Array<

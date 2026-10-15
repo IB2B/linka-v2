@@ -21,6 +21,7 @@ export async function generatePost(input: GenerateInput): Promise<Result<Generat
   const media = input.media ?? (input.withImage ? "image" : "none");
   const res = await post("/api/content/generate", {
     postType: input.postType, topic: input.topic, newsArticle: input.newsArticle,
+    productId: input.productId,
     platforms: input.platforms, language: input.language,
     media, withImage: media === "image",
     // Only meaningful for avatar renders; omitted otherwise so the server keeps

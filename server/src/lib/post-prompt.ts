@@ -35,6 +35,8 @@ export type PromptInput = {
   newsArticle?: NewsArticleInput;
   platform?: string;
   language?: string;
+  // Prebuilt "Promote a product" instructions (see product-promo.ts).
+  promo?: string;
 };
 
 function voiceLine(voiceDna: any): string {
@@ -59,14 +61,16 @@ export function buildPrompt(input: PromptInput, profile: ProfileRow): string {
   const article = input.newsArticle
     ? `\nArticle: "${input.newsArticle.title}"${input.newsArticle.summary ? ` — ${input.newsArticle.summary}` : ""}${input.newsArticle.source ? ` (${input.newsArticle.source})` : ""}.`
     : "";
-  const subject = input.topic
-    ? `Topic: ${input.topic}.`
-    : `Pick a sharp angle from: ${guidance}.`;
+  const closing = input.promo ? "End with the call to action given above." : "End with a question or call to reflect.";
+  const direction = input.topic ? `Extra direction from the author: ${input.topic}.\n` : "";
+  const subject = input.promo
+    ? `${direction}${input.promo}`
+    : input.topic ? `Topic: ${input.topic}.` : `Pick a sharp angle from: ${guidance}.`;
   return `Write a single ${platform} post for a ${role}.
 Style: ${input.postType.replace(/_/g, " ")}. ${subject}${article}
 ${voice}${profile.brief ?? ""}
 
-Format: ${platformHint} Plain text only — never use markdown syntax (no **, *, _, #, >, \`, or [text](url)). Open with a hook line. End with a question or call to reflect.
+Format: ${platformHint} Plain text only — never use markdown syntax (no **, *, _, #, >, \`, or [text](url)). Open with a hook line. ${closing}
 Write no hashtags at all. They are chosen afterwards by a step that does nothing else, and anything you add here is discarded.
 Write the entire post in ${langName}. This overrides every other signal: the topic, the voice guidance and the instructions above may be written in another language, but the post itself must be in ${langName}.`;
 }

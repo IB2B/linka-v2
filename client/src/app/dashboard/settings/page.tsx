@@ -8,10 +8,11 @@ import { AccountsToast } from "@/components/accounts/accounts-toast";
 import { fetchMe } from "@/lib/auth/me";
 import { getAccounts } from "@/lib/zernio/get-accounts";
 import { fetchPlatformInstructions } from "@/lib/api/platform-instructions";
+import { fetchProducts } from "@/lib/api/products";
 
 export default async function SettingsPage() {
-  const [me, accounts, instructions, locale, t] = await Promise.all([
-    fetchMe(), getAccounts(), fetchPlatformInstructions(), getLocale(),
+  const [me, accounts, instructions, products, locale, t] = await Promise.all([
+    fetchMe(), getAccounts(), fetchPlatformInstructions(), fetchProducts(), getLocale(),
     getTranslations("settings"),
   ]);
   const preferredLanguage = me?.preferredLanguage ?? locale ?? "en";
@@ -34,6 +35,7 @@ export default async function SettingsPage() {
         preferredLanguage={preferredLanguage}
         accounts={accounts}
         instructions={instructions}
+        products={products}
       />
     </>
   );

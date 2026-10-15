@@ -14,6 +14,7 @@ export type GenerateInput = {
   newsArticle?: NewsArticleInput;
   platform?: string;
   language?: string;
+  promo?: string;
 };
 
 export type GenerateResult = {

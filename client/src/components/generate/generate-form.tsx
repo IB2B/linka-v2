@@ -12,6 +12,8 @@ import { useGenerate } from "./use-generate";
 import { Button } from "@/components/ui/button";
 import type { NewsArticle, PostSettings, PostType } from "@/types/content";
 import type { UsageSummary } from "@/types/usage";
+import type { Product } from "@/types/product";
+import type { Platform } from "@/lib/content/platforms";
 
 type Props = {
   initialNews: NewsArticle[];
@@ -19,14 +21,17 @@ type Props = {
   // YYYY-MM-DD when started from a calendar day.
   scheduleDate: string | null;
   usage: UsageSummary | null;
+  products: Product[];
+  // Connected platforms, in order; the first is selected to start.
+  channels: Platform[];
 };
 type Step = 1 | 2 | 3;
 
-export function GenerateForm({ initialNews, defaultLanguage, scheduleDate, usage }: Props) {
+export function GenerateForm({ initialNews, defaultLanguage, scheduleDate, usage, products, channels }: Props) {
   const [step, setStep] = useState<Step>(1);
   const [postType, setPostType] = useState<PostType>("news_commentary");
   const [settings, setSettings] = useState<PostSettings>({
-    platforms: ["linkedin"], language: defaultLanguage, media: "image",
+    platforms: [channels[0] ?? "linkedin"], language: defaultLanguage, media: "image",
     avatarAspect: "auto", avatarSeconds: 30, imageShape: "landscape",
   });
   const { generate, randomGenerate, pending, generatingFor } =
@@ -45,7 +50,7 @@ export function GenerateForm({ initialNews, defaultLanguage, scheduleDate, usage
       )}
 
       {step === 2 && (
-        <GenerateStepTwo settings={settings} pending={pending} usage={usage}
+        <GenerateStepTwo settings={settings} pending={pending} usage={usage} channels={channels}
           onChange={setSettings} onBack={() => setStep(1)} onNext={() => setStep(3)} />
       )}
 
@@ -54,7 +59,7 @@ export function GenerateForm({ initialNews, defaultLanguage, scheduleDate, usage
           <Button variant="ghost" size="sm" onClick={() => setStep(2)}>
             <ArrowLeft className="size-4" /> Back to settings
           </Button>
-          <TopicSection postType={postType} initialNews={initialNews} pending={pending}
+          <TopicSection postType={postType} initialNews={initialNews} products={products} pending={pending}
             language={settings.language} onGenerate={(opts) => generate(opts)} />
         </div>
       )}

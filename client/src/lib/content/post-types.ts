@@ -1,6 +1,6 @@
 import {
   Newspaper, MessageSquare, BookOpen, Brain, HelpCircle,
-  Trophy, Heart, Share2, Magnet, type LucideIcon,
+  Trophy, Heart, Share2, Magnet, Megaphone, type LucideIcon,
 } from "lucide-react";
 
 import type { PostType } from "@/types/content";
@@ -22,5 +22,6 @@ export const POST_TYPES: PostTypeMeta[] = [
   { type: "motivational", label: "Motivational", icon: Heart, description: "Inspire with a lesson" },
   { type: "curated_content", label: "Curated", icon: Share2, description: "Round up resources you love" },
   { type: "lead_magnet", label: "Lead magnet", icon: Magnet, description: "Drive interest to your offer" },
+  { type: "promote_product", label: "Promote a product", icon: Megaphone, description: "Spotlight your own product" },
 ];
 
