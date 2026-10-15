@@ -58,7 +58,7 @@ migration that has already run.
 ## Plans and limits
 
 Posts and videos each have a monthly limit, and both reset on the 1st of the
-month. Images have a daily limit.
+month at midnight UTC. Images have a daily limit.
 
 | Plan              | Posts / month | Videos / month | Images / day |
 | ----------------- | ------------- | -------------- | ------------ |
@@ -78,6 +78,20 @@ month. Images have a daily limit.
 The limits live in `server/src/lib/plan-features.ts`. If you change them,
 also update the pricing text in `client/src/messages/*.json` (all 5 languages).
 
+## Dashboard
+
+- **Header:** search, then the **New post** button (AI generate or write by
+  hand), then notifications. Keep plan and usage out of the header.
+- **Plan card:** sits in the sidebar, right above the account row. It shows
+  the plan, the reset date, and posts, images and videos as `used / limit`
+  with a thin bar. Bars turn amber at 80% and red at 100%. The posts and
+  videos bars have a small tick that marks how far through the month we are.
+  An Upgrade button shows only on the free plan or when a limit runs low.
+- The card reads `GET /api/users/me/usage`, loaded once in
+  `client/src/app/dashboard/layout.tsx`. The code is in
+  `client/src/components/dashboard/sidebar-plan-card.tsx`.
+- The badge next to the user's name shows their plan.
+
 ## Integrations
 
 - **Late API:** publishing posts, plus Instagram, Facebook, X and Reddit DMs
@@ -96,6 +110,10 @@ also update the pricing text in `client/src/messages/*.json` (all 5 languages).
 - DNS: Cloudflare
 
 Pushing to `main` deploys to production.
+
+If Vercel marks a deploy as failed with an "upgrade to Pro" link, the
+Vercel team has dropped to the Hobby plan. Hobby can't deploy from a private
+GitHub organization. Move the team back to Pro, then redeploy `main`.
 
 ## Project rules
 
