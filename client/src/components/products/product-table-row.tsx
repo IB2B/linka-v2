@@ -1,23 +1,26 @@
 "use client";
 
-import { productCompleteness } from "@/lib/content/product-completeness";
+import Link from "next/link";
+import { Megaphone } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import { ProductActionsMenu } from "./product-actions-menu";
+import { ProductBriefStatus } from "./product-brief-status";
 import type { Product } from "@/types/product";
 
 type Props = { product: Product; onEdit: () => void };
 
-// One product in the table. The whole row opens the editor; the menu and the
-// site link stop the click so they do their own thing.
+// One product in the table. The row opens the editor; the site link, the
+// Promote button and the menu stop the click so they do their own thing.
 export function ProductTableRow({ product, onEdit }: Props) {
   const host = product.url?.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") ?? null;
-  const { filled, total } = productCompleteness(product);
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
   return (
-    <tr onClick={onEdit} className="cursor-pointer border-b transition-colors last:border-0 hover:bg-muted/40">
-      <td className="py-3 pl-4 pr-3">
-        <div className="flex items-center gap-3">
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-xs font-semibold uppercase">
+    <tr onClick={onEdit} className="cursor-pointer border-b align-top transition-colors last:border-0 hover:bg-muted/40">
+      <td className="py-3.5 pl-4 pr-3">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-xs font-semibold uppercase">
             {product.name.trim().charAt(0)}
           </span>
           <div className="min-w-0">
@@ -31,19 +34,18 @@ export function ProductTableRow({ product, onEdit }: Props) {
           </div>
         </div>
       </td>
-      <td className="hidden max-w-0 px-3 py-3 md:table-cell">
-        <p className="truncate text-muted-foreground">{product.pitch}</p>
+      <td className="hidden px-3 py-3.5 lg:table-cell">
+        <p className="line-clamp-2 text-sm text-muted-foreground">{product.pitch}</p>
       </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="flex items-center gap-2">
-          <div className="h-1 w-14 overflow-hidden rounded-full bg-muted" aria-hidden>
-            <div className="h-full rounded-full bg-foreground/50" style={{ width: `${(filled / total) * 100}%` }} />
-          </div>
-          <span className="font-mono text-xs tabular-nums text-muted-foreground">{filled}/{total}</span>
+      <td className="px-3 py-3.5"><ProductBriefStatus product={product} /></td>
+      <td className="py-3 pl-3 pr-3" onClick={stop}>
+        <div className="flex items-center justify-end gap-1">
+          <Button variant="outline" size="sm" nativeButton={false}
+            render={<Link href={`/dashboard/generate?product=${product.id}`} />}>
+            <Megaphone /> Promote
+          </Button>
+          <ProductActionsMenu product={product} onEdit={onEdit} />
         </div>
-      </td>
-      <td className="w-px py-3 pl-1 pr-3 text-right" onClick={stop}>
-        <ProductActionsMenu product={product} onEdit={onEdit} />
       </td>
     </tr>
   );

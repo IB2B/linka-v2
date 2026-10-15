@@ -14,14 +14,15 @@ import type { Product } from "@/types/product";
 
 type Props = {
   products: Product[];
+  initialId: string | null;
   pending: boolean;
   onGenerate: (productId: string, label: string, direction?: string) => void;
 };
 
 // Step 3 for "Promote a product": pick a saved product (or add one here), add
 // optional direction, then generate. The AI picks a fresh angle each time.
-export function ProductTopicPanel({ products, pending, onGenerate }: Props) {
-  const [selected, setSelected] = useState<string | null>(products[0]?.id ?? null);
+export function ProductTopicPanel({ products, initialId, pending, onGenerate }: Props) {
+  const [selected, setSelected] = useState<string | null>(initialId ?? products[0]?.id ?? null);
   const [direction, setDirection] = useState("");
   const [adding, setAdding] = useState(false);
   const product = products.find((p) => p.id === selected) ?? null;

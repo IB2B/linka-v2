@@ -14,12 +14,13 @@ type Props = {
   postType: PostType;
   initialNews: NewsArticle[];
   products: Product[];
+  promoProduct: string | null;
   pending: boolean;
   language: string;
   onGenerate: (opts: GenOpts) => void;
 };
 
-export function TopicSection({ postType, initialNews, products, pending, language, onGenerate }: Props) {
+export function TopicSection({ postType, initialNews, products, promoProduct, pending, language, onGenerate }: Props) {
   const meta = getPostTypeMeta(postType);
   const kind = postType === "news_commentary" ? "news" : postType === "promote_product" ? "product" : "topic";
   const Icon = kind === "news" ? Newspaper : kind === "product" ? Megaphone : PenLine;
@@ -48,7 +49,7 @@ export function TopicSection({ postType, initialNews, products, pending, languag
           <NewsTopicPanel articles={initialNews} pending={pending}
             onGenerate={(article) => onGenerate({ article, label: article.title })} />
         ) : kind === "product" ? (
-          <ProductTopicPanel products={products} pending={pending}
+          <ProductTopicPanel products={products} initialId={promoProduct} pending={pending}
             onGenerate={(productId, label, topic) => onGenerate({ productId, topic, label })} />
         ) : (
           <TopicChooser postType={postType} pending={pending} language={language}

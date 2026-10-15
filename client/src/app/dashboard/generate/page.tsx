@@ -13,7 +13,7 @@ import { getAccounts } from "@/lib/zernio/get-accounts";
 import { connectedPostPlatforms } from "@/lib/content/connected-platforms";
 import { fetchNewsAction } from "./actions";
 
-type Props = { searchParams: Promise<{ date?: string | string[] }> };
+type Props = { searchParams: Promise<{ date?: string | string[]; product?: string | string[] }> };
 
 export default async function GeneratePage({ searchParams }: Props) {
   const [news, me, usage, products, accounts, locale, t, sp] = await Promise.all([
@@ -25,6 +25,8 @@ export default async function GeneratePage({ searchParams }: Props) {
   // Set when the flow starts from a calendar day; past days are ignored.
   const day = parseDay(typeof sp.date === "string" ? sp.date : null);
   const scheduleDate = day && !isPastDay(day) ? (sp.date as string) : null;
+  // From Settings → Products "Promote": open the promo flow on that product.
+  const promoProduct = products.find((p) => p.id === sp.product)?.id ?? null;
   return (
     <>
       <PageHeader title={t("title")} description={t("description")} />
@@ -32,7 +34,7 @@ export default async function GeneratePage({ searchParams }: Props) {
       {day && scheduleDate ? <GenerateDateBanner date={day} /> : null}
       <GenerateForm initialNews={news.data ?? []} defaultLanguage={defaultLanguage}
         scheduleDate={scheduleDate} usage={usage} products={products}
-        channels={connectedPostPlatforms(accounts)} />
+        channels={connectedPostPlatforms(accounts)} promoProduct={promoProduct} />
     </>
   );
 }
